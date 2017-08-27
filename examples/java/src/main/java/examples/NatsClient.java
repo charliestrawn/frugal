@@ -7,6 +7,7 @@ import com.workiva.frugal.transport.FNatsTransport;
 import com.workiva.frugal.transport.FTransport;
 import io.nats.client.Connection;
 import io.nats.client.ConnectionFactory;
+import io.nats.client.Nats;
 import v1.music.Album;
 import v1.music.FStore;
 import org.apache.thrift.TException;
@@ -26,7 +27,7 @@ public class NatsClient {
         FProtocolFactory protocolFactory = new FProtocolFactory(new TBinaryProtocol.Factory());
 
         // Create a NATS client (using default options for local dev)
-        ConnectionFactory cf = new ConnectionFactory(ConnectionFactory.DEFAULT_URL);
+        ConnectionFactory cf = new ConnectionFactory(Nats.DEFAULT_URL);
         Connection conn = cf.createConnection();
 
         // Create and open a new transport that uses NATS for sending data.

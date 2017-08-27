@@ -5,6 +5,7 @@ import com.workiva.frugal.server.FNatsServer;
 import com.workiva.frugal.server.FServer;
 import io.nats.client.Connection;
 import io.nats.client.ConnectionFactory;
+import io.nats.client.Nats;
 import v1.music.FStore;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -24,7 +25,7 @@ public class NatsServer {
         FProtocolFactory protocolFactory = new FProtocolFactory(new TBinaryProtocol.Factory());
 
         // Create a NATS client (using default options for local dev)
-        ConnectionFactory cf = new ConnectionFactory(ConnectionFactory.DEFAULT_URL);
+        ConnectionFactory cf = new ConnectionFactory(Nats.DEFAULT_URL);
         Connection conn = cf.createConnection();
 
         // Create a new server processor.
