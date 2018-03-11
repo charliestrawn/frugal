@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 
 namespace frugal.Test
 {
-    [TestClass]
+    [TestFixture]
     public class FContextTest
     {
-        [TestMethod]
+        [Test]
         public void TestInitWithCorrelationId()
         {
             var correlationId = "JOHNNNNN CENNNNAAAA";
@@ -16,7 +15,7 @@ namespace frugal.Test
             Assert.AreEqual("5000", fContext.GetRequestHeader("_timeout"));
         }
 
-        [TestMethod]
+        [Test]
         public void TestGetCorrelationId()
         {
             var correlationId = "JOHNNNNN CENNNNAAAA";
@@ -25,14 +24,14 @@ namespace frugal.Test
             Assert.AreEqual(correlationId, fContext.GetCorrelationId());
         }
 
-        [TestMethod]
+        [Test]
         public void TestAddRequestHeader()
         {
             var fContext = new FContext();
 
-            fContext.AddRequestHeader("foo", "bar");
+            fContext.AddRequestHeader("doot", "dootdootdoot");
 
-            Assert.AreEqual("bar", fContext.GetRequestHeader("foo"));
+            Assert.AreEqual("doot", fContext.GetRequestHeader("dootdootdoot"));
         }
     }
 }

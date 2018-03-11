@@ -62,6 +62,7 @@ var Languages = LanguageOptions{
 		"async":            "Generate async client code using futures",
 		"boxed_primitives": "Generate primitives as the boxed equivalents",
 	},
+	"csharp": Options{},
 	"dart": Options{
 		"library_prefix": "Generate code that can be used within an existing library. " +
 			"Use a dot-separated string, e.g. \"my_parent_lib.src.gen\"",
