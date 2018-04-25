@@ -1,4 +1,5 @@
-﻿using NATS.Client;
+﻿using System.IO;
+using NATS.Client;
 using Thrift.Transport;
 
 namespace frugal.Transport
@@ -6,21 +7,18 @@ namespace frugal.Transport
     public class FNatsPublisherTransport : IFPublisherTransport
     {
         private readonly IConnection _conn;
+        public int PublishSizeLimit => 1024 * 1024;
+        public bool IsOpen => _conn.State == ConnState.CONNECTED;
 
         public FNatsPublisherTransport(IConnection conn)
         {
             _conn = conn;
         }
 
-        public bool IsOpen()
-        {
-            return _conn.State == ConnState.CONNECTED;
-        }
-
         public void Open()
         {
             // Just need to verify that the passed in NATS connection was open already.
-            if (!IsOpen())
+            if (!IsOpen)
             {
                 throw new TTransportException(TTransportException.ExceptionType.NotOpen,
                     "NATS not connected, has status " + _conn.State);
@@ -32,29 +30,32 @@ namespace frugal.Transport
             // NoOp
         }
 
-        public int GetPublishSizeLimit()
-        {
-            return 1024 * 1024;
-        }
 
         public void Publish(string subject, byte[] payload)
         {
-            if (!IsOpen())
+            if (!IsOpen)
             {
                 throw new TTransportException();
             }
 
-            if (subject == "")
+            if (string.IsNullOrEmpty(subject))
             {
-
+                throw new TTransportException("Subject cannot be empty.");
             }
 
-            if (payload.Length > GetPublishSizeLimit())
+            if (payload.Length > PublishSizeLimit)
             {
-
+                throw new TTransportException("Request too large");
             }
 
-            _conn.Publish(subject, payload);
+            try
+            {
+                _conn.Publish(subject, payload);
+            }
+            catch (IOException e)
+            {
+                throw new TTransportException("publish: unable to publish data: " + e.Message);
+            }
         }
 
         private string GetFormattedSubject(string subject)

@@ -6,38 +6,38 @@ namespace frugal.Provider
     public class Publisher
     {
 
-        public Publisher(FNatsPublisherTransport transport, FProtocolFactory protocolFactory)
+        public Publisher(IFPublisherTransport transport, IFProtocolFactory protocolFactory)
         {
             Transport = transport;
             ProtocolFactory = protocolFactory;
         }
 
-        public FProtocolFactory ProtocolFactory { get; }
-        public FNatsPublisherTransport Transport { get; }
+        public IFProtocolFactory ProtocolFactory { get; }
+        public IFPublisherTransport Transport { get; }
     }
 
     public class Subscriber
     {
-        public Subscriber(FNatsSubscriberTransport transport, FProtocolFactory protocolFactory)
+        public Subscriber(IFSubscriberTransport transport, IFProtocolFactory protocolFactory)
         {
             Transport = transport;
             ProtocolFactory = protocolFactory;
         }
 
-        public FProtocolFactory ProtocolFactory { get; }
-        public FNatsSubscriberTransport Transport { get; }
+        public IFProtocolFactory ProtocolFactory { get; }
+        public IFSubscriberTransport Transport { get; }
     }
 
     public class FScopeProvider
     {
-        private readonly FNatsPublisherTransportFactory _publisherTransportFactory;
-        private readonly FNatsSubscriberTransportFactory _subscriberTransportFactory;
-        private readonly FProtocolFactory _protocolFactory;
+        private readonly IFPublisherTransportFactory _publisherTransportFactory;
+        private readonly IFSubscriberTransportFactory _subscriberTransportFactory;
+        private readonly IFProtocolFactory _protocolFactory;
 
         public FScopeProvider(
-            FNatsPublisherTransportFactory publisherTransportFactory,
-            FNatsSubscriberTransportFactory subscriberTransportFactory,
-            FProtocolFactory protocolFactory
+            IFPublisherTransportFactory publisherTransportFactory,
+            IFSubscriberTransportFactory subscriberTransportFactory,
+            IFProtocolFactory protocolFactory
             )
         {
             _publisherTransportFactory = publisherTransportFactory;

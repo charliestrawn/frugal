@@ -15,30 +15,55 @@ namespace frugal
     /// </summary>
     public class FContext
     {
+        // To ensure every new FContext gets a unique opid, use an atomic, incrementing integer.
         private static long _nextOpId = 0;
-        public static string CorrelationIdHeader = "_cid";
-        public static string OpIdHeader = "_opid";
-        public static string TimeoutHeader = "_timeout";
-        private static int DefaultTimout = 5 * 1000;
+
+        /// <summary>
+        /// Header containing correlation id.
+        /// </summary>
+        public const string CorrelationIdHeader = "_cid";
+
+        /// <summary>
+        /// Header containing op id (uint64 as string).
+        /// </summary>
+        public const string OpIdHeader = "_opid";
+
+        /// <summary>
+        /// Header containing request timeout (milliseconds as string).
+        /// </summary>
+        public const string TimeoutHeader = "_timeout";
+
+        /// <summary>
+        /// Default request timeout in milliseconds.
+        /// </summary>
+        protected const long DefaultTimout = 5 * 1000;
 
         private readonly Dictionary<string, string> _requestHeaders = new Dictionary<string, string>();
         private readonly Dictionary<string, string> _responseHeaders = new Dictionary<string, string>();
 
+        /// <inheritdoc />
+        /// <summary>
+        /// Creates a new FContext with a randomly generated correlation id for tracing purposes.
+        /// </summary>
         public FContext() : this(GenerateCorrelationId())
         { 
         }
 
-        public FContext(Dictionary<string, string> requestHeaders, Dictionary<string, string> responseHeaders)
-        {
-            _requestHeaders = requestHeaders;
-            _responseHeaders = responseHeaders;
-        }
-
+        /// <summary>
+        /// Creates a new FContext with the given correlation id for tracing purposes.
+        /// </summary>
+        /// <param name="correlationId">unique tracing identifier</param>
         public FContext(string correlationId)
         {
             _requestHeaders.Add(CorrelationIdHeader, correlationId);
-            _requestHeaders.Add(OpIdHeader, GetNextOpId().ToString());
+            _requestHeaders.Add(OpIdHeader, GetNextOpId());
             _requestHeaders.Add(TimeoutHeader, DefaultTimout.ToString());
+        }
+
+        private FContext(Dictionary<string, string> requestHeaders, Dictionary<string, string> responseHeaders)
+        {
+            _requestHeaders = requestHeaders;
+            _responseHeaders = responseHeaders;
         }
 
         public string GetCorrelationId()
@@ -89,22 +114,46 @@ namespace frugal
             return this;
         }
 
+        /// <summary>
+        /// Returns the response header with the given name. If no such header exists, null is returned.
+        /// </summary>
+        /// <param name="name">header name</param>
+        /// <returns>header value or null</returns>
         public string GetResponseHeader(string name)
         {
             return _responseHeaders[name];
         }
 
+        /// <summary>
+        /// Returns the response headers on the FContext.
+        /// </summary>
+        /// <returns>response headers map</returns>
         public Dictionary<string, string> GetResponseHeaders()
         {
             // TODO: return a copy of the headers
             return _responseHeaders;
         }
 
+        /// <summary>
+        /// Set the request timeout. Default is 5 seconds.
+        /// </summary>
+        /// <param name="timeout">the request timeout in milliseconds.</param>
         public void SetTimeout(long timeout)
         {
-            _requestHeaders.Add(TimeoutHeader, timeout.ToString());
+            if (_requestHeaders.ContainsKey(TimeoutHeader))
+            {
+                _requestHeaders[TimeoutHeader] = timeout.ToString();
+            }
+            else
+            {
+                _requestHeaders.Add(TimeoutHeader, timeout.ToString());
+            }
         }
 
+        /// <summary>
+        /// Get the request timeout.
+        /// </summary>
+        /// <returns>the request timeout in milliseconds.</returns>
         public long GetTimeout()
         {
             return long.Parse(_requestHeaders[TimeoutHeader]);
@@ -115,14 +164,30 @@ namespace frugal
             return Guid.NewGuid().ToString("N");
         }
 
-        private static long GetNextOpId()
+        private static string GetNextOpId()
         {
-            return Interlocked.Increment(ref _nextOpId);
+            return Interlocked.Increment(ref _nextOpId).ToString();
         }
 
+        /// <summary>
+        /// Creates a new FContext with the given request headers.
+        /// </summary>
+        /// <param name="headers">request headers</param>
+        /// <returns>FContext</returns>
         public static FContext WithRequestHeaders(Dictionary<string, string> headers)
         {
-            throw new NotImplementedException();
+            if (!headers.ContainsKey(CorrelationIdHeader))
+            {
+                headers.Add(CorrelationIdHeader, GenerateCorrelationId());
+            }
+
+            if (!headers.ContainsKey(TimeoutHeader))
+            {
+                headers.Add(TimeoutHeader, DefaultTimout.ToString());
+            }
+            headers.Add(OpIdHeader, GetNextOpId());
+
+            return new FContext(headers, new Dictionary<string, string>());
         }
     }
 }

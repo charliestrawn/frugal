@@ -2,10 +2,10 @@
 {
     public interface IFPublisherTransport
     {
-        bool IsOpen();
+        bool IsOpen { get; }
         void Open();
         void Close();
-        int GetPublishSizeLimit();
+        int PublishSizeLimit { get; }
         void Publish(string subject, byte[] payload);
     }
 

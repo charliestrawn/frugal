@@ -53,6 +53,7 @@ lib/csharp/.vs
 examples/csharp/.vs
 examples/csharp/**/bin
 examples/csharp/**/obj
+**/*.DotSettings.user
 
 # Integration tests
 artifacts/
