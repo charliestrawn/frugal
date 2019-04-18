@@ -3,9 +3,9 @@ test/idl/constants.thrift
 target/
 *.iml
 .idea
-.vscode
 py3env
 .vscode
+.vs
 
 
 # Do not commit the following directories created by pub.
@@ -50,6 +50,15 @@ lib/go/vendor
 lib/go/glide.lock
 examples/go/vendor
 examples/go/glide.lock
+
+# C# specific
+lib/csharp/**/bin
+lib/csharp/**/obj
+lib/csharp/**/packages
+examples/csharp/**/bin
+examples/csharp/**/obj
+examples/csharp/**/packages
+
 
 # GopherJS lib specific
 lib/gopherjs/vendor
