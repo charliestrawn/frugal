@@ -30,7 +30,7 @@ setup(
         'tornado': ['nats-client==0.7.2'],
         'asyncio': [
             'aiohttp>=3.0.9,<4',
-            'aiostomp==1.4.0',
+            'aiostomp==1.6.2',
             'asyncio-nats-client==0.10.0',
             'async-timeout>=2.0.1,<4',
         ],
