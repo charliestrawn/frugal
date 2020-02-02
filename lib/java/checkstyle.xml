@@ -35,11 +35,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
     <property name="severity" value="error"/>
   </module>
 
-  <!-- Allow use of comment to suppress checkstyle -->
-  <module name="SuppressionCommentFilter"/>
 
   <!-- All Java AST specific tests live under TreeWalker module. -->
   <module name="TreeWalker">
+
+    <!-- Allow use of comment to suppress checkstyle -->
+    <module name="SuppressionCommentFilter"/>
 
     <module name="Indentation">
       <property name="basicOffset" value="4" />
@@ -368,9 +369,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
       -->
       <property name="severity" value="error"/>
     </module>
-
-    <!-- Required to support SuppressWarningsComment -->
-    <module name="FileContentsHolder"/>
 
   </module>
 </module>
