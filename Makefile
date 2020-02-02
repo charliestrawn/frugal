@@ -15,7 +15,7 @@ unit-go:
 	cd lib/go && GO111MODULE=on go mod vendor && go test -v -race 
 
 unit-java:
-	mvn -f lib/java/pom.xml checkstyle:check clean verify
+	mvn -f lib/java/pom.xml clean verify
 
 unit-py2:
 	virtualenv -p /usr/bin/python /tmp/frugal && \
