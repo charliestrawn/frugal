@@ -27,7 +27,7 @@ setup(
         'requests>=2.12.5,<3',
     ],
     extras_require={
-        'tornado': ['nats-client==0.7.2'],
+        'tornado': ['nats-client==0.8.4'],
         'asyncio': [
             'aiohttp>=3.0.9,<4',
             'aiostomp==1.4.0',
