@@ -8,7 +8,7 @@ require (
 	github.com/nats-io/gnatsd v0.9.4
 	github.com/nats-io/go-nats v0.0.0-20161120202126-6b6bf392d34d
 	github.com/nats-io/nuid v1.0.0 // indirect
-	github.com/stretchr/testify v1.4.0
+	github.com/stretchr/testify v1.5.0
 	golang.org/x/crypto v0.0.0-20190829043050-9756ffdc2472 // indirect
 )
 
