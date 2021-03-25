@@ -41,12 +41,6 @@ public class FProtocolTest {
     }
 
     @Test
-    public void testGetMinSerializedSizeDelegates() throws Exception {
-        when(wrapped.getMinSerializedSize((byte)0)).thenReturn(42);
-        assertEquals(42, protocol.getMinSerializedSize((byte)0));
-    }
-
-    @Test
     public void testWriteRequestHeaders() throws Exception {
         when(wrapped.getTransport()).thenReturn(transport);
 

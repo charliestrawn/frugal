@@ -15,7 +15,6 @@ package com.workiva.frugal.transport;
 
 import com.workiva.frugal.util.ProtocolUtils;
 import org.apache.thrift.TByteArrayOutputStream;
-import org.apache.thrift.TConfiguration;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 import org.apache.thrift.transport.TTransportFactory;
@@ -24,7 +23,7 @@ import org.apache.thrift.transport.TTransportFactory;
  * TFramedTransport is a buffered TTransport that ensures a fully read message
  * every time by preceding messages with a 4-byte frame size.
  */
-public class TFramedTransport extends TTransport {
+class TFramedTransport extends TTransport {
 
     protected static final int DEFAULT_MAX_LENGTH = 2147483647;
 
@@ -124,29 +123,5 @@ public class TFramedTransport extends TTransport {
         transport.write(writei32buf, 0, 4);
         transport.write(buf, 0, len);
         transport.flush();
-    }
-
-    // TODO: These functions *appear* safe to add. A first pass on testing
-    //       and very brief usage search did not show that these functions
-    //       are ever used within our own protocols and as far as we know,
-    //       this transport is never used by a 'real' thrift protocol which
-    //       may rely on these functions.
-    //
-    //       In light of this, we're going to proceed with adding these,
-    //       HOWEVER, given that this class seems to be copied from old
-    //       mainline thrift, it's *likely* that we can delete it entirely
-    //       and simply rely upon the canonical version. We should do this
-    //       as soon as is prudent.
-    @Override
-    public TConfiguration getConfiguration() {
-        throw new RuntimeException("Not Yet Implemented");
-    }
-    @Override
-    public void updateKnownMessageSize(long l) throws TTransportException {
-        throw new RuntimeException("Not Yet Implemented");
-    }
-    @Override
-    public void checkReadBytesAvailable(long l) throws TTransportException {
-        throw new RuntimeException("Not Yet Implemented");
     }
 }
