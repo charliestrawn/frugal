@@ -24,7 +24,6 @@ import io.nats.client.MessageHandler;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TTransport;
-import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -430,8 +429,6 @@ public class FNatsServer implements FServer {
 
                 // Send response.
                 conn.publish(reply, output.getWriteBytes());
-            } catch (TTransportException e) {
-                LOGGER.error("failed to construct TMemoryInputTransport", e);
             } finally {
                 eventHandler.onRequestEnded(ephemeralProperties);
             }
