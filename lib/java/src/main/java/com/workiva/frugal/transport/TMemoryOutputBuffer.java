@@ -15,7 +15,6 @@ package com.workiva.frugal.transport;
 
 import com.workiva.frugal.exception.TTransportExceptionType;
 import com.workiva.frugal.util.ProtocolUtils;
-import org.apache.thrift.TConfiguration;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
@@ -126,26 +125,4 @@ public class TMemoryOutputBuffer extends TTransport {
         buffer.reset();
         init();
     }
-
-    // TODO: These functions *appear* safe to add. A first pass on testing
-    //       and very brief usage search did not show that these functions
-    //       are ever used within our own protocols and as far as we know,
-    //       this transport is never used by a 'real' thrift protocol which
-    //       may rely on these functions.
-    //
-    //       In light of this, we're going to proceed with adding these,
-    //       HOWEVER, given that this class seems to be copied from old
-    //       mainline thrift, it's *likely* that we can delete it entirely
-    //       and simply rely upon the canonical version. We should do this
-    //       as soon as is prudent.
-    public TConfiguration getConfiguration() {
-        throw new RuntimeException("Not Yet Implemented");
-    }
-    public void updateKnownMessageSize(long size) throws TTransportException {
-        throw new RuntimeException("Not Yet Implemented");
-    }
-    public void checkReadBytesAvailable(long numBytes) throws TTransportException {
-        throw new RuntimeException("Not Yet Implemented");
-    }
-
 }
