@@ -100,7 +100,8 @@ abstract class FAsyncTransport extends FTransport {
     if (handler.isCompleted) {
       _log.warning(
           "frugal: handler already called for message, dropping message");
+    } else {
+      handler.complete(frame);
     }
-    handler.complete(frame);
   }
 }
