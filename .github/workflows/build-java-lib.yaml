@@ -1,0 +1,19 @@
+name: Java CI
+
+on: [push]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+          - uses: actions/checkout@v2
+          - name: Setup Java JDK
+            uses: actions/setup-java@v2.1.0
+            with:
+                # The Java version to set up. Takes a whole or semver Java version. See examples of supported syntax in README file
+                java-version: '11'
+                # Java distribution. See the list of supported distributions in README file
+                distribution: 'adopt'
+                # The package type (jdk, jre, jdk+fx, jre+fx)
+          - name: Build
+            run: cd lib/java && mvn clean verify
