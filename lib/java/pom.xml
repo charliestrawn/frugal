@@ -11,7 +11,7 @@
     <url>https://github.com/Workiva/frugal/lib/java</url>
 
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <jmh.version>1.33</jmh.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
