@@ -139,8 +139,12 @@ public class FNatsTransport extends FAsyncTransport {
     protected class Handler implements MessageHandler {
         public void onMessage(Message message) {
             try {
-                byte[] frame = message.getData();
-                handleResponse(Arrays.copyOfRange(frame, 4, frame.length));
+                if (message.isStatusMessage()) {
+                    LOGGER.debug("Received status message: {}", message);
+                } else {
+                    byte[] frame = message.getData();
+                    handleResponse(Arrays.copyOfRange(frame, 4, frame.length));
+                }
             } catch (TException e) {
                 LOGGER.warn("Could not handle frame", e);
             }

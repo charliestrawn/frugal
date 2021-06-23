@@ -8,6 +8,7 @@ import io.nats.client.Dispatcher;
 import io.nats.client.Message;
 import io.nats.client.MessageHandler;
 import io.nats.client.Options;
+import io.nats.client.impl.NatsMessage;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 import org.junit.Before;
@@ -200,5 +201,23 @@ public class FNatsTransportTest {
             assertEquals(TTransportExceptionType.TIMED_OUT, e.getType());
             assertThat(e.getMessage(), containsString("foo"));
         }
+    }
+
+    @Test
+    public void testStatusMessage() throws Exception {
+        when(conn.getStatus()).thenReturn(Status.CONNECTED);
+        ArgumentCaptor<MessageHandler> handlerCaptor = ArgumentCaptor.forClass(MessageHandler.class);
+        Dispatcher mockDispatcher = mock(Dispatcher.class);
+        when(conn.createDispatcher(handlerCaptor.capture())).thenReturn(mockDispatcher);
+
+        transport.open();
+
+        MessageHandler handler = handlerCaptor.getValue();
+        Message message = mock(Message.class);
+        when(message.isStatusMessage()).thenReturn(true);
+        when(message.getData()).thenReturn(new byte[0]);
+
+        // Ensure no exception.
+        handler.onMessage(message);
     }
 }
