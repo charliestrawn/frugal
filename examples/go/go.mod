@@ -7,7 +7,7 @@ require (
 	github.com/apache/thrift v0.14.2
 	github.com/go-stomp/stomp v2.1.4+incompatible
 	github.com/nats-io/nats.go v1.11.0
-	github.com/rs/cors v1.7.0
+	github.com/rs/cors v1.8.0
 	github.com/sirupsen/logrus v1.8.1
 )
 
