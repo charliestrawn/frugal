@@ -13,7 +13,7 @@
 
 package com.workiva.frugal.util;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Utilities for reading/writing protocol data.
@@ -57,7 +57,7 @@ public class ProtocolUtils {
      * @param offset The position in buff to start writing at.
      */
     public static void writeString(String s, byte[] buff, int offset) {
-        byte[] strBytes = Charset.forName("UTF-8").encode(s).array();
+        byte[] strBytes = StandardCharsets.UTF_8.encode(s).array();
         System.arraycopy(strBytes, 0, buff, offset, s.length());
     }
 
@@ -68,7 +68,7 @@ public class ProtocolUtils {
      * @return The bytes representing the string.
      */
     public static byte[] encodeString(String s) {
-        return s.getBytes(Charset.forName("UTF-8"));
+        return s.getBytes(StandardCharsets.UTF_8);
     }
 
     /**
