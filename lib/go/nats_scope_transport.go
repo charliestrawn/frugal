@@ -29,6 +29,8 @@ const frameBufferSize = 5
 // flushTimeout is the max duration to flush subscriptions to the NATS server.
 const flushTimeout = 5 * time.Second
 
+const defaultWorkQueueLength = 64
+
 // FNatsPublisherTransportFactory creates FNatsPublisherTransports.
 type FNatsPublisherTransportFactory struct {
 	conn *nats.Conn
@@ -113,15 +115,16 @@ func (n *fNatsPublisherTransport) formattedSubject(subject string) string {
 
 // FNatsSubscriberTransportFactory creates FNatsSubscriberTransports.
 type FNatsSubscriberTransportFactory struct {
-	conn  *nats.Conn
-	queue string
+	conn              *nats.Conn
+	queue             string
+	workerCount       uint
 }
 
 // NewFNatsSubscriberTransportFactory creates an FNatsSubscriberTransportFactory using
 // the provided NATS connection. Subscribers using this transport will not use
 // a queue.
 func NewFNatsSubscriberTransportFactory(conn *nats.Conn) *FNatsSubscriberTransportFactory {
-	return &FNatsSubscriberTransportFactory{conn: conn}
+	return &FNatsSubscriberTransportFactory{conn: conn, workerCount: 1}
 }
 
 // NewFNatsSubscriberTransportFactoryWithQueue creates an FNatsSubscriberTransportFactory
@@ -129,7 +132,11 @@ func NewFNatsSubscriberTransportFactory(conn *nats.Conn) *FNatsSubscriberTranspo
 // subscribe to the provided queue, forming a queue group. When a queue group
 // is formed, only one member receives the message.
 func NewFNatsSubscriberTransportFactoryWithQueue(conn *nats.Conn, queue string) *FNatsSubscriberTransportFactory {
-	return &FNatsSubscriberTransportFactory{conn: conn, queue: queue}
+	return &FNatsSubscriberTransportFactory{conn: conn, queue: queue, workerCount: 1}
+}
+
+func NewFNatsSubscriberTransportFactoryWithQueueAndWorker(conn *nats.Conn, queue string, workerCount uint) *FNatsSubscriberTransportFactory {
+	return &FNatsSubscriberTransportFactory{conn: conn, queue: queue, workerCount: workerCount}
 }
 
 // GetTransport creates a new NATS FSubscriberTransport.
@@ -139,17 +146,19 @@ func (n *FNatsSubscriberTransportFactory) GetTransport() FSubscriberTransport {
 
 // fNatsSubscriberTransport implements FSubscriberTransport.
 type fNatsSubscriberTransport struct {
-	conn         *nats.Conn
-	queue        string
-	sub          *nats.Subscription
-	openMu       sync.RWMutex
-	isSubscribed bool
+	conn              *nats.Conn
+	queue             string
+	sub               *nats.Subscription
+	openMu            sync.RWMutex
+	isSubscribed      bool
+	workerCount       uint
+	workC             chan *nats.Msg
 }
 
 // NewNatsFSubscriberTransport creates a new FSubscriberTransport which is used for
 // pub/sub. Subscribers using this transport will not use a queue.
 func NewNatsFSubscriberTransport(conn *nats.Conn) FSubscriberTransport {
-	return &fNatsSubscriberTransport{conn: conn}
+	return &fNatsSubscriberTransport{conn: conn, workerCount: 1, workC: make(chan *nats.Msg, 64)}
 }
 
 // NewNatsFSubscriberTransportWithQueue creates a new FSubscriberTransport which is used
@@ -157,7 +166,11 @@ func NewNatsFSubscriberTransport(conn *nats.Conn) FSubscriberTransport {
 // queue, forming a queue group. When a queue group is formed, only one member
 // receives the message.
 func NewNatsFSubscriberTransportWithQueue(conn *nats.Conn, queue string) FSubscriberTransport {
-	return &fNatsSubscriberTransport{conn: conn, queue: queue}
+	return &fNatsSubscriberTransport{conn: conn, queue: queue, workerCount: 1, workC: make(chan *nats.Msg, 64)}
+}
+
+func NewNatsFSubscriberTransportWithQueueAndWorker(conn *nats.Conn, queue string, workerCount uint) FSubscriberTransport {
+	return &fNatsSubscriberTransport{conn: conn, queue: queue, workerCount: workerCount, workC: make(chan *nats.Msg, 64)}
 }
 
 // Subscribe sets the subscribe topic and opens the transport.
@@ -179,7 +192,7 @@ func (n *fNatsSubscriberTransport) Subscribe(topic string, callback FAsyncCallba
 			"cannot subscribe to empty subject")
 	}
 
-	sub, err := n.conn.QueueSubscribe(n.formattedSubject(topic), n.queue, handleMessage(callback))
+	sub, err := n.conn.QueueSubscribe(n.formattedSubject(topic), n.queue, n.putMessageToWorkerQueue)
 	if err != nil {
 		return thrift.NewTTransportExceptionFromError(err)
 	}
@@ -188,20 +201,30 @@ func (n *fNatsSubscriberTransport) Subscribe(topic string, callback FAsyncCallba
 	}
 	n.sub = sub
 	n.isSubscribed = true
+	for i:= uint(0); i < n.workerCount; i++ {
+		go n.worker(callback)
+	}
 	return nil
 }
 
-func handleMessage(callback FAsyncCallback) func(*nats.Msg) {
-	return func(msg *nats.Msg) {
-		if len(msg.Data) < 4 {
-			logger().Warn("frugal: Discarding invalid scope message frame")
-			return
-		}
-		transport := &thrift.TMemoryBuffer{Buffer: bytes.NewBuffer(msg.Data[4:])}
-		if err := callback(transport); err != nil {
-			logger().Warn("frugal: error executing callback: ", err)
+func (n *fNatsSubscriberTransport) worker(callback FAsyncCallback) {
+	for {
+		select {
+		case msg := <-n.workC:
+			if len(msg.Data) < 4 {
+				logger().Warn("frugal: Discarding invalid scope message frame")
+				return
+			}
+			transport := &thrift.TMemoryBuffer{Buffer: bytes.NewBuffer(msg.Data[4:])}
+			if err := callback(transport); err != nil {
+				logger().Warn("frugal: error executing callback: ", err)
+			}
 		}
 	}
+}
+
+func (n *fNatsSubscriberTransport) putMessageToWorkerQueue(msg *nats.Msg) {
+	n.workC <-msg
 }
 
 // IsSubscribed returns true if the transport is subscribed to a topic, false
