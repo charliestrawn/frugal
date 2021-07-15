@@ -111,43 +111,43 @@ func (n *fNatsPublisherTransport) formattedSubject(subject string) string {
 	return fmt.Sprintf("%s%s", frugalPrefix, subject)
 }
 
-// FNatsServerBuilder configures and builds NATS subscribers.
-type FNatsSubscriberBuilder struct {
+// FNatsSubscriberFactoryBuilder configures and builds NATS subscribers.
+type FNatsSubscriberFactoryBuilder struct {
 	conn              *nats.Conn
 	queue             string
 	workerCount       uint
 	queueLen          uint
 }
 
-// NewFNatsSubscriberBuilder creates a builder with default settings for creating a
+// NewFNatsSubscriberFactoryBuilder creates a builder with default settings for creating a
 // NATS subscriber
-func NewFNatsSubscriberBuilder(conn *nats.Conn) *FNatsSubscriberBuilder {
-	return &FNatsSubscriberBuilder{conn: conn, workerCount: 1, queueLen: defaultWorkQueueLen}
+func NewFNatsSubscriberFactoryBuilder(conn *nats.Conn) *FNatsSubscriberFactoryBuilder {
+	return &FNatsSubscriberFactoryBuilder{conn: conn, workerCount: 1, queueLen: defaultWorkQueueLen}
 }
 
 // WithQueue sets the queue group in NATS that the subscriber will join
-func (f *FNatsSubscriberBuilder) WithQueue(queue string) *FNatsSubscriberBuilder {
+func (f *FNatsSubscriberFactoryBuilder) WithQueue(queue string) *FNatsSubscriberFactoryBuilder {
 	f.queue = queue
 	return f
 }
 
 // WithWorkerCount sets the number of workers in goroutines will be created for the
 // subscriber to process messages
-func (f *FNatsSubscriberBuilder) WithWorkerCount(count uint) *FNatsSubscriberBuilder {
+func (f *FNatsSubscriberFactoryBuilder) WithWorkerCount(count uint) *FNatsSubscriberFactoryBuilder {
 	f.workerCount = count
 	return f
 }
 
 // WithQueueLength controls the length of the work queue used to buffer
 // messages.
-func (f *FNatsSubscriberBuilder) WithQueueLength(len uint) *FNatsSubscriberBuilder {
+func (f *FNatsSubscriberFactoryBuilder) WithQueueLength(len uint) *FNatsSubscriberFactoryBuilder {
 	f.queueLen = len
 	return f
 }
 
 // Build a new NATS subscriber.
-func (f *FNatsSubscriberBuilder) Build() FSubscriberTransport {
-	return &fNatsSubscriberTransport{
+func (f *FNatsSubscriberFactoryBuilder) Build() *FNatsSubscriberTransportFactory {
+	return &FNatsSubscriberTransportFactory{
 		conn:         f.conn,
 		queue:        f.queue,
 		workerCount:  f.workerCount,
@@ -161,6 +161,8 @@ type FNatsSubscriberTransportFactory struct {
 	conn              *nats.Conn
 	queue             string
 	workerCount       uint
+	workC             chan *nats.Msg
+	quitC             chan struct{}
 }
 
 // NewFNatsSubscriberTransportFactory creates an FNatsSubscriberTransportFactory using
