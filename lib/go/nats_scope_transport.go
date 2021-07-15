@@ -178,10 +178,6 @@ func NewFNatsSubscriberTransportFactoryWithQueue(conn *nats.Conn, queue string) 
 	return &FNatsSubscriberTransportFactory{conn: conn, queue: queue, workerCount: 1}
 }
 
-func NewFNatsSubscriberTransportFactoryWithQueueAndWorker(conn *nats.Conn, queue string, workerCount uint) *FNatsSubscriberTransportFactory {
-	return &FNatsSubscriberTransportFactory{conn: conn, queue: queue, workerCount: workerCount}
-}
-
 // GetTransport creates a new NATS FSubscriberTransport.
 func (n *FNatsSubscriberTransportFactory) GetTransport() FSubscriberTransport {
 	return NewNatsFSubscriberTransportWithQueue(n.conn, n.queue)
@@ -208,6 +204,7 @@ func NewNatsFSubscriberTransport(conn *nats.Conn) FSubscriberTransport {
 		workC: make(chan *nats.Msg, defaultWorkQueueLen),
 		quitC: make(chan struct{}),
 	}
+
 }
 
 // NewNatsFSubscriberTransportWithQueue creates a new FSubscriberTransport which is used
