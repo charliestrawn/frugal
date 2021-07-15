@@ -111,6 +111,51 @@ func (n *fNatsPublisherTransport) formattedSubject(subject string) string {
 	return fmt.Sprintf("%s%s", frugalPrefix, subject)
 }
 
+// FNatsServerBuilder configures and builds NATS subscribers.
+type FNatsSubscriberBuilder struct {
+	conn              *nats.Conn
+	queue             string
+	workerCount       uint
+	queueLen          uint
+}
+
+// NewFNatsSubscriberBuilder creates a builder with default settings for creating a
+// NATS subscriber
+func NewFNatsSubscriberBuilder(conn *nats.Conn) *FNatsSubscriberBuilder {
+	return &FNatsSubscriberBuilder{conn: conn, workerCount: 1, queueLen: defaultWorkQueueLen}
+}
+
+// WithQueue sets the queue group in NATS that the subscriber will join
+func (f *FNatsSubscriberBuilder) WithQueue(queue string) *FNatsSubscriberBuilder {
+	f.queue = queue
+	return f
+}
+
+// WithWorkerCount sets the number of workers in goroutines will be created for the
+// subscriber to process messages
+func (f *FNatsSubscriberBuilder) WithWorkerCount(count uint) *FNatsSubscriberBuilder {
+	f.workerCount = count
+	return f
+}
+
+// WithQueueLength controls the length of the work queue used to buffer
+// messages.
+func (f *FNatsSubscriberBuilder) WithQueueLength(len uint) *FNatsSubscriberBuilder {
+	f.queueLen = len
+	return f
+}
+
+// Build a new NATS subscriber.
+func (f *FNatsSubscriberBuilder) Build() FSubscriberTransport {
+	return &fNatsSubscriberTransport{
+		conn:         f.conn,
+		queue:        f.queue,
+		workerCount:  f.workerCount,
+		workC:        make(chan *nats.Msg, f.queueLen),
+		quitC:        make(chan struct{}),
+	}
+}
+
 // FNatsSubscriberTransportFactory creates FNatsSubscriberTransports.
 type FNatsSubscriberTransportFactory struct {
 	conn              *nats.Conn
@@ -174,16 +219,6 @@ func NewNatsFSubscriberTransportWithQueue(conn *nats.Conn, queue string) FSubscr
 		conn: conn,
 		queue: queue,
 		workerCount: 1,
-		workC: make(chan *nats.Msg, defaultWorkQueueLen),
-		quitC: make(chan struct{}),
-	}
-}
-
-func NewNatsFSubscriberTransportWithQueueAndWorker(conn *nats.Conn, queue string, workerCount uint) FSubscriberTransport {
-	return &fNatsSubscriberTransport{
-		conn: conn,
-		queue: queue,
-		workerCount: workerCount,
 		workC: make(chan *nats.Msg, defaultWorkQueueLen),
 		quitC: make(chan struct{}),
 	}
