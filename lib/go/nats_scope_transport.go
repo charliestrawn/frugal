@@ -113,10 +113,10 @@ func (n *fNatsPublisherTransport) formattedSubject(subject string) string {
 
 // FNatsSubscriberFactoryBuilder configures and builds NATS subscribers.
 type FNatsSubscriberFactoryBuilder struct {
-	conn              *nats.Conn
-	queue             string
-	workerCount       uint
-	queueLen          uint
+	conn        *nats.Conn
+	queue       string
+	workerCount uint
+	queueLen    uint
 }
 
 // NewFNatsSubscriberFactoryBuilder creates a builder with default settings for creating a
@@ -148,21 +148,21 @@ func (f *FNatsSubscriberFactoryBuilder) WithQueueLength(len uint) *FNatsSubscrib
 // Build a new NATS subscriber.
 func (f *FNatsSubscriberFactoryBuilder) Build() *FNatsSubscriberTransportFactory {
 	return &FNatsSubscriberTransportFactory{
-		conn:         f.conn,
-		queue:        f.queue,
-		workerCount:  f.workerCount,
-		workC:        make(chan *nats.Msg, f.queueLen),
-		quitC:        make(chan struct{}),
+		conn:        f.conn,
+		queue:       f.queue,
+		workerCount: f.workerCount,
+		workC:       make(chan *nats.Msg, f.queueLen),
+		quitC:       make(chan struct{}),
 	}
 }
 
 // FNatsSubscriberTransportFactory creates FNatsSubscriberTransports.
 type FNatsSubscriberTransportFactory struct {
-	conn              *nats.Conn
-	queue             string
-	workerCount       uint
-	workC             chan *nats.Msg
-	quitC             chan struct{}
+	conn        *nats.Conn
+	queue       string
+	workerCount uint
+	workC       chan *nats.Msg
+	quitC       chan struct{}
 }
 
 // NewFNatsSubscriberTransportFactory creates an FNatsSubscriberTransportFactory using
@@ -182,29 +182,35 @@ func NewFNatsSubscriberTransportFactoryWithQueue(conn *nats.Conn, queue string) 
 
 // GetTransport creates a new NATS FSubscriberTransport.
 func (n *FNatsSubscriberTransportFactory) GetTransport() FSubscriberTransport {
-	return NewNatsFSubscriberTransportWithQueue(n.conn, n.queue)
+	return &fNatsSubscriberTransport{
+		conn:        n.conn,
+		queue:       n.queue,
+		workerCount: n.workerCount,
+		workC:       make(chan *nats.Msg, defaultWorkQueueLen),
+		quitC:       make(chan struct{}),
+	}
 }
 
 // fNatsSubscriberTransport implements FSubscriberTransport.
 type fNatsSubscriberTransport struct {
-	conn              *nats.Conn
-	queue             string
-	sub               *nats.Subscription
-	openMu            sync.RWMutex
-	isSubscribed      bool
-	workerCount       uint
-	workC             chan *nats.Msg
-	quitC             chan struct{}
+	conn         *nats.Conn
+	queue        string
+	sub          *nats.Subscription
+	openMu       sync.RWMutex
+	isSubscribed bool
+	workerCount  uint
+	workC        chan *nats.Msg
+	quitC        chan struct{}
 }
 
 // NewNatsFSubscriberTransport creates a new FSubscriberTransport which is used for
 // pub/sub. Subscribers using this transport will not use a queue.
 func NewNatsFSubscriberTransport(conn *nats.Conn) FSubscriberTransport {
 	return &fNatsSubscriberTransport{
-		conn: conn,
+		conn:        conn,
 		workerCount: 1,
-		workC: make(chan *nats.Msg, defaultWorkQueueLen),
-		quitC: make(chan struct{}),
+		workC:       make(chan *nats.Msg, defaultWorkQueueLen),
+		quitC:       make(chan struct{}),
 	}
 
 }
@@ -215,11 +221,11 @@ func NewNatsFSubscriberTransport(conn *nats.Conn) FSubscriberTransport {
 // receives the message.
 func NewNatsFSubscriberTransportWithQueue(conn *nats.Conn, queue string) FSubscriberTransport {
 	return &fNatsSubscriberTransport{
-		conn: conn,
-		queue: queue,
+		conn:        conn,
+		queue:       queue,
 		workerCount: 1,
-		workC: make(chan *nats.Msg, defaultWorkQueueLen),
-		quitC: make(chan struct{}),
+		workC:       make(chan *nats.Msg, defaultWorkQueueLen),
+		quitC:       make(chan struct{}),
 	}
 }
 
@@ -251,7 +257,7 @@ func (n *fNatsSubscriberTransport) Subscribe(topic string, callback FAsyncCallba
 	}
 	n.sub = sub
 	n.isSubscribed = true
-	for i:= uint(0); i < n.workerCount; i++ {
+	for i := uint(0); i < n.workerCount; i++ {
 		go n.worker(callback)
 	}
 	return nil
@@ -279,7 +285,7 @@ func (n *fNatsSubscriberTransport) worker(callback FAsyncCallback) {
 
 // putMessageToWorkerQueue puts a received message to the internal work channel.
 func (n *fNatsSubscriberTransport) putMessageToWorkerQueue(msg *nats.Msg) {
-	n.workC <-msg
+	n.workC <- msg
 }
 
 // IsSubscribed returns true if the transport is subscribed to a topic, false
