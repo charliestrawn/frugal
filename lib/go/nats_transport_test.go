@@ -45,6 +45,11 @@ func (m *mockRegistry) Execute(frame []byte) error {
 	return m.err
 }
 
+func (m *mockRegistry) dispatch(opid uint64, frame []byte) error {
+	m.frameC <- frame
+	return m.err
+}
+
 // Ensures Open returns an error if NATS is not connected.
 func TestNatsTransportOpenNatsDisconnected(t *testing.T) {
 	s := runServer(nil)
@@ -97,7 +102,7 @@ func TestNatsTransportOpen(t *testing.T) {
 	tr.registry = registry
 
 	sizedFrame := prependFrameSize(frame)
-	assert.Nil(t, conn.Publish(tr.inbox, sizedFrame))
+	assert.Nil(t, conn.Publish(tr.inbox + ".1", sizedFrame))
 
 	select {
 	case actual := <-frameC:
@@ -228,9 +233,63 @@ func TestNatsTransportRequestSameOpid(t *testing.T) {
 	time.Sleep(10 * time.Millisecond)
 	_, err := tr.Request(ctx, prependFrameSize(frame))
 	assert.Equal(t, TRANSPORT_EXCEPTION_UNKNOWN, err.(thrift.TTransportException).TypeId())
-	opID, opErr := getOpID(ctx)
+	opID, opErr := GetOpID(ctx)
 	assert.Nil(t, opErr)
 	assert.Equal(t, fmt.Sprintf("frugal: context already registered, opid %d is in-flight for another request", opID), err.Error())
+}
+
+// Ensures empty status messages do not cause panic
+func TestStatusMessage(t *testing.T) {
+	s := runServer(nil)
+	defer s.Shutdown()
+	tr, server, conn := newClientAndServer(t, false)
+
+	defer server.Stop()
+	defer conn.Close()
+	defer tr.Close()
+
+	msg := nats.Msg{
+		Data: make([]byte, 0),
+		Subject: "subject.1",
+		Header: map[string][]string{"Status": {"503"}},
+	}
+	tr.handler(&msg)
+}
+
+func TestServiceUnavailable(t *testing.T) {
+	s := runServer(nil)
+	defer s.Shutdown()
+	tr, server, conn := newClientAndServer(t, false)
+	defer server.Stop()
+	defer conn.Close()
+	assert.Nil(t, tr.Open())
+	defer tr.Close()
+	assert.True(t, tr.IsOpen())
+
+	frame := []byte("helloworld")
+	_, err := conn.SubscribeSync(tr.subject)
+	assert.Nil(t, err)
+
+	ctx := NewFContext("")
+	opId, ok := ctx.RequestHeader(opIDHeader)
+	assert.True(t, ok)
+
+	// Start the request asynchronously so we can mock a response
+	requestErr := make(chan error)
+	go func() {
+		_, err = tr.Request(ctx, prependFrameSize(frame))
+		requestErr <- err
+	}()
+	// Mimic a 503 being returned
+	tr.handler(&nats.Msg{
+		Subject: tr.inbox + "." + opId,
+		Header: map[string][]string {"Status": {"503"}},
+	})
+	select {
+		case err := <-requestErr:
+			assert.Equal(t, TRANSPORT_EXCEPTION_SERVICE_NOT_AVAILABLE, err.(thrift.TTransportException).TypeId())
+	}
+	conn.Flush()
 }
 
 // HELPER METHODS

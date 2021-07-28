@@ -34,7 +34,7 @@ func (m *mockFRegistry) AssignOpID(ctx FContext) error {
 }
 
 func (m *mockFRegistry) Register(ctx FContext, resultC chan []byte) error {
-	opID, err := getOpID(ctx)
+	opID, err := GetOpID(ctx)
 	if err == nil {
 		m.channels[opID] = resultC
 	}
@@ -47,6 +47,15 @@ func (m *mockFRegistry) Unregister(ctx FContext) {
 }
 
 func (m *mockFRegistry) Execute(frame []byte) error {
+	select {
+	case m.executeCalled <- struct{}{}:
+	default:
+	}
+
+	return m.Called(frame).Error(0)
+}
+
+func (m *mockFRegistry) dispatch(opid uint64, frame []byte) error {
 	select {
 	case m.executeCalled <- struct{}{}:
 	default:
