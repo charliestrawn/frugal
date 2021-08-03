@@ -102,6 +102,8 @@ class FAsyncTransport(FTransportBase):
         """
         if not message.data:
             logger.debug("Received empty message")
+            op_id = message.subject[message.subject.rindex(".") + 1:]
+            await self.handle_empty_response(op_id)
             return
         frame = message.data[4:]
         headers = _Headers.decode_from_frame(frame)
@@ -120,3 +122,12 @@ class FAsyncTransport(FTransportBase):
                 return
 
             future.set_result(frame)
+
+    async def handle_empty_response(self, op_id):
+        print("tesT")
+        async with self._futures_lock:
+            future = self._futures.get(op_id, None)
+            if not future:
+                return
+
+            future.set_result(_STATUS_MESSAGE)
