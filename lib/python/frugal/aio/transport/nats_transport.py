@@ -80,5 +80,5 @@ class FNatsTransport(FAsyncTransport):
 
     async def flush_op(self, op_id, payload):
         await self._nats_client.publish_request(self._subject,
-                                                f"{self._inbox}",
+                                                f"{self._inbox}.{op_id}",
                                                 payload)
