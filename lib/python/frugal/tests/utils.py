@@ -21,6 +21,7 @@ def mock_frame(context):
 def mock_message_with_context(context):
     message = mock.Mock()
     message.data = mock_frame(context)
+    message.subject = "test." + context.get_request_header("_opid")
     return message
 
 
