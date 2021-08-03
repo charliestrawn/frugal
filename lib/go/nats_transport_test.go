@@ -280,6 +280,10 @@ func TestServiceUnavailable(t *testing.T) {
 		_, err = tr.Request(ctx, prependFrameSize(frame))
 		requestErr <- err
 	}()
+
+	// give time for ^ to register the the op id
+	time.Sleep(10 * time.Millisecond)
+	
 	// Mimic a 503 being returned
 	tr.handler(&nats.Msg{
 		Subject: tr.inbox + "." + opId,
