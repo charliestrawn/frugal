@@ -124,7 +124,6 @@ class FAsyncTransport(FTransportBase):
             future.set_result(frame)
 
     async def handle_empty_response(self, op_id):
-        print("tesT")
         async with self._futures_lock:
             future = self._futures.get(op_id, None)
             if not future:
