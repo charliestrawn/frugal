@@ -15,6 +15,7 @@ package frugal
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
 	"time"
 
@@ -25,6 +26,7 @@ import (
 )
 
 type mockRegistry struct {
+	registered chan uint64
 	frameC chan []byte
 	err    error
 }
@@ -34,6 +36,11 @@ func (m *mockRegistry) AssignOpID(ctx FContext) error {
 }
 
 func (m *mockRegistry) Register(ctx FContext, resultC chan []byte) error {
+	opIdStr, _ := ctx.RequestHeader(opIDHeader)
+	opId, _ :=  strconv.ParseUint(opIdStr, 10, 64)
+	m.registered <- opId
+
+	m.frameC = resultC
 	return nil
 }
 
@@ -94,11 +101,12 @@ func TestNatsTransportOpen(t *testing.T) {
 	assert.True(t, tr.IsOpen())
 
 	frame := []byte("helloworld")
-	frameC := make(chan []byte)
+	frameC := make(chan []byte, 1)
 	registry := &mockRegistry{
-		frameC: frameC,
 		err:    fmt.Errorf("foo"),
+		registered: make(chan uint64, 1),
 	}
+	registry.Register(NewFContext(""), frameC)
 	tr.registry = registry
 
 	sizedFrame := prependFrameSize(frame)
@@ -260,6 +268,14 @@ func TestServiceUnavailable(t *testing.T) {
 	s := runServer(nil)
 	defer s.Shutdown()
 	tr, server, conn := newClientAndServer(t, false)
+	ctx := NewFContext("")
+
+	mockRegistry := &mockRegistry{
+		registered: make(chan uint64, 1),
+		err:    nil,
+	}
+
+	tr.registry = mockRegistry
 	defer server.Stop()
 	defer conn.Close()
 	assert.Nil(t, tr.Open())
@@ -270,27 +286,24 @@ func TestServiceUnavailable(t *testing.T) {
 	_, err := conn.SubscribeSync(tr.subject)
 	assert.Nil(t, err)
 
-	ctx := NewFContext("")
 	opId, ok := ctx.RequestHeader(opIDHeader)
 	assert.True(t, ok)
 
 	// Start the request asynchronously so we can mock a response
-	requestErr := make(chan error)
+	requestErrChan := make(chan error)
 	go func() {
 		_, err = tr.Request(ctx, prependFrameSize(frame))
-		requestErr <- err
+		requestErrChan <- err
 	}()
+	<- mockRegistry.registered
 
-	// give time for ^ to register the the op id
-	time.Sleep(10 * time.Millisecond)
-	
 	// Mimic a 503 being returned
 	tr.handler(&nats.Msg{
 		Subject: tr.inbox + "." + opId,
 		Header: map[string][]string {"Status": {"503"}},
 	})
 	select {
-		case err := <-requestErr:
+		case err := <-requestErrChan:
 			assert.Equal(t, TRANSPORT_EXCEPTION_SERVICE_NOT_AVAILABLE, err.(thrift.TTransportException).TypeId())
 	}
 	conn.Flush()
