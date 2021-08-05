@@ -71,7 +71,7 @@ func (c *fRegistryImpl) Register(ctx FContext, resultC chan []byte) error {
 	// An FContext can be reused for multiple requests. Because of this,
 	// FContext's have a monotonically increasing atomic uint64. We check
 	// the channels map to ensure that request is not still in-flight.
-	opID, err := GetOpID(ctx)
+	opID, err := getOpID(ctx)
 
 	c.mu.Lock()
 	defer c.mu.Unlock()
@@ -87,7 +87,7 @@ func (c *fRegistryImpl) Register(ctx FContext, resultC chan []byte) error {
 
 // Unregister a callback for the given Context.
 func (c *fRegistryImpl) Unregister(ctx FContext) {
-	opID, err := GetOpID(ctx)
+	opID, err := getOpID(ctx)
 	if err != nil {
 		logger().Warnf("Attempted to unregister an FContext with a malformed opid: %s", err)
 		return

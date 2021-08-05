@@ -241,7 +241,7 @@ func TestNatsTransportRequestSameOpid(t *testing.T) {
 	time.Sleep(10 * time.Millisecond)
 	_, err := tr.Request(ctx, prependFrameSize(frame))
 	assert.Equal(t, TRANSPORT_EXCEPTION_UNKNOWN, err.(thrift.TTransportException).TypeId())
-	opID, opErr := GetOpID(ctx)
+	opID, opErr := getOpID(ctx)
 	assert.Nil(t, opErr)
 	assert.Equal(t, fmt.Sprintf("frugal: context already registered, opid %d is in-flight for another request", opID), err.Error())
 }
@@ -289,23 +289,18 @@ func TestServiceUnavailable(t *testing.T) {
 	opId, ok := ctx.RequestHeader(opIDHeader)
 	assert.True(t, ok)
 
+	tr.registry.Register(ctx, make(chan []uint8, 1))
 	// Start the request asynchronously so we can mock a response
-	requestErrChan := make(chan error)
 	go func() {
 		_, err = tr.Request(ctx, prependFrameSize(frame))
-		requestErrChan <- err
+		assert.Equal(t, TRANSPORT_EXCEPTION_SERVICE_NOT_AVAILABLE, err.(thrift.TTransportException).TypeId())
 	}()
-	<- mockRegistry.registered
 
 	// Mimic a 503 being returned
 	tr.handler(&nats.Msg{
 		Subject: tr.inbox + "." + opId,
 		Header: map[string][]string {"Status": {"503"}},
 	})
-	select {
-		case err := <-requestErrChan:
-			assert.Equal(t, TRANSPORT_EXCEPTION_SERVICE_NOT_AVAILABLE, err.(thrift.TTransportException).TypeId())
-	}
 	conn.Flush()
 }
 

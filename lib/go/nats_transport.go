@@ -185,7 +185,7 @@ func (f *fNatsTransport) Request(ctx FContext, data []byte) (thrift.TTransport, 
 		return nil, err
 	}
 
-	opId, err := GetOpID(ctx)
+	opId, err := getOpID(ctx)
 	if err != nil {
 		return nil, err
 	}
