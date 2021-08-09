@@ -268,14 +268,6 @@ func TestServiceUnavailable(t *testing.T) {
 	s := runServer(nil)
 	defer s.Shutdown()
 	tr, server, conn := newClientAndServer(t, false)
-	ctx := NewFContext("")
-
-	mockRegistry := &mockRegistry{
-		registered: make(chan uint64, 1),
-		err:    nil,
-	}
-
-	tr.registry = mockRegistry
 	defer server.Stop()
 	defer conn.Close()
 	assert.Nil(t, tr.Open())
@@ -286,21 +278,25 @@ func TestServiceUnavailable(t *testing.T) {
 	_, err := conn.SubscribeSync(tr.subject)
 	assert.Nil(t, err)
 
+	ctx := NewFContext("")
 	opId, ok := ctx.RequestHeader(opIDHeader)
 	assert.True(t, ok)
 
-	tr.registry.Register(ctx, make(chan []uint8, 1))
 	// Start the request asynchronously so we can mock a response
+	requestErr := make(chan error)
 	go func() {
 		_, err = tr.Request(ctx, prependFrameSize(frame))
-		assert.Equal(t, TRANSPORT_EXCEPTION_SERVICE_NOT_AVAILABLE, err.(thrift.TTransportException).TypeId())
+		requestErr <- err
 	}()
-
 	// Mimic a 503 being returned
 	tr.handler(&nats.Msg{
 		Subject: tr.inbox + "." + opId,
 		Header: map[string][]string {"Status": {"503"}},
 	})
+	select {
+	case err := <-requestErr:
+		assert.Equal(t, TRANSPORT_EXCEPTION_SERVICE_NOT_AVAILABLE, err.(thrift.TTransportException).TypeId())
+	}
 	conn.Flush()
 }
 
