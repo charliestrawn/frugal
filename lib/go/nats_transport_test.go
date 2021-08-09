@@ -15,6 +15,7 @@ package frugal
 
 import (
 	"fmt"
+	"runtime"
 	"strconv"
 	"testing"
 	"time"
@@ -27,8 +28,8 @@ import (
 
 type mockRegistry struct {
 	registered chan uint64
-	frameC chan []byte
-	err    error
+	frameC     chan []byte
+	err        error
 }
 
 func (m *mockRegistry) AssignOpID(ctx FContext) error {
@@ -37,7 +38,7 @@ func (m *mockRegistry) AssignOpID(ctx FContext) error {
 
 func (m *mockRegistry) Register(ctx FContext, resultC chan []byte) error {
 	opIdStr, _ := ctx.RequestHeader(opIDHeader)
-	opId, _ :=  strconv.ParseUint(opIdStr, 10, 64)
+	opId, _ := strconv.ParseUint(opIdStr, 10, 64)
 	m.registered <- opId
 
 	m.frameC = resultC
@@ -103,14 +104,14 @@ func TestNatsTransportOpen(t *testing.T) {
 	frame := []byte("helloworld")
 	frameC := make(chan []byte, 1)
 	registry := &mockRegistry{
-		err:    fmt.Errorf("foo"),
+		err:        fmt.Errorf("foo"),
 		registered: make(chan uint64, 1),
 	}
 	registry.Register(NewFContext(""), frameC)
 	tr.registry = registry
 
 	sizedFrame := prependFrameSize(frame)
-	assert.Nil(t, conn.Publish(tr.inbox + ".1", sizedFrame))
+	assert.Nil(t, conn.Publish(tr.inbox+".1", sizedFrame))
 
 	select {
 	case actual := <-frameC:
@@ -257,9 +258,9 @@ func TestStatusMessage(t *testing.T) {
 	defer tr.Close()
 
 	msg := nats.Msg{
-		Data: make([]byte, 0),
+		Data:    make([]byte, 0),
 		Subject: "subject.1",
-		Header: map[string][]string{"Status": {"503"}},
+		Header:  map[string][]string{"Status": {"503"}},
 	}
 	tr.handler(&msg)
 }
@@ -282,22 +283,27 @@ func TestServiceUnavailable(t *testing.T) {
 	opId, ok := ctx.RequestHeader(opIDHeader)
 	assert.True(t, ok)
 
-	// Start the request asynchronously so we can mock a response
-	requestErr := make(chan error)
+	// Wait until the op id registered before calling the handler
+	// the handler does not 
 	go func() {
-		_, err = tr.Request(ctx, prependFrameSize(frame))
-		requestErr <- err
+		opIdInt, _ := strconv.ParseInt(opId, 10, 64)
+		var found bool
+		for !found {
+			tr.registry.(*fRegistryImpl).mu.RLock()
+			_, found = tr.registry.(*fRegistryImpl).channels[uint64(opIdInt)]
+			tr.registry.(*fRegistryImpl).mu.RUnlock()
+			runtime.Gosched()
+		}
+		tr.handler(&nats.Msg{
+			// Mimic a 503 being returned
+			// Start the request asynchronously so we can mock a response
+			Subject: tr.inbox + "." + opId,
+			Header:  map[string][]string{"Status": {"503"}},
+		})
 	}()
-	time.Sleep(10 * time.Millisecond)
-	// Mimic a 503 being returned
-	tr.handler(&nats.Msg{
-		Subject: tr.inbox + "." + opId,
-		Header: map[string][]string {"Status": {"503"}},
-	})
-	select {
-	case err := <-requestErr:
-		assert.Equal(t, TRANSPORT_EXCEPTION_SERVICE_NOT_AVAILABLE, err.(thrift.TTransportException).TypeId())
-	}
+	_, err = tr.Request(ctx, prependFrameSize(frame))
+	assert.Equal(t, TRANSPORT_EXCEPTION_SERVICE_NOT_AVAILABLE, err.(thrift.TTransportException).TypeId())
+
 	conn.Flush()
 }
 
