@@ -112,9 +112,9 @@ class FAsyncTransport(FTransportBase):
         if not op_id:
             raise TProtocolException(message="Frame missing op_id")
 
-        await self.handle_op_response(op_id, frame)
+        await self._handle_op_response(op_id, frame)
 
-    async def handle_op_response(self, op_id, frame):
+    async def _handle_op_response(self, op_id, frame):
 
         async with self._futures_lock:
             future = self._futures.get(op_id, None)

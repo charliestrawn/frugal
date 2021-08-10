@@ -234,13 +234,6 @@ class TestFAsyncTransport(aio_utils.AsyncIOTestCase):
     async def test_service_not_available(self):
         ctx = FContext("fooid")
         frame = utils.mock_frame(ctx)
-        # message = utils.mock_message_with_frame(bytearray())
-        # message.subject = f'test_service_not_available.{ctx.get_request_header("_op_id")}'
-        # transport = FAsyncTransportImpl(response=message)
-        # with self.assertRaises(TTransportException) as te:
-        #     await transport.request(ctx, frame)
-        #
-        # self.assertEquals("request: service not available", str(te.exception))
 
         message = utils.mock_message_with_context(ctx)
         message.data = []
