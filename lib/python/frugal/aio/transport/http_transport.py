@@ -144,8 +144,8 @@ class FHttpTransport(FTransportBase):
                     type=TTransportExceptionType.TIMED_OUT,
                     message='request timed out'
                 )
-            except ClientConnectorError:
+            except ClientConnectorError as e:
                 raise TTransportException(
                     type=TTransportExceptionType.SERVICE_NOT_AVAILABLE,
-                    message='service not available'
+                    message=f'service not available: {e.strerror}'
                 )

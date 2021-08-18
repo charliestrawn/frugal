@@ -27,7 +27,7 @@ from frugal.util.headers import _Headers
 
 logger = logging.getLogger(__name__)
 
-_STATUS_MESSAGE = []
+_EMPTY_MESSAGE = []
 
 
 class FAsyncTransport(FTransportBase):
@@ -69,7 +69,7 @@ class FAsyncTransport(FTransportBase):
             with async_timeout.timeout(context.timeout / 1000):
                 await self.flush_op(op_id, payload)
                 resp = await future
-                if resp == _STATUS_MESSAGE:
+                if resp == _EMPTY_MESSAGE:
                     raise TTransportException(
                         type=TTransportExceptionType.SERVICE_NOT_AVAILABLE,
                         message="request: service not available"
@@ -129,4 +129,4 @@ class FAsyncTransport(FTransportBase):
             if not future:
                 return
 
-            future.set_result(_STATUS_MESSAGE)
+            future.set_result(_EMPTY_MESSAGE)
