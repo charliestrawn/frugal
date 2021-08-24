@@ -212,5 +212,5 @@ class TestFHttpTransport(utils.AsyncIOTestCase):
 
         self.assertEqual(
             str(e.exception),
-            'service not available'
+            "service not available: Connect call failed ('127.0.0.1', 80)"
         )

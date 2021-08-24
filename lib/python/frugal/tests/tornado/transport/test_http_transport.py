@@ -274,5 +274,5 @@ class TestFHttpTransport(AsyncTestCase):
 
         self.assertEqual(
             str(e.exception),
-            'service not available'
+            'service not available: None'
         )
