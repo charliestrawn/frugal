@@ -210,7 +210,6 @@ class TestFHttpTransport(utils.AsyncIOTestCase):
                 FContext(), bytearray([0, 0, 0, 3, 1, 2, 3])
             )
 
-        self.assertEqual(
-            str(e.exception),
-            "service not available: Connect call failed ('127.0.0.1', 80)"
+        self.assertTrue(
+            "service not available: " in str(e.exception)
         )
