@@ -86,17 +86,20 @@ func generateFrugal(f *parser.Frugal) error {
 	}
 
 	// Resolve Frugal generator.
-	g, err := getProgramGenerator(lang, options)
+	g, err := GetProgramGenerator(lang, options)
 	if err != nil {
 		return err
 	}
 
-	// The parsed frugal contains everything needed to generate
-	if err := generateFrugalRec(f, g, lang); err != nil {
-		return err
-	}
+	return GenerateFrugalWithOptions(f, g, lang)
+}
 
-	return nil
+func GenerateFrugalWithOptions(
+	f *parser.Frugal,
+	g generator.ProgramGenerator,
+	lang string,
+) error {
+	return generateFrugalRec(f, g, lang)
 }
 
 // generateFrugalRec generates code for a frugal struct, recursively generating
@@ -144,9 +147,9 @@ func generateFrugalRec(f *parser.Frugal, g generator.ProgramGenerator, lang stri
 	return nil
 }
 
-// getProgramGenerator resolves the ProgramGenerator for the given language. It
+// GetProgramGenerator resolves the ProgramGenerator for the given language. It
 // returns an error if the language is not supported.
-func getProgramGenerator(lang string, options map[string]string) (generator.ProgramGenerator, error) {
+func GetProgramGenerator(lang string, options map[string]string) (generator.ProgramGenerator, error) {
 	var g generator.ProgramGenerator
 	switch lang {
 	case "dart":
