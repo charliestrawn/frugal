@@ -80,7 +80,7 @@ func parseFrugal(file string) (*parser.Frugal, error) {
 func generateFrugal(f *parser.Frugal) error {
 	var gen = globals.Gen
 
-	lang, options, err := cleanGenParam(gen)
+	lang, options, err := CleanGenParam(gen)
 	if err != nil {
 		return err
 	}
@@ -183,34 +183,35 @@ func exists(path string) bool {
 	return err == nil
 }
 
-// cleanGenParam processes a string that includes an optional trailing
+// CleanGenParam processes a string that includes an optional trailing
 // options set.  Format: <language>:<name>=<value>,<name>=<value>,...
-func cleanGenParam(gen string) (lang string, options map[string]string, err error) {
+func CleanGenParam(gen string) (lang string, options map[string]string, err error) {
 	lang = gen
 	options = make(map[string]string)
-	if strings.Contains(gen, ":") {
-		s := strings.Split(gen, ":")
-		lang = s[0]
-		dirty := s[1]
-		var optionArray []string
-		if strings.Contains(dirty, ",") {
-			optionArray = strings.Split(dirty, ",")
-		} else {
-			optionArray = append(optionArray, dirty)
+	if !strings.Contains(gen, ":") {
+		return lang, options, nil
+	}
+	s := strings.Split(gen, ":")
+	lang = s[0]
+	dirty := s[1]
+	var optionArray []string
+	if strings.Contains(dirty, ",") {
+		optionArray = strings.Split(dirty, ",")
+	} else {
+		optionArray = append(optionArray, dirty)
+	}
+	for _, option := range optionArray {
+		s := strings.Split(option, "=")
+		if !generator.ValidateOption(lang, s[0]) {
+			return ``, nil, fmt.Errorf("Unknown option '%s' for %s", s[0], lang)
 		}
-		for _, option := range optionArray {
-			s := strings.Split(option, "=")
-			if !generator.ValidateOption(lang, s[0]) {
-				err = fmt.Errorf("Unknown option '%s' for %s", s[0], lang)
-			}
-			if len(s) == 1 {
-				options[s[0]] = ""
-			} else {
-				options[s[0]] = s[1]
-			}
+		if len(s) == 1 {
+			options[s[0]] = ""
+		} else {
+			options[s[0]] = s[1]
 		}
 	}
-	return
+	return lang, options, nil
 }
 
 // logv prints the message if in verbose mode.
