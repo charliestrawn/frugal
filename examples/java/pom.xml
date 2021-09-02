@@ -3,7 +3,7 @@
 
     <groupId>com.workiva.frugal</groupId>
     <artifactId>examples</artifactId>
-    <version>3.14.7</version>
+    <version>3.14.8</version>
 
     <repositories>
         <repository>
@@ -22,12 +22,12 @@
         <dependency>
             <groupId>com.workiva</groupId>
             <artifactId>frugal</artifactId>
-            <version>3.14.7</version>
+            <version>3.14.8</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.66.Final</version>
+            <version>4.1.67.Final</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.apache.activemq</groupId>
             <artifactId>activemq-client</artifactId>
-            <version>5.16.2</version>
+            <version>5.16.3</version>
         </dependency>
     </dependencies>
 
