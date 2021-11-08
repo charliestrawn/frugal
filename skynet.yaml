@@ -34,7 +34,7 @@ run:
 
 requires:
   Workiva/frugal:
-    - artifactory
+    - java
     - release
     - pub
     - pypi
