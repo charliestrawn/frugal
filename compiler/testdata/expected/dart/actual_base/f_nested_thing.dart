@@ -144,7 +144,7 @@ class nested_thing implements thrift.TBase {
   @override
   int get hashCode {
     var value = 17;
-    value = (value * 31) ^ this.things.hashCode;
+    value = (value * 31) ^ DeepCollectionEquality().hash(this.things);
     return value;
   }
 

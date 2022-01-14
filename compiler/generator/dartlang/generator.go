@@ -1308,13 +1308,21 @@ func (g *Generator) generateHashCode(s *parser.Struct) string {
 	contents += tab + "int get hashCode {\n"
 	contents += tabtab + "var value = 17;\n"
 	for _, field := range s.Fields {
-		fieldName := toFieldName(field.Name)
 		contents += ignoreDeprecationWarningIfNeeded(tabtab, field.Annotations)
-		contents += fmt.Sprintf(tabtab+"value = (value * 31) ^ this.%s.hashCode;\n", fieldName)
+		contents += tabtab + g.generateFieldHashCode(field)
 	}
 	contents += tabtab + "return value;\n"
 	contents += tab + "}\n\n"
 	return contents
+}
+
+func (g *Generator) generateFieldHashCode(field *parser.Field) string {
+	fieldName := toFieldName(field.Name)
+	if !g.isDartCollection(field.Type) {
+		return fmt.Sprintf("value = (value * 31) ^ this.%s.hashCode;\n", fieldName)
+	}
+
+	return fmt.Sprintf("value = (value * 31) ^ DeepCollectionEquality().hash(this.%s)", fieldName)
 }
 
 func (g *Generator) generateClone(s *parser.Struct) string {
