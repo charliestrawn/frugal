@@ -1322,7 +1322,7 @@ func (g *Generator) generateFieldHashCode(field *parser.Field) string {
 		return fmt.Sprintf("value = (value * 31) ^ this.%s.hashCode;\n", fieldName)
 	}
 
-	return fmt.Sprintf("value = (value * 31) ^ DeepCollectionEquality().hash(this.%s)", fieldName)
+	return fmt.Sprintf("value = (value * 31) ^ DeepCollectionEquality().hash(this.%s);\n", fieldName)
 }
 
 func (g *Generator) generateClone(s *parser.Struct) string {
