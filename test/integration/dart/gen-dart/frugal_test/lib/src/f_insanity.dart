@@ -203,8 +203,8 @@ class Insanity implements thrift.TBase {
   @override
   int get hashCode {
     var value = 17;
-    value = (value * 31) ^ this.userMap.hashCode;
-    value = (value * 31) ^ this.xtructs.hashCode;
+    value = (value * 31) ^ DeepCollectionEquality().hash(this.userMap);
+    value = (value * 31) ^ DeepCollectionEquality().hash(this.xtructs);
     return value;
   }
 

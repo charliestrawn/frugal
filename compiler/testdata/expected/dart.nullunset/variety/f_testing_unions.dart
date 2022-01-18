@@ -408,7 +408,7 @@ class TestingUnions implements thrift.TBase {
     value = (value * 31) ^ this.aString.hashCode;
     value = (value * 31) ^ this.someotherthing.hashCode;
     value = (value * 31) ^ this.anInt16.hashCode;
-    value = (value * 31) ^ this.requests.hashCode;
+    value = (value * 31) ^ DeepCollectionEquality().hash(this.requests);
     value = (value * 31) ^ this.bin_field_in_union.hashCode;
     // ignore: deprecated_member_use
     value = (value * 31) ^ this.depr.hashCode;

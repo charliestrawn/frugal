@@ -238,7 +238,7 @@ class Album implements thrift.TBase {
   @override
   int get hashCode {
     var value = 17;
-    value = (value * 31) ^ this.tracks.hashCode;
+    value = (value * 31) ^ DeepCollectionEquality().hash(this.tracks);
     value = (value * 31) ^ this.duration.hashCode;
     value = (value * 31) ^ this.aSIN.hashCode;
     return value;
