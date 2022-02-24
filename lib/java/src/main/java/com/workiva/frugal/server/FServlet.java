@@ -40,7 +40,12 @@ import java.util.concurrent.ExecutorService;
  * exceeds the payload limit specified by the client.
  * <p>
  * Both the request and response are base64 encoded.
+ *
+ * @deprecated The {@code javax.servlet} package has been superseded by the
+ * {@code jakarta.servlet} package.
+ * Use {@code com.workiva.frugal.server.FJakartaServlet}.
  */
+@Deprecated
 @SuppressWarnings("serial")
 public class FServlet extends HttpServlet {
     private static final Logger LOGGER = LoggerFactory.getLogger(FServlet.class);
