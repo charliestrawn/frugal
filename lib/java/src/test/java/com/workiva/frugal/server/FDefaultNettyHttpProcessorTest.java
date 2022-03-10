@@ -1,6 +1,7 @@
 package com.workiva.frugal.server;
 
 import com.workiva.frugal.processor.FProcessor;
+import com.workiva.frugal.protocol.FProtocol;
 import com.workiva.frugal.protocol.FProtocolFactory;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -42,6 +43,8 @@ public class FDefaultNettyHttpProcessorTest {
 
     private static FullHttpRequest mockRequest;
     private static HttpHeaders mockRequestHeaders;
+    private static FProtocolFactory mockProtocolFactory;
+    private static FProtocol mockProtocol;
 
     private static FDefaultNettyHttpProcessor httpProcessor;
 
@@ -53,7 +56,10 @@ public class FDefaultNettyHttpProcessorTest {
         doReturn(HTTP_1_1).when(mockRequest).protocolVersion();
 
         FProcessor mockProcessor = mock(FProcessor.class);
-        FProtocolFactory mockProtocolFactory = mock(FProtocolFactory.class);
+        mockProtocol = mock(FProtocol.class);
+        mockProtocolFactory = mock(FProtocolFactory.class);
+        doReturn(mockProtocol).when(mockProtocolFactory).getProtocol(any());
+
         httpProcessor = FDefaultNettyHttpProcessor.of(mockProcessor, mockProtocolFactory);
     }
 
