@@ -21,8 +21,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
@@ -110,12 +114,22 @@ public class FServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Map<Object, Object> ephemeralProperties = new HashMap<>();
+        ephemeralProperties.put("http_request_headers", getHeaders(req));
         eventHandler.onRequestReceived(ephemeralProperties);
         try {
             process(req, resp, ephemeralProperties);
         } finally {
             eventHandler.onRequestEnded(ephemeralProperties);
         }
+    }
+
+    private static Map<String, List<String>> getHeaders(HttpServletRequest req) {
+        Map<String, List<String>> headers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        for (Enumeration<String> en = req.getHeaderNames(); en.hasMoreElements();) {
+            String name = en.nextElement();
+            headers.put(name, Collections.unmodifiableList(Collections.list(req.getHeaders(name))));
+        }
+        return Collections.unmodifiableMap(headers);
     }
 
     private void process(HttpServletRequest req, HttpServletResponse resp, Map<Object, Object> ephemeralProperties) throws ServletException, IOException {
@@ -194,6 +208,7 @@ public class FServlet extends HttpServlet {
         TMemoryOutputBuffer outTransport = new TMemoryOutputBuffer();
         try {
             FProtocol inProtocol = inProtocolFactory.getProtocol(inTransport);
+            inProtocol.setEphemeralProperties(ephemeralProperties);
             FProtocol outProtocol = outProtocolFactory.getProtocol(outTransport);
             processor.process(inProtocol, outProtocol);
         } catch (RuntimeException e) {
