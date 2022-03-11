@@ -149,7 +149,8 @@ public class FDefaultNettyHttpProcessor implements FNettyHttpProcessor {
         return processFrame(null, inputBuffer);
     }
 
-    private ByteBuf processFrame(HttpRequest request, ByteBuf inputBuffer) throws TException, IOException {
+    // Visible for testing
+    ByteBuf processFrame(HttpRequest request, ByteBuf inputBuffer) throws TException, IOException {
         // Read base64 encoded input
         byte[] encodedBytes = new byte[inputBuffer.readableBytes()];
         inputBuffer.readBytes(encodedBytes);
@@ -225,9 +226,7 @@ public class FDefaultNettyHttpProcessor implements FNettyHttpProcessor {
         ByteBuf body = request.content();
         ByteBuf outputBuffer = Unpooled.EMPTY_BUFFER;
         try {
-            outputBuffer = getClass() == FDefaultNettyHttpProcessor.class
-                    ? processFrame(request, body)
-                    : processFrame(body);
+            outputBuffer = processFrame(request, body);
         } catch (TException e) {
             LOGGER.error("Frugal processor returned unhandled error:", e);
             String errorMessage = "";
