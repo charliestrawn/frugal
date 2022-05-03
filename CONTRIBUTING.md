@@ -3,11 +3,7 @@ Contributing to Frugal
 
 ## Before you start
 
-Opening a PR doesn't guarantee success of future merging, it's in your best interest to message the repo owners ahead of time to discuss a feature request. 
-
-**Rule of three**
-
-Frugal is used by many teams at Workiva. Due to its wide spread use it is important to ensure feature additions are valuable to more than a single team. As a rule of thumb there should be at least three teams that will benefit from any feature/code change made to frugal.
+Opening a PR doesn't guarantee success of future merging, it's in your best interest to message the repo owners ahead of time to discuss a feature request. All feature will be evaluated based on their usefulness within the community of user.
 
 Creating Pull Requests
 ----------------------
