@@ -3,7 +3,7 @@ Contributing to Frugal
 
 ## Before you start
 
-Opening a PR doesn't guarantee success of future merging, it's in your best interest to message the repo owners ahead of time to discuss a feature request. All feature will be evaluated based on their usefulness within the community of user.
+Opening a PR doesn't guarantee a feature will be merged. Please discuss with the repo owners ahead of time to discuss a feature request. All features will be evaluated based on their usefulness within the community of users.
 
 Creating Pull Requests
 ----------------------
