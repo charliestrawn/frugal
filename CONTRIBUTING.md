@@ -3,8 +3,7 @@ Contributing to Frugal
 
 ## Before you start
 
-If you have an idea for a new feature or contribution please tag the Services Platform PM and EM in the [#support-messaging-and-frugal](https://workiva.slack.com/archives/CEFTREXT8) slack channel. This is a courtesy that will allow the SP team understand the value of a feature they will need to support and the timeline for when that support will need to begin.
-
+Opening a PR doesn't guarantee success of future merging, it's in your best interest to message the repo owners ahead of time to discuss a feature request. 
 
 **Rule of three**
 
