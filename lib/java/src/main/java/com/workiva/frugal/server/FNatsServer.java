@@ -24,6 +24,7 @@ import io.nats.client.MessageHandler;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -402,11 +403,12 @@ public class FNatsServer implements FServer {
             eventHandler.onRequestStarted(ephemeralProperties);
 
             try {
-                // Read and process frame (exclude first 4 bytes which represent frame size).
-                TTransport input = new TMemoryInputTransport(frameBytes, 4, frameBytes.length);
-                TMemoryOutputBuffer output = new TMemoryOutputBuffer(NATS_MAX_MESSAGE_SIZE);
-
+                TMemoryOutputBuffer output = null;
                 try {
+                    // Read and process frame (exclude first 4 bytes which represent frame size).
+                    TTransport input = new TMemoryInputTransport(frameBytes, 4, frameBytes.length);
+                    output = new TMemoryOutputBuffer(NATS_MAX_MESSAGE_SIZE);
+
                     FProtocol inputProto = inputProtoFactory.getProtocol(input);
                     inputProto.setEphemeralProperties(ephemeralProperties);
                     FProtocol outputProto = outputProtoFactory.getProtocol(output);
@@ -416,8 +418,10 @@ public class FNatsServer implements FServer {
                     return;
                 } catch (RuntimeException e) {
                     try {
-                        conn.publish(reply, output.getWriteBytes());
-                        conn.flush(Duration.ofSeconds(60));
+                        if(output != null) {
+                            conn.publish(reply, output.getWriteBytes());
+                            conn.flush(Duration.ofSeconds(60));
+                        }
                     } catch (Exception ignored) {
                     }
                     return;

@@ -15,6 +15,9 @@ package com.workiva.frugal.transport;
 
 import com.workiva.frugal.exception.TTransportExceptionType;
 import com.workiva.frugal.util.ProtocolUtils;
+
+import org.apache.thrift.TConfiguration;
+import org.apache.thrift.transport.TEndpointTransport;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
@@ -25,7 +28,7 @@ import java.io.ByteArrayOutputStream;
  * The size of this buffer is optionally limited. If limited, writes which cause the buffer to exceed
  * its size limit throw an TTransportException with code TTransportExceptionType.REQUEST_TOO_LARGE.
  */
-public class TMemoryOutputBuffer extends TTransport {
+public class TMemoryOutputBuffer extends TEndpointTransport {
 
     private ByteArrayOutputStream buffer;
     private final int limit;
@@ -34,7 +37,7 @@ public class TMemoryOutputBuffer extends TTransport {
     /**
      * Create an TMemoryOutputBuffer with no buffer size limit.
      */
-    public TMemoryOutputBuffer() {
+    public TMemoryOutputBuffer() throws TTransportException {
         this(0);
     }
 
@@ -44,9 +47,11 @@ public class TMemoryOutputBuffer extends TTransport {
      * @param size the size limit of the buffer. Note: If <code>size</code> is non-positive,
      *             no limit will be enforced on the buffer.
      */
-    public TMemoryOutputBuffer(int size) {
-        buffer = new ByteArrayOutputStream();
+    public TMemoryOutputBuffer(int size) throws TTransportException {
+        super(new TConfiguration());
+        buffer = new ByteArrayOutputStream(size);
         limit = size;
+        updateKnownMessageSize(size);
         init();
     }
 
