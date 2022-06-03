@@ -20,7 +20,7 @@ public class TMemoryOutputBufferTest {
     private byte[] emptyFrameSize = new byte[4];
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         buffer = new TMemoryOutputBuffer(10);
     }
 

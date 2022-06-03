@@ -28,16 +28,17 @@ import java.io.ByteArrayOutputStream;
  * The size of this buffer is optionally limited. If limited, writes which cause the buffer to exceed
  * its size limit throw an TTransportException with code TTransportExceptionType.REQUEST_TOO_LARGE.
  */
-public class TMemoryOutputBuffer extends TEndpointTransport {
+public class TMemoryOutputBuffer extends TTransport {
 
     private ByteArrayOutputStream buffer;
     private final int limit;
     private final byte[] emptyFrameSize = new byte[4];
+    private static final TConfiguration configuration = new TConfiguration();
 
     /**
      * Create an TMemoryOutputBuffer with no buffer size limit.
      */
-    public TMemoryOutputBuffer() throws TTransportException {
+    public TMemoryOutputBuffer() {
         this(0);
     }
 
@@ -47,11 +48,9 @@ public class TMemoryOutputBuffer extends TEndpointTransport {
      * @param size the size limit of the buffer. Note: If <code>size</code> is non-positive,
      *             no limit will be enforced on the buffer.
      */
-    public TMemoryOutputBuffer(int size) throws TTransportException {
-        super(new TConfiguration());
+    public TMemoryOutputBuffer(int size) {
         buffer = new ByteArrayOutputStream(size);
         limit = size;
-        updateKnownMessageSize(size);
         init();
     }
 
@@ -91,6 +90,23 @@ public class TMemoryOutputBuffer extends TEndpointTransport {
                     TTransportExceptionType.REQUEST_TOO_LARGE, String.format("Buffer size reached (%d)", limit));
         }
         buffer.write(buf, off, len);
+    }
+
+    @Override
+    public TConfiguration getConfiguration() {
+        return configuration;
+    }
+
+    @Override
+    public void updateKnownMessageSize(long size) {
+        throw new UnsupportedOperationException(
+            "This method is not supported for an out only transport");
+    }
+
+    @Override
+    public void checkReadBytesAvailable(long numBytes) {
+        throw new UnsupportedOperationException(
+            "This method is not supported for an out only transport");
     }
 
     /**
