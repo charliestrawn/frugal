@@ -8,7 +8,7 @@ require (
 	github.com/go-stomp/stomp v2.1.4+incompatible
 	github.com/nats-io/nats.go v1.13.0
 	github.com/rs/cors v1.8.0
-	github.com/sirupsen/logrus v1.8.1
+	github.com/sirupsen/logrus v1.9.0
 )
 
 replace github.com/Workiva/frugal/lib/go v0.0.0 => ../../lib/go
