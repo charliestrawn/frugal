@@ -8,6 +8,6 @@ require (
 	github.com/nats-io/nats-server/v2 v2.6.2
 	github.com/nats-io/nats.go v1.13.0
 	github.com/nats-io/nuid v1.0.1
-	github.com/sirupsen/logrus v1.8.1
+	github.com/sirupsen/logrus v1.9.0
 	github.com/stretchr/testify v1.7.0
 )
