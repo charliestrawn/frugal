@@ -65,9 +65,9 @@ public class FHttpTransport extends FTransport {
     private FHttpTransport(CloseableHttpClient httpClient, String url, int requestSizeLimit, int responseSizeLimit,
             FHttpTransportHeaders requestHeaders) {
         super();
-        this.requestSizeLimit = requestSizeLimit;
         this.httpClient = httpClient;
         this.url = url;
+        this.requestSizeLimit = requestSizeLimit;
         this.responseSizeLimit = responseSizeLimit;
         this.requestHeaders = requestHeaders;
     }
@@ -211,9 +211,13 @@ public class FHttpTransport extends FTransport {
 
         byte[] response = makeRequest(context, payload);
 
-        TConfiguration responseConfig =
-            TConfigurationBuilder.custom().setMaxMessageSize(responseSizeLimit).build();
-        return response == null ? null : new TMemoryInputTransport(responseConfig, response);
+        TTransport responseTransport = null;
+        if(response != null) {
+            TConfiguration responseConfig =
+                TConfigurationBuilder.custom().setMaxMessageSize(responseSizeLimit).build();
+            responseTransport = new TMemoryInputTransport(responseConfig, response);
+        }
+        return responseTransport;
     }
 
     private static class Base64EncodingEntity extends AbstractHttpEntity {
@@ -286,7 +290,7 @@ public class FHttpTransport extends FTransport {
         request.setConfig(RequestConfig.custom()
                 .setConnectTimeout((int) context.getTimeout())
                 .setSocketTimeout((int) context.getTimeout())
-            .build());
+                .build());
 
         // Make request
         CloseableHttpResponse response;
