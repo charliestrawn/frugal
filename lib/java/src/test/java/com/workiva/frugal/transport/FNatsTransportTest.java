@@ -57,7 +57,6 @@ public class FNatsTransportTest {
 
     @Test
     public void testMaxRequestSize() {
-        assertEquals(FNatsTransport.NATS_MAX_MESSAGE_SIZE, transport.requestConfig.getMaxMessageSize());
         assertEquals(FNatsTransport.NATS_MAX_MESSAGE_SIZE, transport.getRequestSizeLimit());
     }
 

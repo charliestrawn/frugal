@@ -39,7 +39,7 @@ public abstract class FTransport {
     private volatile FTransportClosedCallback monitor;
     private boolean isOpen;
 
-    protected TConfiguration requestConfig = TConfigurationBuilder.DEFAULT;
+    protected int requestSizeLimit;
 
     public synchronized boolean isOpen() {
         return isOpen;
@@ -99,7 +99,7 @@ public abstract class FTransport {
      * @return the request size limit
      */
     public int getRequestSizeLimit() {
-        return requestConfig.getMaxMessageSize();
+        return requestSizeLimit;
     }
 
     /**

@@ -75,7 +75,6 @@ public class FHttpTransportTest {
     public void testRequestSizeException() throws TTransportException {
         int requestSizeLimit = 1024 * 4;
         transport = new FHttpTransport.Builder(client, url).withRequestSizeLimit(requestSizeLimit).build();
-        assertEquals(4 * 1024, transport.requestConfig.getMaxMessageSize());
         assertEquals(4 * 1024, transport.getRequestSizeLimit());
         transport.request(context, new byte[requestSizeLimit + 1]);
     }
@@ -84,7 +83,6 @@ public class FHttpTransportTest {
     public void testOnewaySizeException() throws TTransportException {
         int requestSizeLimit = 1024 * 4;
         transport = new FHttpTransport.Builder(client, url).withRequestSizeLimit(requestSizeLimit).build();
-        assertEquals(4 * 1024, transport.requestConfig.getMaxMessageSize());
         assertEquals(4 * 1024, transport.getRequestSizeLimit());
         transport.oneway(context, new byte[requestSizeLimit + 1]);
     }

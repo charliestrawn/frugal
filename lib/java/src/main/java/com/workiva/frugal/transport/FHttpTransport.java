@@ -65,9 +65,9 @@ public class FHttpTransport extends FTransport {
     private FHttpTransport(CloseableHttpClient httpClient, String url, int requestSizeLimit, int responseSizeLimit,
             FHttpTransportHeaders requestHeaders) {
         super();
+        this.requestSizeLimit = requestSizeLimit;
         this.httpClient = httpClient;
         this.url = url;
-        this.requestConfig = TConfigurationBuilder.custom().setMaxMessageSize(requestSizeLimit).build();
         this.responseConfig = TConfigurationBuilder.custom().setMaxMessageSize(responseSizeLimit).build();
         this.requestHeaders = requestHeaders;
     }
