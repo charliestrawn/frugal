@@ -212,7 +212,7 @@ public class FHttpTransport extends FTransport {
         byte[] response = makeRequest(context, payload);
 
         TTransport responseTransport = null;
-        if(response != null) {
+        if (response != null) {
             TConfiguration responseConfig =
                 TConfigurationBuilder.custom().setMaxMessageSize(responseSizeLimit).build();
             responseTransport = new TMemoryInputTransport(responseConfig, response);
