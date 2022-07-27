@@ -17,6 +17,8 @@ import com.workiva.frugal.FContext;
 import com.workiva.frugal.exception.TTransportExceptionType;
 import com.workiva.frugal.transport.monitor.FTransportMonitor;
 import com.workiva.frugal.transport.monitor.MonitorRunner;
+
+import org.apache.thrift.TConfiguration;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
@@ -37,7 +39,7 @@ public abstract class FTransport {
     private volatile FTransportClosedCallback monitor;
     private boolean isOpen;
 
-    protected int requestSizeLimit;
+    protected TConfiguration requestConfig = TConfigurationBuilder.DEFAULT;
 
     public synchronized boolean isOpen() {
         return isOpen;
@@ -97,7 +99,7 @@ public abstract class FTransport {
      * @return the request size limit
      */
     public int getRequestSizeLimit() {
-        return requestSizeLimit;
+        return requestConfig.getMaxMessageSize();
     }
 
     /**

@@ -48,7 +48,8 @@ public class FNatsTransport extends FAsyncTransport {
     private Dispatcher dispatcher;
 
     private FNatsTransport(Connection conn, String subject, String inbox) {
-        this.requestSizeLimit = NATS_MAX_MESSAGE_SIZE;
+        this.requestConfig =
+            TConfigurationBuilder.custom().setMaxMessageSize(NATS_MAX_MESSAGE_SIZE).build();
         this.conn = conn;
         this.subject = subject;
         this.inbox = inbox;

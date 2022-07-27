@@ -28,6 +28,7 @@ import org.apache.http.entity.AbstractHttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.apache.thrift.TConfiguration;
 import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
@@ -58,7 +59,7 @@ public class FHttpTransport extends FTransport {
     // Immutable
     private final CloseableHttpClient httpClient;
     private final String url;
-    private final int responseSizeLimit;
+    private final TConfiguration responseConfig;
     private final FHttpTransportHeaders requestHeaders;
 
     private FHttpTransport(CloseableHttpClient httpClient, String url, int requestSizeLimit, int responseSizeLimit,
@@ -66,8 +67,8 @@ public class FHttpTransport extends FTransport {
         super();
         this.httpClient = httpClient;
         this.url = url;
-        this.requestSizeLimit = requestSizeLimit;
-        this.responseSizeLimit = responseSizeLimit;
+        this.requestConfig = TConfigurationBuilder.custom().setMaxMessageSize(requestSizeLimit).build();
+        this.responseConfig = TConfigurationBuilder.custom().setMaxMessageSize(responseSizeLimit).build();
         this.requestHeaders = requestHeaders;
     }
 
@@ -210,7 +211,7 @@ public class FHttpTransport extends FTransport {
 
         byte[] response = makeRequest(context, payload);
 
-        return response == null ? null : new TMemoryInputTransport(response);
+        return response == null ? null : new TMemoryInputTransport(responseConfig, response);
     }
 
     private static class Base64EncodingEntity extends AbstractHttpEntity {
@@ -276,8 +277,8 @@ public class FHttpTransport extends FTransport {
 
         request.setHeader("accept", "application/x-frugal");
         request.setHeader("content-transfer-encoding", "base64");
-        if (responseSizeLimit > 0) {
-            request.setHeader("x-frugal-payload-limit", Integer.toString(responseSizeLimit));
+        if (responseConfig.getMaxMessageSize() > 0) {
+            request.setHeader("x-frugal-payload-limit", Integer.toString(responseConfig.getMaxMessageSize()));
         }
         request.setEntity(requestEntity);
         request.setConfig(RequestConfig.custom()

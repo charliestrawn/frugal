@@ -121,7 +121,7 @@ public abstract class FAsyncTransport extends FTransport {
                         "request: transport closed, request canceled");
             }
 
-            return new TMemoryInputTransport(response);
+            return new TMemoryInputTransport(requestConfig, response);
         } finally {
             synchronized (this) {
                 queueMap.remove(opId);
