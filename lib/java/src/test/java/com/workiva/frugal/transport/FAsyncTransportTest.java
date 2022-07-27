@@ -93,7 +93,7 @@ public class FAsyncTransportTest {
 
         byte[] request = "hello world".getBytes();
         TTransport transport = this.transport.request(context, request);
-        assertEquals(TConfiguration.DEFAULT_MAX_MESSAGE_SIZE, transport.getConfiguration().getMaxMessageSize());
+        assertEquals(Integer.MAX_VALUE, transport.getConfiguration().getMaxMessageSize());
         assertArrayEquals(expectedResponse, transport.getBuffer());
         assertArrayEquals(request, this.transport.payloads.get(0));
     }

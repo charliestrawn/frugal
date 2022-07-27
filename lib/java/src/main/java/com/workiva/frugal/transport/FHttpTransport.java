@@ -59,7 +59,7 @@ public class FHttpTransport extends FTransport {
     // Immutable
     private final CloseableHttpClient httpClient;
     private final String url;
-    private final TConfiguration responseConfig;
+    private final int responseSizeLimit;
     private final FHttpTransportHeaders requestHeaders;
 
     private FHttpTransport(CloseableHttpClient httpClient, String url, int requestSizeLimit, int responseSizeLimit,
@@ -68,7 +68,7 @@ public class FHttpTransport extends FTransport {
         this.requestSizeLimit = requestSizeLimit;
         this.httpClient = httpClient;
         this.url = url;
-        this.responseConfig = TConfigurationBuilder.custom().setMaxMessageSize(responseSizeLimit).build();
+        this.responseSizeLimit = responseSizeLimit;
         this.requestHeaders = requestHeaders;
     }
 
@@ -211,6 +211,8 @@ public class FHttpTransport extends FTransport {
 
         byte[] response = makeRequest(context, payload);
 
+        TConfiguration responseConfig =
+            TConfigurationBuilder.custom().setMaxMessageSize(responseSizeLimit).build();
         return response == null ? null : new TMemoryInputTransport(responseConfig, response);
     }
 
@@ -277,14 +279,14 @@ public class FHttpTransport extends FTransport {
 
         request.setHeader("accept", "application/x-frugal");
         request.setHeader("content-transfer-encoding", "base64");
-        if (responseConfig.getMaxMessageSize() > 0) {
-            request.setHeader("x-frugal-payload-limit", Integer.toString(responseConfig.getMaxMessageSize()));
+        if (responseSizeLimit > 0) {
+            request.setHeader("x-frugal-payload-limit", Integer.toString(responseSizeLimit));
         }
         request.setEntity(requestEntity);
         request.setConfig(RequestConfig.custom()
                 .setConnectTimeout((int) context.getTimeout())
                 .setSocketTimeout((int) context.getTimeout())
-                .build());
+            .build());
 
         // Make request
         CloseableHttpResponse response;
