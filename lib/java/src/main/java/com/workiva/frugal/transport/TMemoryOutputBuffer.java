@@ -17,7 +17,6 @@ import com.workiva.frugal.exception.TTransportExceptionType;
 import com.workiva.frugal.util.ProtocolUtils;
 
 import org.apache.thrift.TConfiguration;
-import org.apache.thrift.transport.TEndpointTransport;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
@@ -49,8 +48,7 @@ public class TMemoryOutputBuffer extends TTransport {
      */
     public TMemoryOutputBuffer(int maxMessageSize) {
         buffer = new ByteArrayOutputStream();
-        configuration = new TConfiguration(maxMessageSize,
-            TConfiguration.DEFAULT_MAX_FRAME_SIZE, TConfiguration.DEFAULT_RECURSION_DEPTH);
+        configuration = TConfigurationBuilder.custom().setMaxMessageSize(maxMessageSize).build();
         init();
     }
 
