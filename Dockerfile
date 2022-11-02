@@ -1,4 +1,5 @@
-FROM drydock-prod.workiva.net/workiva/messaging-docker-images:0.1.12 as build
+# FROM drydock-prod.workiva.net/workiva/messaging-docker-images:0.1.12 as build
+FROM drydock.workiva.net/workiva/messaging-docker-images:4037570 as build
 
 RUN yum update -y && \
     yum upgrade -y && \
