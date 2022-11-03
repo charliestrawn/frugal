@@ -1,5 +1,5 @@
 # FROM drydock-prod.workiva.net/workiva/messaging-docker-images:0.1.12 as build
-FROM drydock.workiva.net/workiva/messaging-docker-images:4037570 as build
+FROM drydock.workiva.net/workiva/messaging-docker-images:4044119 as build
 
 RUN yum update -y && \
     yum upgrade -y && \
@@ -18,7 +18,7 @@ RUN mkdir /root/.ssh && \
     chmod 700 /root/.ssh/ && \
     umask 0077 && echo "$GIT_SSH_KEY" >/root/.ssh/id_rsa && \
     eval "$(ssh-agent -s)" && ssh-add /root/.ssh/id_rsa
-
+RUN java -version
 ARG BUILD_ID
 ARG GOPATH=/go/
 ENV PATH $GOPATH/bin:$PATH
