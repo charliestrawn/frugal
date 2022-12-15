@@ -13,7 +13,7 @@ unit-cli:
 
 # update the expected generated files; for those times when you change the generation
 unit-cli-copy:
-	go test ./... -copy-files
+	go test ./compiler -copy-files
 
 unit-go:
 	cd lib/go && go test -v -race
