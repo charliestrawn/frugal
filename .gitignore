@@ -28,7 +28,7 @@ skynet.Dockerfile
 # python specific
 .python_version
 *.pyc
-.
+.coverage
 .build/
 .ropeproject/
 coverage_html/
