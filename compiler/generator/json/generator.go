@@ -168,7 +168,7 @@ func toFile(pf *parser.Frugal) *frugalFile {
 		f.Types[ps.Name] = toStructType(ps)
 	}
 	for _, pu := range pf.Unions {
-		f.Types[pu.Name] = toStructType(pu)
+		f.Types[pu.Name] = toUnionType(pu)
 	}
 	for _, pe := range pf.Exceptions {
 		f.Types[pe.Name] = toStructType(pe)
