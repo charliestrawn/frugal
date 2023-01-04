@@ -20,7 +20,7 @@ distclean: clean
 	rm -rf $(LIBS_DIR)
 
 deps-py2:
-	$(PIP) install -Ur requirements_python_2.txt
+	$(PIP) install -Ur py2_reqs/requirements_python_2.txt
 
 deps-py3:
 	$(PIP) install -Ur requirements_python_3.txt
