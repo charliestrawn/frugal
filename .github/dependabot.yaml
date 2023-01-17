@@ -79,6 +79,12 @@ updates:
     directory: "/lib/python"
     schedule:
       interval: "weekly"
+    ignore:
+      # ignore all updates for version python2 libraries
+      - dependency-name: "coverage"
+        versions: [ "5.6b1", "5.5b1" ]
+      - dependency-name: "mock"
+        versions: [ "3.0.5", "3.0.0"]
     target-branch: "develop"
     reviewers:
       - "Workiva/service-platform"
