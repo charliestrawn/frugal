@@ -927,6 +927,12 @@ func (g *Generator) generateWriteFieldInline(field *parser.Field) (contents stri
 	if !g.skipStandaloneFieldHandler(field) {
 		return fmt.Sprintf("\tif err := p.writeField%d(ctx, oprot); err != nil {\n\t\treturn err\n\t}\n", field.ID)
 	}
+	var fieldName string
+	if field.Name == strings.ToUpper(field.Name) {
+		fieldName = field.Name
+	} else {
+		fieldName = snakeToCamel(field.Name)
+	}
 
 	// Check if this field is optional and add nil checks if we need them.
 	var indent string
@@ -934,7 +940,7 @@ func (g *Generator) generateWriteFieldInline(field *parser.Field) (contents stri
 	if field.Modifier == parser.Optional {
 		indent = "\t"
 		tail = "\t\t}\n"
-		contents += fmt.Sprintf("\tif p.IsSet%s() {\n", snakeToCamel(field.Name))
+		contents += fmt.Sprintf("\tif p.IsSet%s() {\n", fieldName)
 	}
 
 	// Get the write function we need to invoke
@@ -947,7 +953,6 @@ func (g *Generator) generateWriteFieldInline(field *parser.Field) (contents stri
 	}
 
 	// Get appropriate way to reference struct field
-	fieldName := snakeToCamel(field.Name)
 	structField := "p." + fieldName
 
 	// The Thrift generator uses a convention of appending a suffix of '_'
@@ -2257,7 +2262,7 @@ func titleServiceName(name string, serviceName string) string {
 
 	// Keep screaming caps
 	if name == strings.ToUpper(name) {
-		return strings.Replace(name, "_", "", -1)
+		return name
 	}
 
 	if serviceName != "" {
