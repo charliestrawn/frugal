@@ -54,6 +54,7 @@ import static org.mockito.hamcrest.MockitoHamcrest.argThat;
 /**
  * Tests for {@link FServlet}.
  */
+@SuppressWarnings("deprecation")
 public class FServletTest {
 
     private static class ProxyServletInputStream extends ServletInputStream {
