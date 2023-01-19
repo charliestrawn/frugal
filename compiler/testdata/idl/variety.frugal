@@ -84,6 +84,7 @@ union TestingUnions {
 	5: request Requests,
 	6: binary bin_field_in_union,
 	7: bool depr (deprecated="use something else"),
+    8: bool WHOA_BUDDY,
 }
 
 /**@
@@ -96,6 +97,7 @@ struct Event {
 
     /**@ Message contains the event payload. */
     2: string Message
+    3: bool YES_NO
 }
 
 struct TestingDefaults {
