@@ -2257,7 +2257,7 @@ func titleServiceName(name string, serviceName string) string {
 
 	// Keep screaming caps
 	if name == strings.ToUpper(name) {
-		return name
+		return strings.Replace(name, "_", "", -1)
 	}
 
 	if serviceName != "" {
