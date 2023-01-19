@@ -480,20 +480,20 @@ public class FooArgs implements org.apache.thrift.TBase<FooArgs, FooArgs._Fields
 			oprot.writeStructBegin(STRUCT_DESC);
 			if (struct.isSetNewMessage()) {
 				oprot.writeFieldBegin(NEW_MESSAGE_FIELD_DESC);
-				String elem126 = struct.newMessage;
-				oprot.writeString(elem126);
+				String elem127 = struct.newMessage;
+				oprot.writeString(elem127);
 				oprot.writeFieldEnd();
 			}
 			if (struct.isSetMessageArgs()) {
 				oprot.writeFieldBegin(MESSAGE_ARGS_FIELD_DESC);
-				String elem127 = struct.messageArgs;
-				oprot.writeString(elem127);
+				String elem128 = struct.messageArgs;
+				oprot.writeString(elem128);
 				oprot.writeFieldEnd();
 			}
 			if (struct.isSetMessageResult()) {
 				oprot.writeFieldBegin(MESSAGE_RESULT_FIELD_DESC);
-				String elem128 = struct.messageResult;
-				oprot.writeString(elem128);
+				String elem129 = struct.messageResult;
+				oprot.writeString(elem129);
 				oprot.writeFieldEnd();
 			}
 			oprot.writeFieldStop();
