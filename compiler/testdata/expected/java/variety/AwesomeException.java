@@ -515,18 +515,18 @@ public class AwesomeException extends TException implements org.apache.thrift.TB
 
 			oprot.writeStructBegin(STRUCT_DESC);
 			oprot.writeFieldBegin(ID_FIELD_DESC);
-			long elem155 = struct.ID;
-			oprot.writeI64(elem155);
+			long elem158 = struct.ID;
+			oprot.writeI64(elem158);
 			oprot.writeFieldEnd();
 			if (struct.isSetReason()) {
 				oprot.writeFieldBegin(REASON_FIELD_DESC);
-				String elem156 = struct.Reason;
-				oprot.writeString(elem156);
+				String elem159 = struct.Reason;
+				oprot.writeString(elem159);
 				oprot.writeFieldEnd();
 			}
 			oprot.writeFieldBegin(DEPR_FIELD_DESC);
-			boolean elem157 = struct.depr;
-			oprot.writeBool(elem157);
+			boolean elem160 = struct.depr;
+			oprot.writeBool(elem160);
 			oprot.writeFieldEnd();
 			oprot.writeFieldStop();
 			oprot.writeStructEnd();
