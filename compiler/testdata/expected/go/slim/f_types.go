@@ -429,7 +429,7 @@ func (p *Event) Write(ctx context.Context, oprot thrift.TProtocol) error {
 	if err := frugal.WriteStringWithContext(ctx, oprot, p.Message, "Message", 2); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T::Message:2 ", p), err)
 	}
-	if err := frugal.WriteBoolWithContext(ctx, oprot, p.YESNO, "YES_NO", 3); err != nil {
+	if err := frugal.WriteBoolWithContext(ctx, oprot, p.YES_NO, "YES_NO", 3); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T::YES_NO:3 ", p), err)
 	}
 	if err := oprot.WriteFieldStop(ctx); err != nil {
@@ -2132,8 +2132,8 @@ func (p *TestingUnions) Write(ctx context.Context, oprot thrift.TProtocol) error
 			return thrift.PrependError(fmt.Sprintf("%T::depr:7 ", p), err)
 		}
 	}
-	if p.IsSetWHOABUDDY() {
-		if err := frugal.WriteBoolWithContext(ctx, oprot, *p.WHOABUDDY, "WHOA_BUDDY", 8); err != nil {
+	if p.IsSetWHOA_BUDDY() {
+		if err := frugal.WriteBoolWithContext(ctx, oprot, *p.WHOA_BUDDY, "WHOA_BUDDY", 8); err != nil {
 			return thrift.PrependError(fmt.Sprintf("%T::WHOA_BUDDY:8 ", p), err)
 		}
 	}
