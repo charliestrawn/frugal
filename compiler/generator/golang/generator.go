@@ -927,12 +927,8 @@ func (g *Generator) generateWriteFieldInline(field *parser.Field) (contents stri
 	if !g.skipStandaloneFieldHandler(field) {
 		return fmt.Sprintf("\tif err := p.writeField%d(ctx, oprot); err != nil {\n\t\treturn err\n\t}\n", field.ID)
 	}
-	var fieldName string
-	if field.Name == strings.ToUpper(field.Name) {
-		fieldName = field.Name
-	} else {
-		fieldName = snakeToCamel(field.Name)
-	}
+
+	fieldName := title(field.Name)
 
 	// Check if this field is optional and add nil checks if we need them.
 	var indent string
@@ -954,13 +950,6 @@ func (g *Generator) generateWriteFieldInline(field *parser.Field) (contents stri
 
 	// Get appropriate way to reference struct field
 	structField := "p." + fieldName
-
-	// The Thrift generator uses a convention of appending a suffix of '_'
-	// if the argument starts with 'New', ends with 'Result' or ends with 'Args'.
-	// This effort must be duplicated to correctly reference Thrift generated code.
-	if strings.HasPrefix(fieldName, "New") || strings.HasSuffix(fieldName, "Result") || strings.HasSuffix(fieldName, "Args") {
-		structField += "_"
-	}
 
 	if g.isPointerField(field) && !g.Frugal.IsStruct(baseType) { // don't dereference structs
 		structField = "*" + structField
