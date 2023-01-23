@@ -194,12 +194,14 @@ class Event(object):
     Attributes:
      - ID: ID is a unique identifier for an event.
      - Message: Message contains the event payload.
+     - YES_NO
     """
     from . import constants
     _DEFAULT_ID_MARKER = constants.DEFAULT_ID
-    def __init__(self, ID=_DEFAULT_ID_MARKER, Message=None):
+    def __init__(self, ID=_DEFAULT_ID_MARKER, Message=None, YES_NO=None):
         self.ID = ID
         self.Message = Message
+        self.YES_NO = YES_NO
 
     def read(self, iprot):
         iprot.readStructBegin()
@@ -215,6 +217,11 @@ class Event(object):
             elif fid == 2:
                 if ftype == TType.STRING:
                     self.Message = iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 3:
+                if ftype == TType.BOOL:
+                    self.YES_NO = iprot.readBool()
                 else:
                     iprot.skip(ftype)
             else:
@@ -234,6 +241,10 @@ class Event(object):
             oprot.writeFieldBegin('Message', TType.STRING, 2)
             oprot.writeString(self.Message)
             oprot.writeFieldEnd()
+        if self.YES_NO is not None:
+            oprot.writeFieldBegin('YES_NO', TType.BOOL, 3)
+            oprot.writeBool(self.YES_NO)
+            oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
 
@@ -244,6 +255,7 @@ class Event(object):
         value = 17
         value = (value * 31) ^ hash(make_hashable(self.ID))
         value = (value * 31) ^ hash(make_hashable(self.Message))
+        value = (value * 31) ^ hash(make_hashable(self.YES_NO))
         return value
 
     def __repr__(self):
@@ -1049,8 +1061,9 @@ class TestingUnions(object):
      - bin_field_in_union
      - depr
        Deprecated: use something else
+     - WHOA_BUDDY
     """
-    def __init__(self, AnID=None, aString=None, someotherthing=None, AnInt16=None, Requests=None, bin_field_in_union=None, depr=None):
+    def __init__(self, AnID=None, aString=None, someotherthing=None, AnInt16=None, Requests=None, bin_field_in_union=None, depr=None, WHOA_BUDDY=None):
         self.AnID = AnID
         self.aString = aString
         self.someotherthing = someotherthing
@@ -1058,6 +1071,7 @@ class TestingUnions(object):
         self.Requests = Requests
         self.bin_field_in_union = bin_field_in_union
         self.depr = depr
+        self.WHOA_BUDDY = WHOA_BUDDY
 
     def read(self, iprot):
         iprot.readStructBegin()
@@ -1106,6 +1120,11 @@ class TestingUnions(object):
                     self.depr = iprot.readBool()
                 else:
                     iprot.skip(ftype)
+            elif fid == 8:
+                if ftype == TType.BOOL:
+                    self.WHOA_BUDDY = iprot.readBool()
+                else:
+                    iprot.skip(ftype)
             else:
                 iprot.skip(ftype)
             iprot.readFieldEnd()
@@ -1147,6 +1166,10 @@ class TestingUnions(object):
             oprot.writeFieldBegin('depr', TType.BOOL, 7)
             oprot.writeBool(self.depr)
             oprot.writeFieldEnd()
+        if self.WHOA_BUDDY is not None:
+            oprot.writeFieldBegin('WHOA_BUDDY', TType.BOOL, 8)
+            oprot.writeBool(self.WHOA_BUDDY)
+            oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
 
@@ -1166,6 +1189,8 @@ class TestingUnions(object):
             set_fields += 1
         if self.depr is not None:
             set_fields += 1
+        if self.WHOA_BUDDY is not None:
+            set_fields += 1
         if set_fields != 1:
             raise TProtocol.TProtocolException(type=TProtocol.TProtocolException.INVALID_DATA, message='The union did not have exactly one field set, {} were set'.format(set_fields))
         return
@@ -1179,6 +1204,7 @@ class TestingUnions(object):
         value = (value * 31) ^ hash(make_hashable(self.Requests))
         value = (value * 31) ^ hash(make_hashable(self.bin_field_in_union))
         value = (value * 31) ^ hash(make_hashable(self.depr))
+        value = (value * 31) ^ hash(make_hashable(self.WHOA_BUDDY))
         return value
 
     def __repr__(self):

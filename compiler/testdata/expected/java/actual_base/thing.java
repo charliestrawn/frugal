@@ -404,13 +404,13 @@ public class thing implements org.apache.thrift.TBase<thing, thing._Fields>, jav
 
 			oprot.writeStructBegin(STRUCT_DESC);
 			oprot.writeFieldBegin(AN_ID_FIELD_DESC);
-			int elem225 = struct.an_id;
-			oprot.writeI32(elem225);
+			int elem228 = struct.an_id;
+			oprot.writeI32(elem228);
 			oprot.writeFieldEnd();
 			if (struct.isSetA_string()) {
 				oprot.writeFieldBegin(A_STRING_FIELD_DESC);
-				String elem226 = struct.a_string;
-				oprot.writeString(elem226);
+				String elem229 = struct.a_string;
+				oprot.writeString(elem229);
 				oprot.writeFieldEnd();
 			}
 			oprot.writeFieldStop();

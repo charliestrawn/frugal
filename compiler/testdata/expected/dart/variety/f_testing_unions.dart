@@ -23,6 +23,7 @@ class TestingUnions implements thrift.TBase {
   static final thrift.TField _REQUESTS_FIELD_DESC = thrift.TField('Requests', thrift.TType.MAP, 5);
   static final thrift.TField _BIN_FIELD_IN_UNION_FIELD_DESC = thrift.TField('bin_field_in_union', thrift.TType.STRING, 6);
   static final thrift.TField _DEPR_FIELD_DESC = thrift.TField('depr', thrift.TType.BOOL, 7);
+  static final thrift.TField _WHO_A__BUDDY_FIELD_DESC = thrift.TField('WHOA_BUDDY', thrift.TType.BOOL, 8);
 
   int _anID;
   static const int ANID = 1;
@@ -40,11 +41,14 @@ class TestingUnions implements thrift.TBase {
   @deprecated
   bool _depr;
   static const int DEPR = 7;
+  bool _wHOA_BUDDY;
+  static const int WHOA_BUDDY = 8;
 
   bool __isset_anID = false;
   bool __isset_someotherthing = false;
   bool __isset_anInt16 = false;
   bool __isset_depr = false;
+  bool __isset_wHOA_BUDDY = false;
 
   int get anID => this._anID;
 
@@ -138,6 +142,19 @@ class TestingUnions implements thrift.TBase {
     this.__isset_depr = false;
   }
 
+  bool get wHOA_BUDDY => this._wHOA_BUDDY;
+
+  set wHOA_BUDDY(bool wHOA_BUDDY) {
+    this._wHOA_BUDDY = wHOA_BUDDY;
+    this.__isset_wHOA_BUDDY = true;
+  }
+
+  bool isSetWHOA_BUDDY() => this.__isset_wHOA_BUDDY;
+
+  unsetWHOA_BUDDY() {
+    this.__isset_wHOA_BUDDY = false;
+  }
+
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -156,6 +173,8 @@ class TestingUnions implements thrift.TBase {
       case DEPR:
         // ignore: deprecated_member_use
         return this.depr;
+      case WHOA_BUDDY:
+        return this.wHOA_BUDDY;
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
@@ -221,6 +240,14 @@ class TestingUnions implements thrift.TBase {
         }
         break;
 
+      case WHOA_BUDDY:
+        if (value == null) {
+          unsetWHOA_BUDDY();
+        } else {
+          this.wHOA_BUDDY = value as bool;
+        }
+        break;
+
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
@@ -245,6 +272,8 @@ class TestingUnions implements thrift.TBase {
       case DEPR:
         // ignore: deprecated_member_use
         return isSetDepr();
+      case WHOA_BUDDY:
+        return isSetWHOA_BUDDY();
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
@@ -318,6 +347,14 @@ class TestingUnions implements thrift.TBase {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case WHOA_BUDDY:
+          if (field.type == thrift.TType.BOOL) {
+            this.wHOA_BUDDY = iprot.readBool();
+            this.__isset_wHOA_BUDDY = true;
+          } else {
+            thrift.TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           thrift.TProtocolUtil.skip(iprot, field.type);
           break;
@@ -374,6 +411,11 @@ class TestingUnions implements thrift.TBase {
       oprot.writeFieldBegin(_DEPR_FIELD_DESC);
       // ignore: deprecated_member_use
       oprot.writeBool(this.depr);
+      oprot.writeFieldEnd();
+    }
+    if (isSetWHOA_BUDDY()) {
+      oprot.writeFieldBegin(_WHO_A__BUDDY_FIELD_DESC);
+      oprot.writeBool(this.wHOA_BUDDY);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -438,6 +480,12 @@ class TestingUnions implements thrift.TBase {
       ret.write(this.depr);
     }
 
+    if (isSetWHOA_BUDDY()) {
+      ret.write(', ');
+      ret.write('wHOA_BUDDY:');
+      ret.write(this.wHOA_BUDDY);
+    }
+
     ret.write(')');
 
     return ret.toString();
@@ -453,7 +501,8 @@ class TestingUnions implements thrift.TBase {
         DeepCollectionEquality().equals(this.requests, o.requests) &&
         this.bin_field_in_union == o.bin_field_in_union &&
         // ignore: deprecated_member_use
-        this.depr == o.depr;
+        this.depr == o.depr &&
+        this.wHOA_BUDDY == o.wHOA_BUDDY;
     }
     return false;
   }
@@ -469,6 +518,7 @@ class TestingUnions implements thrift.TBase {
     value = (value * 31) ^ this.bin_field_in_union.hashCode;
     // ignore: deprecated_member_use
     value = (value * 31) ^ this.depr.hashCode;
+    value = (value * 31) ^ this.wHOA_BUDDY.hashCode;
     return value;
   }
 
@@ -481,6 +531,7 @@ class TestingUnions implements thrift.TBase {
     Uint8List bin_field_in_union,
     // ignore: deprecated_member_use
     bool depr,
+    bool wHOA_BUDDY,
   }) {
     return TestingUnions()
       ..anID = anID ?? this.anID
@@ -490,7 +541,8 @@ class TestingUnions implements thrift.TBase {
       ..requests = requests ?? this.requests
       ..bin_field_in_union = bin_field_in_union ?? this.bin_field_in_union
       // ignore: deprecated_member_use
-      ..depr = depr ?? this.depr;
+      ..depr = depr ?? this.depr
+      ..wHOA_BUDDY = wHOA_BUDDY ?? this.wHOA_BUDDY;
   }
 
   validate() {
@@ -515,6 +567,9 @@ class TestingUnions implements thrift.TBase {
       setFields++;
     }
     if (isSetDepr()) {
+      setFields++;
+    }
+    if (isSetWHOA_BUDDY()) {
       setFields++;
     }
     if (setFields != 1) {
