@@ -243,7 +243,7 @@ public class FNatsTransportTest {
             handler.onMessage(message);
 
             return null;
-        }).when(conn).publish(any(), (Headers) any(), any());
+        }).when(conn).publish(any(), (String)any(), any());
 
         try {
             FContext fContext = new FContext();
