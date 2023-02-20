@@ -8,6 +8,7 @@ import io.nats.client.Dispatcher;
 import io.nats.client.Message;
 import io.nats.client.MessageHandler;
 import io.nats.client.Options;
+import io.nats.client.impl.Headers;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 import org.junit.Before;
@@ -242,7 +243,7 @@ public class FNatsTransportTest {
             handler.onMessage(message);
 
             return null;
-        }).when(conn).publish(any(), any(), any());
+        }).when(conn).publish(any(), (Headers) any(), any());
 
         try {
             FContext fContext = new FContext();
