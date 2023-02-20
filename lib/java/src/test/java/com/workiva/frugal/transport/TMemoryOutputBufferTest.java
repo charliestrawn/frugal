@@ -1,14 +1,12 @@
 package com.workiva.frugal.transport;
 
 import com.workiva.frugal.util.ProtocolUtils;
-
 import org.apache.thrift.TConfiguration;
 import org.apache.thrift.transport.TTransportException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 

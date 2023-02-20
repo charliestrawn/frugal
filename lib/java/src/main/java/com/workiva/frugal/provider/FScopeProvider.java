@@ -19,7 +19,6 @@ import com.workiva.frugal.transport.FPublisherTransport;
 import com.workiva.frugal.transport.FPublisherTransportFactory;
 import com.workiva.frugal.transport.FSubscriberTransport;
 import com.workiva.frugal.transport.FSubscriberTransportFactory;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -9,14 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
-
 import javax.servlet.ReadListener;
 import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,7 +31,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
@@ -377,11 +374,16 @@ public class FServletTest {
         assertThat(headers.keySet().contains("a"), equalTo(true));
         assertThat(headers.keySet().contains("A"), equalTo(true));
         assertThat(headers.entrySet(), equalTo(expectedHeaders.entrySet()));
-        assertThat(headers.entrySet().contains(new AbstractMap.SimpleEntry<>("a", null)), equalTo(false));
-        assertThat(headers.entrySet().contains(new AbstractMap.SimpleEntry<>("a", Arrays.asList("x"))), equalTo(false));
-        assertThat(headers.entrySet().contains(new AbstractMap.SimpleEntry<>("doesnotexist", Arrays.asList("a1"))), equalTo(false));
-        assertThat(headers.entrySet().contains(new AbstractMap.SimpleEntry<>("a", Arrays.asList("a1"))), equalTo(true));
-        assertThat(headers.entrySet().contains(new AbstractMap.SimpleEntry<>("A", Arrays.asList("a1"))), equalTo(true));
+        assertThat(headers.entrySet().contains(
+                new AbstractMap.SimpleEntry<>("a", null)), equalTo(false));
+        assertThat(headers.entrySet().contains(
+                new AbstractMap.SimpleEntry<>("a", Arrays.asList("x"))), equalTo(false));
+        assertThat(headers.entrySet().contains(
+                new AbstractMap.SimpleEntry<>("doesnotexist", Arrays.asList("a1"))), equalTo(false));
+        assertThat(headers.entrySet().contains(
+                new AbstractMap.SimpleEntry<>("a", Arrays.asList("a1"))), equalTo(true));
+        assertThat(headers.entrySet().contains(
+                new AbstractMap.SimpleEntry<>("A", Arrays.asList("a1"))), equalTo(true));
     }
 
     @Test

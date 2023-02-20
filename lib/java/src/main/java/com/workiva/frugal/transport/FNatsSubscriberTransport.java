@@ -16,7 +16,6 @@ package com.workiva.frugal.transport;
 import com.workiva.frugal.exception.TTransportExceptionType;
 import com.workiva.frugal.protocol.FAsyncCallback;
 import io.nats.client.Connection;
-
 import io.nats.client.Connection.Status;
 import io.nats.client.Dispatcher;
 import org.apache.thrift.TException;
@@ -24,7 +23,6 @@ import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import static com.workiva.frugal.transport.FNatsTransport.FRUGAL_PREFIX;
 
 /**
