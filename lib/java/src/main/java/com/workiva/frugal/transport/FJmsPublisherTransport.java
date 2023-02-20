@@ -17,7 +17,6 @@ import com.workiva.frugal.exception.TTransportExceptionType;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.jms.BytesMessage;
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
@@ -25,7 +24,6 @@ import javax.jms.JMSException;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.Topic;
-
 import static com.workiva.frugal.transport.FNatsTransport.FRUGAL_PREFIX;
 
 /**

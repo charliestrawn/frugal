@@ -1,23 +1,19 @@
 package com.workiva.frugal.server;
-
 import com.workiva.frugal.processor.FProcessor;
 import com.workiva.frugal.protocol.FProtocol;
 import com.workiva.frugal.protocol.FProtocolFactory;
 import com.workiva.frugal.transport.TConfigurationBuilder;
 import com.workiva.frugal.transport.TMemoryOutputBuffer;
-
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.thrift.TConfiguration;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
@@ -32,6 +28,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+
 
 /**
  * Processes POST requests as Frugal requests for a processor.
@@ -83,7 +80,8 @@ public class FJakartaServlet extends HttpServlet {
      * Creates a servlet for the specified processor and input/output protocol
      * factories.
      */
-    public FJakartaServlet(FProcessor processor, FProtocolFactory inProtocolFactory, FProtocolFactory outProtocolFactory) {
+    public FJakartaServlet(FProcessor processor, FProtocolFactory inProtocolFactory,
+                           FProtocolFactory outProtocolFactory) {
         this(processor, inProtocolFactory, outProtocolFactory, DEFAULT_MAX_REQUEST_SIZE);
     }
 
@@ -128,21 +126,23 @@ public class FJakartaServlet extends HttpServlet {
 
     private static Map<String, List<String>> getHeaders(HttpServletRequest req) {
         Map<String, List<String>> headers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        for (Enumeration<String> en = req.getHeaderNames(); en.hasMoreElements();) {
+        for (Enumeration<String> en = req.getHeaderNames(); en.hasMoreElements(); ) {
             String name = en.nextElement();
             headers.put(name, Collections.unmodifiableList(Collections.list(req.getHeaders(name))));
         }
         return Collections.unmodifiableMap(headers);
     }
 
-    private void process(HttpServletRequest req, HttpServletResponse resp, Map<Object, Object> ephemeralProperties) throws ServletException, IOException {
+    private void process(HttpServletRequest req, HttpServletResponse resp, Map<Object, Object> ephemeralProperties)
+            throws IOException {
         byte[] frame;
         try (InputStream decoderIn = Base64.getDecoder().wrap(req.getInputStream());
-                DataInputStream dataIn = new DataInputStream(decoderIn)) {
+              DataInputStream dataIn = new DataInputStream(decoderIn)) {
             try {
                 long size = dataIn.readInt() & 0xffff_ffffL;
                 if (size > requestConfig.getMaxMessageSize()) {
-                    LOGGER.debug("Request size too large. Received: {}, Limit: {}", size, requestConfig.getMaxMessageSize());
+                    LOGGER.debug("Request size too large. Received: {}, Limit: {}", size,
+                            requestConfig.getMaxMessageSize());
                     resp.setStatus(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE);
                     return;
                 }

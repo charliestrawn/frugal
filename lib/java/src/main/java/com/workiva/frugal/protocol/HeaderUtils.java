@@ -19,7 +19,6 @@ import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocolException;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

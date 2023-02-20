@@ -17,7 +17,6 @@ import com.workiva.frugal.exception.TTransportExceptionType;
 import io.nats.client.Connection;
 import io.nats.client.Connection.Status;
 import org.apache.thrift.transport.TTransportException;
-
 import static com.workiva.frugal.transport.FNatsTransport.FRUGAL_PREFIX;
 import static com.workiva.frugal.transport.FNatsTransport.NATS_MAX_MESSAGE_SIZE;
 import static com.workiva.frugal.transport.FNatsTransport.getClosedConditionException;

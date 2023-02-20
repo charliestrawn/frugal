@@ -34,7 +34,6 @@ import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -63,7 +62,7 @@ public class FHttpTransport extends FTransport {
     private final FHttpTransportHeaders requestHeaders;
 
     private FHttpTransport(CloseableHttpClient httpClient, String url, int requestSizeLimit, int responseSizeLimit,
-            FHttpTransportHeaders requestHeaders) {
+                           FHttpTransportHeaders requestHeaders) {
         super();
         this.httpClient = httpClient;
         this.url = url;
@@ -214,7 +213,7 @@ public class FHttpTransport extends FTransport {
         TTransport responseTransport = null;
         if (response != null) {
             TConfiguration responseConfig =
-                TConfigurationBuilder.custom().setMaxMessageSize(responseSizeLimit).build();
+                    TConfigurationBuilder.custom().setMaxMessageSize(responseSizeLimit).build();
             responseTransport = new TMemoryInputTransport(responseConfig, response);
         }
         return responseTransport;
@@ -264,7 +263,8 @@ public class FHttpTransport extends FTransport {
 
     private byte[] makeRequest(FContext context, byte[] requestPayload) throws TTransportException {
         // Encode request payload
-        HttpEntity requestEntity = new Base64EncodingEntity(requestPayload, ContentType.create("application/x-frugal", "utf-8"));
+        HttpEntity requestEntity = new Base64EncodingEntity(requestPayload,
+                ContentType.create("application/x-frugal", "utf-8"));
 
         // Set headers and payload
         HttpPost request = new HttpPost(url);
@@ -340,7 +340,7 @@ public class FHttpTransport extends FTransport {
                 responseBody = new byte[0];
             } else {
                 try (InputStream decoderIn = new Base64InputStream(responseEntity.getContent());
-                        DataInputStream dataIn = new DataInputStream(decoderIn)) {
+                      DataInputStream dataIn = new DataInputStream(decoderIn)) {
                     long size = dataIn.readInt() & 0xffff_ffffL;
                     if (size == 0) {
                         responseBody = null;

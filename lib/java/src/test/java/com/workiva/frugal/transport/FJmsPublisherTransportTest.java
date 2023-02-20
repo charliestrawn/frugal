@@ -4,13 +4,11 @@ package com.workiva.frugal.transport;
 import org.apache.thrift.transport.TTransportException;
 import org.junit.Before;
 import org.junit.Test;
-
 import javax.jms.BytesMessage;
 import javax.jms.Connection;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.Topic;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;

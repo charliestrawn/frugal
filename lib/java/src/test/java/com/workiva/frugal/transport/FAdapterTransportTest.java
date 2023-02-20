@@ -10,11 +10,9 @@ import org.apache.thrift.transport.TTransportException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-
 import java.io.UnsupportedEncodingException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
-
 import static com.workiva.frugal.transport.FAsyncTransportTest.mockFrame;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
