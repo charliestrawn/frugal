@@ -16,7 +16,6 @@ package com.workiva.frugal.provider;
 import com.workiva.frugal.middleware.ServiceMiddleware;
 import com.workiva.frugal.protocol.FProtocolFactory;
 import com.workiva.frugal.transport.FTransport;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

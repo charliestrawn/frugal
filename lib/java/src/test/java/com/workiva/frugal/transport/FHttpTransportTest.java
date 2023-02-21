@@ -25,7 +25,6 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.ConnectException;
@@ -35,7 +34,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -137,7 +135,8 @@ public class FHttpTransportTest {
             byte[] framedResponsePayload = new byte[]{0, 0, 0, 4, 4, 5, 6, 7};
             byte[] responsePayload = new byte[]{4, 5, 6, 7};
             String encodedResponse = Base64.encodeBase64String(framedResponsePayload);
-            StringEntity responseEntity = new StringEntity(encodedResponse, ContentType.create("application/x-frugal", "utf-8"));
+            StringEntity responseEntity = new StringEntity(encodedResponse,
+                    ContentType.create("application/x-frugal", "utf-8"));
             CloseableHttpResponse response = new BasicClosableHttpResponse(statusLine);
             response.setEntity(responseEntity);
 
@@ -152,7 +151,8 @@ public class FHttpTransportTest {
             HttpPost actualRequest = topicCaptor.getValue();
             HttpPost expectedRequest = validRequest(framedRequestPayload, responseSizeLimit);
             assertEquals(actualRequest.getEntity().getContentLength(), expectedRequest.getEntity().getContentLength());
-            assertEquals(EntityUtils.toString(expectedRequest.getEntity()), EntityUtils.toString(actualRequest.getEntity()));
+            assertEquals(EntityUtils.toString(expectedRequest.getEntity()),
+                    EntityUtils.toString(actualRequest.getEntity()));
 
             ByteArrayOutputStream actualOutputStream = new ByteArrayOutputStream();
             actualRequest.getEntity().writeTo(actualOutputStream);
