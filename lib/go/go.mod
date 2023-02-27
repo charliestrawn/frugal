@@ -9,7 +9,7 @@ require (
 	github.com/nats-io/nats.go v1.21.0
 	github.com/nats-io/nuid v1.0.1
 	github.com/sirupsen/logrus v1.9.0
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.2
 )
 
 require (
