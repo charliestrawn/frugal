@@ -3,20 +3,18 @@ package com.workiva.frugal.server;
 import com.workiva.frugal.processor.FProcessor;
 import com.workiva.frugal.protocol.FProtocol;
 import com.workiva.frugal.protocol.FProtocolFactory;
-import org.apache.thrift.TException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InOrder;
-
 import jakarta.servlet.ReadListener;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.WriteListener;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import org.apache.thrift.TException;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,7 +31,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
@@ -125,9 +122,7 @@ public class FJakartaServletTest {
         doReturn("POST").when(mockRequest).getMethod();
         doReturn("HTTP/1.1").when(mockRequest).getProtocol();
         doReturn(Collections.enumeration(Collections.emptyList())).when(mockRequest).getHeaderNames();
-
         doReturn(mockProtocol).when(mockProtocolFactory).getProtocol(any());
-
         doReturn(servletOut).when(mockResponse).getOutputStream();
     }
 
@@ -200,7 +195,7 @@ public class FJakartaServletTest {
 
     @Test
     public void testInputTooShort() throws Exception {
-        byte[] bytes = Base64.getEncoder().encode(new byte[] { 0, 0, 0, 1 });
+        byte[] bytes = Base64.getEncoder().encode(new byte[]{0, 0, 0, 1});
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);
         doReturn(new ProxyServletInputStream(in)).when(mockRequest).getInputStream();
 
@@ -222,7 +217,7 @@ public class FJakartaServletTest {
 
     @Test
     public void testDefaultRequestSize() throws Exception {
-        byte[] bytes = Base64.getEncoder().encode(new byte[] { (byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff });
+        byte[] bytes = Base64.getEncoder().encode(new byte[]{(byte) 0xff, (byte) 0xff, (byte) 0xff, (byte) 0xff});
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);
         doReturn(new ProxyServletInputStream(in)).when(mockRequest).getInputStream();
 
@@ -233,7 +228,7 @@ public class FJakartaServletTest {
 
     @Test
     public void testRequestSize() throws Exception {
-        byte[] bytes = Base64.getEncoder().encode(new byte[] { 0, 0, 0, 2 });
+        byte[] bytes = Base64.getEncoder().encode(new byte[]{0, 0, 0, 2});
         ByteArrayInputStream in = new ByteArrayInputStream(bytes);
         doReturn(new ProxyServletInputStream(in)).when(mockRequest).getInputStream();
 
@@ -378,7 +373,8 @@ public class FJakartaServletTest {
         assertThat(headers.entrySet(), equalTo(expectedHeaders.entrySet()));
         assertThat(headers.entrySet().contains(new AbstractMap.SimpleEntry<>("a", null)), equalTo(false));
         assertThat(headers.entrySet().contains(new AbstractMap.SimpleEntry<>("a", Arrays.asList("x"))), equalTo(false));
-        assertThat(headers.entrySet().contains(new AbstractMap.SimpleEntry<>("doesnotexist", Arrays.asList("a1"))), equalTo(false));
+        assertThat(headers.entrySet().contains(
+                new AbstractMap.SimpleEntry<>("doesnotexist", Arrays.asList("a1"))), equalTo(false));
         assertThat(headers.entrySet().contains(new AbstractMap.SimpleEntry<>("a", Arrays.asList("a1"))), equalTo(true));
         assertThat(headers.entrySet().contains(new AbstractMap.SimpleEntry<>("A", Arrays.asList("a1"))), equalTo(true));
     }

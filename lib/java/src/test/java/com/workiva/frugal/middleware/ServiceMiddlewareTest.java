@@ -3,10 +3,9 @@ package com.workiva.frugal.middleware;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
+import java.lang.reflect.Method;
 import static org.junit.Assert.assertEquals;
 
-import java.lang.reflect.Method;
 
 /**
  * Tests for {@link ServiceMiddleware}.

@@ -16,14 +16,12 @@ package com.workiva.frugal.transport;
 import com.workiva.frugal.FContext;
 import com.workiva.frugal.exception.TTransportExceptionType;
 import com.workiva.frugal.protocol.HeaderUtils;
-
 import org.apache.thrift.TConfiguration;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocolException;
 import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -124,7 +122,7 @@ public abstract class FAsyncTransport extends FTransport {
             }
 
             TConfiguration requestConfig =
-                TConfigurationBuilder.custom().setMaxMessageSize(requestSizeLimit).build();
+                  TConfigurationBuilder.custom().setMaxMessageSize(requestSizeLimit).build();
             return new TMemoryInputTransport(requestConfig, response);
         } finally {
             synchronized (this) {

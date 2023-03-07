@@ -8,16 +8,13 @@ import io.nats.client.Dispatcher;
 import io.nats.client.Message;
 import io.nats.client.MessageHandler;
 import io.nats.client.Options;
-import org.apache.thrift.TConfiguration;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TTransportException;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
 import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
-
 import static com.workiva.frugal.transport.FAsyncTransportTest.mockFrame;
 import static java.util.Objects.requireNonNull;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -113,7 +110,7 @@ public class FNatsTransportTest {
 
         byte[] buff = "helloworld".getBytes();
         transport.flush(buff);
-        verify(conn).publish(subject, null, buff);
+        verify(conn).publish(subject, (String) null, buff);
     }
 
     @Test
@@ -239,12 +236,13 @@ public class FNatsTransportTest {
             Message message = mock(Message.class);
             when(message.getSubject()).thenReturn(replyTo);
             when(message.isStatusMessage()).thenReturn(true);
-            when(message.getStatus()).thenReturn(new io.nats.client.support.Status(io.nats.client.support.Status.NO_RESPONDERS_CODE, null));
+            when(message.getStatus()).thenReturn(
+                    new io.nats.client.support.Status(io.nats.client.support.Status.NO_RESPONDERS_CODE, null));
             when(message.getData()).thenReturn(new byte[0]);
             handler.onMessage(message);
 
             return null;
-        }).when(conn).publish(any(), any(), any());
+        }).when(conn).publish(any(), (String) any(), any());
 
         try {
             FContext fContext = new FContext();

@@ -5,19 +5,16 @@ import com.workiva.frugal.protocol.FProtocol;
 import com.workiva.frugal.protocol.FProtocolFactory;
 import com.workiva.frugal.transport.TConfigurationBuilder;
 import com.workiva.frugal.transport.TMemoryOutputBuffer;
-
 import org.apache.thrift.TConfiguration;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
@@ -140,14 +137,16 @@ public class FServlet extends HttpServlet {
         return Collections.unmodifiableMap(headers);
     }
 
-    private void process(HttpServletRequest req, HttpServletResponse resp, Map<Object, Object> ephemeralProperties) throws ServletException, IOException {
+    private void process(HttpServletRequest req, HttpServletResponse resp, Map<Object, Object> ephemeralProperties)
+            throws IOException {
         byte[] frame;
         try (InputStream decoderIn = Base64.getDecoder().wrap(req.getInputStream());
                 DataInputStream dataIn = new DataInputStream(decoderIn)) {
             try {
                 long size = dataIn.readInt() & 0xffff_ffffL;
                 if (size > requestConfig.getMaxMessageSize()) {
-                    LOGGER.debug("Request size too large. Received: {}, Limit: {}", size, requestConfig.getMaxMessageSize());
+                    LOGGER.debug("Request size too large. Received: {}, Limit: {}", size,
+                            requestConfig.getMaxMessageSize());
                     resp.setStatus(HttpServletResponse.SC_REQUEST_ENTITY_TOO_LARGE);
                     return;
                 }

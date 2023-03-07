@@ -3,7 +3,7 @@ dependencies:
     hosted:
       name: frugal
       url: https://pub.workiva.org
-    version: ^3.16.14
+    version: ^3.16.15
   logging: '>=0.11.2 <2.0.0'
   thrift:
     hosted:
@@ -14,7 +14,7 @@ dependencies:
     path: gen-dart/v1_music
 dev_dependencies:
   build_runner: '>=1.6.2 <3.0.0'
-  build_web_compilers: '>=1.2.0 <3.0.0'
+  build_web_compilers: '>=1.2.0 <4.0.0'
 environment:
   sdk: ^2.11.0
 name: client_example

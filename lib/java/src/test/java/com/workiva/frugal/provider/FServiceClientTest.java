@@ -6,15 +6,12 @@ import com.workiva.frugal.protocol.FProtocolFactory;
 import com.workiva.frugal.transport.FTransport;
 import com.workiva.frugal.transport.TMemoryOutputBuffer;
 import org.apache.thrift.TBase;
-import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TMessage;
 import org.apache.thrift.protocol.TMessageType;
 import org.apache.thrift.transport.TTransport;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;

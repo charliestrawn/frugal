@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.ArgumentCaptor;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +23,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -180,7 +178,7 @@ public class FNatsServerTest {
         server.stop();
         verify(mockExecutorService, times(1)).shutdown();
         verify(mockExecutorService, times(1))
-            .awaitTermination(FNatsServer.DEFAULT_STOP_TIMEOUT_NS, TimeUnit.NANOSECONDS);
+              .awaitTermination(FNatsServer.DEFAULT_STOP_TIMEOUT_NS, TimeUnit.NANOSECONDS);
     }
 
     @Test

@@ -16,7 +16,6 @@ package com.workiva.frugal.processor;
 import com.workiva.frugal.middleware.ServiceMiddleware;
 import com.workiva.frugal.protocol.FProtocol;
 import org.apache.thrift.TException;
-
 import java.util.Map;
 
 /**
