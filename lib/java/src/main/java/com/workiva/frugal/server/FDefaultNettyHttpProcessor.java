@@ -59,6 +59,7 @@ import static io.netty.handler.codec.http.HttpResponseStatus.INTERNAL_SERVER_ERR
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import static org.apache.thrift.TConfiguration.DEFAULT_MAX_MESSAGE_SIZE;
 
 /**
  * Default processor implementation for {@link FNettyHttpProcessor}.
@@ -75,8 +76,6 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 public class FDefaultNettyHttpProcessor implements FNettyHttpProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FDefaultNettyHttpProcessor.class);
-
-    private static final int DEFAULT_MAX_REQUEST_SIZE = TConfiguration.DEFAULT_MAX_MESSAGE_SIZE;
 
     private final FProcessor processor;
     private final FProtocolFactory inProtocolFactory;
@@ -104,7 +103,7 @@ public class FDefaultNettyHttpProcessor implements FNettyHttpProcessor {
      * @return a new processor
      */
     public static FDefaultNettyHttpProcessor of(FProcessor processor, FProtocolFactory protocolFactory) {
-        return new FDefaultNettyHttpProcessor(processor, protocolFactory, protocolFactory, DEFAULT_MAX_REQUEST_SIZE);
+        return new FDefaultNettyHttpProcessor(processor, protocolFactory, protocolFactory, DEFAULT_MAX_MESSAGE_SIZE);
     }
 
     /**
@@ -119,7 +118,7 @@ public class FDefaultNettyHttpProcessor implements FNettyHttpProcessor {
             FProcessor processor,
             FProtocolFactory inProtocolFactory,
             FProtocolFactory outProtocolFactory) {
-        return new FDefaultNettyHttpProcessor(processor, inProtocolFactory, outProtocolFactory, DEFAULT_MAX_REQUEST_SIZE);
+        return new FDefaultNettyHttpProcessor(processor, inProtocolFactory, outProtocolFactory, DEFAULT_MAX_MESSAGE_SIZE);
     }
 
     /**
