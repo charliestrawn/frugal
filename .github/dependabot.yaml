@@ -37,7 +37,7 @@ updates:
       - dependency-name: "*"
         update-types: [ "version-update:semver-major" ]
       - dependency-name: "io.nats:jnats"
-        // Issue fixed in https://github.com/nats-io/nats.java/pull/874
+        # Issue fixed in https://github.com/nats-io/nats.java/pull/874
         versions: ["2.16.9"]
     directory: "/examples/java"
     schedule:
