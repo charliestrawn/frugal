@@ -23,6 +23,12 @@ class VarietyConstants {
   static const int DEFAULT_ID = -1;
   static final int other_default = t_variety.VarietyConstants.DEFAULT_ID;
   static const int thirtyfour = 34;
+  static const int mini53 = -9007199254740991;
+  static const int mini53m1 = -9007199254740992;
+  static const int maxi53 = 9007199254740991;
+  static const int maxi53p1 = 9007199254740992;
+  static const int mini64 = -9223372036854775808;
+  static const int maxi64 = 9223372036854775807;
   static const Map<String, String> MAPCONSTANT = const {
     "hello": "world",
     "goodnight": "moon",
