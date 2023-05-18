@@ -9,6 +9,7 @@ import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:logging/logging.dart' as logging;
 import 'package:thrift/thrift.dart' as thrift;
 import 'package:frugal/frugal.dart' as frugal;
@@ -30,16 +31,16 @@ abstract class FFoo extends t_actual_base_dart.FBaseFoo {
   Future ping(frugal.FContext ctx);
 
   /// Blah the server.
-  Future<int> blah(frugal.FContext ctx, int num, String str, t_variety.Event event);
+  Future<fixnum.Int64> blah(frugal.FContext ctx, int num, String str, t_variety.Event event);
 
   /// oneway methods don't receive a response from the server.
-  Future oneWay(frugal.FContext ctx, int id, Map<int, String> req);
+  Future oneWay(frugal.FContext ctx, fixnum.Int64 id, Map<int, String> req);
 
   Future<Uint8List> bin_method(frugal.FContext ctx, Uint8List bin, String str);
 
-  Future<int> param_modifiers(frugal.FContext ctx, int opt_num, int default_num, int req_num);
+  Future<fixnum.Int64> param_modifiers(frugal.FContext ctx, int opt_num, int default_num, int req_num);
 
-  Future<List<int>> underlying_types_test(frugal.FContext ctx, List<int> list_type, Set<int> set_type);
+  Future<List<fixnum.Int64>> underlying_types_test(frugal.FContext ctx, List<fixnum.Int64> list_type, Set<fixnum.Int64> set_type);
 
   Future<t_validStructs.Thing> getThing(frugal.FContext ctx);
 
@@ -119,11 +120,11 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
   }
   /// Blah the server.
   @override
-  Future<int> blah(frugal.FContext ctx, int num, String str, t_variety.Event event) {
-    return this._methods['blah']([ctx, num, str, event]).then((value) => value as int);
+  Future<fixnum.Int64> blah(frugal.FContext ctx, int num, String str, t_variety.Event event) {
+    return this._methods['blah']([ctx, num, str, event]).then((value) => value as fixnum.Int64);
   }
 
-  Future<int> _blah(frugal.FContext ctx, int num, String str, t_variety.Event event) async {
+  Future<fixnum.Int64> _blah(frugal.FContext ctx, int num, String str, t_variety.Event event) async {
     final args = blah_args();
     args.num = num;
     args.str = str;
@@ -149,11 +150,11 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
   }
   /// oneway methods don't receive a response from the server.
   @override
-  Future oneWay(frugal.FContext ctx, int id, Map<int, String> req) {
+  Future oneWay(frugal.FContext ctx, fixnum.Int64 id, Map<int, String> req) {
     return this._methods['oneWay']([ctx, id, req]);
   }
 
-  Future _oneWay(frugal.FContext ctx, int id, Map<int, String> req) async {
+  Future _oneWay(frugal.FContext ctx, fixnum.Int64 id, Map<int, String> req) async {
     final args = oneWay_args();
     args.id = id;
     args.req = req;
@@ -187,11 +188,11 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
     );
   }
   @override
-  Future<int> param_modifiers(frugal.FContext ctx, int opt_num, int default_num, int req_num) {
-    return this._methods['param_modifiers']([ctx, opt_num, default_num, req_num]).then((value) => value as int);
+  Future<fixnum.Int64> param_modifiers(frugal.FContext ctx, int opt_num, int default_num, int req_num) {
+    return this._methods['param_modifiers']([ctx, opt_num, default_num, req_num]).then((value) => value as fixnum.Int64);
   }
 
-  Future<int> _param_modifiers(frugal.FContext ctx, int opt_num, int default_num, int req_num) async {
+  Future<fixnum.Int64> _param_modifiers(frugal.FContext ctx, int opt_num, int default_num, int req_num) async {
     final args = param_modifiers_args();
     args.opt_num = opt_num;
     args.default_num = default_num;
@@ -210,11 +211,11 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
     );
   }
   @override
-  Future<List<int>> underlying_types_test(frugal.FContext ctx, List<int> list_type, Set<int> set_type) {
-    return this._methods['underlying_types_test']([ctx, list_type, set_type]).then((value) => value as List<int>);
+  Future<List<fixnum.Int64>> underlying_types_test(frugal.FContext ctx, List<fixnum.Int64> list_type, Set<fixnum.Int64> set_type) {
+    return this._methods['underlying_types_test']([ctx, list_type, set_type]).then((value) => value as List<fixnum.Int64>);
   }
 
-  Future<List<int>> _underlying_types_test(frugal.FContext ctx, List<int> list_type, Set<int> set_type) async {
+  Future<List<fixnum.Int64>> _underlying_types_test(frugal.FContext ctx, List<fixnum.Int64> list_type, Set<fixnum.Int64> set_type) async {
     final args = underlying_types_test_args();
     args.list_type = list_type;
     args.set_type = set_type;
@@ -772,7 +773,7 @@ class blah_result implements thrift.TBase {
   static final thrift.TField _AWE_FIELD_DESC = thrift.TField('awe', thrift.TType.STRUCT, 1);
   static final thrift.TField _API_FIELD_DESC = thrift.TField('api', thrift.TType.STRUCT, 2);
 
-  int _success;
+  fixnum.Int64 _success;
   static const int SUCCESS = 0;
   t_variety.AwesomeException _awe;
   static const int AWE = 1;
@@ -781,9 +782,9 @@ class blah_result implements thrift.TBase {
 
   bool __isset_success = false;
 
-  int get success => this._success;
+  fixnum.Int64 get success => this._success;
 
-  set success(int success) {
+  set success(fixnum.Int64 success) {
     this._success = success;
     this.__isset_success = true;
   }
@@ -839,7 +840,7 @@ class blah_result implements thrift.TBase {
         if (value == null) {
           unsetSuccess();
         } else {
-          this.success = value as int;
+          this.success = value as fixnum.Int64;
         }
         break;
 
@@ -888,7 +889,7 @@ class blah_result implements thrift.TBase {
       switch (field.id) {
         case SUCCESS:
           if (field.type == thrift.TType.I64) {
-            this.success = iprot.readI64();
+            this.success = iprot.readInt64();
             this.__isset_success = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
@@ -928,7 +929,7 @@ class blah_result implements thrift.TBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     if (isSetSuccess()) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      oprot.writeI64(this.success);
+      oprot.writeInt64(this.success);
       oprot.writeFieldEnd();
     }
     if (isSetAwe() && this.awe != null) {
@@ -999,7 +1000,7 @@ class blah_result implements thrift.TBase {
   }
 
   blah_result clone({
-    int success,
+    fixnum.Int64 success,
     t_variety.AwesomeException awe,
     t_actual_base_dart.api_exception api,
   }) {
@@ -1018,16 +1019,16 @@ class oneWay_args implements thrift.TBase {
   static final thrift.TField _ID_FIELD_DESC = thrift.TField('id', thrift.TType.I64, 1);
   static final thrift.TField _REQ_FIELD_DESC = thrift.TField('req', thrift.TType.MAP, 2);
 
-  int _id = 0;
+  fixnum.Int64 _id = fixnum.Int64.ZERO;
   static const int ID = 1;
   Map<int, String> _req;
   static const int REQ = 2;
 
   bool __isset_id = false;
 
-  int get id => this._id;
+  fixnum.Int64 get id => this._id;
 
-  set id(int id) {
+  set id(fixnum.Int64 id) {
     this._id = id;
     this.__isset_id = true;
   }
@@ -1069,7 +1070,7 @@ class oneWay_args implements thrift.TBase {
         if (value == null) {
           unsetId();
         } else {
-          this.id = value as int;
+          this.id = value as fixnum.Int64;
         }
         break;
 
@@ -1108,7 +1109,7 @@ class oneWay_args implements thrift.TBase {
       switch (field.id) {
         case ID:
           if (field.type == thrift.TType.I64) {
-            this.id = iprot.readI64();
+            this.id = iprot.readInt64();
             this.__isset_id = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
@@ -1145,7 +1146,7 @@ class oneWay_args implements thrift.TBase {
 
     oprot.writeStructBegin(_STRUCT_DESC);
     oprot.writeFieldBegin(_ID_FIELD_DESC);
-    oprot.writeI64(this.id);
+    oprot.writeInt64(this.id);
     oprot.writeFieldEnd();
     if (this.req != null) {
       oprot.writeFieldBegin(_REQ_FIELD_DESC);
@@ -1199,7 +1200,7 @@ class oneWay_args implements thrift.TBase {
   }
 
   oneWay_args clone({
-    int id,
+    fixnum.Int64 id,
     Map<int, String> req,
   }) {
     return oneWay_args()
@@ -1833,14 +1834,14 @@ class param_modifiers_result implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('param_modifiers_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.I64, 0);
 
-  int _success;
+  fixnum.Int64 _success;
   static const int SUCCESS = 0;
 
   bool __isset_success = false;
 
-  int get success => this._success;
+  fixnum.Int64 get success => this._success;
 
-  set success(int success) {
+  set success(fixnum.Int64 success) {
     this._success = success;
     this.__isset_success = true;
   }
@@ -1868,7 +1869,7 @@ class param_modifiers_result implements thrift.TBase {
         if (value == null) {
           unsetSuccess();
         } else {
-          this.success = value as int;
+          this.success = value as fixnum.Int64;
         }
         break;
 
@@ -1897,7 +1898,7 @@ class param_modifiers_result implements thrift.TBase {
       switch (field.id) {
         case SUCCESS:
           if (field.type == thrift.TType.I64) {
-            this.success = iprot.readI64();
+            this.success = iprot.readInt64();
             this.__isset_success = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
@@ -1921,7 +1922,7 @@ class param_modifiers_result implements thrift.TBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     if (isSetSuccess()) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      oprot.writeI64(this.success);
+      oprot.writeInt64(this.success);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -1958,7 +1959,7 @@ class param_modifiers_result implements thrift.TBase {
   }
 
   param_modifiers_result clone({
-    int success,
+    fixnum.Int64 success,
   }) {
     return param_modifiers_result()
       ..success = success ?? this.success;
@@ -1973,15 +1974,15 @@ class underlying_types_test_args implements thrift.TBase {
   static final thrift.TField _LIST_TYPE_FIELD_DESC = thrift.TField('list_type', thrift.TType.LIST, 1);
   static final thrift.TField _SET_TYPE_FIELD_DESC = thrift.TField('set_type', thrift.TType.SET, 2);
 
-  List<int> _list_type;
+  List<fixnum.Int64> _list_type;
   static const int LIST_TYPE = 1;
-  Set<int> _set_type;
+  Set<fixnum.Int64> _set_type;
   static const int SET_TYPE = 2;
 
 
-  List<int> get list_type => this._list_type;
+  List<fixnum.Int64> get list_type => this._list_type;
 
-  set list_type(List<int> list_type) {
+  set list_type(List<fixnum.Int64> list_type) {
     this._list_type = list_type;
   }
 
@@ -1991,9 +1992,9 @@ class underlying_types_test_args implements thrift.TBase {
     this.list_type = null;
   }
 
-  Set<int> get set_type => this._set_type;
+  Set<fixnum.Int64> get set_type => this._set_type;
 
-  set set_type(Set<int> set_type) {
+  set set_type(Set<fixnum.Int64> set_type) {
     this._set_type = set_type;
   }
 
@@ -2022,7 +2023,7 @@ class underlying_types_test_args implements thrift.TBase {
         if (value == null) {
           unsetList_type();
         } else {
-          this.list_type = value as List<int>;
+          this.list_type = value as List<fixnum.Int64>;
         }
         break;
 
@@ -2030,7 +2031,7 @@ class underlying_types_test_args implements thrift.TBase {
         if (value == null) {
           unsetSet_type();
         } else {
-          this.set_type = value as Set<int>;
+          this.set_type = value as Set<fixnum.Int64>;
         }
         break;
 
@@ -2062,9 +2063,9 @@ class underlying_types_test_args implements thrift.TBase {
         case LIST_TYPE:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem73 = iprot.readListBegin();
-            this.list_type = List<int>();
+            this.list_type = List<fixnum.Int64>();
             for(int elem75 = 0; elem75 < elem73.length; ++elem75) {
-              int elem74 = iprot.readI64();
+              fixnum.Int64 elem74 = iprot.readInt64();
               this.list_type.add(elem74);
             }
             iprot.readListEnd();
@@ -2075,9 +2076,9 @@ class underlying_types_test_args implements thrift.TBase {
         case SET_TYPE:
           if (field.type == thrift.TType.SET) {
             thrift.TSet elem76 = iprot.readSetBegin();
-            this.set_type = Set<int>();
+            this.set_type = Set<fixnum.Int64>();
             for(int elem78 = 0; elem78 < elem76.length; ++elem78) {
-              int elem77 = iprot.readI64();
+              fixnum.Int64 elem77 = iprot.readInt64();
               this.set_type.add(elem77);
             }
             iprot.readSetEnd();
@@ -2105,7 +2106,7 @@ class underlying_types_test_args implements thrift.TBase {
       oprot.writeFieldBegin(_LIST_TYPE_FIELD_DESC);
       oprot.writeListBegin(thrift.TList(thrift.TType.I64, this.list_type.length));
       for(var elem79 in this.list_type) {
-        oprot.writeI64(elem79);
+        oprot.writeInt64(elem79);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
@@ -2114,7 +2115,7 @@ class underlying_types_test_args implements thrift.TBase {
       oprot.writeFieldBegin(_SET_TYPE_FIELD_DESC);
       oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, this.set_type.length));
       for(var elem80 in this.set_type) {
-        oprot.writeI64(elem80);
+        oprot.writeInt64(elem80);
       }
       oprot.writeSetEnd();
       oprot.writeFieldEnd();
@@ -2165,8 +2166,8 @@ class underlying_types_test_args implements thrift.TBase {
   }
 
   underlying_types_test_args clone({
-    List<int> list_type,
-    Set<int> set_type,
+    List<fixnum.Int64> list_type,
+    Set<fixnum.Int64> set_type,
   }) {
     return underlying_types_test_args()
       ..list_type = list_type ?? this.list_type
@@ -2181,13 +2182,13 @@ class underlying_types_test_result implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('underlying_types_test_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.LIST, 0);
 
-  List<int> _success;
+  List<fixnum.Int64> _success;
   static const int SUCCESS = 0;
 
 
-  List<int> get success => this._success;
+  List<fixnum.Int64> get success => this._success;
 
-  set success(List<int> success) {
+  set success(List<fixnum.Int64> success) {
     this._success = success;
   }
 
@@ -2214,7 +2215,7 @@ class underlying_types_test_result implements thrift.TBase {
         if (value == null) {
           unsetSuccess();
         } else {
-          this.success = value as List<int>;
+          this.success = value as List<fixnum.Int64>;
         }
         break;
 
@@ -2244,9 +2245,9 @@ class underlying_types_test_result implements thrift.TBase {
         case SUCCESS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem81 = iprot.readListBegin();
-            this.success = List<int>();
+            this.success = List<fixnum.Int64>();
             for(int elem83 = 0; elem83 < elem81.length; ++elem83) {
-              int elem82 = iprot.readI64();
+              fixnum.Int64 elem82 = iprot.readInt64();
               this.success.add(elem82);
             }
             iprot.readListEnd();
@@ -2274,7 +2275,7 @@ class underlying_types_test_result implements thrift.TBase {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeListBegin(thrift.TList(thrift.TType.I64, this.success.length));
       for(var elem84 in this.success) {
-        oprot.writeI64(elem84);
+        oprot.writeInt64(elem84);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
@@ -2317,7 +2318,7 @@ class underlying_types_test_result implements thrift.TBase {
   }
 
   underlying_types_test_result clone({
-    List<int> success,
+    List<fixnum.Int64> success,
   }) {
     return underlying_types_test_result()
       ..success = success ?? this.success;

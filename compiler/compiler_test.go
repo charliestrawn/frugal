@@ -75,7 +75,7 @@ func TestValidDartFrugalCompiler(t *testing.T) {
 func TestValidDartUseInt64(t *testing.T) {
 	options := compiler.Options{
 		File:    frugalGenFile,
-		Gen:     "dart",
+		Gen:     "dart:use_int64",
 		Out:     outputDir + "/int64",
 		Delim:   delim,
 		Recurse: true,

@@ -6,6 +6,7 @@
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:thrift/thrift.dart' as thrift;
 import 'package:variety/variety.dart' as t_variety;
 import 'package:actual_base_dart/actual_base_dart.dart' as t_actual_base_dart;
@@ -33,7 +34,7 @@ class EventWrapper implements thrift.TBase {
   static final thrift.TField _EVENT_MAP_DEFAULT_FIELD_DESC = thrift.TField('EventMapDefault', thrift.TType.MAP, 15);
   static final thrift.TField _EVENT_SET_DEFAULT_FIELD_DESC = thrift.TField('EventSetDefault', thrift.TType.SET, 16);
 
-  int _iD;
+  fixnum.Int64 _iD;
   static const int ID = 1;
   t_variety.Event _ev;
   static const int EV = 2;
@@ -41,7 +42,7 @@ class EventWrapper implements thrift.TBase {
   static const int EVENTS = 3;
   Set<t_variety.Event> _events2;
   static const int EVENTS2 = 4;
-  Map<int, t_variety.Event> _eventMap;
+  Map<fixnum.Int64, t_variety.Event> _eventMap;
   static const int EVENTMAP = 5;
   List<List<int>> _nums;
   static const int NUMS = 6;
@@ -69,7 +70,7 @@ class EventWrapper implements thrift.TBase {
   static const int DEPRLIST = 13;
   List<t_variety.Event> _eventsDefault;
   static const int EVENTSDEFAULT = 14;
-  Map<int, t_variety.Event> _eventMapDefault;
+  Map<fixnum.Int64, t_variety.Event> _eventMapDefault;
   static const int EVENTMAPDEFAULT = 15;
   Set<t_variety.Event> _eventSetDefault;
   static const int EVENTSETDEFAULT = 16;
@@ -87,9 +88,9 @@ class EventWrapper implements thrift.TBase {
     ]);
   }
 
-  int get iD => this._iD;
+  fixnum.Int64 get iD => this._iD;
 
-  set iD(int iD) {
+  set iD(fixnum.Int64 iD) {
     this._iD = iD;
     this.__isset_iD = true;
   }
@@ -136,9 +137,9 @@ class EventWrapper implements thrift.TBase {
     this.events2 = null;
   }
 
-  Map<int, t_variety.Event> get eventMap => this._eventMap;
+  Map<fixnum.Int64, t_variety.Event> get eventMap => this._eventMap;
 
-  set eventMap(Map<int, t_variety.Event> eventMap) {
+  set eventMap(Map<fixnum.Int64, t_variety.Event> eventMap) {
     this._eventMap = eventMap;
   }
 
@@ -276,9 +277,9 @@ class EventWrapper implements thrift.TBase {
     this.eventsDefault = null;
   }
 
-  Map<int, t_variety.Event> get eventMapDefault => this._eventMapDefault;
+  Map<fixnum.Int64, t_variety.Event> get eventMapDefault => this._eventMapDefault;
 
-  set eventMapDefault(Map<int, t_variety.Event> eventMapDefault) {
+  set eventMapDefault(Map<fixnum.Int64, t_variety.Event> eventMapDefault) {
     this._eventMapDefault = eventMapDefault;
   }
 
@@ -350,7 +351,7 @@ class EventWrapper implements thrift.TBase {
         if (value == null) {
           unsetID();
         } else {
-          this.iD = value as int;
+          this.iD = value as fixnum.Int64;
         }
         break;
 
@@ -382,7 +383,7 @@ class EventWrapper implements thrift.TBase {
         if (value == null) {
           unsetEventMap();
         } else {
-          this.eventMap = value as Map<int, t_variety.Event>;
+          this.eventMap = value as Map<fixnum.Int64, t_variety.Event>;
         }
         break;
 
@@ -465,7 +466,7 @@ class EventWrapper implements thrift.TBase {
         if (value == null) {
           unsetEventMapDefault();
         } else {
-          this.eventMapDefault = value as Map<int, t_variety.Event>;
+          this.eventMapDefault = value as Map<fixnum.Int64, t_variety.Event>;
         }
         break;
 
@@ -535,7 +536,7 @@ class EventWrapper implements thrift.TBase {
       switch (field.id) {
         case ID:
           if (field.type == thrift.TType.I64) {
-            this.iD = iprot.readI64();
+            this.iD = iprot.readInt64();
             this.__isset_iD = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
@@ -580,9 +581,9 @@ class EventWrapper implements thrift.TBase {
         case EVENTMAP:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem27 = iprot.readMapBegin();
-            this.eventMap = Map<int, t_variety.Event>();
+            this.eventMap = Map<fixnum.Int64, t_variety.Event>();
             for(int elem29 = 0; elem29 < elem27.length; ++elem29) {
-              int elem30 = iprot.readI64();
+              fixnum.Int64 elem30 = iprot.readInt64();
               t_variety.Event elem28 = t_variety.Event();
               elem28.read(iprot);
               this.eventMap[elem30] = elem28;
@@ -696,9 +697,9 @@ class EventWrapper implements thrift.TBase {
         case EVENTMAPDEFAULT:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem46 = iprot.readMapBegin();
-            this.eventMapDefault = Map<int, t_variety.Event>();
+            this.eventMapDefault = Map<fixnum.Int64, t_variety.Event>();
             for(int elem48 = 0; elem48 < elem46.length; ++elem48) {
-              int elem49 = iprot.readI64();
+              fixnum.Int64 elem49 = iprot.readInt64();
               t_variety.Event elem47 = t_variety.Event();
               elem47.read(iprot);
               this.eventMapDefault[elem49] = elem47;
@@ -740,7 +741,7 @@ class EventWrapper implements thrift.TBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     if (isSetID()) {
       oprot.writeFieldBegin(_ID_FIELD_DESC);
-      oprot.writeI64(this.iD);
+      oprot.writeInt64(this.iD);
       oprot.writeFieldEnd();
     }
     if (this.ev != null) {
@@ -770,7 +771,7 @@ class EventWrapper implements thrift.TBase {
       oprot.writeFieldBegin(_EVENT_MAP_FIELD_DESC);
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, this.eventMap.length));
       for(var elem55 in this.eventMap.keys) {
-        oprot.writeI64(elem55);
+        oprot.writeInt64(elem55);
         eventMap[elem55].write(oprot);
       }
       oprot.writeMapEnd();
@@ -847,7 +848,7 @@ class EventWrapper implements thrift.TBase {
       oprot.writeFieldBegin(_EVENT_MAP_DEFAULT_FIELD_DESC);
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, this.eventMapDefault.length));
       for(var elem61 in this.eventMapDefault.keys) {
-        oprot.writeI64(elem61);
+        oprot.writeInt64(elem61);
         eventMapDefault[elem61].write(oprot);
       }
       oprot.writeMapEnd();
@@ -1054,11 +1055,11 @@ class EventWrapper implements thrift.TBase {
   }
 
   EventWrapper clone({
-    int iD,
+    fixnum.Int64 iD,
     t_variety.Event ev,
     List<t_variety.Event> events,
     Set<t_variety.Event> events2,
-    Map<int, t_variety.Event> eventMap,
+    Map<fixnum.Int64, t_variety.Event> eventMap,
     List<List<int>> nums,
     List<int> enums,
     bool aBoolField,
@@ -1071,7 +1072,7 @@ class EventWrapper implements thrift.TBase {
     // ignore: deprecated_member_use
     List<bool> deprList,
     List<t_variety.Event> eventsDefault,
-    Map<int, t_variety.Event> eventMapDefault,
+    Map<fixnum.Int64, t_variety.Event> eventMapDefault,
     Set<t_variety.Event> eventSetDefault,
   }) {
     return EventWrapper()

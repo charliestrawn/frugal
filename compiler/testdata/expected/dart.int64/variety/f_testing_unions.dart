@@ -6,6 +6,7 @@
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:thrift/thrift.dart' as thrift;
 import 'package:variety/variety.dart' as t_variety;
 import 'package:actual_base_dart/actual_base_dart.dart' as t_actual_base_dart;
@@ -25,7 +26,7 @@ class TestingUnions implements thrift.TBase {
   static final thrift.TField _DEPR_FIELD_DESC = thrift.TField('depr', thrift.TType.BOOL, 7);
   static final thrift.TField _WHO_A__BUDDY_FIELD_DESC = thrift.TField('WHOA_BUDDY', thrift.TType.BOOL, 8);
 
-  int _anID;
+  fixnum.Int64 _anID;
   static const int ANID = 1;
   String _aString;
   static const int ASTRING = 2;
@@ -50,9 +51,9 @@ class TestingUnions implements thrift.TBase {
   bool __isset_depr = false;
   bool __isset_wHOA_BUDDY = false;
 
-  int get anID => this._anID;
+  fixnum.Int64 get anID => this._anID;
 
-  set anID(int anID) {
+  set anID(fixnum.Int64 anID) {
     this._anID = anID;
     this.__isset_anID = true;
   }
@@ -187,7 +188,7 @@ class TestingUnions implements thrift.TBase {
         if (value == null) {
           unsetAnID();
         } else {
-          this.anID = value as int;
+          this.anID = value as fixnum.Int64;
         }
         break;
 
@@ -288,7 +289,7 @@ class TestingUnions implements thrift.TBase {
       switch (field.id) {
         case ANID:
           if (field.type == thrift.TType.I64) {
-            this.anID = iprot.readI64();
+            this.anID = iprot.readInt64();
             this.__isset_anID = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
@@ -373,7 +374,7 @@ class TestingUnions implements thrift.TBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     if (isSetAnID()) {
       oprot.writeFieldBegin(_AN_ID_FIELD_DESC);
-      oprot.writeI64(this.anID);
+      oprot.writeInt64(this.anID);
       oprot.writeFieldEnd();
     }
     if (isSetAString() && this.aString != null) {
@@ -523,7 +524,7 @@ class TestingUnions implements thrift.TBase {
   }
 
   TestingUnions clone({
-    int anID,
+    fixnum.Int64 anID,
     String aString,
     int someotherthing,
     int anInt16,

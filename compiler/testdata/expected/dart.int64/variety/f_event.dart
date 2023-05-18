@@ -6,6 +6,7 @@
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:thrift/thrift.dart' as thrift;
 import 'package:variety/variety.dart' as t_variety;
 import 'package:actual_base_dart/actual_base_dart.dart' as t_actual_base_dart;
@@ -23,7 +24,7 @@ class Event implements thrift.TBase {
   static final thrift.TField _YE_S__NO_FIELD_DESC = thrift.TField('YES_NO', thrift.TType.BOOL, 3);
 
   /// ID is a unique identifier for an event.
-  int _iD = 0;
+  fixnum.Int64 _iD = fixnum.Int64.ZERO;
   static const int ID = 1;
   /// Message contains the event payload.
   String _message;
@@ -39,10 +40,10 @@ class Event implements thrift.TBase {
   }
 
   /// ID is a unique identifier for an event.
-  int get iD => this._iD;
+  fixnum.Int64 get iD => this._iD;
 
   /// ID is a unique identifier for an event.
-  set iD(int iD) {
+  set iD(fixnum.Int64 iD) {
     this._iD = iD;
     this.__isset_iD = true;
   }
@@ -101,7 +102,7 @@ class Event implements thrift.TBase {
         if (value == null) {
           unsetID();
         } else {
-          this.iD = value as int;
+          this.iD = value as fixnum.Int64;
         }
         break;
 
@@ -150,7 +151,7 @@ class Event implements thrift.TBase {
       switch (field.id) {
         case ID:
           if (field.type == thrift.TType.I64) {
-            this.iD = iprot.readI64();
+            this.iD = iprot.readInt64();
             this.__isset_iD = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
@@ -188,7 +189,7 @@ class Event implements thrift.TBase {
 
     oprot.writeStructBegin(_STRUCT_DESC);
     oprot.writeFieldBegin(_ID_FIELD_DESC);
-    oprot.writeI64(this.iD);
+    oprot.writeInt64(this.iD);
     oprot.writeFieldEnd();
     if (this.message != null) {
       oprot.writeFieldBegin(_MESSAGE_FIELD_DESC);
@@ -246,7 +247,7 @@ class Event implements thrift.TBase {
   }
 
   Event clone({
-    int iD,
+    fixnum.Int64 iD,
     String message,
     bool yES_NO,
   }) {

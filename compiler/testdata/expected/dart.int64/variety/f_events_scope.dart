@@ -69,11 +69,11 @@ class EventsPublisher {
   }
 
 
-  Future publishSomeInt(frugal.FContext ctx, String user, int req) {
+  Future publishSomeInt(frugal.FContext ctx, String user, fixnum.Int64 req) {
     return this._methods['SomeInt']([ctx, user, req]);
   }
 
-  Future _publishSomeInt(frugal.FContext ctx, String user, int req) async {
+  Future _publishSomeInt(frugal.FContext ctx, String user, fixnum.Int64 req) async {
     ctx.addRequestHeader('_topic_user', user);
     var op = 'SomeInt';
     var prefix = 'foo.$user.';
@@ -83,7 +83,7 @@ class EventsPublisher {
     var msg = thrift.TMessage(op, thrift.TMessageType.CALL, 0);
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
-    oprot.writeI64(req);
+    oprot.writeInt64(req);
     oprot.writeMessageEnd();
     // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
     // ignore: await_only_futures
@@ -113,11 +113,11 @@ class EventsPublisher {
   }
 
 
-  Future publishSomeList(frugal.FContext ctx, String user, List<Map<int, t_variety.Event>> req) {
+  Future publishSomeList(frugal.FContext ctx, String user, List<Map<fixnum.Int64, t_variety.Event>> req) {
     return this._methods['SomeList']([ctx, user, req]);
   }
 
-  Future _publishSomeList(frugal.FContext ctx, String user, List<Map<int, t_variety.Event>> req) async {
+  Future _publishSomeList(frugal.FContext ctx, String user, List<Map<fixnum.Int64, t_variety.Event>> req) async {
     ctx.addRequestHeader('_topic_user', user);
     var op = 'SomeList';
     var prefix = 'foo.$user.';
@@ -131,7 +131,7 @@ class EventsPublisher {
     for(var elem85 in req) {
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem85.length));
       for(var elem86 in elem85.keys) {
-        oprot.writeI64(elem86);
+        oprot.writeInt64(elem86);
         elem85[elem86].write(oprot);
       }
       oprot.writeMapEnd();
@@ -191,7 +191,7 @@ class EventsSubscriber {
   }
 
 
-  Future<frugal.FSubscription> subscribeSomeInt(String user, dynamic oni64(frugal.FContext ctx, int req)) async {
+  Future<frugal.FSubscription> subscribeSomeInt(String user, dynamic oni64(frugal.FContext ctx, fixnum.Int64 req)) async {
     var op = 'SomeInt';
     var prefix = 'foo.$user.';
     var topic = '${prefix}Events$delimiter$op';
@@ -200,7 +200,7 @@ class EventsSubscriber {
     return frugal.FSubscription(topic, transport);
   }
 
-  frugal.FAsyncCallback _recvSomeInt(String op, frugal.FProtocolFactory protocolFactory, dynamic oni64(frugal.FContext ctx, int req)) {
+  frugal.FAsyncCallback _recvSomeInt(String op, frugal.FProtocolFactory protocolFactory, dynamic oni64(frugal.FContext ctx, fixnum.Int64 req)) {
     frugal.FMethod method = frugal.FMethod(oni64, 'Events', 'subscribei64', this._middleware);
     callbackSomeInt(thrift.TTransport transport) {
       var iprot = protocolFactory.getProtocol(transport);
@@ -212,7 +212,7 @@ class EventsSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      int req = iprot.readI64();
+      fixnum.Int64 req = iprot.readInt64();
       iprot.readMessageEnd();
       method([ctx, req]);
     }
@@ -249,7 +249,7 @@ class EventsSubscriber {
   }
 
 
-  Future<frugal.FSubscription> subscribeSomeList(String user, dynamic onlist(frugal.FContext ctx, List<Map<int, t_variety.Event>> req)) async {
+  Future<frugal.FSubscription> subscribeSomeList(String user, dynamic onlist(frugal.FContext ctx, List<Map<fixnum.Int64, t_variety.Event>> req)) async {
     var op = 'SomeList';
     var prefix = 'foo.$user.';
     var topic = '${prefix}Events$delimiter$op';
@@ -258,7 +258,7 @@ class EventsSubscriber {
     return frugal.FSubscription(topic, transport);
   }
 
-  frugal.FAsyncCallback _recvSomeList(String op, frugal.FProtocolFactory protocolFactory, dynamic onlist(frugal.FContext ctx, List<Map<int, t_variety.Event>> req)) {
+  frugal.FAsyncCallback _recvSomeList(String op, frugal.FProtocolFactory protocolFactory, dynamic onlist(frugal.FContext ctx, List<Map<fixnum.Int64, t_variety.Event>> req)) {
     frugal.FMethod method = frugal.FMethod(onlist, 'Events', 'subscribelist', this._middleware);
     callbackSomeList(thrift.TTransport transport) {
       var iprot = protocolFactory.getProtocol(transport);
@@ -271,12 +271,12 @@ class EventsSubscriber {
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
       thrift.TList elem87 = iprot.readListBegin();
-      List<Map<int, t_variety.Event>> req = List<Map<int, t_variety.Event>>();
+      List<Map<fixnum.Int64, t_variety.Event>> req = List<Map<fixnum.Int64, t_variety.Event>>();
       for(int elem93 = 0; elem93 < elem87.length; ++elem93) {
         thrift.TMap elem89 = iprot.readMapBegin();
-        Map<int, t_variety.Event> elem88 = Map<int, t_variety.Event>();
+        Map<fixnum.Int64, t_variety.Event> elem88 = Map<fixnum.Int64, t_variety.Event>();
         for(int elem91 = 0; elem91 < elem89.length; ++elem91) {
-          int elem92 = iprot.readI64();
+          fixnum.Int64 elem92 = iprot.readInt64();
           t_variety.Event elem90 = t_variety.Event();
           elem90.read(iprot);
           elem88[elem92] = elem90;

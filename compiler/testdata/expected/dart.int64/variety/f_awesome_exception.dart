@@ -6,6 +6,7 @@
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:thrift/thrift.dart' as thrift;
 import 'package:variety/variety.dart' as t_variety;
 import 'package:actual_base_dart/actual_base_dart.dart' as t_actual_base_dart;
@@ -21,7 +22,7 @@ class AwesomeException extends Error implements thrift.TBase {
   static final thrift.TField _DEPR_FIELD_DESC = thrift.TField('depr', thrift.TType.BOOL, 3);
 
   /// ID is a unique identifier for an awesome exception.
-  int _iD = 0;
+  fixnum.Int64 _iD = fixnum.Int64.ZERO;
   static const int ID = 1;
   /// Reason contains the error message.
   String _reason;
@@ -35,10 +36,10 @@ class AwesomeException extends Error implements thrift.TBase {
   bool __isset_depr = false;
 
   /// ID is a unique identifier for an awesome exception.
-  int get iD => this._iD;
+  fixnum.Int64 get iD => this._iD;
 
   /// ID is a unique identifier for an awesome exception.
-  set iD(int iD) {
+  set iD(fixnum.Int64 iD) {
     this._iD = iD;
     this.__isset_iD = true;
   }
@@ -102,7 +103,7 @@ class AwesomeException extends Error implements thrift.TBase {
         if (value == null) {
           unsetID();
         } else {
-          this.iD = value as int;
+          this.iD = value as fixnum.Int64;
         }
         break;
 
@@ -153,7 +154,7 @@ class AwesomeException extends Error implements thrift.TBase {
       switch (field.id) {
         case ID:
           if (field.type == thrift.TType.I64) {
-            this.iD = iprot.readI64();
+            this.iD = iprot.readInt64();
             this.__isset_iD = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
@@ -192,7 +193,7 @@ class AwesomeException extends Error implements thrift.TBase {
 
     oprot.writeStructBegin(_STRUCT_DESC);
     oprot.writeFieldBegin(_ID_FIELD_DESC);
-    oprot.writeI64(this.iD);
+    oprot.writeInt64(this.iD);
     oprot.writeFieldEnd();
     if (this.reason != null) {
       oprot.writeFieldBegin(_REASON_FIELD_DESC);
@@ -254,7 +255,7 @@ class AwesomeException extends Error implements thrift.TBase {
   }
 
   AwesomeException clone({
-    int iD,
+    fixnum.Int64 iD,
     String reason,
     // ignore: deprecated_member_use
     bool depr,

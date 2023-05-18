@@ -4,9 +4,11 @@
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
 import 'dart:convert' show utf8;
+import 'package:fixnum/fixnum.dart' as fixnum;
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:thrift/thrift.dart' as thrift;
 import 'package:actual_base_dart/actual_base_dart.dart' as t_actual_base_dart;
 

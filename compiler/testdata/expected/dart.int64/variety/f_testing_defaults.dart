@@ -6,6 +6,7 @@
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
+import 'package:fixnum/fixnum.dart' as fixnum;
 import 'package:thrift/thrift.dart' as thrift;
 import 'package:variety/variety.dart' as t_variety;
 import 'package:actual_base_dart/actual_base_dart.dart' as t_actual_base_dart;
@@ -35,13 +36,13 @@ class TestingDefaults implements thrift.TBase {
   static final thrift.TField _STATUS_FIELD_DESC = thrift.TField('status', thrift.TType.I32, 17);
   static final thrift.TField _BASE_STATUS_FIELD_DESC = thrift.TField('base_status', thrift.TType.I32, 18);
 
-  int _iD2;
+  fixnum.Int64 _iD2;
   static const int ID2 = 1;
   t_variety.Event _ev1;
   static const int EV1 = 2;
   t_variety.Event _ev2;
   static const int EV2 = 3;
-  int _iD = 0;
+  fixnum.Int64 _iD = fixnum.Int64.ZERO;
   static const int ID = 4;
   String _thing;
   static const int THING = 5;
@@ -49,7 +50,7 @@ class TestingDefaults implements thrift.TBase {
   static const int THING2 = 6;
   List<int> _listfield;
   static const int LISTFIELD = 7;
-  int _iD3 = 0;
+  fixnum.Int64 _iD3 = fixnum.Int64.ZERO;
   static const int ID3 = 8;
   Uint8List _bin_field;
   static const int BIN_FIELD = 9;
@@ -86,9 +87,9 @@ class TestingDefaults implements thrift.TBase {
       ..iD = t_variety.VarietyConstants.DEFAULT_ID
       ..message = "a message";
     this._ev2 = t_variety.Event()
-      ..iD = 5
+      ..iD = fixnum.Int64(5)
       ..message = "a message2";
-    this._iD = -2;
+    this._iD = fixnum.Int64(-2);
     this._thing = "a constant";
     this._thing2 = "another constant";
     this._listfield = [
@@ -121,9 +122,9 @@ class TestingDefaults implements thrift.TBase {
     this._base_status = t_actual_base_dart.base_health_condition.FAIL;
   }
 
-  int get iD2 => this._iD2;
+  fixnum.Int64 get iD2 => this._iD2;
 
-  set iD2(int iD2) {
+  set iD2(fixnum.Int64 iD2) {
     this._iD2 = iD2;
     this.__isset_iD2 = true;
   }
@@ -158,9 +159,9 @@ class TestingDefaults implements thrift.TBase {
     this.ev2 = null;
   }
 
-  int get iD => this._iD;
+  fixnum.Int64 get iD => this._iD;
 
-  set iD(int iD) {
+  set iD(fixnum.Int64 iD) {
     this._iD = iD;
     this.__isset_iD = true;
   }
@@ -207,9 +208,9 @@ class TestingDefaults implements thrift.TBase {
     this.listfield = null;
   }
 
-  int get iD3 => this._iD3;
+  fixnum.Int64 get iD3 => this._iD3;
 
-  set iD3(int iD3) {
+  set iD3(fixnum.Int64 iD3) {
     this._iD3 = iD3;
     this.__isset_iD3 = true;
   }
@@ -397,7 +398,7 @@ class TestingDefaults implements thrift.TBase {
         if (value == null) {
           unsetID2();
         } else {
-          this.iD2 = value as int;
+          this.iD2 = value as fixnum.Int64;
         }
         break;
 
@@ -421,7 +422,7 @@ class TestingDefaults implements thrift.TBase {
         if (value == null) {
           unsetID();
         } else {
-          this.iD = value as int;
+          this.iD = value as fixnum.Int64;
         }
         break;
 
@@ -453,7 +454,7 @@ class TestingDefaults implements thrift.TBase {
         if (value == null) {
           unsetID3();
         } else {
-          this.iD3 = value as int;
+          this.iD3 = value as fixnum.Int64;
         }
         break;
 
@@ -596,7 +597,7 @@ class TestingDefaults implements thrift.TBase {
       switch (field.id) {
         case ID2:
           if (field.type == thrift.TType.I64) {
-            this.iD2 = iprot.readI64();
+            this.iD2 = iprot.readInt64();
             this.__isset_iD2 = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
@@ -620,7 +621,7 @@ class TestingDefaults implements thrift.TBase {
           break;
         case ID:
           if (field.type == thrift.TType.I64) {
-            this.iD = iprot.readI64();
+            this.iD = iprot.readInt64();
             this.__isset_iD = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
@@ -655,7 +656,7 @@ class TestingDefaults implements thrift.TBase {
           break;
         case ID3:
           if (field.type == thrift.TType.I64) {
-            this.iD3 = iprot.readI64();
+            this.iD3 = iprot.readInt64();
             this.__isset_iD3 = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
@@ -776,7 +777,7 @@ class TestingDefaults implements thrift.TBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     if (isSetID2()) {
       oprot.writeFieldBegin(_I_D2_FIELD_DESC);
-      oprot.writeI64(this.iD2);
+      oprot.writeInt64(this.iD2);
       oprot.writeFieldEnd();
     }
     if (this.ev1 != null) {
@@ -790,7 +791,7 @@ class TestingDefaults implements thrift.TBase {
       oprot.writeFieldEnd();
     }
     oprot.writeFieldBegin(_ID_FIELD_DESC);
-    oprot.writeI64(this.iD);
+    oprot.writeInt64(this.iD);
     oprot.writeFieldEnd();
     if (this.thing != null) {
       oprot.writeFieldBegin(_THING_FIELD_DESC);
@@ -812,7 +813,7 @@ class TestingDefaults implements thrift.TBase {
       oprot.writeFieldEnd();
     }
     oprot.writeFieldBegin(_I_D3_FIELD_DESC);
-    oprot.writeI64(this.iD3);
+    oprot.writeInt64(this.iD3);
     oprot.writeFieldEnd();
     if (this.bin_field != null) {
       oprot.writeFieldBegin(_BIN_FIELD_FIELD_DESC);
@@ -1093,14 +1094,14 @@ class TestingDefaults implements thrift.TBase {
   }
 
   TestingDefaults clone({
-    int iD2,
+    fixnum.Int64 iD2,
     t_variety.Event ev1,
     t_variety.Event ev2,
-    int iD,
+    fixnum.Int64 iD,
     String thing,
     String thing2,
     List<int> listfield,
-    int iD3,
+    fixnum.Int64 iD3,
     Uint8List bin_field,
     Uint8List bin_field2,
     Uint8List bin_field3,
