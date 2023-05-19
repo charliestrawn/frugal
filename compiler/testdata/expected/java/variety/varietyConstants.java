@@ -48,6 +48,18 @@ public class varietyConstants {
 
 	public static final byte thirtyfour = (byte)34;
 
+	public static final long mini53 = -9007199254740991L;
+
+	public static final long mini53m1 = -9007199254740992L;
+
+	public static final long maxi53 = 9007199254740991L;
+
+	public static final long maxi53p1 = 9007199254740992L;
+
+	public static final long mini64 = -9223372036854775808L;
+
+	public static final long maxi64 = 9223372036854775807L;
+
 	public static final java.util.Map<String, String> MAPCONSTANT = new HashMap<String,String>();
 	static {
 		MAPCONSTANT.put("hello", "world");

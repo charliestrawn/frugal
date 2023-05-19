@@ -23,6 +23,18 @@ var OtherDefault ID
 
 const Thirtyfour = 34
 
+const Mini53 = -9007199254740991
+
+const Mini53m1 = -9007199254740992
+
+const Maxi53 = 9007199254740991
+
+const Maxi53p1 = 9007199254740992
+
+const Mini64 = -9223372036854775808
+
+const Maxi64 = 9223372036854775807
+
 var MAPCONSTANT map[string]string
 
 var SETCONSTANT map[string]bool

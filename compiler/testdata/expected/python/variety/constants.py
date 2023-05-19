@@ -30,6 +30,12 @@ const_thing = actual_base.python.ttypes.thing(**{
 DEFAULT_ID = -1
 other_default = DEFAULT_ID
 thirtyfour = 34
+mini53 = -9007199254740991
+mini53m1 = -9007199254740992
+maxi53 = 9007199254740991
+maxi53p1 = 9007199254740992
+mini64 = -9223372036854775808
+maxi64 = 9223372036854775807
 MAPCONSTANT = {
     "hello": "world",
     "goodnight": "moon",
