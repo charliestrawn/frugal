@@ -41,6 +41,7 @@ const (
 	useVendorOption           = "use_vendor"
 	slimOption                = "slim"
 	suppressDeprecatedLogging = "suppress_deprecated_logging"
+	shouldOmitServerGen       = "omit_server_service_generation"
 )
 
 // Generator implements the LanguageGenerator interface for Go.
@@ -927,13 +928,15 @@ func (g *Generator) generateWriteFieldInline(field *parser.Field) (contents stri
 		return fmt.Sprintf("\tif err := p.writeField%d(ctx, oprot); err != nil {\n\t\treturn err\n\t}\n", field.ID)
 	}
 
+	fieldName := title(field.Name)
+
 	// Check if this field is optional and add nil checks if we need them.
 	var indent string
 	var tail string
 	if field.Modifier == parser.Optional {
 		indent = "\t"
 		tail = "\t\t}\n"
-		contents += fmt.Sprintf("\tif p.IsSet%s() {\n", snakeToCamel(field.Name))
+		contents += fmt.Sprintf("\tif p.IsSet%s() {\n", fieldName)
 	}
 
 	// Get the write function we need to invoke
@@ -946,15 +949,7 @@ func (g *Generator) generateWriteFieldInline(field *parser.Field) (contents stri
 	}
 
 	// Get appropriate way to reference struct field
-	fieldName := snakeToCamel(field.Name)
 	structField := "p." + fieldName
-
-	// The Thrift generator uses a convention of appending a suffix of '_'
-	// if the argument starts with 'New', ends with 'Result' or ends with 'Args'.
-	// This effort must be duplicated to correctly reference Thrift generated code.
-	if strings.HasPrefix(fieldName, "New") || strings.HasSuffix(fieldName, "Result") || strings.HasSuffix(fieldName, "Args") {
-		structField += "_"
-	}
 
 	if g.isPointerField(field) && !g.Frugal.IsStruct(baseType) { // don't dereference structs
 		structField = "*" + structField
@@ -1809,6 +1804,10 @@ func (g *Generator) generateInternalClientMethod(service *parser.Service, method
 }
 
 func (g *Generator) generateServer(service *parser.Service) string {
+	if g.shouldOmitGeneratedServiceServer() {
+		return ``
+	}
+
 	contents := ""
 	contents += g.generateProcessor(service)
 	for _, method := range service.Methods {
@@ -1976,7 +1975,7 @@ func (g *Generator) generateHandlerArgs(method *parser.Method) string {
 	return args
 }
 func (g *Generator) generateCallArgs(method *parser.Method) string {
-	args := "ctx"
+	args := "fctx"
 	for _, arg := range method.Arguments {
 		args += ", " + strings.ToLower(arg.Name)
 	}
@@ -2188,6 +2187,11 @@ func (g *Generator) qualifiedTypeName(t *parser.Type) string {
 
 func (g *Generator) generateAsync() bool {
 	_, ok := g.Options[asyncOption]
+	return ok
+}
+
+func (g *Generator) shouldOmitGeneratedServiceServer() bool {
+	_, ok := g.Options[shouldOmitServerGen]
 	return ok
 }
 

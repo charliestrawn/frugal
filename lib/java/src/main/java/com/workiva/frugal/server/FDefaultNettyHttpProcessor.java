@@ -14,7 +14,9 @@
 package com.workiva.frugal.server;
 
 import com.workiva.frugal.processor.FProcessor;
+import com.workiva.frugal.protocol.FProtocol;
 import com.workiva.frugal.protocol.FProtocolFactory;
+import com.workiva.frugal.transport.TConfigurationBuilder;
 import com.workiva.frugal.transport.TMemoryOutputBuffer;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -23,15 +25,16 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpHeaders;
+import io.netty.handler.codec.http.HttpRequest;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.thrift.TConfiguration;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TMemoryInputTransport;
 import org.apache.thrift.transport.TTransport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.nio.BufferUnderflowException;
 import java.nio.ByteBuffer;
@@ -41,8 +44,11 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
+import java.util.TreeMap;
 import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_LENGTH;
 import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_TRANSFER_ENCODING;
 import static io.netty.handler.codec.http.HttpHeaderNames.CONTENT_TYPE;
@@ -53,6 +59,7 @@ import static io.netty.handler.codec.http.HttpResponseStatus.INTERNAL_SERVER_ERR
 import static io.netty.handler.codec.http.HttpResponseStatus.OK;
 import static io.netty.handler.codec.http.HttpResponseStatus.REQUEST_ENTITY_TOO_LARGE;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
+import static org.apache.thrift.TConfiguration.DEFAULT_MAX_MESSAGE_SIZE;
 
 /**
  * Default processor implementation for {@link FNettyHttpProcessor}.
@@ -73,15 +80,18 @@ public class FDefaultNettyHttpProcessor implements FNettyHttpProcessor {
     private final FProcessor processor;
     private final FProtocolFactory inProtocolFactory;
     private final FProtocolFactory outProtocolFactory;
+    private final TConfiguration configuration;
     private final Collection<Map.Entry<String, String>> customHeaders;
 
     private FDefaultNettyHttpProcessor(
             FProcessor processor,
             FProtocolFactory inProtocolFactory,
-            FProtocolFactory outProtocolFactory) {
+            FProtocolFactory outProtocolFactory,
+            int maxRequestSize) {
         this.processor = processor;
         this.inProtocolFactory = inProtocolFactory;
         this.outProtocolFactory = outProtocolFactory;
+        this.configuration = TConfigurationBuilder.custom().setMaxMessageSize(maxRequestSize).build();
         this.customHeaders = new ArrayList<>();
     }
 
@@ -93,7 +103,7 @@ public class FDefaultNettyHttpProcessor implements FNettyHttpProcessor {
      * @return a new processor
      */
     public static FDefaultNettyHttpProcessor of(FProcessor processor, FProtocolFactory protocolFactory) {
-        return new FDefaultNettyHttpProcessor(processor, protocolFactory, protocolFactory);
+        return new FDefaultNettyHttpProcessor(processor, protocolFactory, protocolFactory, DEFAULT_MAX_MESSAGE_SIZE);
     }
 
     /**
@@ -108,7 +118,25 @@ public class FDefaultNettyHttpProcessor implements FNettyHttpProcessor {
             FProcessor processor,
             FProtocolFactory inProtocolFactory,
             FProtocolFactory outProtocolFactory) {
-        return new FDefaultNettyHttpProcessor(processor, inProtocolFactory, outProtocolFactory);
+        return new FDefaultNettyHttpProcessor(processor, inProtocolFactory, outProtocolFactory, DEFAULT_MAX_MESSAGE_SIZE);
+    }
+
+    /**
+     * Create a new HTTP processor, setting the input and output protocol.
+     *
+     * @param processor          Frugal request processor
+     * @param inProtocolFactory  input protocol
+     * @param outProtocolFactory output protocol
+     * @param maxRequestSize the size limit of the request. Note: If <code>size</code>
+     *                       is non-positive, no limit will be enforced.
+     * @return a new processor
+     */
+    public static FDefaultNettyHttpProcessor of(
+            FProcessor processor,
+            FProtocolFactory inProtocolFactory,
+            FProtocolFactory outProtocolFactory,
+            int maxRequestSize) {
+        return new FDefaultNettyHttpProcessor(processor, inProtocolFactory, outProtocolFactory, maxRequestSize);
     }
 
     /**
@@ -136,8 +164,15 @@ public class FDefaultNettyHttpProcessor implements FNettyHttpProcessor {
      * @return The processes frame as an output buffer
      * @throws TException  if an application error occurred when processing a validly formed frame
      * @throws IOException if the frame is invalid, not conforming to the Frugal protocol
+     * @deprecated Use {@link #process}.
      */
+    @Deprecated
     public ByteBuf processFrame(ByteBuf inputBuffer) throws TException, IOException {
+        return processFrame(null, inputBuffer);
+    }
+
+    // Visible for testing
+    ByteBuf processFrame(HttpRequest request, ByteBuf inputBuffer) throws TException, IOException {
         // Read base64 encoded input
         byte[] encodedBytes = new byte[inputBuffer.readableBytes()];
         inputBuffer.readBytes(encodedBytes);
@@ -161,16 +196,32 @@ public class FDefaultNettyHttpProcessor implements FNettyHttpProcessor {
             );
         }
 
+        Map<Object, Object> ephemeralProperties = new HashMap<>();
+        if (request != null) {
+            ephemeralProperties.put("http_request_headers", getHeaders(request.headers()));
+        }
+
         // Process a frame, exclude frame length (first 4 bytes)
         // TODO: use TByteBuffer that wraps buff once Thrift 0.10.0 is released to avoid this copy.
         byte[] inputFrame = Arrays.copyOfRange(inputBytes, 4, inputBytes.length);
-        TTransport inTransport = new TMemoryInputTransport(inputFrame);
+        TTransport inTransport = new TMemoryInputTransport(configuration, inputFrame);
         TMemoryOutputBuffer outTransport = new TMemoryOutputBuffer();
-        processor.process(inProtocolFactory.getProtocol(inTransport), outProtocolFactory.getProtocol(outTransport));
+        FProtocol inProtocol = inProtocolFactory.getProtocol(inTransport);
+        inProtocol.setEphemeralProperties(ephemeralProperties);
+        FProtocol outProtocol = outProtocolFactory.getProtocol(outTransport);
+        processor.process(inProtocol, outProtocol);
 
         // Write base64 encoded output
         byte[] outputBytes = Base64.encodeBase64(outTransport.getWriteBytes());
         return Unpooled.copiedBuffer(outputBytes);
+    }
+
+    private static Map<String, List<String>> getHeaders(HttpHeaders headers) {
+        Map<String, List<String>> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        for (String name : headers.names()) {
+            result.put(name, Collections.unmodifiableList(headers.getAll(name)));
+        }
+        return Collections.unmodifiableMap(result);
     }
 
     private FullHttpResponse newErrorResponse(HttpResponseStatus status, String errorMessage) {
@@ -197,7 +248,7 @@ public class FDefaultNettyHttpProcessor implements FNettyHttpProcessor {
         ByteBuf body = request.content();
         ByteBuf outputBuffer = Unpooled.EMPTY_BUFFER;
         try {
-            outputBuffer = processFrame(body);
+            outputBuffer = processFrame(request, body);
         } catch (TException e) {
             LOGGER.error("Frugal processor returned unhandled error:", e);
             String errorMessage = "";

@@ -13,6 +13,7 @@ import asyncio
 
 import mock
 from nats.aio.client import Client
+from nats.aio.subscription import Subscription
 from thrift.transport.TTransport import TTransportException
 
 from frugal import _NATS_MAX_MESSAGE_SIZE
@@ -34,16 +35,15 @@ class TestFNatsTransport(utils.AsyncIOTestCase):
             inbox=self.inbox
         )
 
-    @mock.patch('frugal.aio.transport.nats_transport.new_inbox')
-    def test_init(self, mock_new_inbox):
+    def test_init(self):
         self.assertEqual(self.mock_nats_client, self.transport._nats_client)
         self.assertEqual(self.subject, self.transport._subject)
         self.assertEqual(self.inbox, self.transport._inbox)
 
-        mock_new_inbox.return_value = 'a new inbox'
+        self.mock_nats_client.new_inbox.return_value = 'a new inbox'
         transport = FNatsTransport(self.mock_nats_client,
                                    self.subject)
-        mock_new_inbox.assert_called_once_with()
+        self.mock_nats_client.new_inbox.assert_called_once_with()
         self.assertEqual('a new inbox', transport._inbox)
 
     @utils.async_runner
@@ -66,13 +66,13 @@ class TestFNatsTransport(utils.AsyncIOTestCase):
     @utils.async_runner
     async def test_open_subscribes(self):
         future = asyncio.Future()
-        future.set_result(235)
-        self.mock_nats_client.subscribe_async.return_value = future
+        mock_sub = mock.Mock(spec=Subscription)
+        future.set_result(mock_sub)
+        self.mock_nats_client.subscribe.return_value = future
         await self.transport.open()
 
-        self.assertEqual(235, self.transport._sub_id)
-        self.mock_nats_client.subscribe_async.assert_called_once_with(
-            self.inbox,
+        self.mock_nats_client.subscribe.assert_called_once_with(
+            self.inbox + ".*",
             cb=self.transport._on_message_callback
         )
         self.assertTrue(self.transport._is_open)
@@ -87,26 +87,27 @@ class TestFNatsTransport(utils.AsyncIOTestCase):
         callback.return_value = future
         self.transport.handle_response = callback
         await self.transport._on_message_callback(message)
-        callback.assert_called_once_with(message.data[4:])
+        callback.assert_called_once_with(message)
 
     @utils.async_runner
     async def test_close_not_subscribed(self):
-        self.transport._sub_id = None
+        self.transport._subscription = None
         await self.transport.close()
-        self.assertFalse(self.mock_nats_client.unsubscribe.called)
+        assert(True)
 
     @utils.async_runner
     async def test_close_unsubscribes(self):
         self.transport._is_open = True
-        self.transport._sub_id = 235
+        mock_sub = mock.Mock(spec=Subscription)
+        self.transport._subscription = mock_sub
         future = asyncio.Future()
         future.set_result(None)
-        self.mock_nats_client.unsubscribe.return_value = future
+        mock_sub.unsubscribe.return_value = future
         await self.transport.close()
 
-        self.assertIsNone(self.transport._sub_id)
+        self.assertIsNone(self.transport._subscription)
         self.assertFalse(self.transport._is_open)
-        self.mock_nats_client.unsubscribe.assert_called_once_with(235)
+        mock_sub.unsubscribe.assert_called_once()        
 
     @utils.async_runner
     async def test_flush(self):
@@ -116,15 +117,40 @@ class TestFNatsTransport(utils.AsyncIOTestCase):
         frame = data_len + data
         future = asyncio.Future()
         future.set_result(None)
-        self.mock_nats_client.publish_request.return_value = future
+        self.mock_nats_client.publish.return_value = future
         await self.transport.flush(frame)
 
-        self.mock_nats_client.publish_request.assert_called_once_with(
+        self.mock_nats_client.publish.assert_called_once_with(
             self.subject,
-            self.inbox,
-            frame
+            frame,
+            self.inbox
+        )
+
+    @utils.async_runner
+    async def test_flush_op(self):
+        self.transport._is_open = True
+        op_id = 1
+        data = bytearray([2, 3, 4, 5, 6, 7])
+        data_len = bytearray([0, 0, 0, 6])
+        frame = data_len + data
+        future = asyncio.Future()
+        future.set_result(None)
+        self.mock_nats_client.publish.return_value = future
+        await self.transport.flush_op(op_id, frame)
+
+        self.mock_nats_client.publish.assert_called_once_with(
+            self.subject,
+            frame,
+            f"{self.inbox}.{op_id}",
         )
 
     def test_request_size_limit(self):
         self.assertEqual(_NATS_MAX_MESSAGE_SIZE,
                          self.transport.get_request_size_limit())
+
+    @utils.async_runner
+    async def test_handle_status_message(self):
+        message = mock.Mock()
+        message.data = []
+        message.subject = "subject.1"
+        await self.transport._on_message_callback(message)

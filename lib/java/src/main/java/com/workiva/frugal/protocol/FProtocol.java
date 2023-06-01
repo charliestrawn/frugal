@@ -22,11 +22,9 @@ import org.apache.thrift.protocol.TMessage;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TSet;
 import org.apache.thrift.protocol.TStruct;
-
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
-
 import static com.workiva.frugal.FContext.CID_HEADER;
 import static com.workiva.frugal.FContext.OPID_HEADER;
 
@@ -119,6 +117,11 @@ public class FProtocol extends TProtocol {
         // response.
         headers.remove(FContext.OPID_HEADER);
         context.addResponseHeaders(headers);
+    }
+
+    @Override
+    public int getMinSerializedSize(byte type) throws TException {
+        return wrapped.getMinSerializedSize(type);
     }
 
     @Override

@@ -25,15 +25,15 @@ import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -73,6 +73,7 @@ public class FHttpTransportTest {
     public void testRequestSizeException() throws TTransportException {
         int requestSizeLimit = 1024 * 4;
         transport = new FHttpTransport.Builder(client, url).withRequestSizeLimit(requestSizeLimit).build();
+        assertEquals(4 * 1024, transport.getRequestSizeLimit());
         transport.request(context, new byte[requestSizeLimit + 1]);
     }
 
@@ -80,6 +81,7 @@ public class FHttpTransportTest {
     public void testOnewaySizeException() throws TTransportException {
         int requestSizeLimit = 1024 * 4;
         transport = new FHttpTransport.Builder(client, url).withRequestSizeLimit(requestSizeLimit).build();
+        assertEquals(4 * 1024, transport.getRequestSizeLimit());
         transport.oneway(context, new byte[requestSizeLimit + 1]);
     }
 
@@ -103,6 +105,7 @@ public class FHttpTransportTest {
         byte[] buff = "helloserver".getBytes();
         TTransport actualResponse = transport.request(context, buff);
 
+        assertEquals(4 * 1024, actualResponse.getConfiguration().getMaxMessageSize());
         assertArrayEquals(responsePayload, actualResponse.getBuffer());
 
         HttpPost actual = topicCaptor.getValue();
@@ -132,7 +135,8 @@ public class FHttpTransportTest {
             byte[] framedResponsePayload = new byte[]{0, 0, 0, 4, 4, 5, 6, 7};
             byte[] responsePayload = new byte[]{4, 5, 6, 7};
             String encodedResponse = Base64.encodeBase64String(framedResponsePayload);
-            StringEntity responseEntity = new StringEntity(encodedResponse, ContentType.create("application/x-frugal", "utf-8"));
+            StringEntity responseEntity = new StringEntity(encodedResponse,
+                    ContentType.create("application/x-frugal", "utf-8"));
             CloseableHttpResponse response = new BasicClosableHttpResponse(statusLine);
             response.setEntity(responseEntity);
 
@@ -141,12 +145,14 @@ public class FHttpTransportTest {
 
             TTransport actualResponse = transport.request(context, framedRequestPayload);
 
+            assertEquals(4 * 1024, actualResponse.getConfiguration().getMaxMessageSize());
             assertArrayEquals(responsePayload, actualResponse.getBuffer());
 
             HttpPost actualRequest = topicCaptor.getValue();
             HttpPost expectedRequest = validRequest(framedRequestPayload, responseSizeLimit);
             assertEquals(actualRequest.getEntity().getContentLength(), expectedRequest.getEntity().getContentLength());
-            assertEquals(EntityUtils.toString(expectedRequest.getEntity()), EntityUtils.toString(actualRequest.getEntity()));
+            assertEquals(EntityUtils.toString(expectedRequest.getEntity()),
+                    EntityUtils.toString(actualRequest.getEntity()));
 
             ByteArrayOutputStream actualOutputStream = new ByteArrayOutputStream();
             actualRequest.getEntity().writeTo(actualOutputStream);
@@ -355,6 +361,30 @@ public class FHttpTransportTest {
             fail();
         } catch (TTransportException e) {
             assertEquals(e.getType(), TTransportException.UNKNOWN);
+        }
+    }
+
+    @Test
+    public void testSend_requestUnknownHost() throws TTransportException, IOException {
+        byte[] buff = "helloserver".getBytes();
+        when(client.execute(any(HttpPost.class))).thenThrow(new UnknownHostException());
+        try {
+            transport.request(context, buff);
+            fail();
+        } catch (TTransportException e) {
+            assertEquals(e.getType(), TTransportExceptionType.SERVICE_NOT_AVAILABLE);
+        }
+    }
+
+    @Test
+    public void testSend_requestConnectException() throws TTransportException, IOException {
+        byte[] buff = "helloserver".getBytes();
+        when(client.execute(any(HttpPost.class))).thenThrow(new ConnectException());
+        try {
+            transport.request(context, buff);
+            fail();
+        } catch (TTransportException e) {
+            assertEquals(e.getType(), TTransportExceptionType.SERVICE_NOT_AVAILABLE);
         }
     }
 

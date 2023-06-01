@@ -40,22 +40,14 @@ $ go get github.com/Workiva/frugal
 ```
 
 ### From Source
-**Our usage of godep has been deprecated as we move to glide. Once the deprecation period is over, we will remove both the Godeps/ and vendor/ folder, relying solely on glide for dependency management**
-1.  Install [go](https://golang.org/doc/install) and setup [`GOPATH`](https://github.com/golang/go/wiki/GOPATH).
-1.  Clone the frugal repo
 
-    ```bash
-    $ mkdir -p $GOPATH/src/github.com/Workiva && cd $_
-    $ git clone git@github.com:Workiva/frugal.git
-    ```
+If go is already installed and setup, you can run the following commands:
 
-1.  Install the CLI binary
-    ```bash
-    $ cd $GOPATH/src/github.com/Workiva/frugal
-    $ curl https://glide.sh/get | sh  # get glide if necessary
-    $ glide install  # get dependencies
-    $ go install
-    ```
+```bash
+$ git clone git@github.com:Workiva/frugal.git
+$ cd frugal
+$ go install
+```
 
 When generating go, be aware the frugal go library and the frugal compiler
 have separate dependencies.
@@ -87,60 +79,9 @@ supported.
 $ frugal -gen=go event.frugal
 ```
 
-By default, generated code is placed in a `gen-*` directory. This code can then
-be used as such:
-
-```go
-// publisher.go
-func main() {
-    conn, err := nats.Connect(nats.DefaultURL)
-    if err != nil {
-        panic(err)
-    }
-
-    var (
-        protocolFactory  = frugal.NewFProtocolFactory(thrift.NewTBinaryProtocolFactoryDefault())
-        transportFactory = frugal.NewFNatsScopeTransportFactory(conn)
-        provider         = frugal.NewFScopeProvider(transportFactory, protocolFactory)
-        publisher        = event.NewEventsPublisher(provider)
-    )
-    publisher.Open()
-    defer publisher.Close()
-
-    event := &event.Event{ID: 42, Message: "Hello, World!"}
-    if err := publisher.PublishEventCreated(frugal.NewFContext(""), event); err != nil {
-        panic(err)
-    }
-}
-```
-
-```go
-// subscriber.go
-func main() {
-    conn, err := nats.Connect(nats.DefaultURL)
-    if err != nil {
-        panic(err)
-    }
-
-    var (
-        protocolFactory  = frugal.NewFProtocolFactory(thrift.NewTBinaryProtocolFactoryDefault())
-        transportFactory = frugal.NewFNatsScopeTransportFactory(conn)
-        provider         = frugal.NewFScopeProvider(transportFactory, protocolFactory)
-        subscriber       = event.NewEventsSubscriber(provider)
-    )
-
-    _, err = subscriber.SubscribeEventCreated(func(ctx *frugal.FContext, e *event.Event) {
-        fmt.Println("Received event:", e.Message)
-    })
-    if err != nil {
-        panic(err)
-    }
-
-    wait := make(chan bool)
-    log.Println("Subscriber started...")
-    <-wait
-}
-```
+By default, generated code is placed in a `gen-*` directory. This code
+can then be used in your application. Example code is avaliable in the
+[examples/](examples/) directory for supported languages.
 
 ### Prefixes
 

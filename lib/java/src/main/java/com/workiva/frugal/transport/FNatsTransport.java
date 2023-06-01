@@ -25,7 +25,6 @@ import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.Arrays;
 import java.util.UUID;
 
@@ -109,7 +108,7 @@ public class FNatsTransport extends FAsyncTransport {
             throw new TTransportException(TTransportExceptionType.ALREADY_OPEN, "NATS transport already open");
         }
         dispatcher = conn.createDispatcher(new Handler());
-        dispatcher.subscribe(inbox);
+        dispatcher.subscribe(inbox + ".*");
     }
 
     /**
@@ -126,6 +125,15 @@ public class FNatsTransport extends FAsyncTransport {
 
     @Override
     protected void flush(byte[] payload) throws TTransportException {
+        flush(null, payload);
+    }
+
+    @Override
+    protected void flushOp(long opId, byte[] payload) throws TTransportException {
+        flush(inbox + '.' + opId, payload);
+    }
+
+    private void flush(String inbox, byte[] payload) throws TTransportException {
         Status status = conn.getStatus();
         if (!isOpen(status)) {
             throw getClosedConditionException(status, "flush:");
@@ -139,8 +147,19 @@ public class FNatsTransport extends FAsyncTransport {
     protected class Handler implements MessageHandler {
         public void onMessage(Message message) {
             try {
-                byte[] frame = message.getData();
-                handleResponse(Arrays.copyOfRange(frame, 4, frame.length));
+                if (message.isStatusMessage()) {
+                    if (message.getStatus().getCode() == io.nats.client.support.Status.NO_RESPONDERS_CODE) {
+                        String subject = message.getSubject();
+                        String opIdString = subject.substring(subject.lastIndexOf('.') + 1);
+                        long opId = Long.parseLong(opIdString);
+                        handleServiceNotAvailable(opId);
+                    } else {
+                        LOGGER.debug("Received status message: {}", message);
+                    }
+                } else {
+                    byte[] frame = message.getData();
+                    handleResponse(Arrays.copyOfRange(frame, 4, frame.length));
+                }
             } catch (TException e) {
                 LOGGER.warn("Could not handle frame", e);
             }
@@ -167,7 +186,8 @@ public class FNatsTransport extends FAsyncTransport {
         try {
             return super.request(context, payload);
         } catch (TTransportException e) {
-            if (e.getType() == TTransportExceptionType.TIMED_OUT) {
+            if (e.getType() == TTransportExceptionType.TIMED_OUT
+                    || e.getType() == TTransportExceptionType.SERVICE_NOT_AVAILABLE) {
                 String newMessage = e.getMessage() + " for NATS subject: " + subject;
                 throw new TTransportException(e.getType(), newMessage, e);
             }

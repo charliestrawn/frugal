@@ -1,4 +1,4 @@
-FROM drydock-prod.workiva.net/workiva/messaging-docker-images:0.1.7 as build
+FROM drydock-prod.workiva.net/workiva/messaging-docker-images:0.1.15 as build
 
 RUN yum update -y && \
     yum upgrade -y && \
@@ -17,10 +17,16 @@ RUN mkdir /root/.ssh && \
     chmod 700 /root/.ssh/ && \
     umask 0077 && echo "$GIT_SSH_KEY" >/root/.ssh/id_rsa && \
     eval "$(ssh-agent -s)" && ssh-add /root/.ssh/id_rsa
-
+RUN java -version
 ARG BUILD_ID
 ARG GOPATH=/go/
 ENV PATH $GOPATH/bin:$PATH
+
+#### Run maven deps
+ARG ARTIFACTORY_PRO_USER
+ARG ARTIFACTORY_PRO_PASS
+ENV MAVEN_ROOT /go/src/github.com/Workiva/frugal/lib/java
+
 RUN git config --global url.git@github.com:.insteadOf https://github.com
 ENV FRUGAL_HOME=/go/src/github.com/Workiva/frugal
 RUN echo "Starting the script section" && \
@@ -36,7 +42,7 @@ ARG BUILD_ARTIFACTS_RELEASE=/go/src/github.com/Workiva/frugal/frugal
 ARG BUILD_ARTIFACTS_AUDIT=/go/src/github.com/Workiva/frugal/python2_pip_deps.txt:/go/src/github.com/Workiva/frugal/python3_pip_deps.txt:/go/src/github.com/Workiva/frugal/lib/go/go.mod:/go/src/github.com/Workiva/frugal/lib/dart/pubspec.lock:/go/src/github.com/Workiva/frugal/lib/java/pom.xml
 ARG BUILD_ARTIFACTS_GO_LIBRARY=/go/src/github.com/Workiva/frugal/goLib.tar.gz
 ARG BUILD_ARTIFACTS_PYPI=/go/src/github.com/Workiva/frugal/frugal-*.tar.gz
-ARG BUILD_ARTIFACTS_ARTIFACTORY=/go/src/github.com/Workiva/frugal/frugal-*.jar
+ARG BUILD_ARTIFACTS_JAVA=/go/src/github.com/Workiva/frugal/frugal-*.jar
 ARG BUILD_ARTIFACTS_PUB=/go/src/github.com/Workiva/frugal/frugal.pub.tgz
 ARG BUILD_ARTIFACTS_TEST_RESULTS=/go/src/github.com/Workiva/frugal/test_results/*
 

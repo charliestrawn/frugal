@@ -24,15 +24,15 @@ setup(
     install_requires=[
         'six>=1.10.0,<2',
         'thrift==0.13.0',
-        'requests>=2.12.5,<3',
+        'requests>=2.12.5,<2.31.0',
     ],
     extras_require={
         'tornado': ['nats-client==0.8.4'],
         'asyncio': [
-            'aiohttp>=3.0.9,<4',
-            'aiostomp==1.6.2',
-            'asyncio-nats-client>=0.11.4,<1',
-            'async-timeout>=2.0.1,<4',
+            'aiohttp>=3.0.9,<3.9.0',
+            'aiostomp==1.7.3',
+            'nats-py>=2,<3',
+            'async-timeout>=4.0.0a3,<5.0'
         ],
         'gae': ['webapp2==2.5.2'],
     }
