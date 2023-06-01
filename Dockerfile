@@ -1,10 +1,5 @@
 FROM drydock-prod.workiva.net/workiva/messaging-docker-images:0.1.15 as build
 
-RUN yum update -y && \
-    yum upgrade -y && \
-    yum clean all && \
-    rm -rf /var/cache/yum
-
 ARG GIT_BRANCH
 ARG GIT_MERGE_BRANCH
 ARG GIT_SSH_KEY
