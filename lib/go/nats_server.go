@@ -15,6 +15,7 @@ package frugal
 
 import (
 	"bytes"
+	"sync"
 	"time"
 
 	"github.com/apache/thrift/lib/go/thrift"
@@ -212,17 +213,37 @@ func (f *fNatsServer) Serve() error {
 		subscriptions = append(subscriptions, sub)
 	}
 
+	var wg sync.WaitGroup
+	wg.Add(int(f.workerCount))
+
 	for i := uint(0); i < f.workerCount; i++ {
-		go f.worker()
+		go func() {
+			f.worker()
+			wg.Done()
+		}()
 	}
 
-	logger().Info("frugal: server running...")
+	logger().WithField(`subjects`, f.subjects).Info("frugal: server running...")
 	<-f.quit
-	logger().Info("frugal: server stopping...")
+	logger().WithField(`subjects`, f.subjects).Info("frugal: server stopping...")
 
+	// drain each subscription (allow handling of responses)
 	for _, sub := range subscriptions {
-		sub.Unsubscribe()
+		sub.Drain()
 	}
+
+	// wait for subs to finish draining (no good way to wait for shutting down subscriptions)
+	for _, sub := range subscriptions {
+		for sub.IsValid() {
+			time.Sleep(20 * time.Millisecond)
+		}
+	}
+	logger().WithField(`subjects`, f.subjects).Debug(`frugal: subscriptions drained`)
+
+	// allow processes to wrap up
+	close(f.workC)
+	wg.Wait()
+	logger().WithField(`subjects`, f.subjects).Debug(`frugal: workers drained`)
 
 	return nil
 }
@@ -243,33 +264,24 @@ func (f *fNatsServer) handler(msg *nats.Msg) {
 		logger().Warn("frugal: discarding invalid NATS request (no reply)")
 		return
 	}
-	select {
-	case f.workC <- &frameWrapper{frameBytes: msg.Data, reply: msg.Reply, ephemeralProperties: ephemeralProperties}:
-	case <-f.quit:
-		return
-	}
+
+	f.workC <- &frameWrapper{frameBytes: msg.Data, reply: msg.Reply, ephemeralProperties: ephemeralProperties}
 }
 
 // worker should be called as a goroutine. It reads requests off the work
 // channel and processes them.
 func (f *fNatsServer) worker() {
-	for {
-		select {
-		case <-f.quit:
-			return
-		case frame := <-f.workC:
-			f.onRequestStarted(frame.ephemeralProperties)
-			if err := f.processFrame(frame); err != nil {
-				logger().Errorf("frugal: error processing request: %s", err.Error())
-			}
-			f.onRequestFinished(frame.ephemeralProperties)
-		}
+	for frame := range f.workC {
+		f.processFrame(frame)
 	}
 }
 
 // processFrame invokes the FProcessor and sends the response on the given
 // subject.
-func (f *fNatsServer) processFrame(frame *frameWrapper) error {
+func (f *fNatsServer) processFrame(frame *frameWrapper) {
+	f.onRequestStarted(frame.ephemeralProperties)
+	defer f.onRequestFinished(frame.ephemeralProperties)
+
 	// Read and process frame.
 	input := &thrift.TMemoryBuffer{Buffer: bytes.NewBuffer(frame.frameBytes[4:])} // Discard frame size
 	// Only allow 1MB to be buffered.
@@ -278,13 +290,16 @@ func (f *fNatsServer) processFrame(frame *frameWrapper) error {
 	iprot.ephemeralProperties = frame.ephemeralProperties
 	oprot := f.protoFactory.GetProtocol(output)
 	if err := f.processor.Process(iprot, oprot); err != nil {
-		return err
+		logger().WithError(err).Error(`frugal: error processing request`)
+		return
 	}
 
 	if !output.HasWriteData() {
-		return nil
+		return
 	}
 
 	// Send response.
-	return f.conn.Publish(frame.reply, output.Bytes())
+	if err := f.conn.Publish(frame.reply, output.Bytes()); err != nil {
+		logger().WithError(err).Error(`frugal: error publishing response`)
+	}
 }
