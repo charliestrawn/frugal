@@ -35,7 +35,7 @@ func TestShutdown(t *testing.T) {
 		Trace: true,
 	})
 	require.NoError(t, err)
-	s.ConfigureLogger() // nice for debugging
+	// s.ConfigureLogger() // nice for debugging
 	s.Start()
 	defer s.Shutdown()
 
