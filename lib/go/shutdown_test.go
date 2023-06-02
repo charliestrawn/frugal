@@ -29,8 +29,13 @@ func TestShutdown(t *testing.T) {
 	if testing.Short() {
 		t.Skip(`not a short test`)
 	}
-	s, err := server.NewServer(&server.Options{ /* defaults */ })
+	s, err := server.NewServer(&server.Options{
+		/* defaults */
+		Debug: true,
+		Trace: true,
+	})
 	require.NoError(t, err)
+	s.ConfigureLogger() // nice for debugging
 	s.Start()
 	defer s.Shutdown()
 
@@ -65,12 +70,14 @@ func TestShutdown(t *testing.T) {
 	time.Sleep(time.Millisecond * 10)
 	runtime.Gosched() // wait for some form of processing
 
-	// Shutdown server and wait for Serve to return
+	// Shutdown server, send a few more requests after server dies, and wait for shutdown
 	require.NoError(t, srv.Stop())
+	require.NoError(t, conn.PublishRequest("frugal.test.shutdown", "INBOX.round-file", []byte("work"))) // expect this to drop
 	<-serveDone
 
 	// Make some assertions about the state of things
 	count := atomic.LoadInt32(proc.count)
 	t.Logf("Received %d; Processed: %d; Remaining: %d", REQ, count, len(srv.(*fNatsServer).workC))
 	assert.Equal(t, count, int32(REQ))
+	s.Shutdown()
 }

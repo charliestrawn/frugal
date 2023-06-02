@@ -178,7 +178,7 @@ func (f *FNatsServerBuilder) Build() FServer {
 		queue:             f.queue,
 		workerCount:       f.workerCount,
 		workC:             make(chan *frameWrapper, f.queueLen),
-		quit:              make(chan struct{}),
+		quit:              make(chan chan<- error),
 		onRequestReceived: f.onRequestReceived,
 		onRequestStarted:  f.onRequestStarted,
 		onRequestFinished: f.onRequestFinished,
@@ -195,7 +195,7 @@ type fNatsServer struct {
 	queue        string
 	workerCount  uint
 	workC        chan *frameWrapper
-	quit         chan struct{}
+	quit         chan chan<- error
 
 	onRequestReceived func(map[interface{}]interface{})
 	onRequestStarted  func(map[interface{}]interface{})
@@ -203,6 +203,7 @@ type fNatsServer struct {
 }
 
 // Serve starts the server.
+// Do NOT close the nats connection until Serve() returns.
 func (f *fNatsServer) Serve() error {
 	subscriptions := []*nats.Subscription{}
 	for _, subject := range f.subjects {
@@ -224,20 +225,20 @@ func (f *fNatsServer) Serve() error {
 	}
 
 	logger().WithField(`subjects`, f.subjects).Info("frugal: server running...")
-	<-f.quit
+	done := <-f.quit
 	logger().WithField(`subjects`, f.subjects).Info("frugal: server stopping...")
 
-	// drain each subscription (allow handling of responses)
+	// drain each subscription (allow handling requests in processing queue)
 	for _, sub := range subscriptions {
-		sub.Drain()
-	}
-
-	// wait for subs to finish draining (no good way to wait for shutting down subscriptions)
-	for _, sub := range subscriptions {
-		for sub.IsValid() {
-			time.Sleep(20 * time.Millisecond)
+		if err := sub.Drain(); err != nil {
+			done <- err // nats conn may be closed (clean shutdown not possible)
+			return nil
 		}
 	}
+
+	// flush subscription removals, then Stop can return
+	// technically, sub.Drain called `kickFlusher`, but this explicitly waits for the PONG
+	done <- f.conn.Flush()
 	logger().WithField(`subjects`, f.subjects).Debug(`frugal: subscriptions drained`)
 
 	// allow processes to wrap up
@@ -249,9 +250,14 @@ func (f *fNatsServer) Serve() error {
 }
 
 // Stop the server.
+// Once stop returns, future requests will NOT be accepted by this server.
+// Active requests will complete and send responses via the nats connection.
+// Do NOT close the nats connection until Serve() returns.
 func (f *fNatsServer) Stop() error {
+	done := make(chan error)
+	f.quit <- done
 	close(f.quit)
-	return nil
+	return <-done
 }
 
 // handler is invoked when a request is received. The request is placed on the
