@@ -224,9 +224,9 @@ func (f *fNatsServer) Serve() error {
 		}()
 	}
 
-	logger().WithField(`subjects`, f.subjects).Info("frugal: server running...")
+	logger().Info("frugal: server running...")
 	done := <-f.quit
-	logger().WithField(`subjects`, f.subjects).Info("frugal: server stopping...")
+	logger().Info("frugal: server stopping...")
 
 	// drain each subscription (allow handling requests in processing queue)
 	for _, sub := range subscriptions {
@@ -239,12 +239,12 @@ func (f *fNatsServer) Serve() error {
 	// flush subscription removals, then Stop can return
 	// technically, sub.Drain called `kickFlusher`, but this explicitly waits for the PONG
 	done <- f.conn.Flush()
-	logger().WithField(`subjects`, f.subjects).Debug(`frugal: subscriptions drained`)
+	logger().Debug(`frugal: subscriptions drained`)
 
 	// allow processes to wrap up
 	close(f.workC)
 	wg.Wait()
-	logger().WithField(`subjects`, f.subjects).Debug(`frugal: workers drained`)
+	logger().Debug(`frugal: workers completed`)
 
 	return nil
 }
@@ -278,16 +278,17 @@ func (f *fNatsServer) handler(msg *nats.Msg) {
 // channel and processes them.
 func (f *fNatsServer) worker() {
 	for frame := range f.workC {
-		f.processFrame(frame)
+		f.onRequestStarted(frame.ephemeralProperties)
+		if err := f.processFrame(frame); err != nil {
+			logger().WithError(err).Error("frugal: error processing request")
+		}
+		f.onRequestFinished(frame.ephemeralProperties)
 	}
 }
 
 // processFrame invokes the FProcessor and sends the response on the given
 // subject.
-func (f *fNatsServer) processFrame(frame *frameWrapper) {
-	f.onRequestStarted(frame.ephemeralProperties)
-	defer f.onRequestFinished(frame.ephemeralProperties)
-
+func (f *fNatsServer) processFrame(frame *frameWrapper) error {
 	// Read and process frame.
 	input := &thrift.TMemoryBuffer{Buffer: bytes.NewBuffer(frame.frameBytes[4:])} // Discard frame size
 	// Only allow 1MB to be buffered.
@@ -296,16 +297,13 @@ func (f *fNatsServer) processFrame(frame *frameWrapper) {
 	iprot.ephemeralProperties = frame.ephemeralProperties
 	oprot := f.protoFactory.GetProtocol(output)
 	if err := f.processor.Process(iprot, oprot); err != nil {
-		logger().WithError(err).Error(`frugal: error processing request`)
-		return
+		return err
 	}
 
 	if !output.HasWriteData() {
-		return
+		return nil
 	}
 
 	// Send response.
-	if err := f.conn.Publish(frame.reply, output.Bytes()); err != nil {
-		logger().WithError(err).Error(`frugal: error publishing response`)
-	}
+	return f.conn.Publish(frame.reply, output.Bytes())
 }
