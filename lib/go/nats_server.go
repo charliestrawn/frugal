@@ -214,9 +214,9 @@ func (f *fNatsServer) Serve() error {
 		subscriptions = append(subscriptions, sub)
 	}
 
+	// start frugal workers
 	var wg sync.WaitGroup
 	wg.Add(int(f.workerCount))
-
 	for i := uint(0); i < f.workerCount; i++ {
 		go func() {
 			f.worker()
@@ -224,28 +224,54 @@ func (f *fNatsServer) Serve() error {
 		}()
 	}
 
+	// wait for shutdown signal
 	logger().Info("frugal: server running...")
 	done := <-f.quit
 	logger().Info("frugal: server stopping...")
 
-	// drain each subscription (allow handling requests in processing queue)
-	for _, sub := range subscriptions {
-		if err := sub.Drain(); err != nil {
-			done <- err // nats conn may be closed (clean shutdown not possible)
-			return nil
-		}
-	}
+	// Stop can return with our drainNatsMessages error
+	done <- f.drainNatsMessages(subscriptions)
 
-	// flush subscription removals, then Stop can return
-	// technically, sub.Drain called `kickFlusher`, but this explicitly waits for the PONG
-	done <- f.conn.Flush()
-	logger().Debug(`frugal: subscriptions drained`)
-
-	// allow processes to wrap up
+	// drain in-queue and workers
 	close(f.workC)
 	wg.Wait()
 	logger().Debug(`frugal: workers completed`)
 
+	return nil
+}
+
+// remove nats subscriptions and ensure no messages remain in the nats library
+// this function returns successfully when we've entered the following state:
+//  1. no more NATS requests will be received by this service
+//  2. received NATS messages have been flushed to the frugal processing queue
+func (f *fNatsServer) drainNatsMessages(subs []*nats.Subscription) error {
+	log := logger()
+
+	// remove each nats subscription (allow completion of requests)
+	for _, sub := range subs {
+		if err := sub.Drain(); err != nil {
+			return err
+		}
+	}
+	log.Debug(`frugal: subscriptions removed`)
+
+	// push subscription removals to the nats server
+	// technically, sub.Drain called `kickFlusher`, but this explicitly waits for the PONG
+	if err := f.conn.Flush(); err != nil {
+		return err
+	}
+	log.Debug(`frugal: connection flushed`)
+
+	// drain in-subscription queue of messages
+	// Waiting for ALL frugal subscriptions to catch up (not super awesome)
+	// The alternative is a spin-lock waiting for each subscription to become invalid (sub.IsValid)
+	start := time.Now()
+	barrier := make(chan struct{})
+	if err := f.conn.Barrier(func() { close(barrier) }); err != nil {
+		return err
+	}
+	<-barrier
+	log.WithField(`took`, time.Since(start)).Debug(`frugal: subscription queues drained`)
 	return nil
 }
 

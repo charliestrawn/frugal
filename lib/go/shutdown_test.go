@@ -51,7 +51,7 @@ func TestShutdown(t *testing.T) {
 		proc,
 		NewFProtocolFactory(thrift.NewTJSONProtocolFactory()),
 		[]string{"frugal.test.shutdown"},
-	).WithWorkerCount(2).WithQueueLength(REQ).Build()
+	).WithWorkerCount(2).WithQueueLength(2).Build() // simulating higher load with smaller numbers
 
 	// Start the server in the background and let us know when it exits
 	serveDone := make(chan bool)
@@ -67,8 +67,6 @@ func TestShutdown(t *testing.T) {
 		require.NoError(t, conn.PublishRequest("frugal.test.shutdown", "INBOX.round-file", []byte("work")))
 	}
 	require.NoError(t, conn.Flush())
-	time.Sleep(time.Millisecond * 10)
-	runtime.Gosched() // wait for some form of processing
 
 	// Shutdown server, send a few more requests after server dies, and wait for shutdown
 	require.NoError(t, srv.Stop())
