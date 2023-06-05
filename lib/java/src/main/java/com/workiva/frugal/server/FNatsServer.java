@@ -269,6 +269,9 @@ public class FNatsServer implements FServer {
             }
         }
 
+        // FIXME: subscribe sends the Subscription to a buffer
+        // A conn.flush may be needed to assert we are subscribed.
+
         LOGGER.info("Frugal server running...");
         partiesAwaitingFullShutdown.register();
         try {
@@ -286,6 +289,10 @@ public class FNatsServer implements FServer {
             // Closing the dispatcher will unsubscribe from all current subscriptions for that
             // dispatcher
             conn.closeDispatcher(dispatcher);
+
+            // FIXME: closeDispatcher sends the un-Subscription to a buffer
+            // A conn.flush may be needed to assert we are unsubscribed.
+
             // If serving stopped due to stop being called, we want to give the signal the stop method
             // that this serve has completed its actions and the stop method can move on to the next
             // phase of the shutdown. If shutdown signal was not received (i.e., serve is exiting
