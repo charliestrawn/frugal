@@ -15,6 +15,7 @@ package frugal
 
 import (
 	"bytes"
+	"sync"
 	"time"
 
 	"github.com/apache/thrift/lib/go/thrift"
@@ -177,7 +178,7 @@ func (f *FNatsServerBuilder) Build() FServer {
 		queue:             f.queue,
 		workerCount:       f.workerCount,
 		workC:             make(chan *frameWrapper, f.queueLen),
-		quit:              make(chan struct{}),
+		quit:              make(chan chan<- error),
 		onRequestReceived: f.onRequestReceived,
 		onRequestStarted:  f.onRequestStarted,
 		onRequestFinished: f.onRequestFinished,
@@ -194,7 +195,7 @@ type fNatsServer struct {
 	queue        string
 	workerCount  uint
 	workC        chan *frameWrapper
-	quit         chan struct{}
+	quit         chan chan<- error
 
 	onRequestReceived func(map[interface{}]interface{})
 	onRequestStarted  func(map[interface{}]interface{})
@@ -202,6 +203,7 @@ type fNatsServer struct {
 }
 
 // Serve starts the server.
+// Do NOT close the nats connection until Serve() returns.
 func (f *fNatsServer) Serve() error {
 	subscriptions := []*nats.Subscription{}
 	for _, subject := range f.subjects {
@@ -212,25 +214,79 @@ func (f *fNatsServer) Serve() error {
 		subscriptions = append(subscriptions, sub)
 	}
 
+	// FIXME: QueueSubscribe sends the Subscription to a buffer
+	// A f.conn.Flush may be needed to assert we are subscribed.
+
+	// start frugal workers
+	var wg sync.WaitGroup
+	wg.Add(int(f.workerCount))
 	for i := uint(0); i < f.workerCount; i++ {
-		go f.worker()
+		go func() {
+			f.worker()
+			wg.Done()
+		}()
 	}
 
+	// wait for shutdown signal
 	logger().Info("frugal: server running...")
-	<-f.quit
+	done := <-f.quit
 	logger().Info("frugal: server stopping...")
 
-	for _, sub := range subscriptions {
-		sub.Unsubscribe()
-	}
+	// Stop can return with our drainNatsMessages error
+	done <- f.drainNatsMessages(subscriptions)
+
+	// drain in-queue and workers
+	close(f.workC)
+	wg.Wait()
+	logger().Debug(`frugal: workers completed`)
 
 	return nil
 }
 
-// Stop the server.
-func (f *fNatsServer) Stop() error {
-	close(f.quit)
+// remove nats subscriptions and ensure no messages remain in the nats library
+// this function returns successfully when we've entered the following state:
+//  1. no more NATS requests will be received by this service
+//  2. received NATS messages have been flushed to the frugal processing queue
+func (f *fNatsServer) drainNatsMessages(subs []*nats.Subscription) error {
+	log := logger()
+
+	// remove each nats subscription (allow completion of requests)
+	for _, sub := range subs {
+		if err := sub.Drain(); err != nil {
+			return err
+		}
+	}
+	log.Debug(`frugal: subscriptions removed`)
+
+	// push subscription removals to the nats server
+	// technically, sub.Drain called `kickFlusher`, but this explicitly waits for the PONG
+	if err := f.conn.Flush(); err != nil {
+		return err
+	}
+	log.Debug(`frugal: connection flushed`)
+
+	// drain in-subscription queue of messages
+	// Waiting for ALL frugal subscriptions to catch up (not super awesome)
+	// The alternative is a spin-lock waiting for each subscription to become invalid (sub.IsValid)
+	start := time.Now()
+	barrier := make(chan struct{})
+	if err := f.conn.Barrier(func() { close(barrier) }); err != nil {
+		return err
+	}
+	<-barrier
+	log.WithField(`took`, time.Since(start)).Debug(`frugal: subscription queues drained`)
 	return nil
+}
+
+// Stop the server.
+// Once stop returns, future requests will NOT be accepted by this server.
+// Active requests will complete and send responses via the nats connection.
+// Do NOT close the nats connection until Serve() returns.
+func (f *fNatsServer) Stop() error {
+	done := make(chan error)
+	f.quit <- done
+	close(f.quit)
+	return <-done
 }
 
 // handler is invoked when a request is received. The request is placed on the
@@ -243,27 +299,19 @@ func (f *fNatsServer) handler(msg *nats.Msg) {
 		logger().Warn("frugal: discarding invalid NATS request (no reply)")
 		return
 	}
-	select {
-	case f.workC <- &frameWrapper{frameBytes: msg.Data, reply: msg.Reply, ephemeralProperties: ephemeralProperties}:
-	case <-f.quit:
-		return
-	}
+
+	f.workC <- &frameWrapper{frameBytes: msg.Data, reply: msg.Reply, ephemeralProperties: ephemeralProperties}
 }
 
 // worker should be called as a goroutine. It reads requests off the work
 // channel and processes them.
 func (f *fNatsServer) worker() {
-	for {
-		select {
-		case <-f.quit:
-			return
-		case frame := <-f.workC:
-			f.onRequestStarted(frame.ephemeralProperties)
-			if err := f.processFrame(frame); err != nil {
-				logger().Errorf("frugal: error processing request: %s", err.Error())
-			}
-			f.onRequestFinished(frame.ephemeralProperties)
+	for frame := range f.workC {
+		f.onRequestStarted(frame.ephemeralProperties)
+		if err := f.processFrame(frame); err != nil {
+			logger().WithError(err).Error("frugal: error processing request")
 		}
+		f.onRequestFinished(frame.ephemeralProperties)
 	}
 }
 
