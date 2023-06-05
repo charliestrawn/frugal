@@ -214,6 +214,9 @@ func (f *fNatsServer) Serve() error {
 		subscriptions = append(subscriptions, sub)
 	}
 
+	// FIXME: QueueSubscribe sends the Subscription to a buffer
+	// A f.conn.Flush may be needed to assert we are subscribed.
+
 	// start frugal workers
 	var wg sync.WaitGroup
 	wg.Add(int(f.workerCount))
