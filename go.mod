@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/sirupsen/logrus v1.9.3
-	github.com/stretchr/testify v1.8.3
+	github.com/stretchr/testify v1.8.4
 	github.com/urfave/cli v1.22.13
 	golang.org/x/tools v0.9.1
 	gopkg.in/yaml.v2 v2.4.0
