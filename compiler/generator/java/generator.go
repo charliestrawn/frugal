@@ -842,7 +842,7 @@ func (g *Generator) generateServiceArgsResults(service *parser.Service, indent s
 				field.Modifier = parser.Default
 			}
 		}
-		contents += g.generateStruct(s, strings.HasSuffix(s.Name, "_args"), strings.HasSuffix(s.Name, "_result"), indent)
+		contents += g.generateStruct(s.Struct, strings.HasSuffix(s.Name, "_args"), strings.HasSuffix(s.Name, "_result"), indent)
 		contents += "\n"
 	}
 	return contents
@@ -2700,7 +2700,7 @@ func (g *Generator) generateClient(service *parser.Service, indent string) strin
 
 	contents += indent + tab + "public Client(FServiceProvider provider, ServiceMiddleware... middleware) {\n"
 	if service.Extends != "" {
-		contents += indent + tabtab + "super(provider, middleware);\n";
+		contents += indent + tabtab + "super(provider, middleware);\n"
 	}
 	contents += indent + tabtab + "InternalIface client = new InternalClient(provider);\n"
 	contents += indent + tabtab + "List<ServiceMiddleware> combined = new ArrayList<ServiceMiddleware>(Arrays.asList(middleware));\n"
