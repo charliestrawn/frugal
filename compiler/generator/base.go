@@ -82,6 +82,7 @@ func (b *BaseGenerator) GetElem() string {
 
 type Struct struct {
 	*parser.Struct
+	Args bool
 }
 
 func (b *BaseGenerator) GetServiceMethodTypes(service *parser.Service) []*Struct {
@@ -100,6 +101,7 @@ func (b *BaseGenerator) GetServiceMethodTypes(service *parser.Service) []*Struct
 		}
 		structs = append(structs, &Struct{
 			Struct: arg,
+			Args:   true,
 		})
 
 		if !method.Oneway {
