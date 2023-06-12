@@ -705,7 +705,15 @@ const (
 	structKindResult
 )
 
+func (kind structKind) export() bool {
+	return kind == structKindStruct || kind == structKindException
+}
+
 func (g *Generator) useNullForUnset(kind structKind) bool {
+	if !kind.export() {
+		return true
+	}
+
 	_, ok := g.Options["use_null_for_unset"]
 	return ok
 }

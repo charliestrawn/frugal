@@ -528,44 +528,24 @@ class blah_args implements thrift.TBase {
   static final thrift.TField _STR_FIELD_DESC = thrift.TField('Str', thrift.TType.STRING, 2);
   static final thrift.TField _EVENT_FIELD_DESC = thrift.TField('event', thrift.TType.STRUCT, 3);
 
-  int _num = 0;
+  int num;
   static const int NUM = 1;
-  String _str;
+  String str;
   static const int STR = 2;
-  t_variety.Event _event;
+  t_variety.Event event;
   static const int EVENT = 3;
 
-  bool __isset_num = false;
 
-  int get num => this._num;
-
-  set num(int num) {
-    this._num = num;
-    this.__isset_num = true;
-  }
-
-  bool isSetNum() => this.__isset_num;
+  bool isSetNum() => this.num != null;
 
   unsetNum() {
-    this.__isset_num = false;
-  }
-
-  String get str => this._str;
-
-  set str(String str) {
-    this._str = str;
+    this.num = null;
   }
 
   bool isSetStr() => this.str != null;
 
   unsetStr() {
     this.str = null;
-  }
-
-  t_variety.Event get event => this._event;
-
-  set event(t_variety.Event event) {
-    this._event = event;
   }
 
   bool isSetEvent() => this.event != null;
@@ -592,11 +572,7 @@ class blah_args implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case NUM:
-        if (value == null) {
-          unsetNum();
-        } else {
-          this.num = value as int;
-        }
+        this.num = value as dynamic;
         break;
 
       case STR:
@@ -615,10 +591,6 @@ class blah_args implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case NUM:
-        return isSetNum();
-    }
     return getFieldValue(fieldID) != null;
   }
 
@@ -632,7 +604,6 @@ class blah_args implements thrift.TBase {
         case NUM:
           if (field.type == thrift.TType.I32) {
             this.num = iprot.readI32();
-            this.__isset_num = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -671,12 +642,12 @@ class blah_args implements thrift.TBase {
     oprot.writeFieldBegin(_NUM_FIELD_DESC);
     oprot.writeI32(this.num);
     oprot.writeFieldEnd();
-    if (this.str != null) {
+    if (isSetStr()) {
       oprot.writeFieldBegin(_STR_FIELD_DESC);
       oprot.writeString(this.str);
       oprot.writeFieldEnd();
     }
-    if (this.event != null) {
+    if (isSetEvent()) {
       oprot.writeFieldBegin(_EVENT_FIELD_DESC);
       this.event.write(oprot);
       oprot.writeFieldEnd();
@@ -753,44 +724,24 @@ class blah_result implements thrift.TBase {
   static final thrift.TField _AWE_FIELD_DESC = thrift.TField('awe', thrift.TType.STRUCT, 1);
   static final thrift.TField _API_FIELD_DESC = thrift.TField('api', thrift.TType.STRUCT, 2);
 
-  int _success;
+  int success;
   static const int SUCCESS = 0;
-  t_variety.AwesomeException _awe;
+  t_variety.AwesomeException awe;
   static const int AWE = 1;
-  t_actual_base_dart.api_exception _api;
+  t_actual_base_dart.api_exception api;
   static const int API = 2;
 
-  bool __isset_success = false;
 
-  int get success => this._success;
-
-  set success(int success) {
-    this._success = success;
-    this.__isset_success = true;
-  }
-
-  bool isSetSuccess() => this.__isset_success;
+  bool isSetSuccess() => this.success != null;
 
   unsetSuccess() {
-    this.__isset_success = false;
-  }
-
-  t_variety.AwesomeException get awe => this._awe;
-
-  set awe(t_variety.AwesomeException awe) {
-    this._awe = awe;
+    this.success = null;
   }
 
   bool isSetAwe() => this.awe != null;
 
   unsetAwe() {
     this.awe = null;
-  }
-
-  t_actual_base_dart.api_exception get api => this._api;
-
-  set api(t_actual_base_dart.api_exception api) {
-    this._api = api;
   }
 
   bool isSetApi() => this.api != null;
@@ -817,11 +768,7 @@ class blah_result implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          this.success = value as int;
-        }
+        this.success = value as dynamic;
         break;
 
       case AWE:
@@ -840,10 +787,6 @@ class blah_result implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return isSetSuccess();
-    }
     return getFieldValue(fieldID) != null;
   }
 
@@ -857,7 +800,6 @@ class blah_result implements thrift.TBase {
         case SUCCESS:
           if (field.type == thrift.TType.I64) {
             this.success = iprot.readI64();
-            this.__isset_success = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -899,12 +841,12 @@ class blah_result implements thrift.TBase {
       oprot.writeI64(this.success);
       oprot.writeFieldEnd();
     }
-    if (isSetAwe() && this.awe != null) {
+    if (isSetAwe()) {
       oprot.writeFieldBegin(_AWE_FIELD_DESC);
       this.awe.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (isSetApi() && this.api != null) {
+    if (isSetApi()) {
       oprot.writeFieldBegin(_API_FIELD_DESC);
       this.api.write(oprot);
       oprot.writeFieldEnd();
@@ -986,30 +928,16 @@ class oneWay_args implements thrift.TBase {
   static final thrift.TField _ID_FIELD_DESC = thrift.TField('id', thrift.TType.I64, 1);
   static final thrift.TField _REQ_FIELD_DESC = thrift.TField('req', thrift.TType.MAP, 2);
 
-  int _id = 0;
+  int id;
   static const int ID = 1;
-  Map<int, String> _req;
+  Map<int, String> req;
   static const int REQ = 2;
 
-  bool __isset_id = false;
 
-  int get id => this._id;
-
-  set id(int id) {
-    this._id = id;
-    this.__isset_id = true;
-  }
-
-  bool isSetId() => this.__isset_id;
+  bool isSetId() => this.id != null;
 
   unsetId() {
-    this.__isset_id = false;
-  }
-
-  Map<int, String> get req => this._req;
-
-  set req(Map<int, String> req) {
-    this._req = req;
+    this.id = null;
   }
 
   bool isSetReq() => this.req != null;
@@ -1034,11 +962,7 @@ class oneWay_args implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case ID:
-        if (value == null) {
-          unsetId();
-        } else {
-          this.id = value as int;
-        }
+        this.id = value as dynamic;
         break;
 
       case REQ:
@@ -1053,10 +977,6 @@ class oneWay_args implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case ID:
-        return isSetId();
-    }
     return getFieldValue(fieldID) != null;
   }
 
@@ -1070,7 +990,6 @@ class oneWay_args implements thrift.TBase {
         case ID:
           if (field.type == thrift.TType.I64) {
             this.id = iprot.readI64();
-            this.__isset_id = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1108,7 +1027,7 @@ class oneWay_args implements thrift.TBase {
     oprot.writeFieldBegin(_ID_FIELD_DESC);
     oprot.writeI64(this.id);
     oprot.writeFieldEnd();
-    if (this.req != null) {
+    if (isSetReq()) {
       oprot.writeFieldBegin(_REQ_FIELD_DESC);
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, this.req.length));
       for(var elem72 in this.req.keys) {
@@ -1177,28 +1096,16 @@ class bin_method_args implements thrift.TBase {
   static final thrift.TField _BIN_FIELD_DESC = thrift.TField('bin', thrift.TType.STRING, 1);
   static final thrift.TField _STR_FIELD_DESC = thrift.TField('Str', thrift.TType.STRING, 2);
 
-  Uint8List _bin;
+  Uint8List bin;
   static const int BIN = 1;
-  String _str;
+  String str;
   static const int STR = 2;
 
-
-  Uint8List get bin => this._bin;
-
-  set bin(Uint8List bin) {
-    this._bin = bin;
-  }
 
   bool isSetBin() => this.bin != null;
 
   unsetBin() {
     this.bin = null;
-  }
-
-  String get str => this._str;
-
-  set str(String str) {
-    this._str = str;
   }
 
   bool isSetStr() => this.str != null;
@@ -1278,12 +1185,12 @@ class bin_method_args implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.bin != null) {
+    if (isSetBin()) {
       oprot.writeFieldBegin(_BIN_FIELD_DESC);
       oprot.writeBinary(this.bin);
       oprot.writeFieldEnd();
     }
-    if (this.str != null) {
+    if (isSetStr()) {
       oprot.writeFieldBegin(_STR_FIELD_DESC);
       oprot.writeString(this.str);
       oprot.writeFieldEnd();
@@ -1351,28 +1258,16 @@ class bin_method_result implements thrift.TBase {
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
   static final thrift.TField _API_FIELD_DESC = thrift.TField('api', thrift.TType.STRUCT, 1);
 
-  Uint8List _success;
+  Uint8List success;
   static const int SUCCESS = 0;
-  t_actual_base_dart.api_exception _api;
+  t_actual_base_dart.api_exception api;
   static const int API = 1;
 
-
-  Uint8List get success => this._success;
-
-  set success(Uint8List success) {
-    this._success = success;
-  }
 
   bool isSetSuccess() => this.success != null;
 
   unsetSuccess() {
     this.success = null;
-  }
-
-  t_actual_base_dart.api_exception get api => this._api;
-
-  set api(t_actual_base_dart.api_exception api) {
-    this._api = api;
   }
 
   bool isSetApi() => this.api != null;
@@ -1453,12 +1348,12 @@ class bin_method_result implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess() && this.success != null) {
+    if (isSetSuccess()) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeBinary(this.success);
       oprot.writeFieldEnd();
     }
-    if (isSetApi() && this.api != null) {
+    if (isSetApi()) {
       oprot.writeFieldBegin(_API_FIELD_DESC);
       this.api.write(oprot);
       oprot.writeFieldEnd();
@@ -1531,54 +1426,30 @@ class param_modifiers_args implements thrift.TBase {
   static final thrift.TField _DEFAULT_NUM_FIELD_DESC = thrift.TField('default_num', thrift.TType.I32, 2);
   static final thrift.TField _REQ_NUM_FIELD_DESC = thrift.TField('req_num', thrift.TType.I32, 3);
 
-  int _opt_num = 0;
+  int opt_num;
   static const int OPT_NUM = 1;
-  int _default_num = 0;
+  int default_num;
   static const int DEFAULT_NUM = 2;
-  int _req_num = 0;
+  int req_num;
   static const int REQ_NUM = 3;
 
-  bool __isset_opt_num = false;
-  bool __isset_default_num = false;
-  bool __isset_req_num = false;
 
-  int get opt_num => this._opt_num;
-
-  set opt_num(int opt_num) {
-    this._opt_num = opt_num;
-    this.__isset_opt_num = true;
-  }
-
-  bool isSetOpt_num() => this.__isset_opt_num;
+  bool isSetOpt_num() => this.opt_num != null;
 
   unsetOpt_num() {
-    this.__isset_opt_num = false;
+    this.opt_num = null;
   }
 
-  int get default_num => this._default_num;
-
-  set default_num(int default_num) {
-    this._default_num = default_num;
-    this.__isset_default_num = true;
-  }
-
-  bool isSetDefault_num() => this.__isset_default_num;
+  bool isSetDefault_num() => this.default_num != null;
 
   unsetDefault_num() {
-    this.__isset_default_num = false;
+    this.default_num = null;
   }
 
-  int get req_num => this._req_num;
-
-  set req_num(int req_num) {
-    this._req_num = req_num;
-    this.__isset_req_num = true;
-  }
-
-  bool isSetReq_num() => this.__isset_req_num;
+  bool isSetReq_num() => this.req_num != null;
 
   unsetReq_num() {
-    this.__isset_req_num = false;
+    this.req_num = null;
   }
 
   @override
@@ -1599,27 +1470,15 @@ class param_modifiers_args implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case OPT_NUM:
-        if (value == null) {
-          unsetOpt_num();
-        } else {
-          this.opt_num = value as int;
-        }
+        this.opt_num = value as dynamic;
         break;
 
       case DEFAULT_NUM:
-        if (value == null) {
-          unsetDefault_num();
-        } else {
-          this.default_num = value as int;
-        }
+        this.default_num = value as dynamic;
         break;
 
       case REQ_NUM:
-        if (value == null) {
-          unsetReq_num();
-        } else {
-          this.req_num = value as int;
-        }
+        this.req_num = value as dynamic;
         break;
 
       default:
@@ -1630,14 +1489,6 @@ class param_modifiers_args implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case OPT_NUM:
-        return isSetOpt_num();
-      case DEFAULT_NUM:
-        return isSetDefault_num();
-      case REQ_NUM:
-        return isSetReq_num();
-    }
     return getFieldValue(fieldID) != null;
   }
 
@@ -1651,7 +1502,6 @@ class param_modifiers_args implements thrift.TBase {
         case OPT_NUM:
           if (field.type == thrift.TType.I32) {
             this.opt_num = iprot.readI32();
-            this.__isset_opt_num = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1659,7 +1509,6 @@ class param_modifiers_args implements thrift.TBase {
         case DEFAULT_NUM:
           if (field.type == thrift.TType.I32) {
             this.default_num = iprot.readI32();
-            this.__isset_default_num = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1667,7 +1516,6 @@ class param_modifiers_args implements thrift.TBase {
         case REQ_NUM:
           if (field.type == thrift.TType.I32) {
             this.req_num = iprot.readI32();
-            this.__isset_req_num = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1763,22 +1611,14 @@ class param_modifiers_result implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('param_modifiers_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.I64, 0);
 
-  int _success;
+  int success;
   static const int SUCCESS = 0;
 
-  bool __isset_success = false;
 
-  int get success => this._success;
-
-  set success(int success) {
-    this._success = success;
-    this.__isset_success = true;
-  }
-
-  bool isSetSuccess() => this.__isset_success;
+  bool isSetSuccess() => this.success != null;
 
   unsetSuccess() {
-    this.__isset_success = false;
+    this.success = null;
   }
 
   @override
@@ -1795,11 +1635,7 @@ class param_modifiers_result implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          this.success = value as int;
-        }
+        this.success = value as dynamic;
         break;
 
       default:
@@ -1810,10 +1646,6 @@ class param_modifiers_result implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return isSetSuccess();
-    }
     return getFieldValue(fieldID) != null;
   }
 
@@ -1827,7 +1659,6 @@ class param_modifiers_result implements thrift.TBase {
         case SUCCESS:
           if (field.type == thrift.TType.I64) {
             this.success = iprot.readI64();
-            this.__isset_success = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -1902,28 +1733,16 @@ class underlying_types_test_args implements thrift.TBase {
   static final thrift.TField _LIST_TYPE_FIELD_DESC = thrift.TField('list_type', thrift.TType.LIST, 1);
   static final thrift.TField _SET_TYPE_FIELD_DESC = thrift.TField('set_type', thrift.TType.SET, 2);
 
-  List<int> _list_type;
+  List<int> list_type;
   static const int LIST_TYPE = 1;
-  Set<int> _set_type;
+  Set<int> set_type;
   static const int SET_TYPE = 2;
 
-
-  List<int> get list_type => this._list_type;
-
-  set list_type(List<int> list_type) {
-    this._list_type = list_type;
-  }
 
   bool isSetList_type() => this.list_type != null;
 
   unsetList_type() {
     this.list_type = null;
-  }
-
-  Set<int> get set_type => this._set_type;
-
-  set set_type(Set<int> set_type) {
-    this._set_type = set_type;
   }
 
   bool isSetSet_type() => this.set_type != null;
@@ -2015,7 +1834,7 @@ class underlying_types_test_args implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.list_type != null) {
+    if (isSetList_type()) {
       oprot.writeFieldBegin(_LIST_TYPE_FIELD_DESC);
       oprot.writeListBegin(thrift.TList(thrift.TType.I64, this.list_type.length));
       for(var elem79 in this.list_type) {
@@ -2024,7 +1843,7 @@ class underlying_types_test_args implements thrift.TBase {
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    if (this.set_type != null) {
+    if (isSetSet_type()) {
       oprot.writeFieldBegin(_SET_TYPE_FIELD_DESC);
       oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, this.set_type.length));
       for(var elem80 in this.set_type) {
@@ -2095,15 +1914,9 @@ class underlying_types_test_result implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('underlying_types_test_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.LIST, 0);
 
-  List<int> _success;
+  List<int> success;
   static const int SUCCESS = 0;
 
-
-  List<int> get success => this._success;
-
-  set success(List<int> success) {
-    this._success = success;
-  }
 
   bool isSetSuccess() => this.success != null;
 
@@ -2175,7 +1988,7 @@ class underlying_types_test_result implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess() && this.success != null) {
+    if (isSetSuccess()) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeListBegin(thrift.TList(thrift.TType.I64, this.success.length));
       for(var elem84 in this.success) {
@@ -2318,15 +2131,9 @@ class getThing_result implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getThing_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRUCT, 0);
 
-  t_validStructs.Thing _success;
+  t_validStructs.Thing success;
   static const int SUCCESS = 0;
 
-
-  t_validStructs.Thing get success => this._success;
-
-  set success(t_validStructs.Thing success) {
-    this._success = success;
-  }
 
   bool isSetSuccess() => this.success != null;
 
@@ -2393,7 +2200,7 @@ class getThing_result implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess() && this.success != null) {
+    if (isSetSuccess()) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       this.success.write(oprot);
       oprot.writeFieldEnd();
@@ -2532,22 +2339,14 @@ class getMyInt_result implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getMyInt_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.I32, 0);
 
-  int _success;
+  int success;
   static const int SUCCESS = 0;
 
-  bool __isset_success = false;
 
-  int get success => this._success;
-
-  set success(int success) {
-    this._success = success;
-    this.__isset_success = true;
-  }
-
-  bool isSetSuccess() => this.__isset_success;
+  bool isSetSuccess() => this.success != null;
 
   unsetSuccess() {
-    this.__isset_success = false;
+    this.success = null;
   }
 
   @override
@@ -2564,11 +2363,7 @@ class getMyInt_result implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          this.success = value as int;
-        }
+        this.success = value as dynamic;
         break;
 
       default:
@@ -2579,10 +2374,6 @@ class getMyInt_result implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return isSetSuccess();
-    }
     return getFieldValue(fieldID) != null;
   }
 
@@ -2596,7 +2387,6 @@ class getMyInt_result implements thrift.TBase {
         case SUCCESS:
           if (field.type == thrift.TType.I32) {
             this.success = iprot.readI32();
-            this.__isset_success = true;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -2670,15 +2460,9 @@ class use_subdir_struct_args implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('use_subdir_struct_args');
   static final thrift.TField _A_FIELD_DESC = thrift.TField('a', thrift.TType.STRUCT, 1);
 
-  t_subdir_include_ns.A _a;
+  t_subdir_include_ns.A a;
   static const int A = 1;
 
-
-  t_subdir_include_ns.A get a => this._a;
-
-  set a(t_subdir_include_ns.A a) {
-    this._a = a;
-  }
 
   bool isSetA() => this.a != null;
 
@@ -2745,7 +2529,7 @@ class use_subdir_struct_args implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.a != null) {
+    if (isSetA()) {
       oprot.writeFieldBegin(_A_FIELD_DESC);
       this.a.write(oprot);
       oprot.writeFieldEnd();
@@ -2800,15 +2584,9 @@ class use_subdir_struct_result implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('use_subdir_struct_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRUCT, 0);
 
-  t_subdir_include_ns.A _success;
+  t_subdir_include_ns.A success;
   static const int SUCCESS = 0;
 
-
-  t_subdir_include_ns.A get success => this._success;
-
-  set success(t_subdir_include_ns.A success) {
-    this._success = success;
-  }
 
   bool isSetSuccess() => this.success != null;
 
@@ -2875,7 +2653,7 @@ class use_subdir_struct_result implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess() && this.success != null) {
+    if (isSetSuccess()) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       this.success.write(oprot);
       oprot.writeFieldEnd();
@@ -2932,15 +2710,9 @@ class sayHelloWith_args implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayHelloWith_args');
   static final thrift.TField _NEW_MESSAGE_FIELD_DESC = thrift.TField('newMessage', thrift.TType.STRING, 1);
 
-  String _newMessage;
+  String newMessage;
   static const int NEWMESSAGE = 1;
 
-
-  String get newMessage => this._newMessage;
-
-  set newMessage(String newMessage) {
-    this._newMessage = newMessage;
-  }
 
   bool isSetNewMessage() => this.newMessage != null;
 
@@ -3006,7 +2778,7 @@ class sayHelloWith_args implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.newMessage != null) {
+    if (isSetNewMessage()) {
       oprot.writeFieldBegin(_NEW_MESSAGE_FIELD_DESC);
       oprot.writeString(this.newMessage);
       oprot.writeFieldEnd();
@@ -3061,15 +2833,9 @@ class sayHelloWith_result implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayHelloWith_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
 
-  String _success;
+  String success;
   static const int SUCCESS = 0;
 
-
-  String get success => this._success;
-
-  set success(String success) {
-    this._success = success;
-  }
 
   bool isSetSuccess() => this.success != null;
 
@@ -3135,7 +2901,7 @@ class sayHelloWith_result implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess() && this.success != null) {
+    if (isSetSuccess()) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeString(this.success);
       oprot.writeFieldEnd();
@@ -3192,15 +2958,9 @@ class whatDoYouSay_args implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('whatDoYouSay_args');
   static final thrift.TField _MESSAGE_ARGS_FIELD_DESC = thrift.TField('messageArgs', thrift.TType.STRING, 1);
 
-  String _messageArgs;
+  String messageArgs;
   static const int MESSAGEARGS = 1;
 
-
-  String get messageArgs => this._messageArgs;
-
-  set messageArgs(String messageArgs) {
-    this._messageArgs = messageArgs;
-  }
 
   bool isSetMessageArgs() => this.messageArgs != null;
 
@@ -3266,7 +3026,7 @@ class whatDoYouSay_args implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.messageArgs != null) {
+    if (isSetMessageArgs()) {
       oprot.writeFieldBegin(_MESSAGE_ARGS_FIELD_DESC);
       oprot.writeString(this.messageArgs);
       oprot.writeFieldEnd();
@@ -3321,15 +3081,9 @@ class whatDoYouSay_result implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('whatDoYouSay_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
 
-  String _success;
+  String success;
   static const int SUCCESS = 0;
 
-
-  String get success => this._success;
-
-  set success(String success) {
-    this._success = success;
-  }
 
   bool isSetSuccess() => this.success != null;
 
@@ -3395,7 +3149,7 @@ class whatDoYouSay_result implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess() && this.success != null) {
+    if (isSetSuccess()) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeString(this.success);
       oprot.writeFieldEnd();
@@ -3452,15 +3206,9 @@ class sayAgain_args implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayAgain_args');
   static final thrift.TField _MESSAGE_RESULT_FIELD_DESC = thrift.TField('messageResult', thrift.TType.STRING, 1);
 
-  String _messageResult;
+  String messageResult;
   static const int MESSAGERESULT = 1;
 
-
-  String get messageResult => this._messageResult;
-
-  set messageResult(String messageResult) {
-    this._messageResult = messageResult;
-  }
 
   bool isSetMessageResult() => this.messageResult != null;
 
@@ -3526,7 +3274,7 @@ class sayAgain_args implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.messageResult != null) {
+    if (isSetMessageResult()) {
       oprot.writeFieldBegin(_MESSAGE_RESULT_FIELD_DESC);
       oprot.writeString(this.messageResult);
       oprot.writeFieldEnd();
@@ -3581,15 +3329,9 @@ class sayAgain_result implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayAgain_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
 
-  String _success;
+  String success;
   static const int SUCCESS = 0;
 
-
-  String get success => this._success;
-
-  set success(String success) {
-    this._success = success;
-  }
 
   bool isSetSuccess() => this.success != null;
 
@@ -3655,7 +3397,7 @@ class sayAgain_result implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess() && this.success != null) {
+    if (isSetSuccess()) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeString(this.success);
       oprot.writeFieldEnd();

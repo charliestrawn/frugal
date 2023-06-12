@@ -169,28 +169,16 @@ class getItem_result implements thrift.TBase {
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRUCT, 0);
   static final thrift.TField _D_FIELD_DESC = thrift.TField('d', thrift.TType.STRUCT, 1);
 
-  t_vendor_namespace.Item _success;
+  t_vendor_namespace.Item success;
   static const int SUCCESS = 0;
-  t_excepts.InvalidData _d;
+  t_excepts.InvalidData d;
   static const int D = 1;
 
-
-  t_vendor_namespace.Item get success => this._success;
-
-  set success(t_vendor_namespace.Item success) {
-    this._success = success;
-  }
 
   bool isSetSuccess() => this.success != null;
 
   unsetSuccess() {
     this.success = null;
-  }
-
-  t_excepts.InvalidData get d => this._d;
-
-  set d(t_excepts.InvalidData d) {
-    this._d = d;
   }
 
   bool isSetD() => this.d != null;
@@ -272,12 +260,12 @@ class getItem_result implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess() && this.success != null) {
+    if (isSetSuccess()) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       this.success.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (isSetD() && this.d != null) {
+    if (isSetD()) {
       oprot.writeFieldBegin(_D_FIELD_DESC);
       this.d.write(oprot);
       oprot.writeFieldEnd();
