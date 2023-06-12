@@ -90,17 +90,7 @@ class AwesomeException extends Error implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case ID:
-        return isSetID();
-      case REASON:
-        return isSetReason();
-      case DEPR:
-        // ignore: deprecated_member_use
-        return isSetDepr();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

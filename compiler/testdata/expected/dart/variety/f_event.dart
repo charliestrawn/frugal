@@ -128,13 +128,10 @@ class Event implements thrift.TBase {
     switch (fieldID) {
       case ID:
         return isSetID();
-      case MESSAGE:
-        return isSetMessage();
       case YES_NO:
         return isSetYES_NO();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
     }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

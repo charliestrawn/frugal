@@ -343,45 +343,12 @@ class TestingDefaults implements thrift.TBase {
   @override
   bool isSet(int fieldID) {
     switch (fieldID) {
-      case ID2:
-        return isSetID2();
-      case EV1:
-        return isSetEv1();
-      case EV2:
-        return isSetEv2();
       case ID:
         return isSetID();
-      case THING:
-        return isSetThing();
-      case THING2:
-        return isSetThing2();
-      case LISTFIELD:
-        return isSetListfield();
       case ID3:
         return isSetID3();
-      case BIN_FIELD:
-        return isSetBin_field();
-      case BIN_FIELD2:
-        return isSetBin_field2();
-      case BIN_FIELD3:
-        return isSetBin_field3();
-      case BIN_FIELD4:
-        return isSetBin_field4();
-      case LIST2:
-        return isSetList2();
-      case LIST3:
-        return isSetList3();
-      case LIST4:
-        return isSetList4();
-      case A_MAP:
-        return isSetA_map();
-      case STATUS:
-        return isSetStatus();
-      case BASE_STATUS:
-        return isSetBase_status();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
     }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

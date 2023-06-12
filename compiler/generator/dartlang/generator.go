@@ -944,18 +944,27 @@ func (g *Generator) generateFieldMethods(s *parser.Struct) string {
 	contents += tab + "}\n\n"
 
 	// isSet
+	numNullForIsSetExpr := 0
+	for _, field := range s.Fields {
+		if g.useNullForIsSetExpr(field) {
+			numNullForIsSetExpr++
+		}
+	}
 	contents += tab + "// Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise\n"
 	contents += tab + "@override\n"
 	contents += tab + "bool isSet(int fieldID) {\n"
-	contents += tabtab + "switch (fieldID) {\n"
-	for _, field := range s.Fields {
-		contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
-		contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
-		contents += fmt.Sprintf(tabtabtabtab+"return isSet%s();\n", strings.Title(field.Name))
+	if numNullForIsSetExpr < len(s.Fields) {
+		contents += tabtab + "switch (fieldID) {\n"
+		for _, field := range s.Fields {
+			if !g.useNullForIsSetExpr(field) {
+				contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
+				contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
+				contents += fmt.Sprintf(tabtabtabtab+"return isSet%s();\n", strings.Title(field.Name))
+			}
+		}
+		contents += tabtab + "}\n"
 	}
-	contents += tabtabtab + "default:\n"
-	contents += tabtabtabtab + "throw ArgumentError(\"Field $fieldID doesn't exist!\");\n"
-	contents += tabtab + "}\n"
+	contents += tabtab + "return getFieldValue(fieldID) != null;\n"
 	contents += tab + "}\n\n"
 	return contents
 }

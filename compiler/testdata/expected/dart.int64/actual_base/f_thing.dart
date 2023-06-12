@@ -85,11 +85,8 @@ class thing implements thrift.TBase {
     switch (fieldID) {
       case AN_ID:
         return isSetAn_id();
-      case A_STRING:
-        return isSetA_string();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
     }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

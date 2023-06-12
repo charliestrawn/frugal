@@ -436,42 +436,13 @@ class EventWrapper implements thrift.TBase {
     switch (fieldID) {
       case ID:
         return isSetID();
-      case EV:
-        return isSetEv();
-      case EVENTS:
-        return isSetEvents();
-      case EVENTS2:
-        return isSetEvents2();
-      case EVENTMAP:
-        return isSetEventMap();
-      case NUMS:
-        return isSetNums();
-      case ENUMS:
-        return isSetEnums();
       case ABOOLFIELD:
         return isSetABoolField();
-      case A_UNION:
-        return isSetA_union();
-      case TYPEDEFOFTYPEDEF:
-        return isSetTypedefOfTypedef();
       case DEPR:
         // ignore: deprecated_member_use
         return isSetDepr();
-      case DEPRBINARY:
-        // ignore: deprecated_member_use
-        return isSetDeprBinary();
-      case DEPRLIST:
-        // ignore: deprecated_member_use
-        return isSetDeprList();
-      case EVENTSDEFAULT:
-        return isSetEventsDefault();
-      case EVENTMAPDEFAULT:
-        return isSetEventMapDefault();
-      case EVENTSETDEFAULT:
-        return isSetEventSetDefault();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
     }
+    return getFieldValue(fieldID) != null;
   }
 
   @override
