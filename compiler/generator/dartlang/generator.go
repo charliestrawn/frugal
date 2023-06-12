@@ -839,7 +839,9 @@ func (g *Generator) generateStruct(s *parser.Struct, kind structKind) string {
 	contents += g.generateFieldMethods(s, kind)
 
 	// read
-	contents += g.generateRead(s, kind)
+	if kind.export() || kind == structKindResult {
+		contents += g.generateRead(s, kind)
+	}
 
 	// write
 	if kind.export() || kind == structKindArgs {

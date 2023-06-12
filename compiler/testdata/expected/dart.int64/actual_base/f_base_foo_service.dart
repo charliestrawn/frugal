@@ -73,24 +73,6 @@ class basePing_args extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
-
-  @override
   write(thrift.TProtocol oprot) {
     validate();
 

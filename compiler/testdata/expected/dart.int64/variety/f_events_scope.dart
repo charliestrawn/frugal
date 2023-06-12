@@ -128,11 +128,11 @@ class EventsPublisher {
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
     oprot.writeListBegin(thrift.TList(thrift.TType.MAP, req.length));
-    for(var elem84 in req) {
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem84.length));
-      for(var elem85 in elem84.keys) {
-        oprot.writeInt64(elem85);
-        elem84[elem85].write(oprot);
+    for(var elem74 in req) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem74.length));
+      for(var elem75 in elem74.keys) {
+        oprot.writeInt64(elem75);
+        elem74[elem75].write(oprot);
       }
       oprot.writeMapEnd();
     }
@@ -270,19 +270,19 @@ class EventsSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      thrift.TList elem86 = iprot.readListBegin();
+      thrift.TList elem76 = iprot.readListBegin();
       List<Map<fixnum.Int64, t_variety.Event>> req = List<Map<fixnum.Int64, t_variety.Event>>();
-      for(int elem92 = 0; elem92 < elem86.length; ++elem92) {
-        thrift.TMap elem88 = iprot.readMapBegin();
-        Map<fixnum.Int64, t_variety.Event> elem87 = Map<fixnum.Int64, t_variety.Event>();
-        for(int elem90 = 0; elem90 < elem88.length; ++elem90) {
-          fixnum.Int64 elem91 = iprot.readInt64();
-          t_variety.Event elem89 = t_variety.Event();
-          elem89.read(iprot);
-          elem87[elem91] = elem89;
+      for(int elem82 = 0; elem82 < elem76.length; ++elem82) {
+        thrift.TMap elem78 = iprot.readMapBegin();
+        Map<fixnum.Int64, t_variety.Event> elem77 = Map<fixnum.Int64, t_variety.Event>();
+        for(int elem80 = 0; elem80 < elem78.length; ++elem80) {
+          fixnum.Int64 elem81 = iprot.readInt64();
+          t_variety.Event elem79 = t_variety.Event();
+          elem79.read(iprot);
+          elem77[elem81] = elem79;
         }
         iprot.readMapEnd();
-        req.add(elem87);
+        req.add(elem77);
       }
       iprot.readListEnd();
       iprot.readMessageEnd();

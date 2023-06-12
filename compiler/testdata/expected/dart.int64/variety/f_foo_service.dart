@@ -365,24 +365,6 @@ class Ping_args extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
-
-  @override
   write(thrift.TProtocol oprot) {
     validate();
 
@@ -433,46 +415,6 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
   t_variety.Event event;
   static const int EVENT = 3;
 
-
-  @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        case NUM:
-          if (field.type == thrift.TType.I32) {
-            this.num = iprot.readI32();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case STR:
-          if (field.type == thrift.TType.STRING) {
-            this.str = iprot.readString();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case EVENT:
-          if (field.type == thrift.TType.STRUCT) {
-            this.event = t_variety.Event();
-            event.read(iprot);
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
 
   @override
   write(thrift.TProtocol oprot) {
@@ -566,45 +508,6 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        case ID:
-          if (field.type == thrift.TType.I64) {
-            this.id = iprot.readInt64();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case REQ:
-          if (field.type == thrift.TType.MAP) {
-            thrift.TMap elem68 = iprot.readMapBegin();
-            this.req = Map<int, String>();
-            for(int elem70 = 0; elem70 < elem68.length; ++elem70) {
-              int elem71 = iprot.readI32();
-              String elem69 = iprot.readString();
-              this.req[elem71] = elem69;
-            }
-            iprot.readMapEnd();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
-
-  @override
   write(thrift.TProtocol oprot) {
     validate();
 
@@ -615,9 +518,9 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
     if (this.req != null) {
       oprot.writeFieldBegin(_REQ_FIELD_DESC);
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, this.req.length));
-      for(var elem72 in this.req.keys) {
-        oprot.writeI32(elem72);
-        oprot.writeString(req[elem72]);
+      for(var elem68 in this.req.keys) {
+        oprot.writeI32(elem68);
+        oprot.writeString(req[elem68]);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
@@ -640,38 +543,6 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
   String str;
   static const int STR = 2;
 
-
-  @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        case BIN:
-          if (field.type == thrift.TType.STRING) {
-            this.bin = iprot.readBinary();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case STR:
-          if (field.type == thrift.TType.STRING) {
-            this.str = iprot.readString();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
 
   @override
   write(thrift.TProtocol oprot) {
@@ -755,45 +626,6 @@ class param_modifiers_args extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        case OPT_NUM:
-          if (field.type == thrift.TType.I32) {
-            this.opt_num = iprot.readI32();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case DEFAULT_NUM:
-          if (field.type == thrift.TType.I32) {
-            this.default_num = iprot.readI32();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case REQ_NUM:
-          if (field.type == thrift.TType.I32) {
-            this.req_num = iprot.readI32();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
-
-  @override
   write(thrift.TProtocol oprot) {
     validate();
 
@@ -865,50 +697,6 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        case LIST_TYPE:
-          if (field.type == thrift.TType.LIST) {
-            thrift.TList elem73 = iprot.readListBegin();
-            this.list_type = List<fixnum.Int64>();
-            for(int elem75 = 0; elem75 < elem73.length; ++elem75) {
-              fixnum.Int64 elem74 = iprot.readInt64();
-              this.list_type.add(elem74);
-            }
-            iprot.readListEnd();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case SET_TYPE:
-          if (field.type == thrift.TType.SET) {
-            thrift.TSet elem76 = iprot.readSetBegin();
-            this.set_type = Set<fixnum.Int64>();
-            for(int elem78 = 0; elem78 < elem76.length; ++elem78) {
-              fixnum.Int64 elem77 = iprot.readInt64();
-              this.set_type.add(elem77);
-            }
-            iprot.readSetEnd();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
-
-  @override
   write(thrift.TProtocol oprot) {
     validate();
 
@@ -916,8 +704,8 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
     if (this.list_type != null) {
       oprot.writeFieldBegin(_LIST_TYPE_FIELD_DESC);
       oprot.writeListBegin(thrift.TList(thrift.TType.I64, this.list_type.length));
-      for(var elem79 in this.list_type) {
-        oprot.writeInt64(elem79);
+      for(var elem69 in this.list_type) {
+        oprot.writeInt64(elem69);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
@@ -925,8 +713,8 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
     if (this.set_type != null) {
       oprot.writeFieldBegin(_SET_TYPE_FIELD_DESC);
       oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, this.set_type.length));
-      for(var elem80 in this.set_type) {
-        oprot.writeInt64(elem80);
+      for(var elem70 in this.set_type) {
+        oprot.writeInt64(elem70);
       }
       oprot.writeSetEnd();
       oprot.writeFieldEnd();
@@ -953,11 +741,11 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
       switch (field.id) {
         case SUCCESS:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem81 = iprot.readListBegin();
+            thrift.TList elem71 = iprot.readListBegin();
             this.success = List<fixnum.Int64>();
-            for(int elem83 = 0; elem83 < elem81.length; ++elem83) {
-              fixnum.Int64 elem82 = iprot.readInt64();
-              this.success.add(elem82);
+            for(int elem73 = 0; elem73 < elem71.length; ++elem73) {
+              fixnum.Int64 elem72 = iprot.readInt64();
+              this.success.add(elem72);
             }
             iprot.readListEnd();
           } else {
@@ -983,24 +771,6 @@ class getThing_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getThing_args');
 
 
-
-  @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
 
   @override
   write(thrift.TProtocol oprot) {
@@ -1056,24 +826,6 @@ class getMyInt_args extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
-
-  @override
   write(thrift.TProtocol oprot) {
     validate();
 
@@ -1127,32 +879,6 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
   t_subdir_include_ns.A a;
   static const int A = 1;
 
-
-  @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        case A:
-          if (field.type == thrift.TType.STRUCT) {
-            this.a = t_subdir_include_ns.A();
-            a.read(iprot);
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
 
   @override
   write(thrift.TProtocol oprot) {
@@ -1216,31 +942,6 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        case NEWMESSAGE:
-          if (field.type == thrift.TType.STRING) {
-            this.newMessage = iprot.readString();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
-
-  @override
   write(thrift.TProtocol oprot) {
     validate();
 
@@ -1301,31 +1002,6 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        case MESSAGEARGS:
-          if (field.type == thrift.TType.STRING) {
-            this.messageArgs = iprot.readString();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
-
-  @override
   write(thrift.TProtocol oprot) {
     validate();
 
@@ -1384,31 +1060,6 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
   String messageResult;
   static const int MESSAGERESULT = 1;
 
-
-  @override
-  read(thrift.TProtocol iprot) {
-    iprot.readStructBegin();
-    for (thrift.TField field = iprot.readFieldBegin();
-        field.type != thrift.TType.STOP;
-        field = iprot.readFieldBegin()) {
-      switch (field.id) {
-        case MESSAGERESULT:
-          if (field.type == thrift.TType.STRING) {
-            this.messageResult = iprot.readString();
-          } else {
-            thrift.TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        default:
-          thrift.TProtocolUtil.skip(iprot, field.type);
-          break;
-      }
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-
-    validate();
-  }
 
   @override
   write(thrift.TProtocol oprot) {
