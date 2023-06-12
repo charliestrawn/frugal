@@ -102,9 +102,7 @@ class getItem_args extends frugal.FGeneratedArgsResultBase {
 // ignore: camel_case_types
 class getItem_result extends frugal.FGeneratedArgsResultBase {
   t_vendor_namespace.Item success;
-  static const int SUCCESS = 0;
   t_excepts.InvalidData d;
-  static const int D = 1;
 
 
   @override
@@ -114,7 +112,7 @@ class getItem_result extends frugal.FGeneratedArgsResultBase {
         field.type != thrift.TType.STOP;
         field = iprot.readFieldBegin()) {
       switch (field.id) {
-        case SUCCESS:
+        case 0:
           if (field.type == thrift.TType.STRUCT) {
             this.success = t_vendor_namespace.Item();
             success.read(iprot);
@@ -122,7 +120,7 @@ class getItem_result extends frugal.FGeneratedArgsResultBase {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case D:
+        case 1:
           if (field.type == thrift.TType.STRUCT) {
             this.d = t_excepts.InvalidData();
             d.read(iprot);

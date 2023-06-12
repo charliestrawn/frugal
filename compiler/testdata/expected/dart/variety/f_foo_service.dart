@@ -408,11 +408,8 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _EVENT_FIELD_DESC = thrift.TField('event', thrift.TType.STRUCT, 3);
 
   int num;
-  static const int NUM = 1;
   String str;
-  static const int STR = 2;
   t_variety.Event event;
-  static const int EVENT = 3;
 
 
   @override
@@ -443,11 +440,8 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
 // ignore: camel_case_types
 class blah_result extends frugal.FGeneratedArgsResultBase {
   int success;
-  static const int SUCCESS = 0;
   t_variety.AwesomeException awe;
-  static const int AWE = 1;
   t_actual_base_dart.api_exception api;
-  static const int API = 2;
 
 
   @override
@@ -457,14 +451,14 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
         field.type != thrift.TType.STOP;
         field = iprot.readFieldBegin()) {
       switch (field.id) {
-        case SUCCESS:
+        case 0:
           if (field.type == thrift.TType.I64) {
             this.success = iprot.readI64();
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case AWE:
+        case 1:
           if (field.type == thrift.TType.STRUCT) {
             this.awe = t_variety.AwesomeException();
             awe.read(iprot);
@@ -472,7 +466,7 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case API:
+        case 2:
           if (field.type == thrift.TType.STRUCT) {
             this.api = t_actual_base_dart.api_exception();
             api.read(iprot);
@@ -501,9 +495,7 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _REQ_FIELD_DESC = thrift.TField('req', thrift.TType.MAP, 2);
 
   int id;
-  static const int ID = 1;
   Map<int, String> req;
-  static const int REQ = 2;
 
 
   @override
@@ -538,9 +530,7 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _STR_FIELD_DESC = thrift.TField('Str', thrift.TType.STRING, 2);
 
   Uint8List bin;
-  static const int BIN = 1;
   String str;
-  static const int STR = 2;
 
 
   @override
@@ -568,9 +558,7 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
 // ignore: camel_case_types
 class bin_method_result extends frugal.FGeneratedArgsResultBase {
   Uint8List success;
-  static const int SUCCESS = 0;
   t_actual_base_dart.api_exception api;
-  static const int API = 1;
 
 
   @override
@@ -580,14 +568,14 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
         field.type != thrift.TType.STOP;
         field = iprot.readFieldBegin()) {
       switch (field.id) {
-        case SUCCESS:
+        case 0:
           if (field.type == thrift.TType.STRING) {
             this.success = iprot.readBinary();
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case API:
+        case 1:
           if (field.type == thrift.TType.STRUCT) {
             this.api = t_actual_base_dart.api_exception();
             api.read(iprot);
@@ -617,11 +605,8 @@ class param_modifiers_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _REQ_NUM_FIELD_DESC = thrift.TField('req_num', thrift.TType.I32, 3);
 
   int opt_num;
-  static const int OPT_NUM = 1;
   int default_num;
-  static const int DEFAULT_NUM = 2;
   int req_num;
-  static const int REQ_NUM = 3;
 
 
   @override
@@ -652,7 +637,6 @@ class param_modifiers_args extends frugal.FGeneratedArgsResultBase {
 // ignore: camel_case_types
 class param_modifiers_result extends frugal.FGeneratedArgsResultBase {
   int success;
-  static const int SUCCESS = 0;
 
 
   @override
@@ -662,7 +646,7 @@ class param_modifiers_result extends frugal.FGeneratedArgsResultBase {
         field.type != thrift.TType.STOP;
         field = iprot.readFieldBegin()) {
       switch (field.id) {
-        case SUCCESS:
+        case 0:
           if (field.type == thrift.TType.I64) {
             this.success = iprot.readI64();
           } else {
@@ -690,9 +674,7 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _SET_TYPE_FIELD_DESC = thrift.TField('set_type', thrift.TType.SET, 2);
 
   List<int> list_type;
-  static const int LIST_TYPE = 1;
   Set<int> set_type;
-  static const int SET_TYPE = 2;
 
 
   @override
@@ -728,7 +710,6 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
 // ignore: camel_case_types
 class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
   List<int> success;
-  static const int SUCCESS = 0;
 
 
   @override
@@ -738,7 +719,7 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
         field.type != thrift.TType.STOP;
         field = iprot.readFieldBegin()) {
       switch (field.id) {
-        case SUCCESS:
+        case 0:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem71 = iprot.readListBegin();
             this.success = List<int>();
@@ -786,7 +767,6 @@ class getThing_args extends frugal.FGeneratedArgsResultBase {
 // ignore: camel_case_types
 class getThing_result extends frugal.FGeneratedArgsResultBase {
   t_validStructs.Thing success;
-  static const int SUCCESS = 0;
 
 
   @override
@@ -796,7 +776,7 @@ class getThing_result extends frugal.FGeneratedArgsResultBase {
         field.type != thrift.TType.STOP;
         field = iprot.readFieldBegin()) {
       switch (field.id) {
-        case SUCCESS:
+        case 0:
           if (field.type == thrift.TType.STRUCT) {
             this.success = t_validStructs.Thing();
             success.read(iprot);
@@ -839,7 +819,6 @@ class getMyInt_args extends frugal.FGeneratedArgsResultBase {
 // ignore: camel_case_types
 class getMyInt_result extends frugal.FGeneratedArgsResultBase {
   int success;
-  static const int SUCCESS = 0;
 
 
   @override
@@ -849,7 +828,7 @@ class getMyInt_result extends frugal.FGeneratedArgsResultBase {
         field.type != thrift.TType.STOP;
         field = iprot.readFieldBegin()) {
       switch (field.id) {
-        case SUCCESS:
+        case 0:
           if (field.type == thrift.TType.I32) {
             this.success = iprot.readI32();
           } else {
@@ -876,7 +855,6 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _A_FIELD_DESC = thrift.TField('a', thrift.TType.STRUCT, 1);
 
   t_subdir_include_ns.A a;
-  static const int A = 1;
 
 
   @override
@@ -899,7 +877,6 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
 // ignore: camel_case_types
 class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
   t_subdir_include_ns.A success;
-  static const int SUCCESS = 0;
 
 
   @override
@@ -909,7 +886,7 @@ class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
         field.type != thrift.TType.STOP;
         field = iprot.readFieldBegin()) {
       switch (field.id) {
-        case SUCCESS:
+        case 0:
           if (field.type == thrift.TType.STRUCT) {
             this.success = t_subdir_include_ns.A();
             success.read(iprot);
@@ -937,7 +914,6 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _NEW_MESSAGE_FIELD_DESC = thrift.TField('newMessage', thrift.TType.STRING, 1);
 
   String newMessage;
-  static const int NEWMESSAGE = 1;
 
 
   @override
@@ -960,7 +936,6 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
 // ignore: camel_case_types
 class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
   String success;
-  static const int SUCCESS = 0;
 
 
   @override
@@ -970,7 +945,7 @@ class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
         field.type != thrift.TType.STOP;
         field = iprot.readFieldBegin()) {
       switch (field.id) {
-        case SUCCESS:
+        case 0:
           if (field.type == thrift.TType.STRING) {
             this.success = iprot.readString();
           } else {
@@ -997,7 +972,6 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _MESSAGE_ARGS_FIELD_DESC = thrift.TField('messageArgs', thrift.TType.STRING, 1);
 
   String messageArgs;
-  static const int MESSAGEARGS = 1;
 
 
   @override
@@ -1020,7 +994,6 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
 // ignore: camel_case_types
 class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
   String success;
-  static const int SUCCESS = 0;
 
 
   @override
@@ -1030,7 +1003,7 @@ class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
         field.type != thrift.TType.STOP;
         field = iprot.readFieldBegin()) {
       switch (field.id) {
-        case SUCCESS:
+        case 0:
           if (field.type == thrift.TType.STRING) {
             this.success = iprot.readString();
           } else {
@@ -1057,7 +1030,6 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _MESSAGE_RESULT_FIELD_DESC = thrift.TField('messageResult', thrift.TType.STRING, 1);
 
   String messageResult;
-  static const int MESSAGERESULT = 1;
 
 
   @override
@@ -1080,7 +1052,6 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
 // ignore: camel_case_types
 class sayAgain_result extends frugal.FGeneratedArgsResultBase {
   String success;
-  static const int SUCCESS = 0;
 
 
   @override
@@ -1090,7 +1061,7 @@ class sayAgain_result extends frugal.FGeneratedArgsResultBase {
         field.type != thrift.TType.STOP;
         field = iprot.readFieldBegin()) {
       switch (field.id) {
-        case SUCCESS:
+        case 0:
           if (field.type == thrift.TType.STRING) {
             this.success = iprot.readString();
           } else {

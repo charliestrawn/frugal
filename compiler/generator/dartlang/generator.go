@@ -765,6 +765,17 @@ func (g *Generator) generateIsSetSuccessExpr(target string) string {
 	return g.generateIsSetExpr(structKindResult, successFieldForIsSet, target)
 }
 
+func (g *Generator) shouldGenerateFieldId(s *parser.Struct, kind structKind) bool {
+	return kind.export()
+}
+
+func (g *Generator) generateFieldIdExpr(s *parser.Struct, kind structKind, field *parser.Field) string {
+	if g.shouldGenerateFieldId(s, kind) {
+		return strings.ToUpper(field.Name)
+	}
+	return strconv.Itoa(field.ID)
+}
+
 func (g *Generator) generateStruct(s *parser.Struct, kind structKind) string {
 	contents := ""
 
@@ -802,7 +813,9 @@ func (g *Generator) generateStruct(s *parser.Struct, kind structKind) string {
 		}
 		contents += fmt.Sprintf(tab+"%s %s%s;\n",
 			g.getDartTypeFromThriftType(field.Type), fieldName, g.generateInitValue(field, kind))
-		contents += fmt.Sprintf(tab+"static const int %s = %d;\n", strings.ToUpper(field.Name), field.ID)
+		if g.shouldGenerateFieldId(s, kind) {
+			contents += fmt.Sprintf(tab+"static const int %s = %d;\n", strings.ToUpper(field.Name), field.ID)
+		}
 	}
 	contents += "\n"
 
@@ -989,7 +1002,7 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 		contents += tab + "getFieldValue(int fieldID) {\n"
 		contents += tabtab + "switch (fieldID) {\n"
 		for _, field := range s.Fields {
-			contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
+			contents += fmt.Sprintf(tabtabtab+"case %s:\n", g.generateFieldIdExpr(s, kind, field))
 			contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
 			contents += fmt.Sprintf(tabtabtabtab+"return this.%s;\n", toFieldName(field.Name))
 		}
@@ -1006,7 +1019,7 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 		contents += tabtab + "switch (fieldID) {\n"
 		for _, field := range s.Fields {
 			fName := toFieldName(field.Name)
-			contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
+			contents += fmt.Sprintf(tabtabtab+"case %s:\n", g.generateFieldIdExpr(s, kind, field))
 			if g.useNullForIsSetExpr(kind, field) {
 				contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
 				contents += fmt.Sprintf(tabtabtabtab+"this.%s = value as dynamic;\n", fName)
@@ -1041,7 +1054,7 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 			contents += tabtab + "switch (fieldID) {\n"
 			for _, field := range s.Fields {
 				if !g.useNullForIsSetExpr(kind, field) {
-					contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
+					contents += fmt.Sprintf(tabtabtab+"case %s:\n", g.generateFieldIdExpr(s, kind, field))
 					contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
 					contents += fmt.Sprintf(tabtabtabtab+"return %s;\n", g.generateIsSetExpr(kind, field, ""))
 				}
@@ -1064,7 +1077,7 @@ func (g *Generator) generateRead(s *parser.Struct, kind structKind) string {
 	contents += tabtabtabtab + "field = iprot.readFieldBegin()) {\n"
 	contents += tabtabtab + "switch (field.id) {\n"
 	for _, field := range s.Fields {
-		contents += fmt.Sprintf(tabtabtabtab+"case %s:\n", strings.ToUpper(field.Name))
+		contents += fmt.Sprintf(tabtabtabtab+"case %s:\n", g.generateFieldIdExpr(s, kind, field))
 		t := g.getEnumFromThriftType(g.Frugal.UnderlyingType(field.Type))
 		contents += fmt.Sprintf(tabtabtabtabtab+"if (field.type == %s) {\n", t)
 		contents += g.generateReadFieldRec(field, kind, true, tabtabtabtabtabtab)
