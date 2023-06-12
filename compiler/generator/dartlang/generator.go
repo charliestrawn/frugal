@@ -692,6 +692,14 @@ func (g *Generator) useNullForUnset() bool {
 	return ok
 }
 
+func (g *Generator) useNullForIsSetExpr(field *parser.Field) bool {
+	if g.useNullForUnset() {
+		return field.Modifier != parser.Default || field.Default == nil || !g.isDartPrimitive(field.Type)
+	}
+	// Primitives also need to manage "__isset_${field}".
+	return !g.isDartPrimitive(field.Type)
+}
+
 func (g *Generator) generateStruct(s *parser.Struct) string {
 	contents := ""
 
@@ -874,7 +882,7 @@ func (g *Generator) generateFieldMethods(s *parser.Struct) string {
 		}
 		if g.useNullForUnset() {
 			unsetValue := "null"
-			if field.Modifier == parser.Default && field.Default != nil && dartPrimitive {
+			if !g.useNullForIsSetExpr(field) {
 				unsetValue, _ = g.generateConstantValue(field.Type, field.Default, tab, false)
 			}
 			contents += fmt.Sprintf(tab+"bool isSet%s() => this.%s != %s;\n\n", titleName, fName, unsetValue)
@@ -917,12 +925,17 @@ func (g *Generator) generateFieldMethods(s *parser.Struct) string {
 	for _, field := range s.Fields {
 		fName := toFieldName(field.Name)
 		contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
-		contents += tabtabtabtab + "if (value == null) {\n"
-		contents += fmt.Sprintf(tabtabtabtabtab+"unset%s();\n", strings.Title(field.Name))
-		contents += tabtabtabtab + "} else {\n"
-		contents += ignoreDeprecationWarningIfNeeded(tabtabtabtabtab, field.Annotations)
-		contents += fmt.Sprintf(tabtabtabtabtab+"this.%s = value as %s;\n", fName, g.getDartTypeFromThriftType(field.Type))
-		contents += tabtabtabtab + "}\n"
+		if g.useNullForIsSetExpr(field) {
+			contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
+			contents += fmt.Sprintf(tabtabtabtab+"this.%s = value as dynamic;\n", fName)
+		} else {
+			contents += tabtabtabtab + "if (value == null) {\n"
+			contents += fmt.Sprintf(tabtabtabtabtab+"unset%s();\n", strings.Title(field.Name))
+			contents += tabtabtabtab + "} else {\n"
+			contents += ignoreDeprecationWarningIfNeeded(tabtabtabtabtab, field.Annotations)
+			contents += fmt.Sprintf(tabtabtabtabtab+"this.%s = value as %s;\n", fName, g.getDartTypeFromThriftType(field.Type))
+			contents += tabtabtabtab + "}\n"
+		}
 		contents += tabtabtabtab + "break;\n\n"
 	}
 	contents += tabtabtab + "default:\n"

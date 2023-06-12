@@ -82,27 +82,15 @@ class FooArgs implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case NEWMESSAGE:
-        if (value == null) {
-          unsetNewMessage();
-        } else {
-          this.newMessage = value as String;
-        }
+        this.newMessage = value as dynamic;
         break;
 
       case MESSAGEARGS:
-        if (value == null) {
-          unsetMessageArgs();
-        } else {
-          this.messageArgs = value as String;
-        }
+        this.messageArgs = value as dynamic;
         break;
 
       case MESSAGERESULT:
-        if (value == null) {
-          unsetMessageResult();
-        } else {
-          this.messageResult = value as String;
-        }
+        this.messageResult = value as dynamic;
         break;
 
       default:

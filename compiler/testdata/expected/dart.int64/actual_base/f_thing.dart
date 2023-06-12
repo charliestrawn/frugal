@@ -71,11 +71,7 @@ class thing implements thrift.TBase {
         break;
 
       case A_STRING:
-        if (value == null) {
-          unsetA_string();
-        } else {
-          this.a_string = value as String;
-        }
+        this.a_string = value as dynamic;
         break;
 
       default:

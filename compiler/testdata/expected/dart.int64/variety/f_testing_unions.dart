@@ -193,11 +193,7 @@ class TestingUnions implements thrift.TBase {
         break;
 
       case ASTRING:
-        if (value == null) {
-          unsetAString();
-        } else {
-          this.aString = value as String;
-        }
+        this.aString = value as dynamic;
         break;
 
       case SOMEOTHERTHING:
@@ -217,19 +213,11 @@ class TestingUnions implements thrift.TBase {
         break;
 
       case REQUESTS:
-        if (value == null) {
-          unsetRequests();
-        } else {
-          this.requests = value as Map<int, String>;
-        }
+        this.requests = value as dynamic;
         break;
 
       case BIN_FIELD_IN_UNION:
-        if (value == null) {
-          unsetBin_field_in_union();
-        } else {
-          this.bin_field_in_union = value as Uint8List;
-        }
+        this.bin_field_in_union = value as dynamic;
         break;
 
       case DEPR:

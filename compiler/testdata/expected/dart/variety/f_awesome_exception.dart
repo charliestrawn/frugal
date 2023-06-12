@@ -107,11 +107,7 @@ class AwesomeException extends Error implements thrift.TBase {
         break;
 
       case REASON:
-        if (value == null) {
-          unsetReason();
-        } else {
-          this.reason = value as String;
-        }
+        this.reason = value as dynamic;
         break;
 
       case DEPR:

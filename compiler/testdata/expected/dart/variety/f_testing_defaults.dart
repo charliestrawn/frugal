@@ -402,19 +402,11 @@ class TestingDefaults implements thrift.TBase {
         break;
 
       case EV1:
-        if (value == null) {
-          unsetEv1();
-        } else {
-          this.ev1 = value as t_variety.Event;
-        }
+        this.ev1 = value as dynamic;
         break;
 
       case EV2:
-        if (value == null) {
-          unsetEv2();
-        } else {
-          this.ev2 = value as t_variety.Event;
-        }
+        this.ev2 = value as dynamic;
         break;
 
       case ID:
@@ -426,27 +418,15 @@ class TestingDefaults implements thrift.TBase {
         break;
 
       case THING:
-        if (value == null) {
-          unsetThing();
-        } else {
-          this.thing = value as String;
-        }
+        this.thing = value as dynamic;
         break;
 
       case THING2:
-        if (value == null) {
-          unsetThing2();
-        } else {
-          this.thing2 = value as String;
-        }
+        this.thing2 = value as dynamic;
         break;
 
       case LISTFIELD:
-        if (value == null) {
-          unsetListfield();
-        } else {
-          this.listfield = value as List<int>;
-        }
+        this.listfield = value as dynamic;
         break;
 
       case ID3:
@@ -458,67 +438,35 @@ class TestingDefaults implements thrift.TBase {
         break;
 
       case BIN_FIELD:
-        if (value == null) {
-          unsetBin_field();
-        } else {
-          this.bin_field = value as Uint8List;
-        }
+        this.bin_field = value as dynamic;
         break;
 
       case BIN_FIELD2:
-        if (value == null) {
-          unsetBin_field2();
-        } else {
-          this.bin_field2 = value as Uint8List;
-        }
+        this.bin_field2 = value as dynamic;
         break;
 
       case BIN_FIELD3:
-        if (value == null) {
-          unsetBin_field3();
-        } else {
-          this.bin_field3 = value as Uint8List;
-        }
+        this.bin_field3 = value as dynamic;
         break;
 
       case BIN_FIELD4:
-        if (value == null) {
-          unsetBin_field4();
-        } else {
-          this.bin_field4 = value as Uint8List;
-        }
+        this.bin_field4 = value as dynamic;
         break;
 
       case LIST2:
-        if (value == null) {
-          unsetList2();
-        } else {
-          this.list2 = value as List<int>;
-        }
+        this.list2 = value as dynamic;
         break;
 
       case LIST3:
-        if (value == null) {
-          unsetList3();
-        } else {
-          this.list3 = value as List<int>;
-        }
+        this.list3 = value as dynamic;
         break;
 
       case LIST4:
-        if (value == null) {
-          unsetList4();
-        } else {
-          this.list4 = value as List<int>;
-        }
+        this.list4 = value as dynamic;
         break;
 
       case A_MAP:
-        if (value == null) {
-          unsetA_map();
-        } else {
-          this.a_map = value as Map<String, String>;
-        }
+        this.a_map = value as dynamic;
         break;
 
       case STATUS:
