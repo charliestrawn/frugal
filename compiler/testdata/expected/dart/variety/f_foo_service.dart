@@ -364,22 +364,6 @@ class Ping_args extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
   read(thrift.TProtocol iprot) {
     iprot.readStructBegin();
     for (thrift.TField field = iprot.readFieldBegin();
@@ -404,30 +388,6 @@ class Ping_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     oprot.writeFieldStop();
     oprot.writeStructEnd();
-  }
-
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('Ping_args(');
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    return o is Ping_args;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    return value;
-  }
-
-  Ping_args clone() {
-    return Ping_args();
   }
 
   validate() {
@@ -440,22 +400,6 @@ class Ping_result extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
   read(thrift.TProtocol iprot) {
     iprot.readStructBegin();
     for (thrift.TField field = iprot.readFieldBegin();
@@ -480,30 +424,6 @@ class Ping_result extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     oprot.writeFieldStop();
     oprot.writeStructEnd();
-  }
-
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('Ping_result(');
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    return o is Ping_result;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    return value;
-  }
-
-  Ping_result clone() {
-    return Ping_result();
   }
 
   validate() {
@@ -523,40 +443,6 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
   t_variety.Event event;
   static const int EVENT = 3;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case NUM:
-        return this.num;
-      case STR:
-        return this.str;
-      case EVENT:
-        return this.event;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case NUM:
-        this.num = value as dynamic;
-        break;
-
-      case STR:
-        this.str = value as dynamic;
-        break;
-
-      case EVENT:
-        this.event = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -620,64 +506,6 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('blah_args(');
-
-    ret.write('num:');
-    ret.write(this.num);
-
-    ret.write(', ');
-    ret.write('str:');
-    if (this.str == null) {
-      ret.write('null');
-    } else {
-      ret.write(this.str);
-    }
-
-    ret.write(', ');
-    ret.write('event:');
-    if (this.event == null) {
-      ret.write('null');
-    } else {
-      ret.write(this.event);
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is blah_args) {
-      return this.num == o.num &&
-        this.str == o.str &&
-        this.event == o.event;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.num.hashCode;
-    value = (value * 31) ^ this.str.hashCode;
-    value = (value * 31) ^ this.event.hashCode;
-    return value;
-  }
-
-  blah_args clone({
-    int num,
-    String str,
-    t_variety.Event event,
-  }) {
-    return blah_args()
-      ..num = num ?? this.num
-      ..str = str ?? this.str
-      ..event = event ?? this.event;
-  }
-
   validate() {
   }
 }
@@ -695,40 +523,6 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
   t_actual_base_dart.api_exception api;
   static const int API = 2;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return this.success;
-      case AWE:
-        return this.awe;
-      case API:
-        return this.api;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case SUCCESS:
-        this.success = value as dynamic;
-        break;
-
-      case AWE:
-        this.awe = value as dynamic;
-        break;
-
-      case API:
-        this.api = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -795,70 +589,6 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('blah_result(');
-
-    if (this.success != null) {
-      ret.write('success:');
-      ret.write(this.success);
-    }
-
-    if (this.awe != null) {
-      ret.write(', ');
-      ret.write('awe:');
-      if (this.awe == null) {
-        ret.write('null');
-      } else {
-        ret.write(this.awe);
-      }
-    }
-
-    if (this.api != null) {
-      ret.write(', ');
-      ret.write('api:');
-      if (this.api == null) {
-        ret.write('null');
-      } else {
-        ret.write(this.api);
-      }
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is blah_result) {
-      return this.success == o.success &&
-        this.awe == o.awe &&
-        this.api == o.api;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.success.hashCode;
-    value = (value * 31) ^ this.awe.hashCode;
-    value = (value * 31) ^ this.api.hashCode;
-    return value;
-  }
-
-  blah_result clone({
-    int success,
-    t_variety.AwesomeException awe,
-    t_actual_base_dart.api_exception api,
-  }) {
-    return blah_result()
-      ..success = success ?? this.success
-      ..awe = awe ?? this.awe
-      ..api = api ?? this.api;
-  }
-
   validate() {
   }
 }
@@ -873,34 +603,6 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
   Map<int, String> req;
   static const int REQ = 2;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case ID:
-        return this.id;
-      case REQ:
-        return this.req;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case ID:
-        this.id = value as dynamic;
-        break;
-
-      case REQ:
-        this.req = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -963,52 +665,6 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('oneWay_args(');
-
-    ret.write('id:');
-    ret.write(this.id);
-
-    ret.write(', ');
-    ret.write('req:');
-    if (this.req == null) {
-      ret.write('null');
-    } else {
-      ret.write(this.req);
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is oneWay_args) {
-      return this.id == o.id &&
-        DeepCollectionEquality().equals(this.req, o.req);
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.id.hashCode;
-    value = (value * 31) ^ DeepCollectionEquality().hash(this.req);
-    return value;
-  }
-
-  oneWay_args clone({
-    int id,
-    Map<int, String> req,
-  }) {
-    return oneWay_args()
-      ..id = id ?? this.id
-      ..req = req ?? this.req;
-  }
-
   validate() {
   }
 }
@@ -1023,34 +679,6 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
   String str;
   static const int STR = 2;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case BIN:
-        return this.bin;
-      case STR:
-        return this.str;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case BIN:
-        this.bin = value as dynamic;
-        break;
-
-      case STR:
-        this.str = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -1103,56 +731,6 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('bin_method_args(');
-
-    ret.write('bin:');
-    if (this.bin == null) {
-      ret.write('null');
-    } else {
-      ret.write('BINARY');
-    }
-
-    ret.write(', ');
-    ret.write('str:');
-    if (this.str == null) {
-      ret.write('null');
-    } else {
-      ret.write(this.str);
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is bin_method_args) {
-      return this.bin == o.bin &&
-        this.str == o.str;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.bin.hashCode;
-    value = (value * 31) ^ this.str.hashCode;
-    return value;
-  }
-
-  bin_method_args clone({
-    Uint8List bin,
-    String str,
-  }) {
-    return bin_method_args()
-      ..bin = bin ?? this.bin
-      ..str = str ?? this.str;
-  }
-
   validate() {
   }
 }
@@ -1167,34 +745,6 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
   t_actual_base_dart.api_exception api;
   static const int API = 1;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return this.success;
-      case API:
-        return this.api;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case SUCCESS:
-        this.success = value as dynamic;
-        break;
-
-      case API:
-        this.api = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -1248,60 +798,6 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('bin_method_result(');
-
-    if (this.success != null) {
-      ret.write('success:');
-      if (this.success == null) {
-        ret.write('null');
-      } else {
-        ret.write('BINARY');
-      }
-    }
-
-    if (this.api != null) {
-      ret.write(', ');
-      ret.write('api:');
-      if (this.api == null) {
-        ret.write('null');
-      } else {
-        ret.write(this.api);
-      }
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is bin_method_result) {
-      return this.success == o.success &&
-        this.api == o.api;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.success.hashCode;
-    value = (value * 31) ^ this.api.hashCode;
-    return value;
-  }
-
-  bin_method_result clone({
-    Uint8List success,
-    t_actual_base_dart.api_exception api,
-  }) {
-    return bin_method_result()
-      ..success = success ?? this.success
-      ..api = api ?? this.api;
-  }
-
   validate() {
   }
 }
@@ -1319,40 +815,6 @@ class param_modifiers_args extends frugal.FGeneratedArgsResultBase {
   int req_num;
   static const int REQ_NUM = 3;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case OPT_NUM:
-        return this.opt_num;
-      case DEFAULT_NUM:
-        return this.default_num;
-      case REQ_NUM:
-        return this.req_num;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case OPT_NUM:
-        this.opt_num = value as dynamic;
-        break;
-
-      case DEFAULT_NUM:
-        this.default_num = value as dynamic;
-        break;
-
-      case REQ_NUM:
-        this.req_num = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -1411,56 +873,6 @@ class param_modifiers_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('param_modifiers_args(');
-
-    ret.write('opt_num:');
-    ret.write(this.opt_num);
-
-    ret.write(', ');
-    ret.write('default_num:');
-    ret.write(this.default_num);
-
-    ret.write(', ');
-    ret.write('req_num:');
-    ret.write(this.req_num);
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is param_modifiers_args) {
-      return this.opt_num == o.opt_num &&
-        this.default_num == o.default_num &&
-        this.req_num == o.req_num;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.opt_num.hashCode;
-    value = (value * 31) ^ this.default_num.hashCode;
-    value = (value * 31) ^ this.req_num.hashCode;
-    return value;
-  }
-
-  param_modifiers_args clone({
-    int opt_num,
-    int default_num,
-    int req_num,
-  }) {
-    return param_modifiers_args()
-      ..opt_num = opt_num ?? this.opt_num
-      ..default_num = default_num ?? this.default_num
-      ..req_num = req_num ?? this.req_num;
-  }
-
   validate() {
     // check for required fields
     if (this.req_num == null) {
@@ -1476,28 +888,6 @@ class param_modifiers_result extends frugal.FGeneratedArgsResultBase {
   int success;
   static const int SUCCESS = 0;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return this.success;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case SUCCESS:
-        this.success = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -1538,42 +928,6 @@ class param_modifiers_result extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('param_modifiers_result(');
-
-    if (this.success != null) {
-      ret.write('success:');
-      ret.write(this.success);
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is param_modifiers_result) {
-      return this.success == o.success;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.success.hashCode;
-    return value;
-  }
-
-  param_modifiers_result clone({
-    int success,
-  }) {
-    return param_modifiers_result()
-      ..success = success ?? this.success;
-  }
-
   validate() {
   }
 }
@@ -1588,34 +942,6 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
   Set<int> set_type;
   static const int SET_TYPE = 2;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case LIST_TYPE:
-        return this.list_type;
-      case SET_TYPE:
-        return this.set_type;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case LIST_TYPE:
-        this.list_type = value as dynamic;
-        break;
-
-      case SET_TYPE:
-        this.set_type = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -1688,56 +1014,6 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('underlying_types_test_args(');
-
-    ret.write('list_type:');
-    if (this.list_type == null) {
-      ret.write('null');
-    } else {
-      ret.write(this.list_type);
-    }
-
-    ret.write(', ');
-    ret.write('set_type:');
-    if (this.set_type == null) {
-      ret.write('null');
-    } else {
-      ret.write(this.set_type);
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is underlying_types_test_args) {
-      return DeepCollectionEquality().equals(this.list_type, o.list_type) &&
-        DeepCollectionEquality().equals(this.set_type, o.set_type);
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ DeepCollectionEquality().hash(this.list_type);
-    value = (value * 31) ^ DeepCollectionEquality().hash(this.set_type);
-    return value;
-  }
-
-  underlying_types_test_args clone({
-    List<int> list_type,
-    Set<int> set_type,
-  }) {
-    return underlying_types_test_args()
-      ..list_type = list_type ?? this.list_type
-      ..set_type = set_type ?? this.set_type;
-  }
-
   validate() {
   }
 }
@@ -1749,28 +1025,6 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
   List<int> success;
   static const int SUCCESS = 0;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return this.success;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case SUCCESS:
-        this.success = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -1821,46 +1075,6 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('underlying_types_test_result(');
-
-    if (this.success != null) {
-      ret.write('success:');
-      if (this.success == null) {
-        ret.write('null');
-      } else {
-        ret.write(this.success);
-      }
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is underlying_types_test_result) {
-      return DeepCollectionEquality().equals(this.success, o.success);
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ DeepCollectionEquality().hash(this.success);
-    return value;
-  }
-
-  underlying_types_test_result clone({
-    List<int> success,
-  }) {
-    return underlying_types_test_result()
-      ..success = success ?? this.success;
-  }
-
   validate() {
   }
 }
@@ -1869,22 +1083,6 @@ class getThing_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getThing_args');
 
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -1913,30 +1111,6 @@ class getThing_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('getThing_args(');
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    return o is getThing_args;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    return value;
-  }
-
-  getThing_args clone() {
-    return getThing_args();
-  }
-
   validate() {
   }
 }
@@ -1948,28 +1122,6 @@ class getThing_result extends frugal.FGeneratedArgsResultBase {
   t_validStructs.Thing success;
   static const int SUCCESS = 0;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return this.success;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case SUCCESS:
-        this.success = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -2011,46 +1163,6 @@ class getThing_result extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('getThing_result(');
-
-    if (this.success != null) {
-      ret.write('success:');
-      if (this.success == null) {
-        ret.write('null');
-      } else {
-        ret.write(this.success);
-      }
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is getThing_result) {
-      return this.success == o.success;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.success.hashCode;
-    return value;
-  }
-
-  getThing_result clone({
-    t_validStructs.Thing success,
-  }) {
-    return getThing_result()
-      ..success = success ?? this.success;
-  }
-
   validate() {
   }
 }
@@ -2059,22 +1171,6 @@ class getMyInt_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getMyInt_args');
 
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -2103,30 +1199,6 @@ class getMyInt_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('getMyInt_args(');
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    return o is getMyInt_args;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    return value;
-  }
-
-  getMyInt_args clone() {
-    return getMyInt_args();
-  }
-
   validate() {
   }
 }
@@ -2138,28 +1210,6 @@ class getMyInt_result extends frugal.FGeneratedArgsResultBase {
   int success;
   static const int SUCCESS = 0;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return this.success;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case SUCCESS:
-        this.success = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -2200,42 +1250,6 @@ class getMyInt_result extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('getMyInt_result(');
-
-    if (this.success != null) {
-      ret.write('success:');
-      ret.write(this.success);
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is getMyInt_result) {
-      return this.success == o.success;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.success.hashCode;
-    return value;
-  }
-
-  getMyInt_result clone({
-    int success,
-  }) {
-    return getMyInt_result()
-      ..success = success ?? this.success;
-  }
-
   validate() {
   }
 }
@@ -2247,28 +1261,6 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
   t_subdir_include_ns.A a;
   static const int A = 1;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case A:
-        return this.a;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case A:
-        this.a = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -2310,44 +1302,6 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('use_subdir_struct_args(');
-
-    ret.write('a:');
-    if (this.a == null) {
-      ret.write('null');
-    } else {
-      ret.write(this.a);
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is use_subdir_struct_args) {
-      return this.a == o.a;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.a.hashCode;
-    return value;
-  }
-
-  use_subdir_struct_args clone({
-    t_subdir_include_ns.A a,
-  }) {
-    return use_subdir_struct_args()
-      ..a = a ?? this.a;
-  }
-
   validate() {
   }
 }
@@ -2359,28 +1313,6 @@ class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
   t_subdir_include_ns.A success;
   static const int SUCCESS = 0;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return this.success;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case SUCCESS:
-        this.success = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -2422,46 +1354,6 @@ class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('use_subdir_struct_result(');
-
-    if (this.success != null) {
-      ret.write('success:');
-      if (this.success == null) {
-        ret.write('null');
-      } else {
-        ret.write(this.success);
-      }
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is use_subdir_struct_result) {
-      return this.success == o.success;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.success.hashCode;
-    return value;
-  }
-
-  use_subdir_struct_result clone({
-    t_subdir_include_ns.A success,
-  }) {
-    return use_subdir_struct_result()
-      ..success = success ?? this.success;
-  }
-
   validate() {
   }
 }
@@ -2473,28 +1365,6 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
   String newMessage;
   static const int NEWMESSAGE = 1;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case NEWMESSAGE:
-        return this.newMessage;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case NEWMESSAGE:
-        this.newMessage = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -2535,44 +1405,6 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('sayHelloWith_args(');
-
-    ret.write('newMessage:');
-    if (this.newMessage == null) {
-      ret.write('null');
-    } else {
-      ret.write(this.newMessage);
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is sayHelloWith_args) {
-      return this.newMessage == o.newMessage;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.newMessage.hashCode;
-    return value;
-  }
-
-  sayHelloWith_args clone({
-    String newMessage,
-  }) {
-    return sayHelloWith_args()
-      ..newMessage = newMessage ?? this.newMessage;
-  }
-
   validate() {
   }
 }
@@ -2584,28 +1416,6 @@ class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
   String success;
   static const int SUCCESS = 0;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return this.success;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case SUCCESS:
-        this.success = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -2646,46 +1456,6 @@ class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('sayHelloWith_result(');
-
-    if (this.success != null) {
-      ret.write('success:');
-      if (this.success == null) {
-        ret.write('null');
-      } else {
-        ret.write(this.success);
-      }
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is sayHelloWith_result) {
-      return this.success == o.success;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.success.hashCode;
-    return value;
-  }
-
-  sayHelloWith_result clone({
-    String success,
-  }) {
-    return sayHelloWith_result()
-      ..success = success ?? this.success;
-  }
-
   validate() {
   }
 }
@@ -2697,28 +1467,6 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
   String messageArgs;
   static const int MESSAGEARGS = 1;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case MESSAGEARGS:
-        return this.messageArgs;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case MESSAGEARGS:
-        this.messageArgs = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -2759,44 +1507,6 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('whatDoYouSay_args(');
-
-    ret.write('messageArgs:');
-    if (this.messageArgs == null) {
-      ret.write('null');
-    } else {
-      ret.write(this.messageArgs);
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is whatDoYouSay_args) {
-      return this.messageArgs == o.messageArgs;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.messageArgs.hashCode;
-    return value;
-  }
-
-  whatDoYouSay_args clone({
-    String messageArgs,
-  }) {
-    return whatDoYouSay_args()
-      ..messageArgs = messageArgs ?? this.messageArgs;
-  }
-
   validate() {
   }
 }
@@ -2808,28 +1518,6 @@ class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
   String success;
   static const int SUCCESS = 0;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return this.success;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case SUCCESS:
-        this.success = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -2870,46 +1558,6 @@ class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('whatDoYouSay_result(');
-
-    if (this.success != null) {
-      ret.write('success:');
-      if (this.success == null) {
-        ret.write('null');
-      } else {
-        ret.write(this.success);
-      }
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is whatDoYouSay_result) {
-      return this.success == o.success;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.success.hashCode;
-    return value;
-  }
-
-  whatDoYouSay_result clone({
-    String success,
-  }) {
-    return whatDoYouSay_result()
-      ..success = success ?? this.success;
-  }
-
   validate() {
   }
 }
@@ -2921,28 +1569,6 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
   String messageResult;
   static const int MESSAGERESULT = 1;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case MESSAGERESULT:
-        return this.messageResult;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case MESSAGERESULT:
-        this.messageResult = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -2983,44 +1609,6 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('sayAgain_args(');
-
-    ret.write('messageResult:');
-    if (this.messageResult == null) {
-      ret.write('null');
-    } else {
-      ret.write(this.messageResult);
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is sayAgain_args) {
-      return this.messageResult == o.messageResult;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.messageResult.hashCode;
-    return value;
-  }
-
-  sayAgain_args clone({
-    String messageResult,
-  }) {
-    return sayAgain_args()
-      ..messageResult = messageResult ?? this.messageResult;
-  }
-
   validate() {
   }
 }
@@ -3032,28 +1620,6 @@ class sayAgain_result extends frugal.FGeneratedArgsResultBase {
   String success;
   static const int SUCCESS = 0;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return this.success;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case SUCCESS:
-        this.success = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -3092,46 +1658,6 @@ class sayAgain_result extends frugal.FGeneratedArgsResultBase {
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
-  }
-
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('sayAgain_result(');
-
-    if (this.success != null) {
-      ret.write('success:');
-      if (this.success == null) {
-        ret.write('null');
-      } else {
-        ret.write(this.success);
-      }
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is sayAgain_result) {
-      return this.success == o.success;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.success.hashCode;
-    return value;
-  }
-
-  sayAgain_result clone({
-    String success,
-  }) {
-    return sayAgain_result()
-      ..success = success ?? this.success;
   }
 
   validate() {

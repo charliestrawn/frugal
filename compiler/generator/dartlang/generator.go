@@ -843,16 +843,24 @@ func (g *Generator) generateStruct(s *parser.Struct, kind structKind) string {
 	contents += g.generateWrite(s, kind)
 
 	// to string
-	contents += g.generateToString(s, kind)
+	if kind.export() {
+		contents += g.generateToString(s, kind)
+	}
 
 	// equals
-	contents += g.generateEquals(s)
+	if kind.export() {
+		contents += g.generateEquals(s)
+	}
 
 	// hashCode
-	contents += g.generateHashCode(s)
+	if kind.export() {
+		contents += g.generateHashCode(s)
+	}
 
 	// clone
-	contents += g.generateClone(s)
+	if kind.export() {
+		contents += g.generateClone(s)
+	}
 
 	// validate
 	contents += g.generateValidate(s, kind)
@@ -970,43 +978,47 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 	}
 
 	// getFieldValue
-	contents += tab + "@override\n"
-	contents += tab + "getFieldValue(int fieldID) {\n"
-	contents += tabtab + "switch (fieldID) {\n"
-	for _, field := range s.Fields {
-		contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
-		contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
-		contents += fmt.Sprintf(tabtabtabtab+"return this.%s;\n", toFieldName(field.Name))
+	if kind.export() {
+		contents += tab + "@override\n"
+		contents += tab + "getFieldValue(int fieldID) {\n"
+		contents += tabtab + "switch (fieldID) {\n"
+		for _, field := range s.Fields {
+			contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
+			contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
+			contents += fmt.Sprintf(tabtabtabtab+"return this.%s;\n", toFieldName(field.Name))
+		}
+		contents += tabtabtab + "default:\n"
+		contents += tabtabtabtab + "throw ArgumentError(\"Field $fieldID doesn't exist!\");\n"
+		contents += tabtab + "}\n"
+		contents += tab + "}\n\n"
 	}
-	contents += tabtabtab + "default:\n"
-	contents += tabtabtabtab + "throw ArgumentError(\"Field $fieldID doesn't exist!\");\n"
-	contents += tabtab + "}\n"
-	contents += tab + "}\n\n"
 
 	// setFieldValue
-	contents += tab + "@override\n"
-	contents += tab + "setFieldValue(int fieldID, Object value) {\n"
-	contents += tabtab + "switch (fieldID) {\n"
-	for _, field := range s.Fields {
-		fName := toFieldName(field.Name)
-		contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
-		if g.useNullForIsSetExpr(kind, field) {
-			contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
-			contents += fmt.Sprintf(tabtabtabtab+"this.%s = value as dynamic;\n", fName)
-		} else {
-			contents += tabtabtabtab + "if (value == null) {\n"
-			contents += fmt.Sprintf(tabtabtabtabtab+"unset%s();\n", strings.Title(field.Name))
-			contents += tabtabtabtab + "} else {\n"
-			contents += ignoreDeprecationWarningIfNeeded(tabtabtabtabtab, field.Annotations)
-			contents += fmt.Sprintf(tabtabtabtabtab+"this.%s = value as %s;\n", fName, g.getDartTypeFromThriftType(field.Type))
-			contents += tabtabtabtab + "}\n"
+	if kind.export() {
+		contents += tab + "@override\n"
+		contents += tab + "setFieldValue(int fieldID, Object value) {\n"
+		contents += tabtab + "switch (fieldID) {\n"
+		for _, field := range s.Fields {
+			fName := toFieldName(field.Name)
+			contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
+			if g.useNullForIsSetExpr(kind, field) {
+				contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
+				contents += fmt.Sprintf(tabtabtabtab+"this.%s = value as dynamic;\n", fName)
+			} else {
+				contents += tabtabtabtab + "if (value == null) {\n"
+				contents += fmt.Sprintf(tabtabtabtabtab+"unset%s();\n", strings.Title(field.Name))
+				contents += tabtabtabtab + "} else {\n"
+				contents += ignoreDeprecationWarningIfNeeded(tabtabtabtabtab, field.Annotations)
+				contents += fmt.Sprintf(tabtabtabtabtab+"this.%s = value as %s;\n", fName, g.getDartTypeFromThriftType(field.Type))
+				contents += tabtabtabtab + "}\n"
+			}
+			contents += tabtabtabtab + "break;\n\n"
 		}
-		contents += tabtabtabtab + "break;\n\n"
+		contents += tabtabtab + "default:\n"
+		contents += tabtabtabtab + "throw ArgumentError(\"Field $fieldID doesn't exist!\");\n"
+		contents += tabtab + "}\n"
+		contents += tab + "}\n\n"
 	}
-	contents += tabtabtab + "default:\n"
-	contents += tabtabtabtab + "throw ArgumentError(\"Field $fieldID doesn't exist!\");\n"
-	contents += tabtab + "}\n"
-	contents += tab + "}\n\n"
 
 	// isSet
 	if kind.export() {

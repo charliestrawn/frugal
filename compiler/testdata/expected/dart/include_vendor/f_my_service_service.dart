@@ -88,22 +88,6 @@ class getItem_args extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
   read(thrift.TProtocol iprot) {
     iprot.readStructBegin();
     for (thrift.TField field = iprot.readFieldBegin();
@@ -130,30 +114,6 @@ class getItem_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructEnd();
   }
 
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('getItem_args(');
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    return o is getItem_args;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    return value;
-  }
-
-  getItem_args clone() {
-    return getItem_args();
-  }
-
   validate() {
   }
 }
@@ -168,34 +128,6 @@ class getItem_result extends frugal.FGeneratedArgsResultBase {
   t_excepts.InvalidData d;
   static const int D = 1;
 
-
-  @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      case SUCCESS:
-        return this.success;
-      case D:
-        return this.d;
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      case SUCCESS:
-        this.success = value as dynamic;
-        break;
-
-      case D:
-        this.d = value as dynamic;
-        break;
-
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
 
   @override
   read(thrift.TProtocol iprot) {
@@ -248,60 +180,6 @@ class getItem_result extends frugal.FGeneratedArgsResultBase {
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
-  }
-
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('getItem_result(');
-
-    if (this.success != null) {
-      ret.write('success:');
-      if (this.success == null) {
-        ret.write('null');
-      } else {
-        ret.write(this.success);
-      }
-    }
-
-    if (this.d != null) {
-      ret.write(', ');
-      ret.write('d:');
-      if (this.d == null) {
-        ret.write('null');
-      } else {
-        ret.write(this.d);
-      }
-    }
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    if (o is getItem_result) {
-      return this.success == o.success &&
-        this.d == o.d;
-    }
-    return false;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    value = (value * 31) ^ this.success.hashCode;
-    value = (value * 31) ^ this.d.hashCode;
-    return value;
-  }
-
-  getItem_result clone({
-    t_vendor_namespace.Item success,
-    t_excepts.InvalidData d,
-  }) {
-    return getItem_result()
-      ..success = success ?? this.success
-      ..d = d ?? this.d;
   }
 
   validate() {

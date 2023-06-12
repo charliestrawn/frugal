@@ -72,22 +72,6 @@ class basePing_args extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
   read(thrift.TProtocol iprot) {
     iprot.readStructBegin();
     for (thrift.TField field = iprot.readFieldBegin();
@@ -112,30 +96,6 @@ class basePing_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     oprot.writeFieldStop();
     oprot.writeStructEnd();
-  }
-
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('basePing_args(');
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    return o is basePing_args;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    return value;
-  }
-
-  basePing_args clone() {
-    return basePing_args();
   }
 
   validate() {
@@ -148,22 +108,6 @@ class basePing_result extends frugal.FGeneratedArgsResultBase {
 
 
   @override
-  getFieldValue(int fieldID) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
-  setFieldValue(int fieldID, Object value) {
-    switch (fieldID) {
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
-  }
-
-  @override
   read(thrift.TProtocol iprot) {
     iprot.readStructBegin();
     for (thrift.TField field = iprot.readFieldBegin();
@@ -188,30 +132,6 @@ class basePing_result extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     oprot.writeFieldStop();
     oprot.writeStructEnd();
-  }
-
-  @override
-  String toString() {
-    StringBuffer ret = StringBuffer('basePing_result(');
-
-    ret.write(')');
-
-    return ret.toString();
-  }
-
-  @override
-  bool operator ==(Object o) {
-    return o is basePing_result;
-  }
-
-  @override
-  int get hashCode {
-    var value = 17;
-    return value;
-  }
-
-  basePing_result clone() {
-    return basePing_result();
   }
 
   validate() {
