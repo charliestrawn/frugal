@@ -88,12 +88,6 @@ class basePing_args extends frugal.FGeneratedArgsResultBase {
     }
   }
 
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
-  }
-
   @override
   read(thrift.TProtocol iprot) {
     iprot.readStructBegin();
@@ -168,12 +162,6 @@ class basePing_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override

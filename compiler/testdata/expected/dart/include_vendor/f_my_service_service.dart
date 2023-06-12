@@ -68,7 +68,7 @@ class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient with dispo
 
     final result = getItem_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
-    if (result.isSetSuccess()) {
+    if (result.success != null) {
       return result.success;
     }
 
@@ -101,12 +101,6 @@ class getItem_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -175,18 +169,6 @@ class getItem_result extends frugal.FGeneratedArgsResultBase {
   static const int D = 1;
 
 
-  bool isSetSuccess() => this.success != null;
-
-  unsetSuccess() {
-    this.success = null;
-  }
-
-  bool isSetD() => this.d != null;
-
-  unsetD() {
-    this.d = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -213,12 +195,6 @@ class getItem_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -260,12 +236,12 @@ class getItem_result extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess()) {
+    if (this.success != null) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       this.success.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (isSetD()) {
+    if (this.d != null) {
       oprot.writeFieldBegin(_D_FIELD_DESC);
       this.d.write(oprot);
       oprot.writeFieldEnd();
@@ -278,7 +254,7 @@ class getItem_result extends frugal.FGeneratedArgsResultBase {
   String toString() {
     StringBuffer ret = StringBuffer('getItem_result(');
 
-    if (isSetSuccess()) {
+    if (this.success != null) {
       ret.write('success:');
       if (this.success == null) {
         ret.write('null');
@@ -287,7 +263,7 @@ class getItem_result extends frugal.FGeneratedArgsResultBase {
       }
     }
 
-    if (isSetD()) {
+    if (this.d != null) {
       ret.write(', ');
       ret.write('d:');
       if (this.d == null) {

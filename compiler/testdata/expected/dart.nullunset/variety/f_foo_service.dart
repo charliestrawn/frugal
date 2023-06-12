@@ -133,7 +133,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
     final result = blah_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
-    if (result.isSetSuccess()) {
+    if (result.success != null) {
       return result.success;
     }
 
@@ -175,7 +175,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
     final result = bin_method_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
-    if (result.isSetSuccess()) {
+    if (result.success != null) {
       return result.success;
     }
 
@@ -201,7 +201,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
     final result = param_modifiers_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
-    if (result.isSetSuccess()) {
+    if (result.success != null) {
       return result.success;
     }
 
@@ -223,7 +223,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
     final result = underlying_types_test_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
-    if (result.isSetSuccess()) {
+    if (result.success != null) {
       return result.success;
     }
 
@@ -243,7 +243,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
     final result = getThing_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
-    if (result.isSetSuccess()) {
+    if (result.success != null) {
       return result.success;
     }
 
@@ -263,7 +263,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
     final result = getMyInt_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
-    if (result.isSetSuccess()) {
+    if (result.success != null) {
       return result.success;
     }
 
@@ -284,7 +284,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
     final result = use_subdir_struct_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
-    if (result.isSetSuccess()) {
+    if (result.success != null) {
       return result.success;
     }
 
@@ -305,7 +305,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
     final result = sayHelloWith_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
-    if (result.isSetSuccess()) {
+    if (result.success != null) {
       return result.success;
     }
 
@@ -326,7 +326,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
     final result = whatDoYouSay_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
-    if (result.isSetSuccess()) {
+    if (result.success != null) {
       return result.success;
     }
 
@@ -347,7 +347,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
     final result = sayAgain_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
-    if (result.isSetSuccess()) {
+    if (result.success != null) {
       return result.success;
     }
 
@@ -377,12 +377,6 @@ class Ping_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -461,12 +455,6 @@ class Ping_result extends frugal.FGeneratedArgsResultBase {
     }
   }
 
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
-  }
-
   @override
   read(thrift.TProtocol iprot) {
     iprot.readStructBegin();
@@ -536,24 +524,6 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
   static const int EVENT = 3;
 
 
-  bool isSetNum() => this.num != null;
-
-  unsetNum() {
-    this.num = null;
-  }
-
-  bool isSetStr() => this.str != null;
-
-  unsetStr() {
-    this.str = null;
-  }
-
-  bool isSetEvent() => this.event != null;
-
-  unsetEvent() {
-    this.event = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -586,12 +556,6 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -642,12 +606,12 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeFieldBegin(_NUM_FIELD_DESC);
     oprot.writeI32(this.num);
     oprot.writeFieldEnd();
-    if (isSetStr()) {
+    if (this.str != null) {
       oprot.writeFieldBegin(_STR_FIELD_DESC);
       oprot.writeString(this.str);
       oprot.writeFieldEnd();
     }
-    if (isSetEvent()) {
+    if (this.event != null) {
       oprot.writeFieldBegin(_EVENT_FIELD_DESC);
       this.event.write(oprot);
       oprot.writeFieldEnd();
@@ -732,24 +696,6 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
   static const int API = 2;
 
 
-  bool isSetSuccess() => this.success != null;
-
-  unsetSuccess() {
-    this.success = null;
-  }
-
-  bool isSetAwe() => this.awe != null;
-
-  unsetAwe() {
-    this.awe = null;
-  }
-
-  bool isSetApi() => this.api != null;
-
-  unsetApi() {
-    this.api = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -782,12 +728,6 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -836,17 +776,17 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess()) {
+    if (this.success != null) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeI64(this.success);
       oprot.writeFieldEnd();
     }
-    if (isSetAwe()) {
+    if (this.awe != null) {
       oprot.writeFieldBegin(_AWE_FIELD_DESC);
       this.awe.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (isSetApi()) {
+    if (this.api != null) {
       oprot.writeFieldBegin(_API_FIELD_DESC);
       this.api.write(oprot);
       oprot.writeFieldEnd();
@@ -859,12 +799,12 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
   String toString() {
     StringBuffer ret = StringBuffer('blah_result(');
 
-    if (isSetSuccess()) {
+    if (this.success != null) {
       ret.write('success:');
       ret.write(this.success);
     }
 
-    if (isSetAwe()) {
+    if (this.awe != null) {
       ret.write(', ');
       ret.write('awe:');
       if (this.awe == null) {
@@ -874,7 +814,7 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
       }
     }
 
-    if (isSetApi()) {
+    if (this.api != null) {
       ret.write(', ');
       ret.write('api:');
       if (this.api == null) {
@@ -934,18 +874,6 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
   static const int REQ = 2;
 
 
-  bool isSetId() => this.id != null;
-
-  unsetId() {
-    this.id = null;
-  }
-
-  bool isSetReq() => this.req != null;
-
-  unsetReq() {
-    this.req = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -972,12 +900,6 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -1027,7 +949,7 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeFieldBegin(_ID_FIELD_DESC);
     oprot.writeI64(this.id);
     oprot.writeFieldEnd();
-    if (isSetReq()) {
+    if (this.req != null) {
       oprot.writeFieldBegin(_REQ_FIELD_DESC);
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, this.req.length));
       for(var elem72 in this.req.keys) {
@@ -1102,18 +1024,6 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
   static const int STR = 2;
 
 
-  bool isSetBin() => this.bin != null;
-
-  unsetBin() {
-    this.bin = null;
-  }
-
-  bool isSetStr() => this.str != null;
-
-  unsetStr() {
-    this.str = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -1140,12 +1050,6 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -1185,12 +1089,12 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetBin()) {
+    if (this.bin != null) {
       oprot.writeFieldBegin(_BIN_FIELD_DESC);
       oprot.writeBinary(this.bin);
       oprot.writeFieldEnd();
     }
-    if (isSetStr()) {
+    if (this.str != null) {
       oprot.writeFieldBegin(_STR_FIELD_DESC);
       oprot.writeString(this.str);
       oprot.writeFieldEnd();
@@ -1264,18 +1168,6 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
   static const int API = 1;
 
 
-  bool isSetSuccess() => this.success != null;
-
-  unsetSuccess() {
-    this.success = null;
-  }
-
-  bool isSetApi() => this.api != null;
-
-  unsetApi() {
-    this.api = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -1302,12 +1194,6 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -1348,12 +1234,12 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess()) {
+    if (this.success != null) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeBinary(this.success);
       oprot.writeFieldEnd();
     }
-    if (isSetApi()) {
+    if (this.api != null) {
       oprot.writeFieldBegin(_API_FIELD_DESC);
       this.api.write(oprot);
       oprot.writeFieldEnd();
@@ -1366,7 +1252,7 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
   String toString() {
     StringBuffer ret = StringBuffer('bin_method_result(');
 
-    if (isSetSuccess()) {
+    if (this.success != null) {
       ret.write('success:');
       if (this.success == null) {
         ret.write('null');
@@ -1375,7 +1261,7 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
       }
     }
 
-    if (isSetApi()) {
+    if (this.api != null) {
       ret.write(', ');
       ret.write('api:');
       if (this.api == null) {
@@ -1434,24 +1320,6 @@ class param_modifiers_args extends frugal.FGeneratedArgsResultBase {
   static const int REQ_NUM = 3;
 
 
-  bool isSetOpt_num() => this.opt_num != null;
-
-  unsetOpt_num() {
-    this.opt_num = null;
-  }
-
-  bool isSetDefault_num() => this.default_num != null;
-
-  unsetDefault_num() {
-    this.default_num = null;
-  }
-
-  bool isSetReq_num() => this.req_num != null;
-
-  unsetReq_num() {
-    this.req_num = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -1484,12 +1352,6 @@ class param_modifiers_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -1615,12 +1477,6 @@ class param_modifiers_result extends frugal.FGeneratedArgsResultBase {
   static const int SUCCESS = 0;
 
 
-  bool isSetSuccess() => this.success != null;
-
-  unsetSuccess() {
-    this.success = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -1641,12 +1497,6 @@ class param_modifiers_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -1679,7 +1529,7 @@ class param_modifiers_result extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess()) {
+    if (this.success != null) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeI64(this.success);
       oprot.writeFieldEnd();
@@ -1692,7 +1542,7 @@ class param_modifiers_result extends frugal.FGeneratedArgsResultBase {
   String toString() {
     StringBuffer ret = StringBuffer('param_modifiers_result(');
 
-    if (isSetSuccess()) {
+    if (this.success != null) {
       ret.write('success:');
       ret.write(this.success);
     }
@@ -1739,18 +1589,6 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
   static const int SET_TYPE = 2;
 
 
-  bool isSetList_type() => this.list_type != null;
-
-  unsetList_type() {
-    this.list_type = null;
-  }
-
-  bool isSetSet_type() => this.set_type != null;
-
-  unsetSet_type() {
-    this.set_type = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -1777,12 +1615,6 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -1834,7 +1666,7 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetList_type()) {
+    if (this.list_type != null) {
       oprot.writeFieldBegin(_LIST_TYPE_FIELD_DESC);
       oprot.writeListBegin(thrift.TList(thrift.TType.I64, this.list_type.length));
       for(var elem79 in this.list_type) {
@@ -1843,7 +1675,7 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    if (isSetSet_type()) {
+    if (this.set_type != null) {
       oprot.writeFieldBegin(_SET_TYPE_FIELD_DESC);
       oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, this.set_type.length));
       for(var elem80 in this.set_type) {
@@ -1918,12 +1750,6 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
   static const int SUCCESS = 0;
 
 
-  bool isSetSuccess() => this.success != null;
-
-  unsetSuccess() {
-    this.success = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -1944,12 +1770,6 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -1988,7 +1808,7 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess()) {
+    if (this.success != null) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeListBegin(thrift.TList(thrift.TType.I64, this.success.length));
       for(var elem84 in this.success) {
@@ -2005,7 +1825,7 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
   String toString() {
     StringBuffer ret = StringBuffer('underlying_types_test_result(');
 
-    if (isSetSuccess()) {
+    if (this.success != null) {
       ret.write('success:');
       if (this.success == null) {
         ret.write('null');
@@ -2064,12 +1884,6 @@ class getThing_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -2135,12 +1949,6 @@ class getThing_result extends frugal.FGeneratedArgsResultBase {
   static const int SUCCESS = 0;
 
 
-  bool isSetSuccess() => this.success != null;
-
-  unsetSuccess() {
-    this.success = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -2161,12 +1969,6 @@ class getThing_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -2200,7 +2002,7 @@ class getThing_result extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess()) {
+    if (this.success != null) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       this.success.write(oprot);
       oprot.writeFieldEnd();
@@ -2213,7 +2015,7 @@ class getThing_result extends frugal.FGeneratedArgsResultBase {
   String toString() {
     StringBuffer ret = StringBuffer('getThing_result(');
 
-    if (isSetSuccess()) {
+    if (this.success != null) {
       ret.write('success:');
       if (this.success == null) {
         ret.write('null');
@@ -2272,12 +2074,6 @@ class getMyInt_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -2343,12 +2139,6 @@ class getMyInt_result extends frugal.FGeneratedArgsResultBase {
   static const int SUCCESS = 0;
 
 
-  bool isSetSuccess() => this.success != null;
-
-  unsetSuccess() {
-    this.success = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -2369,12 +2159,6 @@ class getMyInt_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -2407,7 +2191,7 @@ class getMyInt_result extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess()) {
+    if (this.success != null) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeI32(this.success);
       oprot.writeFieldEnd();
@@ -2420,7 +2204,7 @@ class getMyInt_result extends frugal.FGeneratedArgsResultBase {
   String toString() {
     StringBuffer ret = StringBuffer('getMyInt_result(');
 
-    if (isSetSuccess()) {
+    if (this.success != null) {
       ret.write('success:');
       ret.write(this.success);
     }
@@ -2464,12 +2248,6 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
   static const int A = 1;
 
 
-  bool isSetA() => this.a != null;
-
-  unsetA() {
-    this.a = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -2490,12 +2268,6 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -2529,7 +2301,7 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetA()) {
+    if (this.a != null) {
       oprot.writeFieldBegin(_A_FIELD_DESC);
       this.a.write(oprot);
       oprot.writeFieldEnd();
@@ -2588,12 +2360,6 @@ class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
   static const int SUCCESS = 0;
 
 
-  bool isSetSuccess() => this.success != null;
-
-  unsetSuccess() {
-    this.success = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -2614,12 +2380,6 @@ class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -2653,7 +2413,7 @@ class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess()) {
+    if (this.success != null) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       this.success.write(oprot);
       oprot.writeFieldEnd();
@@ -2666,7 +2426,7 @@ class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
   String toString() {
     StringBuffer ret = StringBuffer('use_subdir_struct_result(');
 
-    if (isSetSuccess()) {
+    if (this.success != null) {
       ret.write('success:');
       if (this.success == null) {
         ret.write('null');
@@ -2714,12 +2474,6 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
   static const int NEWMESSAGE = 1;
 
 
-  bool isSetNewMessage() => this.newMessage != null;
-
-  unsetNewMessage() {
-    this.newMessage = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -2740,12 +2494,6 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -2778,7 +2526,7 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetNewMessage()) {
+    if (this.newMessage != null) {
       oprot.writeFieldBegin(_NEW_MESSAGE_FIELD_DESC);
       oprot.writeString(this.newMessage);
       oprot.writeFieldEnd();
@@ -2837,12 +2585,6 @@ class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
   static const int SUCCESS = 0;
 
 
-  bool isSetSuccess() => this.success != null;
-
-  unsetSuccess() {
-    this.success = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -2863,12 +2605,6 @@ class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -2901,7 +2637,7 @@ class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess()) {
+    if (this.success != null) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeString(this.success);
       oprot.writeFieldEnd();
@@ -2914,7 +2650,7 @@ class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
   String toString() {
     StringBuffer ret = StringBuffer('sayHelloWith_result(');
 
-    if (isSetSuccess()) {
+    if (this.success != null) {
       ret.write('success:');
       if (this.success == null) {
         ret.write('null');
@@ -2962,12 +2698,6 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
   static const int MESSAGEARGS = 1;
 
 
-  bool isSetMessageArgs() => this.messageArgs != null;
-
-  unsetMessageArgs() {
-    this.messageArgs = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -2988,12 +2718,6 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -3026,7 +2750,7 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetMessageArgs()) {
+    if (this.messageArgs != null) {
       oprot.writeFieldBegin(_MESSAGE_ARGS_FIELD_DESC);
       oprot.writeString(this.messageArgs);
       oprot.writeFieldEnd();
@@ -3085,12 +2809,6 @@ class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
   static const int SUCCESS = 0;
 
 
-  bool isSetSuccess() => this.success != null;
-
-  unsetSuccess() {
-    this.success = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -3111,12 +2829,6 @@ class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -3149,7 +2861,7 @@ class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess()) {
+    if (this.success != null) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeString(this.success);
       oprot.writeFieldEnd();
@@ -3162,7 +2874,7 @@ class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
   String toString() {
     StringBuffer ret = StringBuffer('whatDoYouSay_result(');
 
-    if (isSetSuccess()) {
+    if (this.success != null) {
       ret.write('success:');
       if (this.success == null) {
         ret.write('null');
@@ -3210,12 +2922,6 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
   static const int MESSAGERESULT = 1;
 
 
-  bool isSetMessageResult() => this.messageResult != null;
-
-  unsetMessageResult() {
-    this.messageResult = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -3236,12 +2942,6 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -3274,7 +2974,7 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetMessageResult()) {
+    if (this.messageResult != null) {
       oprot.writeFieldBegin(_MESSAGE_RESULT_FIELD_DESC);
       oprot.writeString(this.messageResult);
       oprot.writeFieldEnd();
@@ -3333,12 +3033,6 @@ class sayAgain_result extends frugal.FGeneratedArgsResultBase {
   static const int SUCCESS = 0;
 
 
-  bool isSetSuccess() => this.success != null;
-
-  unsetSuccess() {
-    this.success = null;
-  }
-
   @override
   getFieldValue(int fieldID) {
     switch (fieldID) {
@@ -3359,12 +3053,6 @@ class sayAgain_result extends frugal.FGeneratedArgsResultBase {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");
     }
-  }
-
-  // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  @override
-  bool isSet(int fieldID) {
-    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -3397,7 +3085,7 @@ class sayAgain_result extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetSuccess()) {
+    if (this.success != null) {
       oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
       oprot.writeString(this.success);
       oprot.writeFieldEnd();
@@ -3410,7 +3098,7 @@ class sayAgain_result extends frugal.FGeneratedArgsResultBase {
   String toString() {
     StringBuffer ret = StringBuffer('sayAgain_result(');
 
-    if (isSetSuccess()) {
+    if (this.success != null) {
       ret.write('success:');
       if (this.success == null) {
         ret.write('null');

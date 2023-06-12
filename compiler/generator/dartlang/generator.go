@@ -739,6 +739,32 @@ func (g *Generator) useNullForIsSetExpr(kind structKind, field *parser.Field) bo
 	return !g.isDartPrimitive(field.Type)
 }
 
+func (g *Generator) shouldGenerateIsSet(kind structKind, field *parser.Field) bool {
+	return kind.export()
+}
+
+func (g *Generator) generateIsSetExpr(kind structKind, field *parser.Field, target string) string {
+	if !g.shouldGenerateIsSet(kind, field) {
+		if target == "" {
+			target = "this"
+		}
+		return fmt.Sprintf("%s.%s != null", target, toFieldName(field.Name))
+	}
+
+	targetDot := ""
+	if target != "" {
+		targetDot = target + "."
+	}
+	return fmt.Sprintf("%sisSet%s()", targetDot, strings.Title(field.Name))
+}
+
+var successFieldForIsSet = &parser.Field{Name: "success"}
+
+// generateIsSetSuccessExpr returns an isSet expression for result "success" field.
+func (g *Generator) generateIsSetSuccessExpr(target string) string {
+	return g.generateIsSetExpr(structKindResult, successFieldForIsSet, target)
+}
+
 func (g *Generator) generateStruct(s *parser.Struct, kind structKind) string {
 	contents := ""
 
@@ -920,11 +946,15 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 			if !g.useNullForIsSetExpr(kind, field) {
 				unsetValue, _ = g.generateConstantValue(field.Type, field.Default, tab, false)
 			}
-			contents += fmt.Sprintf(tab+"bool isSet%s() => this.%s != %s;\n\n", titleName, fName, unsetValue)
-			contents += fmt.Sprintf(tab+"unset%s() {\n", titleName)
-			contents += ignoreDeprecationWarningIfNeeded(tabtab, field.Annotations)
-			contents += fmt.Sprintf(tabtab+"this.%s = %s;\n", fName, unsetValue)
-			contents += tab + "}\n\n"
+			if g.shouldGenerateIsSet(kind, field) {
+				contents += fmt.Sprintf(tab+"bool isSet%s() => this.%s != %s;\n\n", titleName, fName, unsetValue)
+			}
+			if kind.export() {
+				contents += fmt.Sprintf(tab+"unset%s() {\n", titleName)
+				contents += ignoreDeprecationWarningIfNeeded(tabtab, field.Annotations)
+				contents += fmt.Sprintf(tabtab+"this.%s = %s;\n", fName, unsetValue)
+				contents += tab + "}\n\n"
+			}
 		} else if dartPrimitive {
 			contents += fmt.Sprintf(tab+"bool isSet%s() => this.__isset_%s;\n\n", titleName, fName)
 			contents += fmt.Sprintf(tab+"unset%s() {\n", titleName)
@@ -979,28 +1009,31 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 	contents += tab + "}\n\n"
 
 	// isSet
-	numNullForIsSetExpr := 0
-	for _, field := range s.Fields {
-		if g.useNullForIsSetExpr(kind, field) {
-			numNullForIsSetExpr++
-		}
-	}
-	contents += tab + "// Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise\n"
-	contents += tab + "@override\n"
-	contents += tab + "bool isSet(int fieldID) {\n"
-	if numNullForIsSetExpr < len(s.Fields) {
-		contents += tabtab + "switch (fieldID) {\n"
+	if kind.export() {
+		numNullForIsSetExpr := 0
 		for _, field := range s.Fields {
-			if !g.useNullForIsSetExpr(kind, field) {
-				contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
-				contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
-				contents += fmt.Sprintf(tabtabtabtab+"return isSet%s();\n", strings.Title(field.Name))
+			if g.useNullForIsSetExpr(kind, field) {
+				numNullForIsSetExpr++
 			}
 		}
-		contents += tabtab + "}\n"
+		contents += tab + "// Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise\n"
+		contents += tab + "@override\n"
+		contents += tab + "bool isSet(int fieldID) {\n"
+		if numNullForIsSetExpr < len(s.Fields) {
+			contents += tabtab + "switch (fieldID) {\n"
+			for _, field := range s.Fields {
+				if !g.useNullForIsSetExpr(kind, field) {
+					contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
+					contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
+					contents += fmt.Sprintf(tabtabtabtab+"return %s;\n", g.generateIsSetExpr(kind, field, ""))
+				}
+			}
+			contents += tabtab + "}\n"
+		}
+		contents += tabtab + "return getFieldValue(fieldID) != null;\n"
+		contents += tab + "}\n\n"
 	}
-	contents += tabtab + "return getFieldValue(fieldID) != null;\n"
-	contents += tab + "}\n\n"
+
 	return contents
 }
 
@@ -1162,13 +1195,21 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 		var isSet bool
 		var isNull bool
 		if g.useNullForUnset(kind) {
+			check := false
 			if g.isDartPrimitive(g.Frugal.UnderlyingType(field.Type)) {
 				// Don't check isSet for default requiredness.
-				isSet = field.Modifier == parser.Optional
+				check = field.Modifier == parser.Optional
 			} else {
-				isSet = field.Modifier != parser.Required
+				check = field.Modifier != parser.Required
 			}
-			isNull = false
+
+			if check {
+				if g.shouldGenerateIsSet(kind, field) {
+					isSet = true
+				} else {
+					isNull = true
+				}
+			}
 		} else {
 			isSet = field.Modifier == parser.Optional
 			isNull = !g.isDartPrimitive(g.Frugal.UnderlyingType(field.Type))
@@ -1307,7 +1348,7 @@ func (g *Generator) generateToString(s *parser.Struct, kind structKind) string {
 		ind := ""
 		optInd := ""
 		if optional {
-			contents += fmt.Sprintf(tabtab+"if (isSet%s()) {\n", strings.Title(field.Name))
+			contents += fmt.Sprintf(tabtab+"if (%s) {\n", g.generateIsSetExpr(kind, field, ""))
 			ind += tab
 			optInd = tab
 		}
@@ -1482,7 +1523,7 @@ func (g *Generator) generateValidate(s *parser.Struct, kind structKind) string {
 		contents += tabtab + "// check exactly one field is set\n"
 		contents += tabtab + "int setFields = 0;\n"
 		for _, field := range s.Fields {
-			contents += fmt.Sprintf(tabtab+"if (isSet%s()) {\n", strings.Title(field.Name))
+			contents += fmt.Sprintf(tabtab+"if (%s) {\n", g.generateIsSetExpr(kind, field, ""))
 			contents += tabtabtab + "setFields++;\n"
 			contents += tabtab + "}\n"
 		}
@@ -1500,7 +1541,7 @@ func (g *Generator) generateValidate(s *parser.Struct, kind structKind) string {
 					any = true
 				}
 				fName := toFieldName(field.Name)
-				isSetCheck := fmt.Sprintf("isSet%s()", strings.Title(field.Name))
+				isSetCheck := g.generateIsSetExpr(kind, field, "")
 				contents += fmt.Sprintf(tabtab+"if (%s && !%s.VALID_VALUES.contains(this.%s)) {\n",
 					isSetCheck, g.qualifiedTypeName(field.Type), fName)
 				contents += fmt.Sprintf(tabtabtab+"throw thrift.TProtocolError(thrift.TProtocolErrorType.INVALID_DATA, \"The field '%s' has been assigned the invalid value ${this.%s}\");\n", fName, fName)
@@ -2025,7 +2066,7 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 	if method.ReturnType == nil {
 		contents += g.generateErrors(method)
 	} else {
-		contents += tabtab + "if (result.isSetSuccess()) {\n"
+		contents += fmt.Sprintf(tabtab+"if (%s) {\n", g.generateIsSetSuccessExpr("result"))
 		contents += tabtabtab + "return result.success;\n"
 		contents += tabtab + "}\n\n"
 		contents += g.generateErrors(method)
