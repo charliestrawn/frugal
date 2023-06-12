@@ -749,6 +749,9 @@ func (g *Generator) generateStruct(s *parser.Struct) string {
 	if !g.useNullForUnset() {
 		constructorContent := ""
 		for _, field := range s.Fields {
+			// TODO: This re-initializes fields already initialized via
+			// generateInitValue, so this logic should probably be moved there
+			// (it already is for use_unset_for_null).
 			if field.Default != nil {
 				value, _ := g.generateConstantValue(field.Type, field.Default, tab, false)
 				constructorContent += fmt.Sprintf(tabtab+"this._%s = %s;\n", toFieldName(field.Name), value)
