@@ -666,11 +666,9 @@ class blah_args implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetNum()) {
-      oprot.writeFieldBegin(_NUM_FIELD_DESC);
-      oprot.writeI32(this.num);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_NUM_FIELD_DESC);
+    oprot.writeI32(this.num);
+    oprot.writeFieldEnd();
     if (isSetStr()) {
       oprot.writeFieldBegin(_STR_FIELD_DESC);
       oprot.writeString(this.str);
@@ -1089,11 +1087,9 @@ class oneWay_args implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetId()) {
-      oprot.writeFieldBegin(_ID_FIELD_DESC);
-      oprot.writeI64(this.id);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_ID_FIELD_DESC);
+    oprot.writeI64(this.id);
+    oprot.writeFieldEnd();
     if (isSetReq()) {
       oprot.writeFieldBegin(_REQ_FIELD_DESC);
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, this.req.length));
@@ -1654,16 +1650,12 @@ class param_modifiers_args implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetOpt_num()) {
-      oprot.writeFieldBegin(_OPT_NUM_FIELD_DESC);
-      oprot.writeI32(this.opt_num);
-      oprot.writeFieldEnd();
-    }
-    if (isSetDefault_num()) {
-      oprot.writeFieldBegin(_DEFAULT_NUM_FIELD_DESC);
-      oprot.writeI32(this.default_num);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_OPT_NUM_FIELD_DESC);
+    oprot.writeI32(this.opt_num);
+    oprot.writeFieldEnd();
+    oprot.writeFieldBegin(_DEFAULT_NUM_FIELD_DESC);
+    oprot.writeI32(this.default_num);
+    oprot.writeFieldEnd();
     oprot.writeFieldBegin(_REQ_NUM_FIELD_DESC);
     oprot.writeI32(this.req_num);
     oprot.writeFieldEnd();

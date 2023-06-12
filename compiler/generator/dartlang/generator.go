@@ -1105,7 +1105,12 @@ func (g *Generator) generateWrite(s *parser.Struct) string {
 		var isSet bool
 		var isNull bool
 		if g.useNullForUnset() {
-			isSet = field.Modifier != parser.Required
+			if g.isDartPrimitive(g.Frugal.UnderlyingType(field.Type)) {
+				// Don't check isSet for default requiredness.
+				isSet = field.Modifier == parser.Optional
+			} else {
+				isSet = field.Modifier != parser.Required
+			}
 			isNull = false
 		} else {
 			isSet = field.Modifier == parser.Optional

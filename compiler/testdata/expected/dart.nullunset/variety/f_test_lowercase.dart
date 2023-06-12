@@ -95,11 +95,9 @@ class TestLowercase implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetLowercaseInt()) {
-      oprot.writeFieldBegin(_LOWERCASE_INT_FIELD_DESC);
-      oprot.writeI32(this.lowercaseInt);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_LOWERCASE_INT_FIELD_DESC);
+    oprot.writeI32(this.lowercaseInt);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }

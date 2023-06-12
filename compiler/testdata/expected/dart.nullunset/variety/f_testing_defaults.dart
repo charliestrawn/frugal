@@ -645,11 +645,9 @@ class TestingDefaults implements thrift.TBase {
       this.ev2.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (isSetID()) {
-      oprot.writeFieldBegin(_ID_FIELD_DESC);
-      oprot.writeI64(this.iD);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_ID_FIELD_DESC);
+    oprot.writeI64(this.iD);
+    oprot.writeFieldEnd();
     if (isSetThing()) {
       oprot.writeFieldBegin(_THING_FIELD_DESC);
       oprot.writeString(this.thing);
@@ -669,11 +667,9 @@ class TestingDefaults implements thrift.TBase {
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    if (isSetID3()) {
-      oprot.writeFieldBegin(_I_D3_FIELD_DESC);
-      oprot.writeI64(this.iD3);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_I_D3_FIELD_DESC);
+    oprot.writeI64(this.iD3);
+    oprot.writeFieldEnd();
     if (isSetBin_field()) {
       oprot.writeFieldBegin(_BIN_FIELD_FIELD_DESC);
       oprot.writeBinary(this.bin_field);

@@ -670,11 +670,9 @@ class EventWrapper implements thrift.TBase {
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    if (isSetABoolField()) {
-      oprot.writeFieldBegin(_A_BOOL_FIELD_FIELD_DESC);
-      oprot.writeBool(this.aBoolField);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_A_BOOL_FIELD_FIELD_DESC);
+    oprot.writeBool(this.aBoolField);
+    oprot.writeFieldEnd();
     if (isSetA_union()) {
       oprot.writeFieldBegin(_A_UNION_FIELD_DESC);
       this.a_union.write(oprot);
@@ -685,13 +683,10 @@ class EventWrapper implements thrift.TBase {
       oprot.writeString(this.typedefOfTypedef);
       oprot.writeFieldEnd();
     }
+    oprot.writeFieldBegin(_DEPR_FIELD_DESC);
     // ignore: deprecated_member_use
-    if (isSetDepr()) {
-      oprot.writeFieldBegin(_DEPR_FIELD_DESC);
-      // ignore: deprecated_member_use
-      oprot.writeBool(this.depr);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeBool(this.depr);
+    oprot.writeFieldEnd();
     // ignore: deprecated_member_use
     if (isSetDeprBinary()) {
       oprot.writeFieldBegin(_DEPR_BINARY_FIELD_DESC);

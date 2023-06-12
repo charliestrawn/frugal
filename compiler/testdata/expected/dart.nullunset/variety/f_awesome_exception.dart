@@ -160,23 +160,18 @@ class AwesomeException extends Error implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetID()) {
-      oprot.writeFieldBegin(_ID_FIELD_DESC);
-      oprot.writeI64(this.iD);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_ID_FIELD_DESC);
+    oprot.writeI64(this.iD);
+    oprot.writeFieldEnd();
     if (isSetReason()) {
       oprot.writeFieldBegin(_REASON_FIELD_DESC);
       oprot.writeString(this.reason);
       oprot.writeFieldEnd();
     }
+    oprot.writeFieldBegin(_DEPR_FIELD_DESC);
     // ignore: deprecated_member_use
-    if (isSetDepr()) {
-      oprot.writeFieldBegin(_DEPR_FIELD_DESC);
-      // ignore: deprecated_member_use
-      oprot.writeBool(this.depr);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeBool(this.depr);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
