@@ -82,7 +82,7 @@ class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient with dispo
 }
 
 // ignore: camel_case_types
-class getItem_args implements thrift.TBase {
+class getItem_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getItem_args');
 
 
@@ -164,7 +164,7 @@ class getItem_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class getItem_result implements thrift.TBase {
+class getItem_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getItem_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRUCT, 0);
   static final thrift.TField _D_FIELD_DESC = thrift.TField('d', thrift.TType.STRUCT, 1);

@@ -709,6 +709,19 @@ func (kind structKind) export() bool {
 	return kind == structKindStruct || kind == structKindException
 }
 
+func (g *Generator) generateExtendsAndImplements(kind structKind) string {
+	switch kind {
+	case structKindStruct:
+		return "implements thrift.TBase"
+	case structKindException:
+		return "extends Error implements thrift.TBase"
+	case structKindArgs, structKindResult:
+		return "extends frugal.FGeneratedArgsResultBase"
+	default:
+		panic(kind)
+	}
+}
+
 func (g *Generator) useNullForUnset(kind structKind) bool {
 	if !kind.export() {
 		return true
@@ -740,11 +753,7 @@ func (g *Generator) generateStruct(s *parser.Struct, kind structKind) string {
 		contents += "// ignore: camel_case_types\n"
 	}
 
-	contents += fmt.Sprintf("class %s ", s.Name)
-	if s.Type == parser.StructTypeException {
-		contents += "extends Error "
-	}
-	contents += "implements thrift.TBase {\n"
+	contents += fmt.Sprintf("class %s %s {\n", s.Name, g.generateExtendsAndImplements(kind))
 
 	// Struct and field descriptors
 	contents += fmt.Sprintf(tab+"static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('%s');\n", s.Name)

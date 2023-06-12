@@ -358,7 +358,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 }
 
 // ignore: camel_case_types
-class Ping_args implements thrift.TBase {
+class Ping_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('Ping_args');
 
 
@@ -440,7 +440,7 @@ class Ping_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class Ping_result implements thrift.TBase {
+class Ping_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('Ping_result');
 
 
@@ -522,7 +522,7 @@ class Ping_result implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class blah_args implements thrift.TBase {
+class blah_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('blah_args');
   static final thrift.TField _NUM_FIELD_DESC = thrift.TField('num', thrift.TType.I32, 1);
   static final thrift.TField _STR_FIELD_DESC = thrift.TField('Str', thrift.TType.STRING, 2);
@@ -718,7 +718,7 @@ class blah_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class blah_result implements thrift.TBase {
+class blah_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('blah_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.I64, 0);
   static final thrift.TField _AWE_FIELD_DESC = thrift.TField('awe', thrift.TType.STRUCT, 1);
@@ -923,7 +923,7 @@ class blah_result implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class oneWay_args implements thrift.TBase {
+class oneWay_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('oneWay_args');
   static final thrift.TField _ID_FIELD_DESC = thrift.TField('id', thrift.TType.I64, 1);
   static final thrift.TField _REQ_FIELD_DESC = thrift.TField('req', thrift.TType.MAP, 2);
@@ -1091,7 +1091,7 @@ class oneWay_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class bin_method_args implements thrift.TBase {
+class bin_method_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('bin_method_args');
   static final thrift.TField _BIN_FIELD_DESC = thrift.TField('bin', thrift.TType.STRING, 1);
   static final thrift.TField _STR_FIELD_DESC = thrift.TField('Str', thrift.TType.STRING, 2);
@@ -1253,7 +1253,7 @@ class bin_method_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class bin_method_result implements thrift.TBase {
+class bin_method_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('bin_method_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
   static final thrift.TField _API_FIELD_DESC = thrift.TField('api', thrift.TType.STRUCT, 1);
@@ -1420,7 +1420,7 @@ class bin_method_result implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class param_modifiers_args implements thrift.TBase {
+class param_modifiers_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('param_modifiers_args');
   static final thrift.TField _OPT_NUM_FIELD_DESC = thrift.TField('opt_num', thrift.TType.I32, 1);
   static final thrift.TField _DEFAULT_NUM_FIELD_DESC = thrift.TField('default_num', thrift.TType.I32, 2);
@@ -1607,7 +1607,7 @@ class param_modifiers_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class param_modifiers_result implements thrift.TBase {
+class param_modifiers_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('param_modifiers_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.I64, 0);
 
@@ -1728,7 +1728,7 @@ class param_modifiers_result implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class underlying_types_test_args implements thrift.TBase {
+class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('underlying_types_test_args');
   static final thrift.TField _LIST_TYPE_FIELD_DESC = thrift.TField('list_type', thrift.TType.LIST, 1);
   static final thrift.TField _SET_TYPE_FIELD_DESC = thrift.TField('set_type', thrift.TType.SET, 2);
@@ -1910,7 +1910,7 @@ class underlying_types_test_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class underlying_types_test_result implements thrift.TBase {
+class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('underlying_types_test_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.LIST, 0);
 
@@ -2045,7 +2045,7 @@ class underlying_types_test_result implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class getThing_args implements thrift.TBase {
+class getThing_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getThing_args');
 
 
@@ -2127,7 +2127,7 @@ class getThing_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class getThing_result implements thrift.TBase {
+class getThing_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getThing_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRUCT, 0);
 
@@ -2253,7 +2253,7 @@ class getThing_result implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class getMyInt_args implements thrift.TBase {
+class getMyInt_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getMyInt_args');
 
 
@@ -2335,7 +2335,7 @@ class getMyInt_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class getMyInt_result implements thrift.TBase {
+class getMyInt_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getMyInt_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.I32, 0);
 
@@ -2456,7 +2456,7 @@ class getMyInt_result implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class use_subdir_struct_args implements thrift.TBase {
+class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('use_subdir_struct_args');
   static final thrift.TField _A_FIELD_DESC = thrift.TField('a', thrift.TType.STRUCT, 1);
 
@@ -2580,7 +2580,7 @@ class use_subdir_struct_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class use_subdir_struct_result implements thrift.TBase {
+class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('use_subdir_struct_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRUCT, 0);
 
@@ -2706,7 +2706,7 @@ class use_subdir_struct_result implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class sayHelloWith_args implements thrift.TBase {
+class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayHelloWith_args');
   static final thrift.TField _NEW_MESSAGE_FIELD_DESC = thrift.TField('newMessage', thrift.TType.STRING, 1);
 
@@ -2829,7 +2829,7 @@ class sayHelloWith_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class sayHelloWith_result implements thrift.TBase {
+class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayHelloWith_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
 
@@ -2954,7 +2954,7 @@ class sayHelloWith_result implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class whatDoYouSay_args implements thrift.TBase {
+class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('whatDoYouSay_args');
   static final thrift.TField _MESSAGE_ARGS_FIELD_DESC = thrift.TField('messageArgs', thrift.TType.STRING, 1);
 
@@ -3077,7 +3077,7 @@ class whatDoYouSay_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class whatDoYouSay_result implements thrift.TBase {
+class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('whatDoYouSay_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
 
@@ -3202,7 +3202,7 @@ class whatDoYouSay_result implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class sayAgain_args implements thrift.TBase {
+class sayAgain_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayAgain_args');
   static final thrift.TField _MESSAGE_RESULT_FIELD_DESC = thrift.TField('messageResult', thrift.TType.STRING, 1);
 
@@ -3325,7 +3325,7 @@ class sayAgain_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class sayAgain_result implements thrift.TBase {
+class sayAgain_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayAgain_result');
   static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
 

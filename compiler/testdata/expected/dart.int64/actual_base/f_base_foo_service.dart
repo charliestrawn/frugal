@@ -67,7 +67,7 @@ class FBaseFooClient extends disposable.Disposable implements FBaseFoo {
 }
 
 // ignore: camel_case_types
-class basePing_args implements thrift.TBase {
+class basePing_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('basePing_args');
 
 
@@ -149,7 +149,7 @@ class basePing_args implements thrift.TBase {
   }
 }
 // ignore: camel_case_types
-class basePing_result implements thrift.TBase {
+class basePing_result extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('basePing_result');
 
 
