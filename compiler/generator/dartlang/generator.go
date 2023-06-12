@@ -781,15 +781,17 @@ func (g *Generator) generateStruct(s *parser.Struct, kind structKind) string {
 
 	contents += fmt.Sprintf("class %s %s {\n", s.Name, g.generateExtendsAndImplements(kind))
 
-	// Struct and field descriptors
-	contents += fmt.Sprintf(tab+"static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('%s');\n", s.Name)
+	if kind.export() || kind == structKindArgs {
+		// Struct and field descriptors
+		contents += fmt.Sprintf(tab+"static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('%s');\n", s.Name)
 
-	for _, field := range s.Fields {
-		constantName := toScreamingCapsConstant(field.Name)
-		contents += fmt.Sprintf(tab+"static final thrift.TField _%s_FIELD_DESC = thrift.TField('%s', %s, %d);\n",
-			constantName, field.Name, g.getEnumFromThriftType(field.Type), field.ID)
+		for _, field := range s.Fields {
+			constantName := toScreamingCapsConstant(field.Name)
+			contents += fmt.Sprintf(tab+"static final thrift.TField _%s_FIELD_DESC = thrift.TField('%s', %s, %d);\n",
+				constantName, field.Name, g.getEnumFromThriftType(field.Type), field.ID)
+		}
+		contents += "\n"
 	}
-	contents += "\n"
 
 	// Fields
 	for _, field := range s.Fields {
@@ -840,7 +842,9 @@ func (g *Generator) generateStruct(s *parser.Struct, kind structKind) string {
 	contents += g.generateRead(s, kind)
 
 	// write
-	contents += g.generateWrite(s, kind)
+	if kind.export() || kind == structKindArgs {
+		contents += g.generateWrite(s, kind)
+	}
 
 	// to string
 	if kind.export() {

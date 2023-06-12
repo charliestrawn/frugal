@@ -395,8 +395,6 @@ class Ping_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class Ping_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('Ping_result');
-
 
 
   @override
@@ -415,15 +413,6 @@ class Ping_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {
@@ -511,11 +500,6 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class blah_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('blah_result');
-  static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.I64, 0);
-  static final thrift.TField _AWE_FIELD_DESC = thrift.TField('awe', thrift.TType.STRUCT, 1);
-  static final thrift.TField _API_FIELD_DESC = thrift.TField('api', thrift.TType.STRUCT, 2);
-
   int success;
   static const int SUCCESS = 0;
   t_variety.AwesomeException awe;
@@ -563,30 +547,6 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.success != null) {
-      oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      oprot.writeI64(this.success);
-      oprot.writeFieldEnd();
-    }
-    if (this.awe != null) {
-      oprot.writeFieldBegin(_AWE_FIELD_DESC);
-      this.awe.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.api != null) {
-      oprot.writeFieldBegin(_API_FIELD_DESC);
-      this.api.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {
@@ -736,10 +696,6 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class bin_method_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('bin_method_result');
-  static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
-  static final thrift.TField _API_FIELD_DESC = thrift.TField('api', thrift.TType.STRUCT, 1);
-
   Uint8List success;
   static const int SUCCESS = 0;
   t_actual_base_dart.api_exception api;
@@ -777,25 +733,6 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.success != null) {
-      oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      oprot.writeBinary(this.success);
-      oprot.writeFieldEnd();
-    }
-    if (this.api != null) {
-      oprot.writeFieldBegin(_API_FIELD_DESC);
-      this.api.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {
@@ -882,9 +819,6 @@ class param_modifiers_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class param_modifiers_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('param_modifiers_result');
-  static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.I64, 0);
-
   int success;
   static const int SUCCESS = 0;
 
@@ -912,20 +846,6 @@ class param_modifiers_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.success != null) {
-      oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      oprot.writeI64(this.success);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {
@@ -1019,9 +939,6 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('underlying_types_test_result');
-  static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.LIST, 0);
-
   List<int> success;
   static const int SUCCESS = 0;
 
@@ -1055,24 +972,6 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.success != null) {
-      oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.I64, this.success.length));
-      for(var elem84 in this.success) {
-        oprot.writeI64(elem84);
-      }
-      oprot.writeListEnd();
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {
@@ -1116,9 +1015,6 @@ class getThing_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class getThing_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getThing_result');
-  static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRUCT, 0);
-
   t_validStructs.Thing success;
   static const int SUCCESS = 0;
 
@@ -1147,20 +1043,6 @@ class getThing_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.success != null) {
-      oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      this.success.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {
@@ -1204,9 +1086,6 @@ class getMyInt_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class getMyInt_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getMyInt_result');
-  static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.I32, 0);
-
   int success;
   static const int SUCCESS = 0;
 
@@ -1234,20 +1113,6 @@ class getMyInt_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.success != null) {
-      oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      oprot.writeI32(this.success);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {
@@ -1307,9 +1172,6 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('use_subdir_struct_result');
-  static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRUCT, 0);
-
   t_subdir_include_ns.A success;
   static const int SUCCESS = 0;
 
@@ -1338,20 +1200,6 @@ class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.success != null) {
-      oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      this.success.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {
@@ -1410,9 +1258,6 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayHelloWith_result');
-  static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
-
   String success;
   static const int SUCCESS = 0;
 
@@ -1440,20 +1285,6 @@ class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.success != null) {
-      oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      oprot.writeString(this.success);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {
@@ -1512,9 +1343,6 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('whatDoYouSay_result');
-  static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
-
   String success;
   static const int SUCCESS = 0;
 
@@ -1542,20 +1370,6 @@ class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.success != null) {
-      oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      oprot.writeString(this.success);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {
@@ -1614,9 +1428,6 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class sayAgain_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayAgain_result');
-  static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRING, 0);
-
   String success;
   static const int SUCCESS = 0;
 
@@ -1644,20 +1455,6 @@ class sayAgain_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.success != null) {
-      oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      oprot.writeString(this.success);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {

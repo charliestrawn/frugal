@@ -119,10 +119,6 @@ class getItem_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class getItem_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('getItem_result');
-  static final thrift.TField _SUCCESS_FIELD_DESC = thrift.TField('success', thrift.TType.STRUCT, 0);
-  static final thrift.TField _D_FIELD_DESC = thrift.TField('d', thrift.TType.STRUCT, 1);
-
   t_vendor_namespace.Item success;
   static const int SUCCESS = 0;
   t_excepts.InvalidData d;
@@ -161,25 +157,6 @@ class getItem_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.success != null) {
-      oprot.writeFieldBegin(_SUCCESS_FIELD_DESC);
-      this.success.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    if (this.d != null) {
-      oprot.writeFieldBegin(_D_FIELD_DESC);
-      this.d.write(oprot);
-      oprot.writeFieldEnd();
-    }
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {

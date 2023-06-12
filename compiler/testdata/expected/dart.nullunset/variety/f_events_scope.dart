@@ -128,11 +128,11 @@ class EventsPublisher {
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
     oprot.writeListBegin(thrift.TList(thrift.TType.MAP, req.length));
-    for(var elem85 in req) {
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem85.length));
-      for(var elem86 in elem85.keys) {
-        oprot.writeI64(elem86);
-        elem85[elem86].write(oprot);
+    for(var elem84 in req) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem84.length));
+      for(var elem85 in elem84.keys) {
+        oprot.writeI64(elem85);
+        elem84[elem85].write(oprot);
       }
       oprot.writeMapEnd();
     }
@@ -270,19 +270,19 @@ class EventsSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      thrift.TList elem87 = iprot.readListBegin();
+      thrift.TList elem86 = iprot.readListBegin();
       List<Map<int, t_variety.Event>> req = List<Map<int, t_variety.Event>>();
-      for(int elem93 = 0; elem93 < elem87.length; ++elem93) {
-        thrift.TMap elem89 = iprot.readMapBegin();
-        Map<int, t_variety.Event> elem88 = Map<int, t_variety.Event>();
-        for(int elem91 = 0; elem91 < elem89.length; ++elem91) {
-          int elem92 = iprot.readI64();
-          t_variety.Event elem90 = t_variety.Event();
-          elem90.read(iprot);
-          elem88[elem92] = elem90;
+      for(int elem92 = 0; elem92 < elem86.length; ++elem92) {
+        thrift.TMap elem88 = iprot.readMapBegin();
+        Map<int, t_variety.Event> elem87 = Map<int, t_variety.Event>();
+        for(int elem90 = 0; elem90 < elem88.length; ++elem90) {
+          int elem91 = iprot.readI64();
+          t_variety.Event elem89 = t_variety.Event();
+          elem89.read(iprot);
+          elem87[elem91] = elem89;
         }
         iprot.readMapEnd();
-        req.add(elem88);
+        req.add(elem87);
       }
       iprot.readListEnd();
       iprot.readMessageEnd();

@@ -104,8 +104,6 @@ class basePing_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class basePing_result extends frugal.FGeneratedArgsResultBase {
-  static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('basePing_result');
-
 
 
   @override
@@ -124,15 +122,6 @@ class basePing_result extends frugal.FGeneratedArgsResultBase {
     iprot.readStructEnd();
 
     validate();
-  }
-
-  @override
-  write(thrift.TProtocol oprot) {
-    validate();
-
-    oprot.writeStructBegin(_STRUCT_DESC);
-    oprot.writeFieldStop();
-    oprot.writeStructEnd();
   }
 
   validate() {
