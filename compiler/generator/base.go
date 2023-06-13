@@ -80,13 +80,14 @@ func (b *BaseGenerator) GetElem() string {
 	return s
 }
 
-type Struct struct {
+// ServiceMethodStruct is a service method _args or _result struct.
+type ServiceMethodStruct struct {
 	*parser.Struct
-	Args bool
+	Args bool // true if _args, false if _result
 }
 
-func (b *BaseGenerator) GetServiceMethodTypes(service *parser.Service) []*Struct {
-	structs := []*Struct{}
+func (b *BaseGenerator) GetServiceMethodTypes(service *parser.Service) []*ServiceMethodStruct {
+	structs := []*ServiceMethodStruct{}
 	for _, method := range service.Methods {
 		arg := &parser.Struct{
 			Name:   fmt.Sprintf("%s_args", method.Name),
@@ -99,7 +100,7 @@ func (b *BaseGenerator) GetServiceMethodTypes(service *parser.Service) []*Struct
 				field.Modifier = parser.Default
 			}
 		}
-		structs = append(structs, &Struct{
+		structs = append(structs, &ServiceMethodStruct{
 			Struct: arg,
 			Args:   true,
 		})
@@ -124,7 +125,7 @@ func (b *BaseGenerator) GetServiceMethodTypes(service *parser.Service) []*Struct
 				Fields: fields,
 				Type:   parser.StructTypeStruct,
 			}
-			structs = append(structs, &Struct{
+			structs = append(structs, &ServiceMethodStruct{
 				Struct: result,
 			})
 		}
