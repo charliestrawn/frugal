@@ -8,7 +8,7 @@ require (
 	github.com/nats-io/nats-server/v2 v2.9.9
 	github.com/nats-io/nats.go v1.21.0
 	github.com/nats-io/nuid v1.0.1
-	github.com/sirupsen/logrus v1.9.0
+	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.1
 )
 
