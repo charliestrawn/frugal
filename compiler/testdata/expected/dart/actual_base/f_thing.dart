@@ -70,11 +70,7 @@ class thing implements thrift.TBase {
         break;
 
       case A_STRING:
-        if (value == null) {
-          unsetA_string();
-        } else {
-          this.a_string = value as String;
-        }
+        this.a_string = value as dynamic;
         break;
 
       default:
@@ -88,11 +84,8 @@ class thing implements thrift.TBase {
     switch (fieldID) {
       case AN_ID:
         return isSetAn_id();
-      case A_STRING:
-        return isSetA_string();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
     }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

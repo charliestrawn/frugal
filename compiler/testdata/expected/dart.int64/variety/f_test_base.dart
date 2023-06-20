@@ -49,11 +49,7 @@ class TestBase implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case BASE_STRUCT:
-        if (value == null) {
-          unsetBase_struct();
-        } else {
-          this.base_struct = value as t_actual_base_dart.thing;
-        }
+        this.base_struct = value as dynamic;
         break;
 
       default:
@@ -64,12 +60,7 @@ class TestBase implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case BASE_STRUCT:
-        return isSetBase_struct();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

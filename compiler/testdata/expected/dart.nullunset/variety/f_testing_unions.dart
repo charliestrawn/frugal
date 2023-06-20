@@ -123,68 +123,36 @@ class TestingUnions implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case ANID:
-        if (value == null) {
-          unsetAnID();
-        } else {
-          this.anID = value as int;
-        }
+        this.anID = value as dynamic;
         break;
 
       case ASTRING:
-        if (value == null) {
-          unsetAString();
-        } else {
-          this.aString = value as String;
-        }
+        this.aString = value as dynamic;
         break;
 
       case SOMEOTHERTHING:
-        if (value == null) {
-          unsetSomeotherthing();
-        } else {
-          this.someotherthing = value as int;
-        }
+        this.someotherthing = value as dynamic;
         break;
 
       case ANINT16:
-        if (value == null) {
-          unsetAnInt16();
-        } else {
-          this.anInt16 = value as int;
-        }
+        this.anInt16 = value as dynamic;
         break;
 
       case REQUESTS:
-        if (value == null) {
-          unsetRequests();
-        } else {
-          this.requests = value as Map<int, String>;
-        }
+        this.requests = value as dynamic;
         break;
 
       case BIN_FIELD_IN_UNION:
-        if (value == null) {
-          unsetBin_field_in_union();
-        } else {
-          this.bin_field_in_union = value as Uint8List;
-        }
+        this.bin_field_in_union = value as dynamic;
         break;
 
       case DEPR:
-        if (value == null) {
-          unsetDepr();
-        } else {
-          // ignore: deprecated_member_use
-          this.depr = value as bool;
-        }
+        // ignore: deprecated_member_use
+        this.depr = value as dynamic;
         break;
 
       case WHOA_BUDDY:
-        if (value == null) {
-          unsetWHOA_BUDDY();
-        } else {
-          this.wHOA_BUDDY = value as bool;
-        }
+        this.wHOA_BUDDY = value as dynamic;
         break;
 
       default:
@@ -195,27 +163,7 @@ class TestingUnions implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case ANID:
-        return isSetAnID();
-      case ASTRING:
-        return isSetAString();
-      case SOMEOTHERTHING:
-        return isSetSomeotherthing();
-      case ANINT16:
-        return isSetAnInt16();
-      case REQUESTS:
-        return isSetRequests();
-      case BIN_FIELD_IN_UNION:
-        return isSetBin_field_in_union();
-      case DEPR:
-        // ignore: deprecated_member_use
-        return isSetDepr();
-      case WHOA_BUDDY:
-        return isSetWHOA_BUDDY();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

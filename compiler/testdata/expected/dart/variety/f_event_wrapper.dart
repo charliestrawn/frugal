@@ -355,51 +355,27 @@ class EventWrapper implements thrift.TBase {
         break;
 
       case EV:
-        if (value == null) {
-          unsetEv();
-        } else {
-          this.ev = value as t_variety.Event;
-        }
+        this.ev = value as dynamic;
         break;
 
       case EVENTS:
-        if (value == null) {
-          unsetEvents();
-        } else {
-          this.events = value as List<t_variety.Event>;
-        }
+        this.events = value as dynamic;
         break;
 
       case EVENTS2:
-        if (value == null) {
-          unsetEvents2();
-        } else {
-          this.events2 = value as Set<t_variety.Event>;
-        }
+        this.events2 = value as dynamic;
         break;
 
       case EVENTMAP:
-        if (value == null) {
-          unsetEventMap();
-        } else {
-          this.eventMap = value as Map<int, t_variety.Event>;
-        }
+        this.eventMap = value as dynamic;
         break;
 
       case NUMS:
-        if (value == null) {
-          unsetNums();
-        } else {
-          this.nums = value as List<List<int>>;
-        }
+        this.nums = value as dynamic;
         break;
 
       case ENUMS:
-        if (value == null) {
-          unsetEnums();
-        } else {
-          this.enums = value as List<int>;
-        }
+        this.enums = value as dynamic;
         break;
 
       case ABOOLFIELD:
@@ -411,19 +387,11 @@ class EventWrapper implements thrift.TBase {
         break;
 
       case A_UNION:
-        if (value == null) {
-          unsetA_union();
-        } else {
-          this.a_union = value as t_variety.TestingUnions;
-        }
+        this.a_union = value as dynamic;
         break;
 
       case TYPEDEFOFTYPEDEF:
-        if (value == null) {
-          unsetTypedefOfTypedef();
-        } else {
-          this.typedefOfTypedef = value as String;
-        }
+        this.typedefOfTypedef = value as dynamic;
         break;
 
       case DEPR:
@@ -436,45 +404,25 @@ class EventWrapper implements thrift.TBase {
         break;
 
       case DEPRBINARY:
-        if (value == null) {
-          unsetDeprBinary();
-        } else {
-          // ignore: deprecated_member_use
-          this.deprBinary = value as Uint8List;
-        }
+        // ignore: deprecated_member_use
+        this.deprBinary = value as dynamic;
         break;
 
       case DEPRLIST:
-        if (value == null) {
-          unsetDeprList();
-        } else {
-          // ignore: deprecated_member_use
-          this.deprList = value as List<bool>;
-        }
+        // ignore: deprecated_member_use
+        this.deprList = value as dynamic;
         break;
 
       case EVENTSDEFAULT:
-        if (value == null) {
-          unsetEventsDefault();
-        } else {
-          this.eventsDefault = value as List<t_variety.Event>;
-        }
+        this.eventsDefault = value as dynamic;
         break;
 
       case EVENTMAPDEFAULT:
-        if (value == null) {
-          unsetEventMapDefault();
-        } else {
-          this.eventMapDefault = value as Map<int, t_variety.Event>;
-        }
+        this.eventMapDefault = value as dynamic;
         break;
 
       case EVENTSETDEFAULT:
-        if (value == null) {
-          unsetEventSetDefault();
-        } else {
-          this.eventSetDefault = value as Set<t_variety.Event>;
-        }
+        this.eventSetDefault = value as dynamic;
         break;
 
       default:
@@ -488,42 +436,13 @@ class EventWrapper implements thrift.TBase {
     switch (fieldID) {
       case ID:
         return isSetID();
-      case EV:
-        return isSetEv();
-      case EVENTS:
-        return isSetEvents();
-      case EVENTS2:
-        return isSetEvents2();
-      case EVENTMAP:
-        return isSetEventMap();
-      case NUMS:
-        return isSetNums();
-      case ENUMS:
-        return isSetEnums();
       case ABOOLFIELD:
         return isSetABoolField();
-      case A_UNION:
-        return isSetA_union();
-      case TYPEDEFOFTYPEDEF:
-        return isSetTypedefOfTypedef();
       case DEPR:
         // ignore: deprecated_member_use
         return isSetDepr();
-      case DEPRBINARY:
-        // ignore: deprecated_member_use
-        return isSetDeprBinary();
-      case DEPRLIST:
-        // ignore: deprecated_member_use
-        return isSetDeprList();
-      case EVENTSDEFAULT:
-        return isSetEventsDefault();
-      case EVENTMAPDEFAULT:
-        return isSetEventMapDefault();
-      case EVENTSETDEFAULT:
-        return isSetEventSetDefault();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
     }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

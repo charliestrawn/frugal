@@ -42,11 +42,7 @@ class TestLowercase implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case LOWERCASEINT:
-        if (value == null) {
-          unsetLowercaseInt();
-        } else {
-          this.lowercaseInt = value as int;
-        }
+        this.lowercaseInt = value as dynamic;
         break;
 
       default:
@@ -57,12 +53,7 @@ class TestLowercase implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case LOWERCASEINT:
-        return isSetLowercaseInt();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
+    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -95,11 +86,9 @@ class TestLowercase implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetLowercaseInt()) {
-      oprot.writeFieldBegin(_LOWERCASE_INT_FIELD_DESC);
-      oprot.writeI32(this.lowercaseInt);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_LOWERCASE_INT_FIELD_DESC);
+    oprot.writeI32(this.lowercaseInt);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }

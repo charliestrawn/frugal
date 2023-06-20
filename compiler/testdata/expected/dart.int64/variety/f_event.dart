@@ -107,11 +107,7 @@ class Event implements thrift.TBase {
         break;
 
       case MESSAGE:
-        if (value == null) {
-          unsetMessage();
-        } else {
-          this.message = value as String;
-        }
+        this.message = value as dynamic;
         break;
 
       case YES_NO:
@@ -133,13 +129,10 @@ class Event implements thrift.TBase {
     switch (fieldID) {
       case ID:
         return isSetID();
-      case MESSAGE:
-        return isSetMessage();
       case YES_NO:
         return isSetYES_NO();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
     }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

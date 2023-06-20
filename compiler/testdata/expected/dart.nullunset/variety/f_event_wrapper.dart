@@ -224,134 +224,70 @@ class EventWrapper implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case ID:
-        if (value == null) {
-          unsetID();
-        } else {
-          this.iD = value as int;
-        }
+        this.iD = value as dynamic;
         break;
 
       case EV:
-        if (value == null) {
-          unsetEv();
-        } else {
-          this.ev = value as t_variety.Event;
-        }
+        this.ev = value as dynamic;
         break;
 
       case EVENTS:
-        if (value == null) {
-          unsetEvents();
-        } else {
-          this.events = value as List<t_variety.Event>;
-        }
+        this.events = value as dynamic;
         break;
 
       case EVENTS2:
-        if (value == null) {
-          unsetEvents2();
-        } else {
-          this.events2 = value as Set<t_variety.Event>;
-        }
+        this.events2 = value as dynamic;
         break;
 
       case EVENTMAP:
-        if (value == null) {
-          unsetEventMap();
-        } else {
-          this.eventMap = value as Map<int, t_variety.Event>;
-        }
+        this.eventMap = value as dynamic;
         break;
 
       case NUMS:
-        if (value == null) {
-          unsetNums();
-        } else {
-          this.nums = value as List<List<int>>;
-        }
+        this.nums = value as dynamic;
         break;
 
       case ENUMS:
-        if (value == null) {
-          unsetEnums();
-        } else {
-          this.enums = value as List<int>;
-        }
+        this.enums = value as dynamic;
         break;
 
       case ABOOLFIELD:
-        if (value == null) {
-          unsetABoolField();
-        } else {
-          this.aBoolField = value as bool;
-        }
+        this.aBoolField = value as dynamic;
         break;
 
       case A_UNION:
-        if (value == null) {
-          unsetA_union();
-        } else {
-          this.a_union = value as t_variety.TestingUnions;
-        }
+        this.a_union = value as dynamic;
         break;
 
       case TYPEDEFOFTYPEDEF:
-        if (value == null) {
-          unsetTypedefOfTypedef();
-        } else {
-          this.typedefOfTypedef = value as String;
-        }
+        this.typedefOfTypedef = value as dynamic;
         break;
 
       case DEPR:
-        if (value == null) {
-          unsetDepr();
-        } else {
-          // ignore: deprecated_member_use
-          this.depr = value as bool;
-        }
+        // ignore: deprecated_member_use
+        this.depr = value as dynamic;
         break;
 
       case DEPRBINARY:
-        if (value == null) {
-          unsetDeprBinary();
-        } else {
-          // ignore: deprecated_member_use
-          this.deprBinary = value as Uint8List;
-        }
+        // ignore: deprecated_member_use
+        this.deprBinary = value as dynamic;
         break;
 
       case DEPRLIST:
-        if (value == null) {
-          unsetDeprList();
-        } else {
-          // ignore: deprecated_member_use
-          this.deprList = value as List<bool>;
-        }
+        // ignore: deprecated_member_use
+        this.deprList = value as dynamic;
         break;
 
       case EVENTSDEFAULT:
-        if (value == null) {
-          unsetEventsDefault();
-        } else {
-          this.eventsDefault = value as List<t_variety.Event>;
-        }
+        this.eventsDefault = value as dynamic;
         break;
 
       case EVENTMAPDEFAULT:
-        if (value == null) {
-          unsetEventMapDefault();
-        } else {
-          this.eventMapDefault = value as Map<int, t_variety.Event>;
-        }
+        this.eventMapDefault = value as dynamic;
         break;
 
       case EVENTSETDEFAULT:
-        if (value == null) {
-          unsetEventSetDefault();
-        } else {
-          this.eventSetDefault = value as Set<t_variety.Event>;
-        }
+        this.eventSetDefault = value as dynamic;
         break;
 
       default:
@@ -362,45 +298,7 @@ class EventWrapper implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case ID:
-        return isSetID();
-      case EV:
-        return isSetEv();
-      case EVENTS:
-        return isSetEvents();
-      case EVENTS2:
-        return isSetEvents2();
-      case EVENTMAP:
-        return isSetEventMap();
-      case NUMS:
-        return isSetNums();
-      case ENUMS:
-        return isSetEnums();
-      case ABOOLFIELD:
-        return isSetABoolField();
-      case A_UNION:
-        return isSetA_union();
-      case TYPEDEFOFTYPEDEF:
-        return isSetTypedefOfTypedef();
-      case DEPR:
-        // ignore: deprecated_member_use
-        return isSetDepr();
-      case DEPRBINARY:
-        // ignore: deprecated_member_use
-        return isSetDeprBinary();
-      case DEPRLIST:
-        // ignore: deprecated_member_use
-        return isSetDeprList();
-      case EVENTSDEFAULT:
-        return isSetEventsDefault();
-      case EVENTMAPDEFAULT:
-        return isSetEventMapDefault();
-      case EVENTSETDEFAULT:
-        return isSetEventSetDefault();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
+    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -670,11 +568,9 @@ class EventWrapper implements thrift.TBase {
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    if (isSetABoolField()) {
-      oprot.writeFieldBegin(_A_BOOL_FIELD_FIELD_DESC);
-      oprot.writeBool(this.aBoolField);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_A_BOOL_FIELD_FIELD_DESC);
+    oprot.writeBool(this.aBoolField);
+    oprot.writeFieldEnd();
     if (isSetA_union()) {
       oprot.writeFieldBegin(_A_UNION_FIELD_DESC);
       this.a_union.write(oprot);
@@ -685,13 +581,10 @@ class EventWrapper implements thrift.TBase {
       oprot.writeString(this.typedefOfTypedef);
       oprot.writeFieldEnd();
     }
+    oprot.writeFieldBegin(_DEPR_FIELD_DESC);
     // ignore: deprecated_member_use
-    if (isSetDepr()) {
-      oprot.writeFieldBegin(_DEPR_FIELD_DESC);
-      // ignore: deprecated_member_use
-      oprot.writeBool(this.depr);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeBool(this.depr);
+    oprot.writeFieldEnd();
     // ignore: deprecated_member_use
     if (isSetDeprBinary()) {
       oprot.writeFieldBegin(_DEPR_BINARY_FIELD_DESC);

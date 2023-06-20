@@ -48,19 +48,11 @@ class thing implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case AN_ID:
-        if (value == null) {
-          unsetAn_id();
-        } else {
-          this.an_id = value as int;
-        }
+        this.an_id = value as dynamic;
         break;
 
       case A_STRING:
-        if (value == null) {
-          unsetA_string();
-        } else {
-          this.a_string = value as String;
-        }
+        this.a_string = value as dynamic;
         break;
 
       default:
@@ -71,14 +63,7 @@ class thing implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case AN_ID:
-        return isSetAn_id();
-      case A_STRING:
-        return isSetA_string();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
+    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -118,11 +103,9 @@ class thing implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (isSetAn_id()) {
-      oprot.writeFieldBegin(_AN_ID_FIELD_DESC);
-      oprot.writeI32(this.an_id);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_AN_ID_FIELD_DESC);
+    oprot.writeI32(this.an_id);
+    oprot.writeFieldEnd();
     if (isSetA_string()) {
       oprot.writeFieldBegin(_A_STRING_FIELD_DESC);
       oprot.writeString(this.a_string);

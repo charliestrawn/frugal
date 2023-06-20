@@ -64,27 +64,15 @@ class FooArgs implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case NEWMESSAGE:
-        if (value == null) {
-          unsetNewMessage();
-        } else {
-          this.newMessage = value as String;
-        }
+        this.newMessage = value as dynamic;
         break;
 
       case MESSAGEARGS:
-        if (value == null) {
-          unsetMessageArgs();
-        } else {
-          this.messageArgs = value as String;
-        }
+        this.messageArgs = value as dynamic;
         break;
 
       case MESSAGERESULT:
-        if (value == null) {
-          unsetMessageResult();
-        } else {
-          this.messageResult = value as String;
-        }
+        this.messageResult = value as dynamic;
         break;
 
       default:
@@ -95,16 +83,7 @@ class FooArgs implements thrift.TBase {
   // Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise
   @override
   bool isSet(int fieldID) {
-    switch (fieldID) {
-      case NEWMESSAGE:
-        return isSetNewMessage();
-      case MESSAGEARGS:
-        return isSetMessageArgs();
-      case MESSAGERESULT:
-        return isSetMessageResult();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
-    }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

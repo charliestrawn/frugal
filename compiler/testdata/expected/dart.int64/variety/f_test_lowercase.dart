@@ -69,9 +69,8 @@ class TestLowercase implements thrift.TBase {
     switch (fieldID) {
       case LOWERCASEINT:
         return isSetLowercaseInt();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
     }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

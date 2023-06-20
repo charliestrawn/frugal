@@ -193,11 +193,7 @@ class TestingUnions implements thrift.TBase {
         break;
 
       case ASTRING:
-        if (value == null) {
-          unsetAString();
-        } else {
-          this.aString = value as String;
-        }
+        this.aString = value as dynamic;
         break;
 
       case SOMEOTHERTHING:
@@ -217,19 +213,11 @@ class TestingUnions implements thrift.TBase {
         break;
 
       case REQUESTS:
-        if (value == null) {
-          unsetRequests();
-        } else {
-          this.requests = value as Map<int, String>;
-        }
+        this.requests = value as dynamic;
         break;
 
       case BIN_FIELD_IN_UNION:
-        if (value == null) {
-          unsetBin_field_in_union();
-        } else {
-          this.bin_field_in_union = value as Uint8List;
-        }
+        this.bin_field_in_union = value as dynamic;
         break;
 
       case DEPR:
@@ -260,24 +248,17 @@ class TestingUnions implements thrift.TBase {
     switch (fieldID) {
       case ANID:
         return isSetAnID();
-      case ASTRING:
-        return isSetAString();
       case SOMEOTHERTHING:
         return isSetSomeotherthing();
       case ANINT16:
         return isSetAnInt16();
-      case REQUESTS:
-        return isSetRequests();
-      case BIN_FIELD_IN_UNION:
-        return isSetBin_field_in_union();
       case DEPR:
         // ignore: deprecated_member_use
         return isSetDepr();
       case WHOA_BUDDY:
         return isSetWHOA_BUDDY();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
     }
+    return getFieldValue(fieldID) != null;
   }
 
   @override

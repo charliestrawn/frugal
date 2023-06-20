@@ -255,27 +255,15 @@ class TestingDefaults implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case ID2:
-        if (value == null) {
-          unsetID2();
-        } else {
-          this.iD2 = value as int;
-        }
+        this.iD2 = value as dynamic;
         break;
 
       case EV1:
-        if (value == null) {
-          unsetEv1();
-        } else {
-          this.ev1 = value as t_variety.Event;
-        }
+        this.ev1 = value as dynamic;
         break;
 
       case EV2:
-        if (value == null) {
-          unsetEv2();
-        } else {
-          this.ev2 = value as t_variety.Event;
-        }
+        this.ev2 = value as dynamic;
         break;
 
       case ID:
@@ -287,27 +275,15 @@ class TestingDefaults implements thrift.TBase {
         break;
 
       case THING:
-        if (value == null) {
-          unsetThing();
-        } else {
-          this.thing = value as String;
-        }
+        this.thing = value as dynamic;
         break;
 
       case THING2:
-        if (value == null) {
-          unsetThing2();
-        } else {
-          this.thing2 = value as String;
-        }
+        this.thing2 = value as dynamic;
         break;
 
       case LISTFIELD:
-        if (value == null) {
-          unsetListfield();
-        } else {
-          this.listfield = value as List<int>;
-        }
+        this.listfield = value as dynamic;
         break;
 
       case ID3:
@@ -319,83 +295,43 @@ class TestingDefaults implements thrift.TBase {
         break;
 
       case BIN_FIELD:
-        if (value == null) {
-          unsetBin_field();
-        } else {
-          this.bin_field = value as Uint8List;
-        }
+        this.bin_field = value as dynamic;
         break;
 
       case BIN_FIELD2:
-        if (value == null) {
-          unsetBin_field2();
-        } else {
-          this.bin_field2 = value as Uint8List;
-        }
+        this.bin_field2 = value as dynamic;
         break;
 
       case BIN_FIELD3:
-        if (value == null) {
-          unsetBin_field3();
-        } else {
-          this.bin_field3 = value as Uint8List;
-        }
+        this.bin_field3 = value as dynamic;
         break;
 
       case BIN_FIELD4:
-        if (value == null) {
-          unsetBin_field4();
-        } else {
-          this.bin_field4 = value as Uint8List;
-        }
+        this.bin_field4 = value as dynamic;
         break;
 
       case LIST2:
-        if (value == null) {
-          unsetList2();
-        } else {
-          this.list2 = value as List<int>;
-        }
+        this.list2 = value as dynamic;
         break;
 
       case LIST3:
-        if (value == null) {
-          unsetList3();
-        } else {
-          this.list3 = value as List<int>;
-        }
+        this.list3 = value as dynamic;
         break;
 
       case LIST4:
-        if (value == null) {
-          unsetList4();
-        } else {
-          this.list4 = value as List<int>;
-        }
+        this.list4 = value as dynamic;
         break;
 
       case A_MAP:
-        if (value == null) {
-          unsetA_map();
-        } else {
-          this.a_map = value as Map<String, String>;
-        }
+        this.a_map = value as dynamic;
         break;
 
       case STATUS:
-        if (value == null) {
-          unsetStatus();
-        } else {
-          this.status = value as int;
-        }
+        this.status = value as dynamic;
         break;
 
       case BASE_STATUS:
-        if (value == null) {
-          unsetBase_status();
-        } else {
-          this.base_status = value as int;
-        }
+        this.base_status = value as dynamic;
         break;
 
       default:
@@ -407,45 +343,12 @@ class TestingDefaults implements thrift.TBase {
   @override
   bool isSet(int fieldID) {
     switch (fieldID) {
-      case ID2:
-        return isSetID2();
-      case EV1:
-        return isSetEv1();
-      case EV2:
-        return isSetEv2();
       case ID:
         return isSetID();
-      case THING:
-        return isSetThing();
-      case THING2:
-        return isSetThing2();
-      case LISTFIELD:
-        return isSetListfield();
       case ID3:
         return isSetID3();
-      case BIN_FIELD:
-        return isSetBin_field();
-      case BIN_FIELD2:
-        return isSetBin_field2();
-      case BIN_FIELD3:
-        return isSetBin_field3();
-      case BIN_FIELD4:
-        return isSetBin_field4();
-      case LIST2:
-        return isSetList2();
-      case LIST3:
-        return isSetList3();
-      case LIST4:
-        return isSetList4();
-      case A_MAP:
-        return isSetA_map();
-      case STATUS:
-        return isSetStatus();
-      case BASE_STATUS:
-        return isSetBase_status();
-      default:
-        throw ArgumentError("Field $fieldID doesn't exist!");
     }
+    return getFieldValue(fieldID) != null;
   }
 
   @override
@@ -645,11 +548,9 @@ class TestingDefaults implements thrift.TBase {
       this.ev2.write(oprot);
       oprot.writeFieldEnd();
     }
-    if (isSetID()) {
-      oprot.writeFieldBegin(_ID_FIELD_DESC);
-      oprot.writeI64(this.iD);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_ID_FIELD_DESC);
+    oprot.writeI64(this.iD);
+    oprot.writeFieldEnd();
     if (isSetThing()) {
       oprot.writeFieldBegin(_THING_FIELD_DESC);
       oprot.writeString(this.thing);
@@ -669,11 +570,9 @@ class TestingDefaults implements thrift.TBase {
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    if (isSetID3()) {
-      oprot.writeFieldBegin(_I_D3_FIELD_DESC);
-      oprot.writeI64(this.iD3);
-      oprot.writeFieldEnd();
-    }
+    oprot.writeFieldBegin(_I_D3_FIELD_DESC);
+    oprot.writeI64(this.iD3);
+    oprot.writeFieldEnd();
     if (isSetBin_field()) {
       oprot.writeFieldBegin(_BIN_FIELD_FIELD_DESC);
       oprot.writeBinary(this.bin_field);
