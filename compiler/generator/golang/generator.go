@@ -432,7 +432,7 @@ func (g *Generator) GenerateException(exception *parser.Struct) error {
 func (g *Generator) generateServiceArgsResults(service *parser.Service) string {
 	contents := ""
 	for _, s := range g.GetServiceMethodTypes(service) {
-		contents += g.generateStruct(s, service.Name)
+		contents += g.generateStruct(s.Struct, service.Name)
 	}
 	return contents
 }

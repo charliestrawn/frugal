@@ -662,7 +662,12 @@ func (g *Generator) GenerateStruct(s *parser.Struct) error {
 		return err
 	}
 
-	contents := g.generateStruct(s)
+	kind := structKindStruct
+	if s.Type == parser.StructTypeException {
+		kind = structKindException
+	}
+
+	contents := g.generateStruct(s, kind)
 	_, err = file.WriteString(contents)
 	return err
 }
@@ -682,17 +687,96 @@ func (g *Generator) GenerateException(s *parser.Struct) error {
 func (g *Generator) generateServiceArgsResults(service *parser.Service) string {
 	contents := ""
 	for _, s := range g.GetServiceMethodTypes(service) {
-		contents += g.generateStruct(s)
+		kind := structKindResult
+		if s.Args {
+			kind = structKindArgs
+		}
+		contents += g.generateStruct(s.Struct, kind)
 	}
 	return contents
 }
 
-func (g *Generator) useNullForUnset() bool {
+type structKind int
+
+const (
+	structKindStruct structKind = iota
+	structKindException
+	structKindArgs
+	structKindResult
+)
+
+func (kind structKind) export() bool {
+	return kind == structKindStruct || kind == structKindException
+}
+
+func (g *Generator) generateExtendsAndImplements(kind structKind) string {
+	switch kind {
+	case structKindStruct:
+		return "implements thrift.TBase"
+	case structKindException:
+		return "extends Error implements thrift.TBase"
+	case structKindArgs, structKindResult:
+		return "extends frugal.FGeneratedArgsResultBase"
+	default:
+		panic(kind)
+	}
+}
+
+func (g *Generator) useNullForUnset(kind structKind) bool {
+	if !kind.export() {
+		return true
+	}
+
 	_, ok := g.Options["use_null_for_unset"]
 	return ok
 }
 
-func (g *Generator) generateStruct(s *parser.Struct) string {
+func (g *Generator) useNullForIsSetExpr(kind structKind, field *parser.Field) bool {
+	if g.useNullForUnset(kind) {
+		return field.Modifier != parser.Default || field.Default == nil || !g.isDartPrimitive(field.Type)
+	}
+	// Primitives also need to manage "__isset_${field}".
+	return !g.isDartPrimitive(field.Type)
+}
+
+func (g *Generator) shouldGenerateIsSet(kind structKind, field *parser.Field) bool {
+	return kind.export()
+}
+
+func (g *Generator) generateIsSetExpr(kind structKind, field *parser.Field, target string) string {
+	if !g.shouldGenerateIsSet(kind, field) {
+		if target == "" {
+			target = "this"
+		}
+		return fmt.Sprintf("%s.%s != null", target, toFieldName(field.Name))
+	}
+
+	targetDot := ""
+	if target != "" {
+		targetDot = target + "."
+	}
+	return fmt.Sprintf("%sisSet%s()", targetDot, strings.Title(field.Name))
+}
+
+var successFieldForIsSet = &parser.Field{Name: "success"}
+
+// generateIsSetSuccessExpr returns an isSet expression for result "success" field.
+func (g *Generator) generateIsSetSuccessExpr(target string) string {
+	return g.generateIsSetExpr(structKindResult, successFieldForIsSet, target)
+}
+
+func (g *Generator) shouldGenerateFieldId(s *parser.Struct, kind structKind) bool {
+	return kind.export()
+}
+
+func (g *Generator) generateFieldIdExpr(s *parser.Struct, kind structKind, field *parser.Field) string {
+	if g.shouldGenerateFieldId(s, kind) {
+		return strings.ToUpper(field.Name)
+	}
+	return strconv.Itoa(field.ID)
+}
+
+func (g *Generator) generateStruct(s *parser.Struct, kind structKind) string {
 	contents := ""
 
 	// Class declaration
@@ -706,37 +790,37 @@ func (g *Generator) generateStruct(s *parser.Struct) string {
 		contents += "// ignore: camel_case_types\n"
 	}
 
-	contents += fmt.Sprintf("class %s ", s.Name)
-	if s.Type == parser.StructTypeException {
-		contents += "extends Error "
-	}
-	contents += "implements thrift.TBase {\n"
+	contents += fmt.Sprintf("class %s %s {\n", s.Name, g.generateExtendsAndImplements(kind))
 
-	// Struct and field descriptors
-	contents += fmt.Sprintf(tab+"static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('%s');\n", s.Name)
+	if kind.export() || kind == structKindArgs {
+		// Struct and field descriptors
+		contents += fmt.Sprintf(tab+"static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('%s');\n", s.Name)
 
-	for _, field := range s.Fields {
-		constantName := toScreamingCapsConstant(field.Name)
-		contents += fmt.Sprintf(tab+"static final thrift.TField _%s_FIELD_DESC = thrift.TField('%s', %s, %d);\n",
-			constantName, field.Name, g.getEnumFromThriftType(field.Type), field.ID)
+		for _, field := range s.Fields {
+			constantName := toScreamingCapsConstant(field.Name)
+			contents += fmt.Sprintf(tab+"static final thrift.TField _%s_FIELD_DESC = thrift.TField('%s', %s, %d);\n",
+				constantName, field.Name, g.getEnumFromThriftType(field.Type), field.ID)
+		}
+		contents += "\n"
 	}
-	contents += "\n"
 
 	// Fields
 	for _, field := range s.Fields {
 		contents += g.generateFieldComment(field, tab)
 		fieldName := toFieldName(field.Name)
-		if !g.useNullForUnset() {
+		if !g.useNullForUnset(kind) {
 			fieldName = fmt.Sprintf("_%s", fieldName)
 		}
 		contents += fmt.Sprintf(tab+"%s %s%s;\n",
-			g.getDartTypeFromThriftType(field.Type), fieldName, g.generateInitValue(field))
-		contents += fmt.Sprintf(tab+"static const int %s = %d;\n", strings.ToUpper(field.Name), field.ID)
+			g.getDartTypeFromThriftType(field.Type), fieldName, g.generateInitValue(field, kind))
+		if g.shouldGenerateFieldId(s, kind) {
+			contents += fmt.Sprintf(tab+"static const int %s = %d;\n", strings.ToUpper(field.Name), field.ID)
+		}
 	}
 	contents += "\n"
 
 	// Is set helpers for primitive types.
-	if !g.useNullForUnset() {
+	if !g.useNullForUnset(kind) {
 		for _, field := range s.Fields {
 			if g.isDartPrimitive(field.Type) {
 				contents += fmt.Sprintf(tab+"bool __isset_%s = false;\n", toFieldName(field.Name))
@@ -746,9 +830,12 @@ func (g *Generator) generateStruct(s *parser.Struct) string {
 	contents += "\n"
 
 	// Constructor
-	if !g.useNullForUnset() {
+	if !g.useNullForUnset(kind) {
 		constructorContent := ""
 		for _, field := range s.Fields {
+			// TODO: This re-initializes fields already initialized via
+			// generateInitValue, so this logic should probably be moved there
+			// (it already is for use_unset_for_null).
 			if field.Default != nil {
 				value, _ := g.generateConstantValue(field.Type, field.Default, tab, false)
 				constructorContent += fmt.Sprintf(tabtab+"this._%s = %s;\n", toFieldName(field.Name), value)
@@ -762,35 +849,47 @@ func (g *Generator) generateStruct(s *parser.Struct) string {
 	}
 
 	// methods for getting/setting fields
-	contents += g.generateFieldMethods(s)
+	contents += g.generateFieldMethods(s, kind)
 
 	// read
-	contents += g.generateRead(s)
+	if kind.export() || kind == structKindResult {
+		contents += g.generateRead(s, kind)
+	}
 
 	// write
-	contents += g.generateWrite(s)
+	if kind.export() || kind == structKindArgs {
+		contents += g.generateWrite(s, kind)
+	}
 
 	// to string
-	contents += g.generateToString(s)
+	if kind.export() {
+		contents += g.generateToString(s, kind)
+	}
 
 	// equals
-	contents += g.generateEquals(s)
+	if kind.export() {
+		contents += g.generateEquals(s)
+	}
 
 	// hashCode
-	contents += g.generateHashCode(s)
+	if kind.export() {
+		contents += g.generateHashCode(s)
+	}
 
 	// clone
-	contents += g.generateClone(s)
+	if kind.export() {
+		contents += g.generateClone(s)
+	}
 
 	// validate
-	contents += g.generateValidate(s)
+	contents += g.generateValidate(s, kind)
 
 	contents += "}\n"
 	return contents
 }
 
-func (g *Generator) generateInitValue(field *parser.Field) string {
-	if g.useNullForUnset() {
+func (g *Generator) generateInitValue(field *parser.Field, kind structKind) string {
+	if g.useNullForUnset(kind) {
 		if field.Default == nil {
 			return ""
 		}
@@ -845,7 +944,7 @@ func (g *Generator) generateFieldComment(field *parser.Field, indent string) str
 	return g.generateCommentWithDeprecated(comment, indent, field.Annotations)
 }
 
-func (g *Generator) generateFieldMethods(s *parser.Struct) string {
+func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) string {
 	// Getters and setters for each field
 	contents := ""
 	for _, field := range s.Fields {
@@ -854,7 +953,7 @@ func (g *Generator) generateFieldMethods(s *parser.Struct) string {
 		fName := toFieldName(field.Name)
 		titleName := strings.Title(field.Name)
 
-		if !g.useNullForUnset() {
+		if !g.useNullForUnset(kind) {
 			contents += g.generateFieldComment(field, tab)
 			contents += fmt.Sprintf(tab+"%s get %s => this._%s;\n\n", dartType, fName, fName)
 			contents += g.generateFieldComment(field, tab)
@@ -869,16 +968,20 @@ func (g *Generator) generateFieldMethods(s *parser.Struct) string {
 		if field.Annotations.IsDeprecated() {
 			contents += tab + "@deprecated"
 		}
-		if g.useNullForUnset() {
+		if g.useNullForUnset(kind) {
 			unsetValue := "null"
-			if field.Modifier == parser.Default && field.Default != nil && dartPrimitive {
+			if !g.useNullForIsSetExpr(kind, field) {
 				unsetValue, _ = g.generateConstantValue(field.Type, field.Default, tab, false)
 			}
-			contents += fmt.Sprintf(tab+"bool isSet%s() => this.%s != %s;\n\n", titleName, fName, unsetValue)
-			contents += fmt.Sprintf(tab+"unset%s() {\n", titleName)
-			contents += ignoreDeprecationWarningIfNeeded(tabtab, field.Annotations)
-			contents += fmt.Sprintf(tabtab+"this.%s = %s;\n", fName, unsetValue)
-			contents += tab + "}\n\n"
+			if g.shouldGenerateIsSet(kind, field) {
+				contents += fmt.Sprintf(tab+"bool isSet%s() => this.%s != %s;\n\n", titleName, fName, unsetValue)
+			}
+			if kind.export() {
+				contents += fmt.Sprintf(tab+"unset%s() {\n", titleName)
+				contents += ignoreDeprecationWarningIfNeeded(tabtab, field.Annotations)
+				contents += fmt.Sprintf(tabtab+"this.%s = %s;\n", fName, unsetValue)
+				contents += tab + "}\n\n"
+			}
 		} else if dartPrimitive {
 			contents += fmt.Sprintf(tab+"bool isSet%s() => this.__isset_%s;\n\n", titleName, fName)
 			contents += fmt.Sprintf(tab+"unset%s() {\n", titleName)
@@ -894,57 +997,78 @@ func (g *Generator) generateFieldMethods(s *parser.Struct) string {
 	}
 
 	// getFieldValue
-	contents += tab + "@override\n"
-	contents += tab + "getFieldValue(int fieldID) {\n"
-	contents += tabtab + "switch (fieldID) {\n"
-	for _, field := range s.Fields {
-		contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
-		contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
-		contents += fmt.Sprintf(tabtabtabtab+"return this.%s;\n", toFieldName(field.Name))
+	if kind.export() {
+		contents += tab + "@override\n"
+		contents += tab + "getFieldValue(int fieldID) {\n"
+		contents += tabtab + "switch (fieldID) {\n"
+		for _, field := range s.Fields {
+			contents += fmt.Sprintf(tabtabtab+"case %s:\n", g.generateFieldIdExpr(s, kind, field))
+			contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
+			contents += fmt.Sprintf(tabtabtabtab+"return this.%s;\n", toFieldName(field.Name))
+		}
+		contents += tabtabtab + "default:\n"
+		contents += tabtabtabtab + "throw ArgumentError(\"Field $fieldID doesn't exist!\");\n"
+		contents += tabtab + "}\n"
+		contents += tab + "}\n\n"
 	}
-	contents += tabtabtab + "default:\n"
-	contents += tabtabtabtab + "throw ArgumentError(\"Field $fieldID doesn't exist!\");\n"
-	contents += tabtab + "}\n"
-	contents += tab + "}\n\n"
 
 	// setFieldValue
-	contents += tab + "@override\n"
-	contents += tab + "setFieldValue(int fieldID, Object value) {\n"
-	contents += tabtab + "switch (fieldID) {\n"
-	for _, field := range s.Fields {
-		fName := toFieldName(field.Name)
-		contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
-		contents += tabtabtabtab + "if (value == null) {\n"
-		contents += fmt.Sprintf(tabtabtabtabtab+"unset%s();\n", strings.Title(field.Name))
-		contents += tabtabtabtab + "} else {\n"
-		contents += ignoreDeprecationWarningIfNeeded(tabtabtabtabtab, field.Annotations)
-		contents += fmt.Sprintf(tabtabtabtabtab+"this.%s = value as %s;\n", fName, g.getDartTypeFromThriftType(field.Type))
-		contents += tabtabtabtab + "}\n"
-		contents += tabtabtabtab + "break;\n\n"
+	if kind.export() {
+		contents += tab + "@override\n"
+		contents += tab + "setFieldValue(int fieldID, Object value) {\n"
+		contents += tabtab + "switch (fieldID) {\n"
+		for _, field := range s.Fields {
+			fName := toFieldName(field.Name)
+			contents += fmt.Sprintf(tabtabtab+"case %s:\n", g.generateFieldIdExpr(s, kind, field))
+			if g.useNullForIsSetExpr(kind, field) {
+				contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
+				contents += fmt.Sprintf(tabtabtabtab+"this.%s = value as dynamic;\n", fName)
+			} else {
+				contents += tabtabtabtab + "if (value == null) {\n"
+				contents += fmt.Sprintf(tabtabtabtabtab+"unset%s();\n", strings.Title(field.Name))
+				contents += tabtabtabtab + "} else {\n"
+				contents += ignoreDeprecationWarningIfNeeded(tabtabtabtabtab, field.Annotations)
+				contents += fmt.Sprintf(tabtabtabtabtab+"this.%s = value as %s;\n", fName, g.getDartTypeFromThriftType(field.Type))
+				contents += tabtabtabtab + "}\n"
+			}
+			contents += tabtabtabtab + "break;\n\n"
+		}
+		contents += tabtabtab + "default:\n"
+		contents += tabtabtabtab + "throw ArgumentError(\"Field $fieldID doesn't exist!\");\n"
+		contents += tabtab + "}\n"
+		contents += tab + "}\n\n"
 	}
-	contents += tabtabtab + "default:\n"
-	contents += tabtabtabtab + "throw ArgumentError(\"Field $fieldID doesn't exist!\");\n"
-	contents += tabtab + "}\n"
-	contents += tab + "}\n\n"
 
 	// isSet
-	contents += tab + "// Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise\n"
-	contents += tab + "@override\n"
-	contents += tab + "bool isSet(int fieldID) {\n"
-	contents += tabtab + "switch (fieldID) {\n"
-	for _, field := range s.Fields {
-		contents += fmt.Sprintf(tabtabtab+"case %s:\n", strings.ToUpper(field.Name))
-		contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
-		contents += fmt.Sprintf(tabtabtabtab+"return isSet%s();\n", strings.Title(field.Name))
+	if kind.export() {
+		numNullForIsSetExpr := 0
+		for _, field := range s.Fields {
+			if g.useNullForIsSetExpr(kind, field) {
+				numNullForIsSetExpr++
+			}
+		}
+		contents += tab + "// Returns true if the field corresponding to fieldID is set (has been assigned a value) and false otherwise\n"
+		contents += tab + "@override\n"
+		contents += tab + "bool isSet(int fieldID) {\n"
+		if numNullForIsSetExpr < len(s.Fields) {
+			contents += tabtab + "switch (fieldID) {\n"
+			for _, field := range s.Fields {
+				if !g.useNullForIsSetExpr(kind, field) {
+					contents += fmt.Sprintf(tabtabtab+"case %s:\n", g.generateFieldIdExpr(s, kind, field))
+					contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
+					contents += fmt.Sprintf(tabtabtabtab+"return %s;\n", g.generateIsSetExpr(kind, field, ""))
+				}
+			}
+			contents += tabtab + "}\n"
+		}
+		contents += tabtab + "return getFieldValue(fieldID) != null;\n"
+		contents += tab + "}\n\n"
 	}
-	contents += tabtabtab + "default:\n"
-	contents += tabtabtabtab + "throw ArgumentError(\"Field $fieldID doesn't exist!\");\n"
-	contents += tabtab + "}\n"
-	contents += tab + "}\n\n"
+
 	return contents
 }
 
-func (g *Generator) generateRead(s *parser.Struct) string {
+func (g *Generator) generateRead(s *parser.Struct, kind structKind) string {
 	contents := tab + "@override\n"
 	contents += tab + "read(thrift.TProtocol iprot) {\n"
 	contents += tabtab + "iprot.readStructBegin();\n"
@@ -953,10 +1077,10 @@ func (g *Generator) generateRead(s *parser.Struct) string {
 	contents += tabtabtabtab + "field = iprot.readFieldBegin()) {\n"
 	contents += tabtabtab + "switch (field.id) {\n"
 	for _, field := range s.Fields {
-		contents += fmt.Sprintf(tabtabtabtab+"case %s:\n", strings.ToUpper(field.Name))
+		contents += fmt.Sprintf(tabtabtabtab+"case %s:\n", g.generateFieldIdExpr(s, kind, field))
 		t := g.getEnumFromThriftType(g.Frugal.UnderlyingType(field.Type))
 		contents += fmt.Sprintf(tabtabtabtabtab+"if (field.type == %s) {\n", t)
-		contents += g.generateReadFieldRec(field, true, tabtabtabtabtabtab)
+		contents += g.generateReadFieldRec(field, kind, true, tabtabtabtabtabtab)
 		contents += tabtabtabtabtab + "} else {\n"
 		contents += tabtabtabtabtabtab + "thrift.TProtocolUtil.skip(iprot, field.type);\n"
 		contents += tabtabtabtabtab + "}\n"
@@ -975,7 +1099,7 @@ func (g *Generator) generateRead(s *parser.Struct) string {
 	return contents
 }
 
-func (g *Generator) generateReadFieldRec(field *parser.Field, first bool, ind string) string {
+func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, first bool, ind string) string {
 	contents := ""
 
 	prefix := ""
@@ -1020,7 +1144,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, first bool, ind st
 
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
 		contents += fmt.Sprintf(ind+"%s%s = iprot.read%s();\n", prefix, fName, thriftType)
-		if !g.useNullForUnset() && primitive && first {
+		if !g.useNullForUnset(kind) && primitive && first {
 			contents += fmt.Sprintf(ind+"this.__isset_%s = true;\n", fName)
 		}
 	} else if g.Frugal.IsEnum(underlyingType) {
@@ -1033,7 +1157,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, first bool, ind st
 			contents += fmt.Sprintf(ind+"%s%s = iprot.readI32();\n", prefix, fName)
 		}
 
-		if !g.useNullForUnset() && first {
+		if !g.useNullForUnset(kind) && first {
 			contents += fmt.Sprintf(ind+"this.__isset_%s = true;\n", fName)
 		}
 	} else if g.Frugal.IsStruct(underlyingType) {
@@ -1045,7 +1169,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, first bool, ind st
 		containerElem := g.GetElem()
 		valElem := g.GetElem()
 		valField := parser.FieldFromType(underlyingType.ValueType, valElem)
-		valContents := g.generateReadFieldRec(valField, false, ind+tab)
+		valContents := g.generateReadFieldRec(valField, kind, false, ind+tab)
 		counterElem := g.GetElem()
 		dartType := g.getDartTypeFromThriftType(underlyingType)
 
@@ -1078,7 +1202,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, first bool, ind st
 				counterElem, counterElem, containerElem, counterElem)
 			keyElem := g.GetElem()
 			keyField := parser.FieldFromType(underlyingType.KeyType, keyElem)
-			contents += g.generateReadFieldRec(keyField, false, ind+tab)
+			contents += g.generateReadFieldRec(keyField, kind, false, ind+tab)
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
 			contents += fmt.Sprintf(tab+ind+"%s%s[%s] = %s;\n", thisPrefix, fName, keyElem, valElem)
@@ -1092,7 +1216,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, first bool, ind st
 	return contents
 }
 
-func (g *Generator) generateWrite(s *parser.Struct) string {
+func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 	contents := tab + "@override\n"
 	contents += tab + "write(thrift.TProtocol oprot) {\n"
 	contents += tabtab + "validate();\n\n"
@@ -1101,9 +1225,22 @@ func (g *Generator) generateWrite(s *parser.Struct) string {
 		fName := toFieldName(field.Name)
 		var isSet bool
 		var isNull bool
-		if g.useNullForUnset() {
-			isSet = field.Modifier != parser.Required
-			isNull = false
+		if g.useNullForUnset(kind) {
+			check := false
+			if g.isDartPrimitive(g.Frugal.UnderlyingType(field.Type)) {
+				// Don't check isSet for default requiredness.
+				check = field.Modifier == parser.Optional
+			} else {
+				check = field.Modifier != parser.Required
+			}
+
+			if check {
+				if g.shouldGenerateIsSet(kind, field) {
+					isSet = true
+				} else {
+					isNull = true
+				}
+			}
 		} else {
 			isSet = field.Modifier == parser.Optional
 			isNull = !g.isDartPrimitive(g.Frugal.UnderlyingType(field.Type))
@@ -1231,7 +1368,7 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 	return contents
 }
 
-func (g *Generator) generateToString(s *parser.Struct) string {
+func (g *Generator) generateToString(s *parser.Struct, kind structKind) string {
 	contents := tab + "@override\n"
 	contents += tab + "String toString() {\n"
 	contents += fmt.Sprintf(tabtab+"StringBuffer ret = StringBuffer('%s(');\n\n", s.Name)
@@ -1242,7 +1379,7 @@ func (g *Generator) generateToString(s *parser.Struct) string {
 		ind := ""
 		optInd := ""
 		if optional {
-			contents += fmt.Sprintf(tabtab+"if (isSet%s()) {\n", strings.Title(field.Name))
+			contents += fmt.Sprintf(tabtab+"if (%s) {\n", g.generateIsSetExpr(kind, field, ""))
 			ind += tab
 			optInd = tab
 		}
@@ -1396,7 +1533,7 @@ func (g *Generator) generateClone(s *parser.Struct) string {
 	return contents
 }
 
-func (g *Generator) generateValidate(s *parser.Struct) string {
+func (g *Generator) generateValidate(s *parser.Struct, kind structKind) string {
 	contents := tab + "validate() {\n"
 
 	if s.Type != parser.StructTypeUnion {
@@ -1417,7 +1554,7 @@ func (g *Generator) generateValidate(s *parser.Struct) string {
 		contents += tabtab + "// check exactly one field is set\n"
 		contents += tabtab + "int setFields = 0;\n"
 		for _, field := range s.Fields {
-			contents += fmt.Sprintf(tabtab+"if (isSet%s()) {\n", strings.Title(field.Name))
+			contents += fmt.Sprintf(tabtab+"if (%s) {\n", g.generateIsSetExpr(kind, field, ""))
 			contents += tabtabtab + "setFields++;\n"
 			contents += tabtab + "}\n"
 		}
@@ -1435,7 +1572,7 @@ func (g *Generator) generateValidate(s *parser.Struct) string {
 					any = true
 				}
 				fName := toFieldName(field.Name)
-				isSetCheck := fmt.Sprintf("isSet%s()", strings.Title(field.Name))
+				isSetCheck := g.generateIsSetExpr(kind, field, "")
 				contents += fmt.Sprintf(tabtab+"if (%s && !%s.VALID_VALUES.contains(this.%s)) {\n",
 					isSetCheck, g.qualifiedTypeName(field.Type), fName)
 				contents += fmt.Sprintf(tabtabtab+"throw thrift.TProtocolError(thrift.TProtocolErrorType.INVALID_DATA, \"The field '%s' has been assigned the invalid value ${this.%s}\");\n", fName, fName)
@@ -1743,7 +1880,7 @@ func (g *Generator) GenerateSubscriber(file *os.File, scope *parser.Scope) error
 		subscribers += tabtabtabtab + "throw thrift.TApplicationError(\n"
 		subscribers += tabtabtabtab + "frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);\n"
 		subscribers += tabtabtab + "}\n"
-		subscribers += g.generateReadFieldRec(parser.FieldFromType(op.Type, "req"), false, tabtabtab)
+		subscribers += g.generateReadFieldRec(parser.FieldFromType(op.Type, "req"), structKindStruct, false, tabtabtab)
 		subscribers += tabtabtab + "iprot.readMessageEnd();\n"
 		subscribers += tabtabtab + "method([ctx, req]);\n"
 		subscribers += tabtab + "}\n"
@@ -1960,7 +2097,7 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 	if method.ReturnType == nil {
 		contents += g.generateErrors(method)
 	} else {
-		contents += tabtab + "if (result.isSetSuccess()) {\n"
+		contents += fmt.Sprintf(tabtab+"if (%s) {\n", g.generateIsSetSuccessExpr("result"))
 		contents += tabtabtab + "return result.success;\n"
 		contents += tabtab + "}\n\n"
 		contents += g.generateErrors(method)
