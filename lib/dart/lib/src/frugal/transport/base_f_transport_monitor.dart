@@ -66,22 +66,21 @@ class BaseFTransportMonitor extends FTransportMonitor {
   }
 
   @override
-  int onClosedUncleanly(Object? cause) {
+  int? onClosedUncleanly(Object? cause) {
     _isConnected = false;
     _onDisconnectController.add(cause ?? {});
     return _maxReopenAttempts > 0 ? _initialWait : -1;
   }
 
   @override
-  int onReopenFailed(int? prevAttempts, int? prevWait) {
+  int? onReopenFailed(int? prevAttempts, int? prevWait) {
     if (prevAttempts != null && prevWait != null) {
       if (prevAttempts >= _maxReopenAttempts) {
         return -1;
       }
       return (prevWait * 2).clamp(0, _maxWait);
-    } else {
+    } else
       return 0;
-    }
   }
 
   @override

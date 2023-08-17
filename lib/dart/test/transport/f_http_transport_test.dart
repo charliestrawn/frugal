@@ -10,7 +10,7 @@ import 'package:w_transport/w_transport.dart';
 
 void main() {
   configureWTransportForTest();
-  const utf8Codec = const Utf8Codec();
+  const utf8Codec = Utf8Codec();
 
   group('FHttpTransport', () {
     HttpClient client;

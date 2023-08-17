@@ -141,7 +141,7 @@ void main() {
         closeCompleter.complete(e);
       });
       var monitorCompleter = new Completer();
-      when(monitor.onClosedUncleanly(any ?? {}))
+      when(monitor.onClosedUncleanly(any))
           .thenAnswer((Invocation realInvocation) {
         monitorCompleter.complete(realInvocation.positionalArguments[0]);
         return -1;

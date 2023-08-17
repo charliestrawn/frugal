@@ -37,15 +37,15 @@ abstract class FAsyncTransport extends FTransport {
   }
 
   @override
-  Future<TTransport> request(FContext? ctx, Uint8List? payload) async {
-    _preflightRequestCheck(payload as Uint8List);
+  Future<TTransport> request(FContext ctx, Uint8List payload) async {
+    _preflightRequestCheck(payload);
 
     Completer<Uint8List> resultCompleter = new Completer();
 
-    if (_handlers.containsKey(ctx?._opId)) {
+    if (_handlers.containsKey(ctx._opId)) {
       throw new StateError("frugal: context already registered");
     }
-    _handlers[ctx!._opId] = resultCompleter;
+    _handlers[ctx._opId] = resultCompleter;
     Completer<Uint8List> closedCompleter = new Completer();
     StreamSubscription<Object?> closedSub = onClose.listen((_) {
       closedCompleter.completeError(
@@ -91,7 +91,7 @@ abstract class FAsyncTransport extends FTransport {
       return;
     }
 
-    Completer<Uint8List> handler = _handlers[opId]!;
+    Completer<Uint8List>? handler = _handlers[opId];
     if (handler == null) {
       // This is only a warning since it can routinely happen due to network
       // timeouts / bad network weather
