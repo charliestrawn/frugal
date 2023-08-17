@@ -68,7 +68,7 @@ abstract class FTransport extends Disposable {
 
   /// Checks if a transport is open and the payload is within the request size
   /// limit.
-  void _preflightRequestCheck(Uint8List? payload) {
+  void _preflightRequestCheck(Uint8List payload) {
     if (!isOpen) {
       throw new TTransportError(
           FrugalTTransportErrorType.NOT_OPEN, 'transport not open');
@@ -76,7 +76,7 @@ abstract class FTransport extends Disposable {
 
     if (requestSizeLimit != null &&
         requestSizeLimit! > 0 &&
-        (payload?.length ?? 0) > requestSizeLimit!) {
+        payload.length > requestSizeLimit!) {
       throw new TTransportError(FrugalTTransportErrorType.REQUEST_TOO_LARGE);
     }
   }

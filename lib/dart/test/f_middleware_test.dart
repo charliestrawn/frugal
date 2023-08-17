@@ -30,7 +30,7 @@ class MiddlewareDataStruct {
 void main() {
   Middleware newMiddleware(MiddlewareDataStruct mds) {
     return (InvocationHandler next) {
-      return (String? serviceName, String? methodName, List<Object> args) {
+      return (String serviceName, String methodName, List<Object> args) {
         mds.arg = args[0] as int;
         mds.serviceName = serviceName;
         mds.methodName = methodName;
@@ -73,9 +73,10 @@ void main() {
     test('Prints method, args, and return value', () async {
       bool handlerRan = false;
       InvocationHandler handler =
-          (String? serviceName, String? methodName, List<Object> args) {
+          (String serviceName, String methodName, List<Object> args) {
         handlerRan = true;
         print('hello world');
+        return Future.value({});
       };
       await debugMiddleware(handler)(
           'Service', 'method', [new FContext(correlationId: 'cid'), 1]);

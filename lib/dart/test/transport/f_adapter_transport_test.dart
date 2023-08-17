@@ -29,7 +29,6 @@ void main() {
       socket = MockSocket();
       socketTransport = MockSocketTransport();
       transport = FAdapterTransport(socketTransport);
-
       when(socket.onState).thenAnswer((_) => stateStream.stream);
       when(socket.onError).thenAnswer((_) => errorStream.stream);
       when(socket.onMessage).thenAnswer((_) => messageStream.stream);

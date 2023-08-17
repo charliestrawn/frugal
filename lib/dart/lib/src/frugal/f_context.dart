@@ -49,8 +49,8 @@ final Duration _defaultTimeout = new Duration(seconds: 5);
 class FContext {
   static int _globalOpId = 0;
 
-  late Map<String, String?> _requestHeaders;
-  late Map<String, String?> _responseHeaders;
+  Map<String, String> _requestHeaders = {};
+  Map<String, String> _responseHeaders = {};
 
   /// Create a new [FContext] with the optionally specified [correlationId].
   FContext({String correlationId: ""}) {
@@ -67,7 +67,7 @@ class FContext {
   }
 
   /// Create a new [FContext] with the given request headers.
-  FContext.withRequestHeaders(Map<String, String?> headers) {
+  FContext.withRequestHeaders(Map<String, String> headers) {
     if (!headers.containsKey(_cidHeader) || headers[_cidHeader] == "") {
       headers[_cidHeader] = _generateCorrelationId();
     }
@@ -99,7 +99,7 @@ class FContext {
 
   /// The operation id for the context.
   int get _opId {
-    var opIdStr = _requestHeaders[_opidHeader]!;
+    var opIdStr = _requestHeaders[_opidHeader] ?? '';
     return int.parse(opIdStr);
   }
 
@@ -121,7 +121,7 @@ class FContext {
       return;
     }
     for (var name in headers.keys) {
-      _requestHeaders[name] = headers[name];
+      _requestHeaders[name] = headers[name] ?? '';
     }
   }
 
@@ -131,7 +131,7 @@ class FContext {
   }
 
   /// Get requests headers map.
-  Map<String, String?> requestHeaders() {
+  Map<String, String> requestHeaders() {
     return new UnmodifiableMapView(_requestHeaders);
   }
 
@@ -143,12 +143,12 @@ class FContext {
 
   /// Add given response headers to the context. Will overwrite existing
   /// pre-existing headers with the same names as the given headers.
-  void addResponseHeaders(Map<String, String?> headers) {
+  void addResponseHeaders(Map<String, String> headers) {
     if (headers == null || headers.length == 0) {
       return;
     }
     for (var name in headers.keys) {
-      _responseHeaders[name] = headers[name];
+      _responseHeaders[name] = headers[name] ?? '';
     }
   }
 
@@ -158,7 +158,7 @@ class FContext {
   }
 
   /// Get response headers map.
-  Map<String, String?> responseHeaders() {
+  Map<String, String> responseHeaders() {
     return new UnmodifiableMapView(_responseHeaders);
   }
 

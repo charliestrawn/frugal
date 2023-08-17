@@ -36,7 +36,7 @@ class FHttpTransport extends FTransport {
   /// No limit will be enforced if set to a non-positive value (i.e. <1).
   final int responseSizeLimit;
 
-  late Map<String, String> _headers;
+  Map<String, String> _headers = {};
 
   /// Function that accepts an FContext that should return a Map<String, String>
   /// of headers to be added to every request
@@ -59,7 +59,7 @@ class FHttpTransport extends FTransport {
       {int requestSizeLimit: 0,
       this.responseSizeLimit: 0,
       Map<String, String>? additionalHeaders,
-      GetHeadersWithContext? getRequestHeaders: null})
+      GetHeadersWithContext? getRequestHeaders})
       : _getRequestHeaders = getRequestHeaders ?? ((_) => {}),
         super(requestSizeLimit: requestSizeLimit) {
     _headers = additionalHeaders ?? {};
@@ -134,11 +134,9 @@ class FHttpTransport extends FTransport {
     }
 
     // Attempt to decode the response payload
-    late Uint8List data;
+    Uint8List data;
     try {
-      var strBody = response.body.asString();
-      if (strBody != null)
-        data = new Uint8List.fromList(base64.decode(strBody));
+      data = new Uint8List.fromList(base64.decode(response.body.asString()));
     } on FormatException catch (_) {
       throw new TProtocolError(TProtocolErrorType.INVALID_DATA,
           'Expected a Base 64 encoded string.');

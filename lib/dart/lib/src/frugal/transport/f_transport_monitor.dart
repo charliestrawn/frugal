@@ -30,7 +30,7 @@ abstract class FTransportMonitor extends Disposable {
   /// to [FTransport] close. Returns the number of milliseconds to wait before
   /// attempting to reopen the transport or a negative number indicating not to
   /// reopen.
-  int? onClosedUncleanly(Object cause);
+  int onClosedUncleanly(Object? cause);
 
   /// Called when an attempt to reopen the transport fails. Returns the number
   /// of milliseconds to wait before attempting to reopen the transport. A

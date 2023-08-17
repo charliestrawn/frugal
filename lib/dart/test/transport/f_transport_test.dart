@@ -32,7 +32,7 @@ void main() {
       await transport?.open();
 
       // Close the transport with an error
-      when(monitor.onClosedUncleanly(any ?? '')).thenReturn(1);
+      when(monitor.onClosedUncleanly(any)).thenReturn(1);
       when(monitor.onReopenFailed(any, any)).thenReturn(1);
       await transport?.close(err);
 
@@ -69,7 +69,7 @@ class _FTransportImpl extends FTransport {
       print(openCalls);
       if (errors[openCalls] != null) {
         openCalls++;
-        throw errors[openCalls];
+        throw errors[openCalls]!;
       }
     }
     openCalls++;
