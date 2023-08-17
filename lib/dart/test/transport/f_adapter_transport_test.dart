@@ -8,8 +8,8 @@ import 'package:mockito/mockito.dart';
 import 'f_transport_test.dart' show MockTransportMonitor;
 
 Uint8List mockFrame(FContext ctx, String message) {
-  TMemoryOutputBuffer trans = TMemoryOutputBuffer();
-  FProtocol prot = FProtocol(TBinaryProtocol(trans));
+  TMemoryOutputBuffer trans = new TMemoryOutputBuffer();
+  FProtocol prot = new FProtocol(new TBinaryProtocol(trans));
   prot.writeRequestHeader(ctx);
   prot.writeString(message);
   return trans.writeBytes;
@@ -17,22 +17,25 @@ Uint8List mockFrame(FContext ctx, String message) {
 
 void main() {
   group('FAdapterTransport', () {
-    StreamController<TSocketState> stateStream = StreamController.broadcast();
-    StreamController<Object> errorStream = StreamController.broadcast();
-    StreamController<Uint8List> messageStream = StreamController.broadcast();
-
+    late StreamController<TSocketState> stateStream;
+    late StreamController<Object> errorStream;
+    late StreamController<Uint8List> messageStream;
     late MockSocket socket;
     late MockSocketTransport socketTransport;
     late FAdapterTransport transport;
 
     setUp(() {
-      socket = MockSocket();
-      socketTransport = MockSocketTransport();
-      transport = FAdapterTransport(socketTransport);
+      stateStream = new StreamController.broadcast();
+      errorStream = new StreamController.broadcast();
+      messageStream = new StreamController.broadcast();
+
+      socket = new MockSocket();
       when(socket.onState).thenAnswer((_) => stateStream.stream);
       when(socket.onError).thenAnswer((_) => errorStream.stream);
       when(socket.onMessage).thenAnswer((_) => messageStream.stream);
+      socketTransport = new MockSocketTransport();
       when(socketTransport.socket).thenAnswer((_) => socket);
+      transport = new FAdapterTransport(socketTransport);
     });
 
     tearDown(() {
@@ -42,12 +45,12 @@ void main() {
     });
 
     test('oneway happy path', () async {
-      when(socket.isClosed).thenReturn(true);
-      when(socket.open()).thenAnswer((_) => Future.value());
+      when(socket.isClosed).thenAnswer((_) => true);
+      when(socket.open()).thenAnswer((_) => new Future.value());
       await transport.open();
       verify(socket.open()).called(1);
 
-      FContext reqCtx = FContext();
+      FContext reqCtx = new FContext();
       var frame = mockFrame(reqCtx, "request");
 
       await transport.oneway(reqCtx, frame);
@@ -111,7 +114,7 @@ void main() {
 
       FContext ctx = new FContext();
       var frame = mockFrame(ctx, 'request');
-      Future<TTransport>? requestFuture = transport.request(ctx, frame);
+      Future<TTransport> requestFuture = transport.request(ctx, frame);
       await transport.close();
 
       try {
@@ -138,7 +141,7 @@ void main() {
         closeCompleter.complete(e);
       });
       var monitorCompleter = new Completer();
-      when(monitor.onClosedUncleanly(any))
+      when(monitor.onClosedUncleanly(any ?? {}))
           .thenAnswer((Invocation realInvocation) {
         monitorCompleter.complete(realInvocation.positionalArguments[0]);
         return -1;
