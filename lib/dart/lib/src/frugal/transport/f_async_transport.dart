@@ -37,15 +37,15 @@ abstract class FAsyncTransport extends FTransport {
   }
 
   @override
-  Future<TTransport> request(FContext ctx, Uint8List payload) async {
-    _preflightRequestCheck(payload);
+  Future<TTransport> request(FContext? ctx, Uint8List? payload) async {
+    _preflightRequestCheck(payload as Uint8List);
 
     Completer<Uint8List> resultCompleter = new Completer();
 
-    if (_handlers.containsKey(ctx._opId)) {
+    if (_handlers.containsKey(ctx?._opId)) {
       throw new StateError("frugal: context already registered");
     }
-    _handlers[ctx._opId] = resultCompleter;
+    _handlers[ctx!._opId] = resultCompleter;
     Completer<Uint8List> closedCompleter = new Completer();
     StreamSubscription<Object?> closedSub = onClose.listen((_) {
       closedCompleter.completeError(
