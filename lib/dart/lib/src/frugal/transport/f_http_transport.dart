@@ -14,7 +14,7 @@
 part of frugal.src.frugal;
 
 /// typedef for passed in function that generates headers given an [FContext]
-typedef Map<String, String> GetHeadersWithContext(FContext ctx);
+typedef GetHeadersWithContext = Map<String, String> Function(FContext ctx);
 
 /// An [FTransport] that makes frugal requests via HTTP.
 class FHttpTransport extends FTransport {
@@ -24,7 +24,7 @@ class FHttpTransport extends FTransport {
   /// HTTP status code for requesting too much data.
   static const int REQUEST_ENTITY_TOO_LARGE = 413;
 
-  final Logger _log = new Logger('FHttpTransport');
+  final Logger _log = Logger('FHttpTransport');
 
   /// Client used by the transport to make HTTP requests.
   final wt.HttpClient client;
@@ -56,8 +56,8 @@ class FHttpTransport extends FTransport {
   /// that should return additional headers to be appended to each request
   /// using the getRequestHeaders param.
   FHttpTransport(this.client, this.uri,
-      {int requestSizeLimit: 0,
-      this.responseSizeLimit: 0,
+      {int requestSizeLimit = 0,
+      this.responseSizeLimit = 0,
       Map<String, String>? additionalHeaders,
       GetHeadersWithContext? getRequestHeaders})
       : _getRequestHeaders = getRequestHeaders ?? ((_) => {}),
@@ -78,10 +78,10 @@ class FHttpTransport extends FTransport {
   bool get isOpen => true;
 
   @override
-  Future open() => new Future.value();
+  Future open() => Future.value();
 
   @override
-  Future close([Error? error]) => new Future.value();
+  Future close([Error? error]) => Future.value();
 
   @override
   Future<Null> oneway(FContext ctx, Uint8List payload) async {
@@ -112,52 +112,51 @@ class FHttpTransport extends FTransport {
     try {
       response = await request.post();
     } on StateError catch (ex) {
-      throw new TTransportError(FrugalTTransportErrorType.UNKNOWN,
+      throw TTransportError(FrugalTTransportErrorType.UNKNOWN,
           'Malformed request ${ex.toString()}');
     } on wt.RequestException catch (ex) {
       if (ex.error != null && ex.error.runtimeType == TimeoutException) {
-        throw new TTransportError(FrugalTTransportErrorType.TIMED_OUT,
+        throw TTransportError(FrugalTTransportErrorType.TIMED_OUT,
             "http request timed out after ${ctx.timeout}");
       }
       if (ex.response == null) {
-        throw new TTransportError(
-            FrugalTTransportErrorType.UNKNOWN, ex.message);
+        throw TTransportError(FrugalTTransportErrorType.UNKNOWN, ex.message);
       }
       if (ex.response?.status == UNAUTHORIZED) {
-        throw new TTransportError(FrugalTTransportErrorType.UNKNOWN,
+        throw TTransportError(FrugalTTransportErrorType.UNKNOWN,
             'Frugal http request failed - unauthorized ${ex.message}');
       }
       if (ex.response?.status == REQUEST_ENTITY_TOO_LARGE) {
-        throw new TTransportError(FrugalTTransportErrorType.RESPONSE_TOO_LARGE);
+        throw TTransportError(FrugalTTransportErrorType.RESPONSE_TOO_LARGE);
       }
-      throw new TTransportError(FrugalTTransportErrorType.UNKNOWN, ex.message);
+      throw TTransportError(FrugalTTransportErrorType.UNKNOWN, ex.message);
     }
 
     // Attempt to decode the response payload
     Uint8List data;
     try {
-      data = new Uint8List.fromList(base64.decode(response.body.asString()));
+      data = Uint8List.fromList(base64.decode(response.body.asString()));
     } on FormatException catch (_) {
-      throw new TProtocolError(TProtocolErrorType.INVALID_DATA,
+      throw TProtocolError(TProtocolErrorType.INVALID_DATA,
           'Expected a Base 64 encoded string.');
     }
 
     // If not enough data, throw a protocol error
     if (data.length < 4) {
-      throw new TProtocolError(
+      throw TProtocolError(
           TProtocolErrorType.INVALID_DATA, 'Expected frugal data to be framed');
     }
 
     // If there are only 4 bytes, this is a one-way request
     if (data.length == 4) {
-      var bData = new ByteData.view(data.buffer);
+      var bData = ByteData.view(data.buffer);
       if (bData.getUint32(0) != 0) {
-        throw new TTransportError(
+        throw TTransportError(
             FrugalTTransportErrorType.UNKNOWN, "invalid frame size");
       }
       return null;
     }
 
-    return new TMemoryTransport.fromUint8List(data.sublist(4));
+    return TMemoryTransport.fromUint8List(data.sublist(4));
   }
 }

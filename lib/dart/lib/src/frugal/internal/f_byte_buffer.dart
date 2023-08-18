@@ -20,7 +20,7 @@ class FByteBuffer {
   int _readIndex = 0;
 
   /// Creates an [FByteBuffer] with the given capacity.
-  FByteBuffer(int capacity) : this._buff = new Uint8List(capacity);
+  FByteBuffer(int capacity) : this._buff = Uint8List(capacity);
 
   /// Creates an [FByteBuffer] from the given buffer.
   FByteBuffer.fromUint8List(Uint8List buff)
@@ -71,7 +71,7 @@ class FByteBuffer {
 
   /// Returns the buffer as a [Uint8List].
   Uint8List asUint8List() {
-    return new Uint8List.fromList(_buff.sublist(0, _writeIndex));
+    return Uint8List.fromList(_buff.sublist(0, _writeIndex));
   }
 
   /// Resets the read/write indices.

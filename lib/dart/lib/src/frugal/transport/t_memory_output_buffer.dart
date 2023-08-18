@@ -31,14 +31,14 @@ class TMemoryOutputBuffer extends TTransport {
   bool get isOpen => true;
 
   @override
-  Future open() => new Future.value();
+  Future open() => Future.value();
 
   @override
-  Future close() => new Future.value();
+  Future close() => Future.value();
 
   @override
   int read(Uint8List buffer, int offset, int length) {
-    throw new UnsupportedError('Cannot read from ${this.toString()}');
+    throw UnsupportedError('Cannot read from ${this.toString()}');
   }
 
   @override
@@ -46,13 +46,13 @@ class TMemoryOutputBuffer extends TTransport {
     // Leave room for the frame size
     if (_limit > 0 && _writeBuffer.length + length + 4 > _limit) {
       _writeBuffer.clear();
-      throw new TTransportError(FrugalTTransportErrorType.REQUEST_TOO_LARGE);
+      throw TTransportError(FrugalTTransportErrorType.REQUEST_TOO_LARGE);
     }
     _writeBuffer.addAll(buffer.sublist(offset, offset + length));
   }
 
   @override
-  Future flush() => new Future.value();
+  Future flush() => Future.value();
 
   /// Query if data has been written to the transport.
   bool get hasWriteData => _writeBuffer.length > 0;
@@ -62,7 +62,7 @@ class TMemoryOutputBuffer extends TTransport {
 
   /// Get the framed bytes that have been written to the transport.
   Uint8List get writeBytes {
-    var bytes = new Uint8List(4 + _writeBuffer.length);
+    var bytes = Uint8List(4 + _writeBuffer.length);
     bytes.buffer.asByteData().setUint32(0, _writeBuffer.length);
     bytes.setAll(4, _writeBuffer);
     return bytes;

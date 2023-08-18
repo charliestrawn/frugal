@@ -38,7 +38,7 @@ class FScopeProvider {
   final List<Middleware> _middleware;
 
   /// The middleware stored on this FScopeProvider.
-  List<Middleware> get middleware => new List.from(this._middleware);
+  List<Middleware> get middleware => List.from(this._middleware);
 }
 
 /// The service equivalent of [FScopeProvider]. It produces [FTransport] and
@@ -67,5 +67,5 @@ class FServiceProvider extends Disposable {
   final List<Middleware> _middleware;
 
   /// The middleware stored on this FServiceProvider.
-  List<Middleware> get middleware => new List.from(this._middleware);
+  List<Middleware> get middleware => List.from(this._middleware);
 }
