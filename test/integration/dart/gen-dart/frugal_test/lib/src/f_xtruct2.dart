@@ -11,9 +11,12 @@ import 'package:frugal_test/frugal_test.dart' as t_frugal_test;
 
 class Xtruct2 implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('Xtruct2');
-  static final thrift.TField _BYTE_THING_FIELD_DESC = thrift.TField('byte_thing', thrift.TType.BYTE, 1);
-  static final thrift.TField _STRUCT_THING_FIELD_DESC = thrift.TField('struct_thing', thrift.TType.STRUCT, 2);
-  static final thrift.TField _I32_THING_FIELD_DESC = thrift.TField('i32_thing', thrift.TType.I32, 3);
+  static final thrift.TField _BYTE_THING_FIELD_DESC =
+      thrift.TField('byte_thing', thrift.TType.BYTE, 1);
+  static final thrift.TField _STRUCT_THING_FIELD_DESC =
+      thrift.TField('struct_thing', thrift.TType.STRUCT, 2);
+  static final thrift.TField _I32_THING_FIELD_DESC =
+      thrift.TField('i32_thing', thrift.TType.I32, 3);
 
   int _byte_thing = 0;
   static const int BYTE_THING = 1;
@@ -207,8 +210,8 @@ class Xtruct2 implements thrift.TBase {
   bool operator ==(Object o) {
     if (o is Xtruct2) {
       return this.byte_thing == o.byte_thing &&
-        this.struct_thing == o.struct_thing &&
-        this.i32_thing == o.i32_thing;
+          this.struct_thing == o.struct_thing &&
+          this.i32_thing == o.i32_thing;
     }
     return false;
   }
@@ -233,6 +236,5 @@ class Xtruct2 implements thrift.TBase {
       ..i32_thing = i32_thing ?? this.i32_thing;
   }
 
-  validate() {
-  }
+  validate() {}
 }

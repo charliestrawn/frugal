@@ -18,14 +18,14 @@ part of frugal.src.frugal;
 /// Messages received on the [TSocket] (i.e. Frugal frames) are routed to the
 /// [FAsyncTransport]'s handleResponse method.
 class FAdapterTransport extends FAsyncTransport {
-  final Logger _adapterTransportLog = new Logger('FAdapterTransport');
+  final Logger _adapterTransportLog = Logger('FAdapterTransport');
   _TFramedTransport _framedTransport;
 
   StreamSubscription<_FrameWrapper> _onFrameSub;
 
   /// Create an [FAdapterTransport] with the given [TSocketTransport].
   FAdapterTransport(TSocketTransport transport)
-      : _framedTransport = new _TFramedTransport(transport.socket),
+      : _framedTransport = _TFramedTransport(transport.socket),
         super() {
     // If there is an error on the socket, close the transport pessimistically.
     // This error is already logged upstream in TSocketTransport.
@@ -71,7 +71,7 @@ class FAdapterTransport extends FAsyncTransport {
   @override
   Future<Null> flush(Uint8List payload) {
     _framedTransport.socket.send(payload);
-    return new Future.value();
+    return Future.value();
   }
 
   @override

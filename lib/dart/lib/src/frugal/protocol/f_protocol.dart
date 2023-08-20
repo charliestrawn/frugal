@@ -35,7 +35,7 @@ class FProtocol extends TProtocolDecorator {
 
   /// Read the requests headers into a new [FContext].
   FContext readRequestHeader() {
-    return new FContext.withRequestHeaders(Headers.read(transport));
+    return FContext.withRequestHeaders(Headers.read(transport));
   }
 
   /// Write the response headers on the given [FContext].

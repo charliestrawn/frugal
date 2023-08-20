@@ -25,7 +25,7 @@ class MonitorRunner extends Disposable {
   @override
   String get disposableTypeName => 'MonitorRunner';
 
-  final Logger _log = new Logger('FTransportMonitor');
+  final Logger _log = Logger('FTransportMonitor');
   FTransportMonitor _monitor;
   FTransport _transport;
   int _attempts = 0;
@@ -58,7 +58,7 @@ class MonitorRunner extends Disposable {
     return;
   }
 
-  void _stop({bool failed: false}) {
+  void _stop({bool failed = false}) {
     _attempts = 0;
     _wait = 0;
     _failed = failed;
@@ -88,14 +88,14 @@ class MonitorRunner extends Disposable {
       _stop(failed: true);
       return;
     }
-    _reopenCompleter = new Completer();
+    _reopenCompleter = Completer();
     _startReopenTimer();
     await _reopenCompleter.future;
   }
 
   void _startReopenTimer() {
     _log.log(Level.INFO, 'attempting to reopen after $_wait ms');
-    _reopenTimer = new Timer(new Duration(milliseconds: _wait), _attemptReopen);
+    _reopenTimer = Timer(Duration(milliseconds: _wait), _attemptReopen);
   }
 
   Future _attemptReopen() async {

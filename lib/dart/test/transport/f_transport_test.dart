@@ -12,18 +12,18 @@ void main() {
     _FTransportImpl transport;
 
     setUp(() {
-      transport = new _FTransportImpl(requestSizeLimit);
+      transport = _FTransportImpl(requestSizeLimit);
     });
 
     test(
         'test closeWithException adds the exeption to the onClose stream and properly triggers the transport monitor',
         () async {
-      var monitor = new MockTransportMonitor();
+      var monitor = MockTransportMonitor();
       transport.monitor = monitor;
-      transport.errors = [null, new TError(0, 'reopen failed'), null];
+      transport.errors = [null, TError(0, 'reopen failed'), null];
 
-      var completer = new Completer<Error>();
-      var err = new TTransportError();
+      var completer = Completer<Error>();
+      var err = TTransportError();
       transport.onClose.listen((e) {
         completer.complete(e);
       });
@@ -36,7 +36,7 @@ void main() {
       when(monitor.onReopenFailed(any, any)).thenReturn(1);
       await transport.close(err);
 
-      var timeout = new Duration(seconds: 1);
+      var timeout = Duration(seconds: 1);
       expect(await completer.future.timeout(timeout), equals(err));
       verify(monitor.onClosedUncleanly(err)).called(1);
       verify(monitor.onReopenFailed(1, 1)).called(1);
@@ -57,11 +57,10 @@ class _FTransportImpl extends FTransport {
       : super(requestSizeLimit: requestSizeLimit);
 
   @override
-  Future<Null> oneway(FContext ctx, Uint8List payload) => new Future.value();
+  Future<Null> oneway(FContext ctx, Uint8List payload) => Future.value();
 
   @override
-  Future<TTransport> request(FContext ctx, Uint8List payload) =>
-      new Future.value();
+  Future<TTransport> request(FContext ctx, Uint8List payload) => Future.value();
 
   @override
   Future open() async {

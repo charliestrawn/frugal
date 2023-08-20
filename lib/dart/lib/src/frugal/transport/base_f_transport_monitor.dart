@@ -32,16 +32,16 @@ class BaseFTransportMonitor extends FTransportMonitor {
   int _initialWait;
   int _maxWait;
 
-  StreamController _onConnectController = new StreamController.broadcast();
-  StreamController _onDisconnectController = new StreamController.broadcast();
+  StreamController _onConnectController = StreamController.broadcast();
+  StreamController _onDisconnectController = StreamController.broadcast();
 
   bool _isConnected = true;
 
   /// Create a [BaseFTransportMonitor] with default parameters.
   BaseFTransportMonitor(
-      {maxReopenAttempts: DEFAULT_MAX_REOPEN_ATTEMPTS,
-      initialWait: DEFAULT_INITIAL_WAIT,
-      maxWait: DEFAULT_MAX_WAIT}) {
+      {maxReopenAttempts = DEFAULT_MAX_REOPEN_ATTEMPTS,
+      initialWait = DEFAULT_INITIAL_WAIT,
+      maxWait = DEFAULT_MAX_WAIT}) {
     this._maxReopenAttempts = maxReopenAttempts;
     this._initialWait = initialWait;
     this._maxWait = maxWait;

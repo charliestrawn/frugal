@@ -6,11 +6,11 @@ void main() {
   test(
       "writeRequestHeader writes the request headers and readRequestHeader reads the headers",
       () {
-    var transport = new TMemoryTransport();
-    var tProtocol = new TBinaryProtocol(transport);
-    var fProtocol = new FProtocol(tProtocol);
+    var transport = TMemoryTransport();
+    var tProtocol = TBinaryProtocol(transport);
+    var fProtocol = FProtocol(tProtocol);
 
-    var ctx = new FContext(correlationId: "sweet-corid");
+    var ctx = FContext(correlationId: "sweet-corid");
     ctx.addRequestHeader("foo", "bar");
     fProtocol.writeRequestHeader(ctx);
 

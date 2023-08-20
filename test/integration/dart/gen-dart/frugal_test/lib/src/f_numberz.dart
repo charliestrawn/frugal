@@ -42,5 +42,7 @@ Numberz deserializeNumberz(int value) {
     case 8:
       return Numberz.EIGHT;
     default:
-      throw thrift.TProtocolError(thrift.TProtocolErrorType.UNKNOWN, "Invalid value '$value' for enum 'Numberz'");  }
+      throw thrift.TProtocolError(thrift.TProtocolErrorType.UNKNOWN,
+          "Invalid value '$value' for enum 'Numberz'");
+  }
 }

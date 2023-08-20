@@ -17,7 +17,7 @@ part of frugal.src.frugal;
 /// can implement. Implementations need only implement [flush] to send request
 /// data and call [handleResponse] when asynchronous responses are received.
 abstract class FAsyncTransport extends FTransport {
-  final Logger _log = new Logger('FAsyncTransport');
+  final Logger _log = Logger('FAsyncTransport');
   Map<int, Completer<Uint8List>> _handlers = {};
 
   /// Instantiate an [FAsyncTransport].
@@ -31,7 +31,7 @@ abstract class FAsyncTransport extends FTransport {
   Future<Null> oneway(FContext ctx, Uint8List payload) async {
     _preflightRequestCheck(payload);
     await flush(payload).timeout(ctx.timeout, onTimeout: () {
-      throw new TTransportError(FrugalTTransportErrorType.TIMED_OUT,
+      throw TTransportError(FrugalTTransportErrorType.TIMED_OUT,
           'request timed out after ${ctx.timeout}');
     });
   }
@@ -40,16 +40,16 @@ abstract class FAsyncTransport extends FTransport {
   Future<TTransport> request(FContext ctx, Uint8List payload) async {
     _preflightRequestCheck(payload);
 
-    Completer<Uint8List> resultCompleter = new Completer();
+    Completer<Uint8List> resultCompleter = Completer();
 
     if (_handlers.containsKey(ctx._opId)) {
-      throw new StateError("frugal: context already registered");
+      throw StateError("frugal: context already registered");
     }
     _handlers[ctx._opId] = resultCompleter;
-    Completer<Uint8List> closedCompleter = new Completer();
+    Completer<Uint8List> closedCompleter = Completer();
     StreamSubscription<Object> closedSub = onClose.listen((_) {
-      closedCompleter.completeError(
-          new TTransportError(FrugalTTransportErrorType.NOT_OPEN));
+      closedCompleter
+          .completeError(TTransportError(FrugalTTransportErrorType.NOT_OPEN));
     });
 
     try {
@@ -60,9 +60,9 @@ abstract class FAsyncTransport extends FTransport {
       // Bail early if the transport is closed
       Uint8List response =
           await Future.any([resultFuture, closedCompleter.future]);
-      return new TMemoryTransport.fromUint8List(response);
+      return TMemoryTransport.fromUint8List(response);
     } on TimeoutException catch (_) {
-      throw new TTransportError(FrugalTTransportErrorType.TIMED_OUT,
+      throw TTransportError(FrugalTTransportErrorType.TIMED_OUT,
           "request timed out after ${ctx.timeout}");
     } finally {
       _handlers.remove(ctx._opId);
