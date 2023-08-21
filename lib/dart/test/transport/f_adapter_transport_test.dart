@@ -6,6 +6,8 @@ import 'package:test/test.dart';
 import 'package:thrift/thrift.dart';
 import 'package:mockito/mockito.dart';
 import 'f_transport_test.dart' show MockTransportMonitor;
+import 'package:mockito/annotations.dart';
+import 'f_adapter_transport_test.mocks.dart';
 
 Uint8List mockFrame(FContext ctx, String message) {
   TMemoryOutputBuffer trans = TMemoryOutputBuffer();
@@ -14,14 +16,15 @@ Uint8List mockFrame(FContext ctx, String message) {
   prot.writeString(message);
   return trans.writeBytes;
 }
+@GenerateNiceMocks([MockSpec<TSocketTransport>(),MockSpec<TSocket>()])
 
 void main() {
   group('FAdapterTransport', () {
     late StreamController<TSocketState> stateStream;
     late StreamController<Object> errorStream;
     late StreamController<Uint8List> messageStream;
-    late MockSocket socket;
-    late MockSocketTransport socketTransport;
+    late MockTSocket socket;
+    late MockTSocketTransport socketTransport;
     late FAdapterTransport transport;
 
     setUp(() {
@@ -29,11 +32,11 @@ void main() {
       errorStream = StreamController.broadcast();
       messageStream = StreamController.broadcast();
 
-      socket = MockSocket();
+      socket = MockTSocket();
       when(socket.onState).thenAnswer((_) => stateStream.stream);
       when(socket.onError).thenAnswer((_) => errorStream.stream);
       when(socket.onMessage).thenAnswer((_) => messageStream.stream);
-      socketTransport = MockSocketTransport();
+      socketTransport = MockTSocketTransport();
       when(socketTransport.socket).thenAnswer((_) => socket);
       transport = FAdapterTransport(socketTransport);
     });
@@ -163,9 +166,3 @@ void main() {
     });
   });
 }
-
-/// Mock socket transport.
-class MockSocketTransport extends Mock implements TSocketTransport {}
-
-/// Mock socket.
-class MockSocket extends Mock implements TSocket {}

@@ -42,10 +42,10 @@ abstract class FAsyncTransport extends FTransport {
 
     Completer<Uint8List> resultCompleter = Completer();
 
-    if (_handlers.containsKey(ctx?._opId)) {
+    if (_handlers.containsKey(ctx!._opId)) {
       throw StateError("frugal: context already registered");
     }
-    _handlers[ctx!._opId] = resultCompleter;
+    _handlers[ctx._opId] = resultCompleter;
     Completer<Uint8List> closedCompleter = Completer();
     StreamSubscription<Object?> closedSub = onClose.listen((_) {
       closedCompleter
@@ -55,11 +55,11 @@ abstract class FAsyncTransport extends FTransport {
     try {
       await flush(payload);
       Future<Uint8List> resultFuture =
-          resultCompleter.future.timeout(ctx.timeout);
+      resultCompleter.future.timeout(ctx.timeout);
 
       // Bail early if the transport is closed
       Uint8List response =
-          await Future.any([resultFuture, closedCompleter.future]);
+      await Future.any([resultFuture, closedCompleter.future]);
       return TMemoryTransport.fromUint8List(response);
     } on TimeoutException catch (_) {
       throw TTransportError(FrugalTTransportErrorType.TIMED_OUT,
