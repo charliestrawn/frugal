@@ -36,7 +36,7 @@ class Headers {
     if (headers != null && headers.length > 0) {
       for (var name in headers.keys) {
         List<int> keyBytes = _encoder.convert(name);
-        List<int> valueBytes = _encoder.convert(headers[name]!);
+        List<int> valueBytes = _encoder.convert(headers[name] ?? '');
         utf8Headers.add(_Pair(keyBytes, valueBytes));
 
         // 4 bytes each for name, value length
