@@ -74,8 +74,7 @@ void main() {
 
     test('Transport times out if request is not received within the timeout',
         () async {
-      MockTransports.http.when(transport!.uri,
-          (FinalizedRequest request) async {
+      MockTransports.http.when(transport!.uri, (FinalizedRequest request) async {
         if (request.method == 'POST') {
           throw TimeoutException("wat");
         }
@@ -92,8 +91,7 @@ void main() {
     });
 
     test('Multiple writes are not coalesced', () async {
-      MockTransports.http.when(transport!.uri,
-          (FinalizedRequest request) async {
+      MockTransports.http.when(transport!.uri, (FinalizedRequest request) async {
         if (request.method == 'POST') {
           HttpBody body = request.body as HttpBody;
           if (body == null || body.asString() != transportRequestB64)
