@@ -17,12 +17,12 @@ part of frugal.src.frugal;
 /// can implement. Implementations need only implement [flush] to send request
 /// data and call [handleResponse] when asynchronous responses are received.
 abstract class FAsyncTransport extends FTransport {
-  final Logger _log = Logger('FAsyncTransport');
-  Map<int, Completer<Uint8List>> _handlers = {};
-
   /// Instantiate an [FAsyncTransport].
   FAsyncTransport({int? requestSizeLimit})
       : super(requestSizeLimit: requestSizeLimit);
+
+  final Logger _log = Logger('FAsyncTransport');
+  Map<int, Completer<Uint8List>> _handlers = {};
 
   /// Flush the payload to the server. Implementations must be threadsafe.
   Future<Null> flush(Uint8List payload);
@@ -75,10 +75,10 @@ abstract class FAsyncTransport extends FTransport {
       // don't wait until this is disposed to cancel these
       await closedSub.cancel();
       if (!closedCompleter.isCompleted) {
-        closedCompleter.complete();
+        closedCompleter.complete(Uint8List(0));
       }
       if (!resultCompleter.isCompleted) {
-        resultCompleter.complete();
+        resultCompleter.complete(Uint8List(0));
       }
     }
   }
