@@ -85,7 +85,8 @@ class FContext {
   /// The request timeout for any method call using this context.
   /// The default is 5 seconds.
   Duration get timeout {
-    return Duration(milliseconds: int.parse(_requestHeaders[_timeoutHeader] ?? ''));
+    return Duration(
+        milliseconds: int.parse(_requestHeaders[_timeoutHeader] ?? ''));
   }
 
   /// Set the request timeout for any method call using this context.
