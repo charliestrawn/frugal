@@ -16,8 +16,8 @@ Uint8List mockFrame(FContext ctx, String message) {
   prot.writeString(message);
   return trans.writeBytes;
 }
-@GenerateNiceMocks([MockSpec<TSocketTransport>(),MockSpec<TSocket>()])
 
+@GenerateNiceMocks([MockSpec<TSocketTransport>(), MockSpec<TSocket>()])
 void main() {
   group('FAdapterTransport', () {
     late StreamController<TSocketState> stateStream;

@@ -38,10 +38,10 @@ abstract class FAsyncTransport extends FTransport {
 
   @override
   Future<TTransport> request(FContext? ctx, Uint8List? payload) async {
-
     if (ctx == null || payload == null) {
       // Handle the case where ctx or payload is null appropriately
-      throw TTransportError(FrugalTTransportErrorType.NOT_OPEN, "Context or payload is null");
+      throw TTransportError(
+          FrugalTTransportErrorType.NOT_OPEN, "Context or payload is null");
     }
     _preflightRequestCheck(payload);
 
@@ -60,11 +60,11 @@ abstract class FAsyncTransport extends FTransport {
     try {
       await flush(payload);
       Future<Uint8List> resultFuture =
-      resultCompleter.future.timeout(ctx.timeout);
+          resultCompleter.future.timeout(ctx.timeout);
 
       // Bail early if the transport is closed
       Uint8List response =
-      await Future.any([resultFuture, closedCompleter.future]);
+          await Future.any([resultFuture, closedCompleter.future]);
       return TMemoryTransport.fromUint8List(response);
     } on TimeoutException catch (_) {
       throw TTransportError(FrugalTTransportErrorType.TIMED_OUT,
