@@ -21,11 +21,11 @@ class TMemoryTransport extends TTransport {
 
   /// Create a new [TMemoryTransport] instance with the optional size capacity.
   TMemoryTransport([int capacity])
-      : _buff = new FByteBuffer(capacity ?? _defaultBufferLength);
+      : _buff = FByteBuffer(capacity ?? _defaultBufferLength);
 
   /// Create a new [TMemoryTransport] instance from the given buffer.
   TMemoryTransport.fromUint8List(Uint8List buffer)
-      : _buff = new FByteBuffer.fromUint8List(buffer);
+      : _buff = FByteBuffer.fromUint8List(buffer);
 
   @override
   bool get isOpen => true;

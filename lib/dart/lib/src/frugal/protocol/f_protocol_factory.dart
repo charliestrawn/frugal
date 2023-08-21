@@ -26,6 +26,6 @@ class FProtocolFactory {
 
   /// Construct a new [FProtocol] instance from the given [TTransport].
   FProtocol getProtocol(TTransport transport) {
-    return new FProtocol(_tProtocolFactory.getProtocol(transport));
+    return FProtocol(_tProtocolFactory.getProtocol(transport));
   }
 }

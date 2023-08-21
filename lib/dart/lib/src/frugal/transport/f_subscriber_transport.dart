@@ -18,7 +18,7 @@ part of frugal.src.frugal;
 /// in-memory [TTransport] which wraps the complete message. The callback
 /// returns an error or throws an exception if an unrecoverable error occurs and
 /// the transport needs to be shutdown.
-typedef void FAsyncCallback(TTransport transport);
+typedef FAsyncCallback = void Function(TTransport transport);
 
 /// Transport layer for scope subscribers.
 abstract class FSubscriberTransport {

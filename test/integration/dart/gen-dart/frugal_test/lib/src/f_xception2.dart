@@ -11,8 +11,10 @@ import 'package:frugal_test/frugal_test.dart' as t_frugal_test;
 
 class Xception2 extends Error implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('Xception2');
-  static final thrift.TField _ERROR_CODE_FIELD_DESC = thrift.TField('errorCode', thrift.TType.I32, 1);
-  static final thrift.TField _STRUCT_THING_FIELD_DESC = thrift.TField('struct_thing', thrift.TType.STRUCT, 2);
+  static final thrift.TField _ERROR_CODE_FIELD_DESC =
+      thrift.TField('errorCode', thrift.TType.I32, 1);
+  static final thrift.TField _STRUCT_THING_FIELD_DESC =
+      thrift.TField('struct_thing', thrift.TType.STRUCT, 2);
 
   int _errorCode = 0;
   static const int ERRORCODE = 1;
@@ -163,7 +165,7 @@ class Xception2 extends Error implements thrift.TBase {
   bool operator ==(Object o) {
     if (o is Xception2) {
       return this.errorCode == o.errorCode &&
-        this.struct_thing == o.struct_thing;
+          this.struct_thing == o.struct_thing;
     }
     return false;
   }
@@ -185,6 +187,5 @@ class Xception2 extends Error implements thrift.TBase {
       ..struct_thing = struct_thing ?? this.struct_thing;
   }
 
-  validate() {
-  }
+  validate() {}
 }

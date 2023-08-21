@@ -21,7 +21,7 @@ class _TFramedTransport extends TTransport with Disposable {
   /// transport in response to socket state changes.
   _TFramedTransport(this.socket) {
     if (socket == null) {
-      throw new ArgumentError.notNull('socket');
+      throw ArgumentError.notNull('socket');
     }
     // Listen and react to state changes on the TSocket
     socket.onState.listen((state) {
@@ -44,7 +44,7 @@ class _TFramedTransport extends TTransport with Disposable {
   @override
   String get disposableTypeName => '_TFramedTransport';
 
-  final Logger log = new Logger('frugal.transport._TFramedTransport');
+  final Logger log = Logger('frugal.transport._TFramedTransport');
   static const int _headerByteCount = 4;
 
   final TSocket socket;
@@ -54,11 +54,11 @@ class _TFramedTransport extends TTransport with Disposable {
   int _frameSize;
   bool _isOpen = false;
 
-  StreamController<_FrameWrapper> _frameStream = new StreamController();
-  final Uint8List _headerBytes = new Uint8List(_headerByteCount);
+  StreamController<_FrameWrapper> _frameStream = StreamController();
+  final Uint8List _headerBytes = Uint8List(_headerByteCount);
   StreamSubscription _messageSub;
 
-  void _reset({bool isOpen: false}) {
+  void _reset({bool isOpen = false}) {
     _isOpen = isOpen;
     _writeBuffer.clear();
     _readBuffer.clear();
@@ -93,7 +93,7 @@ class _TFramedTransport extends TTransport with Disposable {
   /// Direct reading is not allowed. To consume read data listen to [onFrame].
   @override
   int read(Uint8List buffer, int offset, int length) {
-    throw new TTransportError(FrugalTTransportErrorType.UNKNOWN,
+    throw TTransportError(FrugalTTransportErrorType.UNKNOWN,
         'frugal: cannot read directly from _TFramedSocket.');
   }
 
@@ -110,7 +110,7 @@ class _TFramedTransport extends TTransport with Disposable {
       // Get the frame size
       var headerBytesToGet = _headerByteCount - _readHeaderBytes.length;
       _readHeaderBytes.addAll(list.getRange(0, headerBytesToGet));
-      var frameBuffer = new Uint8List.fromList(_readHeaderBytes).buffer;
+      var frameBuffer = Uint8List.fromList(_readHeaderBytes).buffer;
       _frameSize = frameBuffer.asByteData().getInt32(0);
       _readHeaderBytes.clear();
       offset += headerBytesToGet;
@@ -118,7 +118,7 @@ class _TFramedTransport extends TTransport with Disposable {
 
     if (_frameSize < 0) {
       // TODO: Put this error on an error stream and bubble it up.
-      throw new TTransportError(FrugalTTransportErrorType.UNKNOWN,
+      throw TTransportError(FrugalTTransportErrorType.UNKNOWN,
           'Read a negative frame size: $_frameSize');
     }
 
@@ -128,15 +128,15 @@ class _TFramedTransport extends TTransport with Disposable {
 
     // Have an entire frame. Fire it off and reset.
     if (_readBuffer.length == _frameSize) {
-      _frameStream.add(new _FrameWrapper(
-          new Uint8List.fromList(_readBuffer), new DateTime.now()));
+      _frameStream
+          .add(_FrameWrapper(Uint8List.fromList(_readBuffer), DateTime.now()));
       _readBuffer.clear();
       _frameSize = null;
     }
 
     // More bytes to get. Run through the handler again.
     if ((bytesToGet + offset < list.length)) {
-      messageHandler(new Uint8List.fromList(list.sublist(bytesToGet + offset)));
+      messageHandler(Uint8List.fromList(list.sublist(bytesToGet + offset)));
       return;
     }
   }
@@ -144,11 +144,11 @@ class _TFramedTransport extends TTransport with Disposable {
   @override
   void write(Uint8List buffer, int offset, int length) {
     if (buffer == null) {
-      throw new ArgumentError.notNull('buffer');
+      throw ArgumentError.notNull('buffer');
     }
 
     if (offset + length > buffer.length) {
-      throw new ArgumentError('The range exceeds the buffer length');
+      throw ArgumentError('The range exceeds the buffer length');
     }
 
     _writeBuffer.addAll(buffer.sublist(offset, offset + length));
@@ -159,9 +159,9 @@ class _TFramedTransport extends TTransport with Disposable {
     int length = _writeBuffer.length;
     _headerBytes.buffer.asByteData().setUint32(0, length);
     _writeBuffer.insertAll(0, _headerBytes);
-    var buff = new Uint8List.fromList(_writeBuffer);
+    var buff = Uint8List.fromList(_writeBuffer);
     _writeBuffer.clear();
-    return new Future(() => socket.send(buff));
+    return Future(() => socket.send(buff));
   }
 }
 

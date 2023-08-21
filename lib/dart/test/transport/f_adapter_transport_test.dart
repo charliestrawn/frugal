@@ -8,8 +8,8 @@ import 'package:mockito/mockito.dart';
 import 'f_transport_test.dart' show MockTransportMonitor;
 
 Uint8List mockFrame(FContext ctx, String message) {
-  TMemoryOutputBuffer trans = new TMemoryOutputBuffer();
-  FProtocol prot = new FProtocol(new TBinaryProtocol(trans));
+  TMemoryOutputBuffer trans = TMemoryOutputBuffer();
+  FProtocol prot = FProtocol(TBinaryProtocol(trans));
   prot.writeRequestHeader(ctx);
   prot.writeString(message);
   return trans.writeBytes;
@@ -25,17 +25,17 @@ void main() {
     FAdapterTransport transport;
 
     setUp(() {
-      stateStream = new StreamController.broadcast();
-      errorStream = new StreamController.broadcast();
-      messageStream = new StreamController.broadcast();
+      stateStream = StreamController.broadcast();
+      errorStream = StreamController.broadcast();
+      messageStream = StreamController.broadcast();
 
-      socket = new MockSocket();
+      socket = MockSocket();
       when(socket.onState).thenAnswer((_) => stateStream.stream);
       when(socket.onError).thenAnswer((_) => errorStream.stream);
       when(socket.onMessage).thenAnswer((_) => messageStream.stream);
-      socketTransport = new MockSocketTransport();
+      socketTransport = MockSocketTransport();
       when(socketTransport.socket).thenAnswer((_) => socket);
-      transport = new FAdapterTransport(socketTransport);
+      transport = FAdapterTransport(socketTransport);
     });
 
     tearDown(() {
@@ -46,11 +46,11 @@ void main() {
 
     test('oneway happy path', () async {
       when(socket.isClosed).thenAnswer((_) => true);
-      when(socket.open()).thenAnswer((_) => new Future.value());
+      when(socket.open()).thenAnswer((_) => Future.value());
       await transport.open();
       verify(socket.open()).called(1);
 
-      FContext reqCtx = new FContext();
+      FContext reqCtx = FContext();
       var frame = mockFrame(reqCtx, "request");
 
       await transport.oneway(reqCtx, frame);
@@ -59,11 +59,11 @@ void main() {
 
     test('requests happy path', () async {
       when(socket.isClosed).thenAnswer((_) => true);
-      when(socket.open()).thenAnswer((_) => new Future.value());
+      when(socket.open()).thenAnswer((_) => Future.value());
       await transport.open();
       verify(socket.open()).called(1);
 
-      FContext reqCtx = new FContext();
+      FContext reqCtx = FContext();
       var frame = mockFrame(reqCtx, "request");
 
       var respFrame = mockFrame(reqCtx, "response");
@@ -88,12 +88,12 @@ void main() {
 
     test('requests time out without a response', () async {
       when(socket.isClosed).thenAnswer((_) => true);
-      when(socket.open()).thenAnswer((_) => new Future.value());
+      when(socket.open()).thenAnswer((_) => Future.value());
       await transport.open();
       verify(socket.open()).called(1);
 
-      FContext ctx = new FContext();
-      ctx.timeout = new Duration(milliseconds: 50);
+      FContext ctx = FContext();
+      ctx.timeout = Duration(milliseconds: 50);
       var frame = mockFrame(ctx, 'request');
 
       try {
@@ -108,11 +108,11 @@ void main() {
 
     test('request is cancelled if the transport is closed', () async {
       when(socket.isClosed).thenAnswer((_) => true);
-      when(socket.open()).thenAnswer((_) => new Future.value());
+      when(socket.open()).thenAnswer((_) => Future.value());
       await transport.open();
       verify(socket.open()).called(1);
 
-      FContext ctx = new FContext();
+      FContext ctx = FContext();
       var frame = mockFrame(ctx, 'request');
       Future<TTransport> requestFuture = transport.request(ctx, frame);
       await transport.close();
@@ -128,33 +128,33 @@ void main() {
     test('test socket error triggers transport close', () async {
       // Open the transport
       when(socket.isClosed).thenAnswer((_) => true);
-      when(socket.open()).thenAnswer((_) => new Future.value());
+      when(socket.open()).thenAnswer((_) => Future.value());
       await transport.open();
-      var monitor = new MockTransportMonitor();
+      var monitor = MockTransportMonitor();
       transport.monitor = monitor;
       expect(transport.isOpen, equals(true));
 
       // Kill the socket with an error
-      var err = new StateError('');
-      var closeCompleter = new Completer();
+      var err = StateError('');
+      var closeCompleter = Completer();
       transport.onClose.listen((e) {
         closeCompleter.complete(e);
       });
-      var monitorCompleter = new Completer();
+      var monitorCompleter = Completer();
       when(monitor.onClosedUncleanly(any))
           .thenAnswer((Invocation realInvocation) {
         monitorCompleter.complete(realInvocation.positionalArguments[0]);
         return -1;
       });
       errorStream.add(err);
-      var timeout = new Duration(seconds: 1);
+      var timeout = Duration(seconds: 1);
       expect(await closeCompleter.future.timeout(timeout), equals(err));
       expect(await monitorCompleter.future.timeout(timeout), equals(err));
       expect(transport.isOpen, equals(false));
 
       // Reopen the socket under the hood
       stateStream.add(TSocketState.OPEN);
-      monitorCompleter = new Completer();
+      monitorCompleter = Completer();
       when(monitor.onReopenSucceeded()).thenAnswer((Invocation realInvocation) {
         monitorCompleter.complete();
       });

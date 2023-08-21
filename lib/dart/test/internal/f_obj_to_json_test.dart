@@ -6,12 +6,12 @@ import "../../lib/src/frugal.dart";
 void main() {
   group('fObjToJson', () {
     test('Serializes a TBase object', () {
-      String json = fObjToJson(new _Edge()..label = "foo");
+      String json = fObjToJson(_Edge()..label = "foo");
       expect(json, '{"1":{"str":"foo"}}');
     });
 
     test('Serializes an FContext', () {
-      FContext ctx = new FContext(correlationId: "cid");
+      FContext ctx = FContext(correlationId: "cid");
       String json = fObjToJson(ctx);
       var opId = ctx.requestHeader("_opid");
       expect(json, '{"_cid":"cid","_opid":"$opId","_timeout":"5000"}');
@@ -25,8 +25,8 @@ void main() {
 }
 
 class _Edge implements TBase {
-  static final TStruct _STRUCT_DESC = new TStruct("Edge");
-  static final TField _LABEL_FIELD_DESC = new TField("label", TType.STRING, 1);
+  static final TStruct _STRUCT_DESC = TStruct("Edge");
+  static final TField _LABEL_FIELD_DESC = TField("label", TType.STRING, 1);
 
   String _label;
   static const int LABEL = 1;
@@ -51,7 +51,7 @@ class _Edge implements TBase {
       case LABEL:
         return this.label;
       default:
-        throw new ArgumentError("Field $fieldID doesn't exist!");
+        throw ArgumentError("Field $fieldID doesn't exist!");
     }
   }
 
@@ -65,7 +65,7 @@ class _Edge implements TBase {
         }
         break;
       default:
-        throw new ArgumentError("Field $fieldID doesn't exist!");
+        throw ArgumentError("Field $fieldID doesn't exist!");
     }
   }
 
@@ -75,7 +75,7 @@ class _Edge implements TBase {
       case LABEL:
         return isSetLabel();
       default:
-        throw new ArgumentError("Field $fieldID doesn't exist!");
+        throw ArgumentError("Field $fieldID doesn't exist!");
     }
   }
 
@@ -121,7 +121,7 @@ class _Edge implements TBase {
   }
 
   String toString() {
-    StringBuffer ret = new StringBuffer("Edge(");
+    StringBuffer ret = StringBuffer("Edge(");
 
     ret.write("label:");
     if (this.label == null) {
