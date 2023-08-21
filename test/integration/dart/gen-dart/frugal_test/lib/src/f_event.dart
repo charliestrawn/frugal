@@ -11,12 +11,15 @@ import 'package:frugal_test/frugal_test.dart' as t_frugal_test;
 
 class Event implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('Event');
-  static final thrift.TField _ID_FIELD_DESC = thrift.TField('ID', thrift.TType.I64, 1);
-  static final thrift.TField _MESSAGE_FIELD_DESC = thrift.TField('Message', thrift.TType.STRING, 2);
+  static final thrift.TField _ID_FIELD_DESC =
+      thrift.TField('ID', thrift.TType.I64, 1);
+  static final thrift.TField _MESSAGE_FIELD_DESC =
+      thrift.TField('Message', thrift.TType.STRING, 2);
 
   /// ID is a unique identifier for an event.
   int _iD = 0;
   static const int ID = 1;
+
   /// Message contains the event payload.
   String _message;
   static const int MESSAGE = 2;
@@ -171,8 +174,7 @@ class Event implements thrift.TBase {
   @override
   bool operator ==(Object o) {
     if (o is Event) {
-      return this.iD == o.iD &&
-        this.message == o.message;
+      return this.iD == o.iD && this.message == o.message;
     }
     return false;
   }
@@ -194,6 +196,5 @@ class Event implements thrift.TBase {
       ..message = message ?? this.message;
   }
 
-  validate() {
-  }
+  validate() {}
 }

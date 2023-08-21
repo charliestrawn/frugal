@@ -59,7 +59,7 @@ class FHttpTransport extends FTransport {
       {int requestSizeLimit = 0,
       this.responseSizeLimit = 0,
       Map<String, String>? additionalHeaders,
-      GetHeadersWithContext? getRequestHeaders})
+      GetHeadersWithContext? getRequestHeaders = null})
       : _getRequestHeaders = getRequestHeaders ?? ((_) => {}),
         super(requestSizeLimit: requestSizeLimit) {
     _headers = additionalHeaders ?? {};

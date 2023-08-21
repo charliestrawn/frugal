@@ -44,10 +44,11 @@ main(List<String> args) async {
   verbose = results['verbose'] == true;
 
   await _initTestClient(
-      host: results['host'],
-      port: int.parse(results['port']),
-      transportType: results['transport'],
-      protocolType: results['protocol']).catchError((e) {
+          host: results['host'],
+          port: int.parse(results['port']),
+          transportType: results['transport'],
+          protocolType: results['protocol'])
+      .catchError((e) {
     stdout.writeln('Error:');
     stdout.writeln('$e');
     if (e is Error) {
@@ -82,16 +83,14 @@ main(List<String> args) async {
 }
 
 ArgResults _parseArgs(List<String> args) {
-  var parser = new ArgParser();
+  var parser = ArgParser();
   parser.addOption('host', defaultsTo: 'localhost', help: 'The server host');
   parser.addOption('port', defaultsTo: '9090', help: 'The port to connect to');
   parser.addOption('transport',
       defaultsTo: 'http',
       allowed: ['http'],
       help: 'The transport name',
-      allowedHelp: {
-        'http': 'http transport'
-      });
+      allowedHelp: {'http': 'http transport'});
   parser.addOption('protocol',
       defaultsTo: 'binary',
       allowed: ['binary', 'compact', 'json'],
@@ -117,22 +116,25 @@ ArgResults _parseArgs(List<String> args) {
 
 TProtocolFactory getProtocolFactory(String protocolType) {
   if (protocolType == 'binary') {
-    return new TBinaryProtocolFactory();
+    return TBinaryProtocolFactory();
   } else if (protocolType == 'compact') {
-    return new TCompactProtocolFactory();
+    return TCompactProtocolFactory();
   } else if (protocolType == 'json') {
-    return new TJsonProtocolFactory();
+    return TJsonProtocolFactory();
   }
 
-  throw new ArgumentError.value(protocolType);
+  throw ArgumentError.value(protocolType);
 }
 
 Middleware clientMiddleware() {
   return (InvocationHandler next) {
     return (String serviceName, String methodName, List args) {
-      if (args.length > 1 && args[1].runtimeType == Uint8List){
-          stdout.write(methodName + "(" + args[1].length.toString() + ")"
-              " = ");
+      if (args.length > 1 && args[1].runtimeType == Uint8List) {
+        stdout.write(methodName +
+            "(" +
+            args[1].length.toString() +
+            ")"
+                " = ");
       } else {
         stdout.write(methodName + "(" + args.sublist(1).toString() + ") = ");
       }
@@ -145,13 +147,11 @@ Middleware clientMiddleware() {
         throw e;
       });
     };
-
   };
 }
 
 Future _initTestClient(
     {String host, int port, String transportType, String protocolType}) async {
-
   FProtocolFactory fProtocolFactory = null;
   FTransport transport = null;
 
@@ -159,9 +159,11 @@ Future _initTestClient(
   var uri = Uri.parse('http://$host:$port');
 // Set request and response size limit to 1mb
   var maxSize = 1048576;
-  transport = new FHttpTransport(new wt.HttpClient(), uri, requestSizeLimit: maxSize, responseSizeLimit: maxSize);
+  transport = FHttpTransport(wt.HttpClient(), uri,
+      requestSizeLimit: maxSize, responseSizeLimit: maxSize);
   await transport.open();
 
-  fProtocolFactory = new FProtocolFactory(getProtocolFactory(protocolType));
-  client = new FFrugalTestClient(new FServiceProvider(transport, fProtocolFactory), [clientMiddleware()]);
+  fProtocolFactory = FProtocolFactory(getProtocolFactory(protocolType));
+  client = FFrugalTestClient(
+      FServiceProvider(transport, fProtocolFactory), [clientMiddleware()]);
 }

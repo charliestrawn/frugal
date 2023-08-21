@@ -11,8 +11,10 @@ import 'package:frugal_test/frugal_test.dart' as t_frugal_test;
 
 class Bonk implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('Bonk');
-  static final thrift.TField _MESSAGE_FIELD_DESC = thrift.TField('message', thrift.TType.STRING, 1);
-  static final thrift.TField _TYPE_FIELD_DESC = thrift.TField('type', thrift.TType.I32, 2);
+  static final thrift.TField _MESSAGE_FIELD_DESC =
+      thrift.TField('message', thrift.TType.STRING, 1);
+  static final thrift.TField _TYPE_FIELD_DESC =
+      thrift.TField('type', thrift.TType.I32, 2);
 
   String _message;
   static const int MESSAGE = 1;
@@ -161,8 +163,7 @@ class Bonk implements thrift.TBase {
   @override
   bool operator ==(Object o) {
     if (o is Bonk) {
-      return this.message == o.message &&
-        this.type == o.type;
+      return this.message == o.message && this.type == o.type;
     }
     return false;
   }
@@ -184,6 +185,5 @@ class Bonk implements thrift.TBase {
       ..type = type ?? this.type;
   }
 
-  validate() {
-  }
+  validate() {}
 }
