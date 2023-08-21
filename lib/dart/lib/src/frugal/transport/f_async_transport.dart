@@ -38,11 +38,16 @@ abstract class FAsyncTransport extends FTransport {
 
   @override
   Future<TTransport> request(FContext? ctx, Uint8List? payload) async {
-    _preflightRequestCheck(payload as Uint8List);
+
+    if (ctx == null || payload == null) {
+      // Handle the case where ctx or payload is null appropriately
+      throw TTransportError(FrugalTTransportErrorType.NOT_OPEN, "Context or payload is null");
+    }
+    _preflightRequestCheck(payload);
 
     Completer<Uint8List> resultCompleter = Completer();
 
-    if (_handlers.containsKey(ctx!._opId)) {
+    if (_handlers.containsKey(ctx._opId)) {
       throw StateError("frugal: context already registered");
     }
     _handlers[ctx._opId] = resultCompleter;
