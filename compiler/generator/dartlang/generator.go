@@ -35,7 +35,7 @@ const (
 	defaultOutputDir    = "gen-dart"
 	serviceSuffix       = "_service"
 	scopeSuffix         = "_scope"
-	allowedDartSdkRange = ">=2.11.0 <3.0.0"
+	allowedDartSdkRange = ">=2.12.0 <3.0.0"
 	tab                 = "  "
 	tabtab              = tab + tab
 	tabtabtab           = tab + tab + tab
@@ -198,13 +198,13 @@ func (g *Generator) addToPubspec(dir string) error {
 	pubFilePath := filepath.Join(dir, "pubspec.yaml")
 
 	deps := map[interface{}]interface{}{
-		"collection": "^1.14.12",
+		"collection": "^1.15.0",
 		"logging":    "^1.0.0",
 		"thrift": dep{
 			Hosted:  hostedDep{Name: "thrift", URL: "https://pub.workiva.org"},
 			Version: "^0.0.14",
 		},
-		"w_common": ">=2.0.0 <4.0.0",
+		"w_common": "^3.0.0",
 	}
 
 	if g.Frugal.ContainsFrugalDefinitions() {
