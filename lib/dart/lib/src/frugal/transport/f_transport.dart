@@ -20,7 +20,7 @@ part of frugal.src.frugal;
 /// frugal requests.
 abstract class FTransport extends Disposable {
   MonitorRunner _monitor;
-  StreamController _closeController = new StreamController.broadcast();
+  StreamController _closeController = StreamController.broadcast();
 
   /// Limits the size of requests to the server.
   /// No limit will be enforced if set to a non-positive value (i.e. <1).
@@ -37,7 +37,7 @@ abstract class FTransport extends Disposable {
   /// Set an [FTransportMonitor] on the transport.
   @Deprecated('3.0.0')
   set monitor(FTransportMonitor monitor) {
-    _monitor = new MonitorRunner(monitor, this);
+    _monitor = MonitorRunner(monitor, this);
     manageDisposable(_monitor);
   }
 
@@ -70,14 +70,14 @@ abstract class FTransport extends Disposable {
   /// limit.
   void _preflightRequestCheck(Uint8List payload) {
     if (!isOpen) {
-      throw new TTransportError(
+      throw TTransportError(
           FrugalTTransportErrorType.NOT_OPEN, 'transport not open');
     }
 
     if (requestSizeLimit != null &&
         requestSizeLimit > 0 &&
         payload.length > requestSizeLimit) {
-      throw new TTransportError(FrugalTTransportErrorType.REQUEST_TOO_LARGE);
+      throw TTransportError(FrugalTTransportErrorType.REQUEST_TOO_LARGE);
     }
   }
 }

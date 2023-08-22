@@ -16,7 +16,7 @@ part of frugal.src.frugal;
 /// Processes a method invocation on a proxied method and returns the result.
 /// The arguments should match the arity of the proxied method, and have the
 /// same types. The first argument will always be the [FContext].
-typedef Future InvocationHandler(
+typedef InvocationHandler = Future Function(
     String serviceName, String methodName, List<Object> args);
 
 /// Implements interceptor logic around API calls. This can be used, for
@@ -24,7 +24,7 @@ typedef Future InvocationHandler(
 /// or authentication and authorization. Middleware may be applied to either RPC
 /// services or pub/sub scopes. Middleware returns an [InvocationHandler] which
 /// proxies the given [InvocationHandler].
-typedef InvocationHandler Middleware(InvocationHandler handler);
+typedef Middleware = InvocationHandler Function(InvocationHandler handler);
 
 /// Contains an [InvocationHandler] used to proxy the given service method
 /// This should only be used by generated code.

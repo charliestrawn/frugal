@@ -13,8 +13,8 @@
 
 part of frugal.src.frugal;
 
-var _encoder = new Utf8Encoder();
-var _decoder = new Utf8Decoder();
+var _encoder = Utf8Encoder();
+var _decoder = Utf8Decoder();
 
 class _Pair<A, B> {
   A one;
@@ -32,12 +32,12 @@ class Headers {
   static Uint8List encode(Map<String, String> headers) {
     var size = 0;
     // Get total frame size headers
-    List<_Pair<List<int>, List<int>>> utf8Headers = new List();
+    List<_Pair<List<int>, List<int>>> utf8Headers = List();
     if (headers != null && headers.length > 0) {
       for (var name in headers.keys) {
         List<int> keyBytes = _encoder.convert(name);
         List<int> valueBytes = _encoder.convert(headers[name]);
-        utf8Headers.add(new _Pair(keyBytes, valueBytes));
+        utf8Headers.add(_Pair(keyBytes, valueBytes));
 
         // 4 bytes each for name, value length
         size += 8 + keyBytes.length + valueBytes.length;
@@ -45,7 +45,7 @@ class Headers {
     }
 
     // Header buff = [version (1 byte), size (4 bytes), headers (size bytes)]
-    var buff = new Uint8List(5 + size);
+    var buff = Uint8List(5 + size);
 
     // Write version
     buff[0] = _v0;
@@ -79,7 +79,7 @@ class Headers {
   /// Reads the headers from a TTransport
   static Map<String, String> read(TTransport transport) {
     // Buffer version
-    var buff = new Uint8List(5);
+    var buff = Uint8List(5);
     transport.readAll(buff, 0, 1);
 
     _checkVersion(buff);
@@ -89,7 +89,7 @@ class Headers {
     var size = _readInt(buff, 1);
 
     // Read the rest of the header bytes into a buffer
-    buff = new Uint8List(size);
+    buff = Uint8List(size);
     transport.readAll(buff, 0, size);
 
     return _readPairs(buff, 0, size);
@@ -98,7 +98,7 @@ class Headers {
   /// Returns the headers from Frugal frame
   static Map<String, String> decodeFromFrame(Uint8List frame) {
     if (frame.length < 5) {
-      throw new TProtocolError(TProtocolErrorType.INVALID_DATA,
+      throw TProtocolError(TProtocolErrorType.INVALID_DATA,
           "invalid frame size ${frame.length}");
     }
 
@@ -114,7 +114,7 @@ class Headers {
       var nameSize = _readInt(buff, i);
       i += 4;
       if (i > end || i + nameSize > end) {
-        throw new TProtocolError(
+        throw TProtocolError(
             TProtocolErrorType.INVALID_DATA, "invalid protocol header name");
       }
       var name = _decoder.convert(buff, i, i + nameSize);
@@ -124,7 +124,7 @@ class Headers {
       var valueSize = _readInt(buff, i);
       i += 4;
       if (i > end || i + valueSize > end) {
-        throw new TProtocolError(
+        throw TProtocolError(
             TProtocolErrorType.INVALID_DATA, "invalid protocol header value");
       }
       var value = _decoder.convert(buff, i, i + valueSize);
@@ -158,7 +158,7 @@ class Headers {
   // Support more versions when available
   static void _checkVersion(Uint8List frame) {
     if (frame[0] != _v0) {
-      throw new TProtocolError(TProtocolErrorType.BAD_VERSION,
+      throw TProtocolError(TProtocolErrorType.BAD_VERSION,
           "unsupported header version ${frame[0]}");
     }
   }

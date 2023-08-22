@@ -44,21 +44,21 @@ var _list = [
 
 void main() {
   test("read reads the headers out of the transport", () {
-    var encodedHeaders = new Uint8List.fromList(_list);
-    var transport = new TMemoryTransport.fromUint8List(encodedHeaders);
+    var encodedHeaders = Uint8List.fromList(_list);
+    var transport = TMemoryTransport.fromUint8List(encodedHeaders);
     var decodedHeaders = Headers.read(transport);
     expect(decodedHeaders, _headers);
   });
 
   test("read throws error for unsupported version", () {
-    var encodedHeaders = new Uint8List.fromList([0x01]);
-    var transport = new TMemoryTransport.fromUint8List(encodedHeaders);
-    expect(() => Headers.read(transport),
-        throwsA(new isInstanceOf<TProtocolError>()));
+    var encodedHeaders = Uint8List.fromList([0x01]);
+    var transport = TMemoryTransport.fromUint8List(encodedHeaders);
+    expect(
+        () => Headers.read(transport), throwsA(isInstanceOf<TProtocolError>()));
   });
 
   test("decodeFromFrame decodes headers from a fixed frame", () {
-    var encodedHeaders = new Uint8List.fromList(_list);
+    var encodedHeaders = Uint8List.fromList(_list);
     var decodedHeaders = Headers.decodeFromFrame(encodedHeaders);
     expect(decodedHeaders, _headers);
   });
@@ -92,13 +92,13 @@ void main() {
   });
 
   test("decodFromFrame throws error for bad frame", () {
-    expect(() => Headers.decodeFromFrame(new Uint8List(3)),
-        throwsA(new isInstanceOf<TProtocolError>()));
+    expect(() => Headers.decodeFromFrame(Uint8List(3)),
+        throwsA(isInstanceOf<TProtocolError>()));
   });
 
   test("decodeHeadersFromeFrame throws error for unsupported version", () {
-    var encodedHeaders = new Uint8List.fromList([0x01, 0, 0, 0, 0]);
+    var encodedHeaders = Uint8List.fromList([0x01, 0, 0, 0, 0]);
     expect(() => Headers.decodeFromFrame(encodedHeaders),
-        throwsA(new isInstanceOf<TProtocolError>()));
+        throwsA(isInstanceOf<TProtocolError>()));
   });
 }

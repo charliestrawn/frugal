@@ -11,7 +11,7 @@ class MiddlewareTestingService {
   /// Handle something.
   Future<int> handleSomething(int first, int second, String str) {
     this.str = str;
-    return new Future.value(first + second);
+    return Future.value(first + second);
   }
 }
 
@@ -41,21 +41,21 @@ void main() {
   }
 
   test('no middleware', () async {
-    MiddlewareTestingService service = new MiddlewareTestingService();
-    FMethod method = new FMethod(service.handleSomething,
+    MiddlewareTestingService service = MiddlewareTestingService();
+    FMethod method = FMethod(service.handleSomething,
         'MiddlewareTestingService', 'handleSomething', null);
     expect(await method([3, 64, 'foo']), equals(67));
     expect(service.str, equals('foo'));
   });
 
   test('middleware', () async {
-    MiddlewareDataStruct mds1 = new MiddlewareDataStruct();
-    MiddlewareDataStruct mds2 = new MiddlewareDataStruct();
+    MiddlewareDataStruct mds1 = MiddlewareDataStruct();
+    MiddlewareDataStruct mds2 = MiddlewareDataStruct();
 
-    MiddlewareTestingService service = new MiddlewareTestingService();
+    MiddlewareTestingService service = MiddlewareTestingService();
     Middleware middleware1 = newMiddleware(mds1);
     Middleware middleware2 = newMiddleware(mds2);
-    FMethod method = new FMethod(
+    FMethod method = FMethod(
         service.handleSomething,
         'MiddlewareTestingService',
         'handleSomething',
@@ -78,7 +78,7 @@ void main() {
         print('hello world');
       };
       await debugMiddleware(handler)(
-          'Service', 'method', [new FContext(correlationId: 'cid'), 1]);
+          'Service', 'method', [FContext(correlationId: 'cid'), 1]);
       // It would be nice to expect that print ...hello world... was called, but that does not seem possible
       // Next best thing is to just see that the handler was called without throwing an error
       expect(handlerRan, true);
