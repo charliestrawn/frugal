@@ -202,7 +202,7 @@ func (g *Generator) addToPubspec(dir string) error {
 		"logging":    "^1.0.0",
 		"thrift": dep{
 			Hosted:  hostedDep{Name: "thrift", URL: "https://pub.workiva.org"},
-			Version: "^0.0.14",
+			Version: "^0.0.15",
 		},
 		"w_common": "^3.0.0",
 	}
@@ -433,7 +433,7 @@ func (g *Generator) GenerateConstantsContents(constants []*parser.Constant) erro
 			immutableKeyword = "const"
 		}
 		contents += fmt.Sprintf(tab+"static %s %s %s = %s;\n",
-			immutableKeyword, g.getDartTypeFromThriftType(constant.Type), constant.Name, value)
+			immutableKeyword, g.getDartTypeFromThriftType(constant.Type)+"?", constant.Name, value)
 	}
 	contents += "}\n"
 	_, err = file.WriteString(contents)
@@ -1133,7 +1133,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 				thriftType = "I64"
 			}
 		case "double":
-			thriftType = "Double"
+			thriftType = "Double?"
 		case "string":
 			thriftType = "String"
 		case "binary":
@@ -1143,7 +1143,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		}
 
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-		contents += fmt.Sprintf(ind+"%s%s = iprot.read%s();\n", prefix, fName, thriftType)
+		contents += fmt.Sprintf(ind+"%s%s = iprot.read%s();\n", prefix, fName, thriftType )
 		if !g.useNullForUnset(kind) && primitive && first {
 			contents += fmt.Sprintf(ind+"this.__isset_%s = true;\n", fName)
 		}

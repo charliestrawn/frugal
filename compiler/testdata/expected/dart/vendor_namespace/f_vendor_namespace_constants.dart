@@ -11,5 +11,5 @@ import 'package:thrift/thrift.dart' as thrift;
 import 'package:vendor_namespace/vendor_namespace.dart' as t_vendor_namespace;
 
 class VendorNamespaceConstants {
-  static const int a_const = 1;
+  static const int? a_const = 1;
 }
