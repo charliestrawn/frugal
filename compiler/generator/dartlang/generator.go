@@ -202,7 +202,7 @@ func (g *Generator) addToPubspec(dir string) error {
 		"logging":    "^1.0.0",
 		"thrift": dep{
 			Hosted:  hostedDep{Name: "thrift", URL: "https://pub.workiva.org"},
-			Version: "^0.0.15",
+			Version: "^0.0.14",
 		},
 		"w_common": "^3.0.0",
 	}
