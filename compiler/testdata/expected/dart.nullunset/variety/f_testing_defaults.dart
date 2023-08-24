@@ -47,11 +47,11 @@ class TestingDefaults implements thrift.TBase {
   static const int EV2 = 3;
   int iD = -2;
   static const int ID = 4;
-  String thing = "a constant";
+  String? thing = "a constant";
   static const int THING = 5;
-  String thing2 = "another constant";
+  String? thing2 = "another constant";
   static const int THING2 = 6;
-  List<int> listfield = [
+  int listfield = [
       1,
       2,
       3,
@@ -61,15 +61,15 @@ class TestingDefaults implements thrift.TBase {
   static const int LISTFIELD = 7;
   int iD3 = t_variety.VarietyConstants.other_default;
   static const int ID3 = 8;
-  Uint8List bin_field;
+  Uint8List? bin_field;
   static const int BIN_FIELD = 9;
-  Uint8List bin_field2;
+  Uint8List? bin_field2;
   static const int BIN_FIELD2 = 10;
-  Uint8List bin_field3;
+  Uint8List? bin_field3;
   static const int BIN_FIELD3 = 11;
-  Uint8List bin_field4 = t_variety.VarietyConstants.bin_const;
+  Uint8List? bin_field4 = t_variety.VarietyConstants.bin_const;
   static const int BIN_FIELD4 = 12;
-  List<int> list2 = [
+  int list2 = [
       1,
       3,
       4,
@@ -77,16 +77,16 @@ class TestingDefaults implements thrift.TBase {
       8,
     ];
   static const int LIST2 = 13;
-  List<int> list3;
+  int list3;
   static const int LIST3 = 14;
-  List<int> list4 = [
+  int list4 = [
       1,
       2,
       3,
       6,
     ];
   static const int LIST4 = 15;
-  Map<String, String> a_map = {
+  Map<String?, String?> a_map = {
       "k1": "v1",
       "k2": "v2",
     };
@@ -405,7 +405,7 @@ class TestingDefaults implements thrift.TBase {
         case LISTFIELD:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem0 = iprot.readListBegin();
-            this.listfield = List<int>();
+            this.listfield = <int>[];
             for(int elem2 = 0; elem2 < elem0.length; ++elem2) {
               int elem1 = iprot.readI32();
               this.listfield.add(elem1);
@@ -453,7 +453,7 @@ class TestingDefaults implements thrift.TBase {
         case LIST2:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem3 = iprot.readListBegin();
-            this.list2 = List<int>();
+            this.list2 = <int>[];
             for(int elem5 = 0; elem5 < elem3.length; ++elem5) {
               int elem4 = iprot.readI32();
               this.list2.add(elem4);
@@ -466,7 +466,7 @@ class TestingDefaults implements thrift.TBase {
         case LIST3:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem6 = iprot.readListBegin();
-            this.list3 = List<int>();
+            this.list3 = <int>[];
             for(int elem8 = 0; elem8 < elem6.length; ++elem8) {
               int elem7 = iprot.readI32();
               this.list3.add(elem7);
@@ -479,7 +479,7 @@ class TestingDefaults implements thrift.TBase {
         case LIST4:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem9 = iprot.readListBegin();
-            this.list4 = List<int>();
+            this.list4 = <int>[];
             for(int elem11 = 0; elem11 < elem9.length; ++elem11) {
               int elem10 = iprot.readI32();
               this.list4.add(elem10);
@@ -492,10 +492,10 @@ class TestingDefaults implements thrift.TBase {
         case A_MAP:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem12 = iprot.readMapBegin();
-            this.a_map = Map<String, String>();
+            this.a_map = Map<String?, String?>();
             for(int elem14 = 0; elem14 < elem12.length; ++elem14) {
-              String elem15 = iprot.readString();
-              String elem13 = iprot.readString();
+              String? elem15 = iprot.readString();
+              String? elem13 = iprot.readString();
               this.a_map[elem15] = elem13;
             }
             iprot.readMapEnd();
@@ -856,18 +856,18 @@ class TestingDefaults implements thrift.TBase {
     t_variety.Event ev1,
     t_variety.Event ev2,
     int iD,
-    String thing,
-    String thing2,
-    List<int> listfield,
+    String? thing,
+    String? thing2,
+    int listfield,
     int iD3,
-    Uint8List bin_field,
-    Uint8List bin_field2,
-    Uint8List bin_field3,
-    Uint8List bin_field4,
-    List<int> list2,
-    List<int> list3,
-    List<int> list4,
-    Map<String, String> a_map,
+    Uint8List? bin_field,
+    Uint8List? bin_field2,
+    Uint8List? bin_field3,
+    Uint8List? bin_field4,
+    int list2,
+    int list3,
+    int list4,
+    Map<String?, String?> a_map,
     int status,
     int base_status,
   }) {

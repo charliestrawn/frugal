@@ -15,13 +15,13 @@ class nested_thing implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('nested_thing');
   static final thrift.TField _THINGS_FIELD_DESC = thrift.TField('things', thrift.TType.LIST, 1);
 
-  List<t_actual_base_dart.thing> _things;
+  t_actual_base_dart.thing _things;
   static const int THINGS = 1;
 
 
-  List<t_actual_base_dart.thing> get things => this._things;
+  t_actual_base_dart.thing get things => this._things;
 
-  set things(List<t_actual_base_dart.thing> things) {
+  set things(t_actual_base_dart.thing things) {
     this._things = things;
   }
 
@@ -69,7 +69,7 @@ class nested_thing implements thrift.TBase {
         case THINGS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem83 = iprot.readListBegin();
-            this.things = List<t_actual_base_dart.thing>();
+            this.things = <t_actual_base_dart.thing>[];
             for(int elem85 = 0; elem85 < elem83.length; ++elem85) {
               t_actual_base_dart.thing elem84 = t_actual_base_dart.thing();
               elem84.read(iprot);
@@ -141,7 +141,7 @@ class nested_thing implements thrift.TBase {
   }
 
   nested_thing clone({
-    List<t_actual_base_dart.thing> things,
+    t_actual_base_dart.thing things,
   }) {
     return nested_thing()
       ..things = things ?? this.things;

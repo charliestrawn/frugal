@@ -27,15 +27,15 @@ class TestingUnions implements thrift.TBase {
 
   int anID;
   static const int ANID = 1;
-  String aString;
+  String? aString;
   static const int ASTRING = 2;
   int someotherthing;
   static const int SOMEOTHERTHING = 3;
   int anInt16;
   static const int ANINT16 = 4;
-  Map<int, String> requests;
+  Map<int, String?> requests;
   static const int REQUESTS = 5;
-  Uint8List bin_field_in_union;
+  Uint8List? bin_field_in_union;
   static const int BIN_FIELD_IN_UNION = 6;
   /// Deprecated: use something else
   @deprecated
@@ -204,10 +204,10 @@ class TestingUnions implements thrift.TBase {
         case REQUESTS:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem63 = iprot.readMapBegin();
-            this.requests = Map<int, String>();
+            this.requests = Map<int, String?>();
             for(int elem65 = 0; elem65 < elem63.length; ++elem65) {
               int elem66 = iprot.readI32();
-              String elem64 = iprot.readString();
+              String? elem64 = iprot.readString();
               this.requests[elem66] = elem64;
             }
             iprot.readMapEnd();
@@ -406,11 +406,11 @@ class TestingUnions implements thrift.TBase {
 
   TestingUnions clone({
     int anID,
-    String aString,
+    String? aString,
     int someotherthing,
     int anInt16,
-    Map<int, String> requests,
-    Uint8List bin_field_in_union,
+    Map<int, String?> requests,
+    Uint8List? bin_field_in_union,
     // ignore: deprecated_member_use
     bool depr,
     bool wHOA_BUDDY,

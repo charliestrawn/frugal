@@ -27,15 +27,15 @@ class TestingUnions implements thrift.TBase {
 
   int _anID;
   static const int ANID = 1;
-  String _aString;
+  String? _aString;
   static const int ASTRING = 2;
   int _someotherthing;
   static const int SOMEOTHERTHING = 3;
   int _anInt16;
   static const int ANINT16 = 4;
-  Map<int, String> _requests;
+  Map<int, String?> _requests;
   static const int REQUESTS = 5;
-  Uint8List _bin_field_in_union;
+  Uint8List? _bin_field_in_union;
   static const int BIN_FIELD_IN_UNION = 6;
   /// Deprecated: use something else
   @deprecated
@@ -63,9 +63,9 @@ class TestingUnions implements thrift.TBase {
     this.__isset_anID = false;
   }
 
-  String get aString => this._aString;
+  String? get aString => this._aString;
 
-  set aString(String aString) {
+  set aString(String? aString) {
     this._aString = aString;
   }
 
@@ -101,9 +101,9 @@ class TestingUnions implements thrift.TBase {
     this.__isset_anInt16 = false;
   }
 
-  Map<int, String> get requests => this._requests;
+  Map<int, String?> get requests => this._requests;
 
-  set requests(Map<int, String> requests) {
+  set requests(Map<int, String?> requests) {
     this._requests = requests;
   }
 
@@ -113,9 +113,9 @@ class TestingUnions implements thrift.TBase {
     this.requests = null;
   }
 
-  Uint8List get bin_field_in_union => this._bin_field_in_union;
+  Uint8List? get bin_field_in_union => this._bin_field_in_union;
 
-  set bin_field_in_union(Uint8List bin_field_in_union) {
+  set bin_field_in_union(Uint8List? bin_field_in_union) {
     this._bin_field_in_union = bin_field_in_union;
   }
 
@@ -301,10 +301,10 @@ class TestingUnions implements thrift.TBase {
         case REQUESTS:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem63 = iprot.readMapBegin();
-            this.requests = Map<int, String>();
+            this.requests = Map<int, String?>();
             for(int elem65 = 0; elem65 < elem63.length; ++elem65) {
               int elem66 = iprot.readI32();
-              String elem64 = iprot.readString();
+              String? elem64 = iprot.readString();
               this.requests[elem66] = elem64;
             }
             iprot.readMapEnd();
@@ -505,11 +505,11 @@ class TestingUnions implements thrift.TBase {
 
   TestingUnions clone({
     int anID,
-    String aString,
+    String? aString,
     int someotherthing,
     int anInt16,
-    Map<int, String> requests,
-    Uint8List bin_field_in_union,
+    Map<int, String?> requests,
+    Uint8List? bin_field_in_union,
     // ignore: deprecated_member_use
     bool depr,
     bool wHOA_BUDDY,

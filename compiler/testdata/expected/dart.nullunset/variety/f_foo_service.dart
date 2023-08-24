@@ -30,16 +30,16 @@ abstract class FFoo extends t_actual_base_dart.FBaseFoo {
   Future ping(frugal.FContext ctx);
 
   /// Blah the server.
-  Future<int> blah(frugal.FContext ctx, int num, String str, t_variety.Event event);
+  Future<int> blah(frugal.FContext ctx, int num, String? str, t_variety.Event event);
 
   /// oneway methods don't receive a response from the server.
-  Future oneWay(frugal.FContext ctx, int id, Map<int, String> req);
+  Future oneWay(frugal.FContext ctx, int id, Map<int, String?> req);
 
-  Future<Uint8List> bin_method(frugal.FContext ctx, Uint8List bin, String str);
+  Future<Uint8List?> bin_method(frugal.FContext ctx, Uint8List? bin, String? str);
 
   Future<int> param_modifiers(frugal.FContext ctx, int opt_num, int default_num, int req_num);
 
-  Future<List<int>> underlying_types_test(frugal.FContext ctx, List<int> list_type, Set<int> set_type);
+  Future<int> underlying_types_test(frugal.FContext ctx, int list_type, Set<int> set_type);
 
   Future<t_validStructs.Thing> getThing(frugal.FContext ctx);
 
@@ -47,14 +47,14 @@ abstract class FFoo extends t_actual_base_dart.FBaseFoo {
 
   Future<t_subdir_include_ns.A> use_subdir_struct(frugal.FContext ctx, t_subdir_include_ns.A a);
 
-  Future<String> sayHelloWith(frugal.FContext ctx, String newMessage);
+  Future<String?> sayHelloWith(frugal.FContext ctx, String? newMessage);
 
-  Future<String> whatDoYouSay(frugal.FContext ctx, String messageArgs);
+  Future<String?> whatDoYouSay(frugal.FContext ctx, String? messageArgs);
 
-  Future<String> sayAgain(frugal.FContext ctx, String messageResult);
+  Future<String?> sayAgain(frugal.FContext ctx, String? messageResult);
 }
 
-FFooClient fFooClientFactory(frugal.FServiceProvider provider, {List<frugal.Middleware> middleware}) =>
+FFooClient fFooClientFactory(frugal.FServiceProvider provider, {List<frugal.Middleware>? middleware}) =>
     FFooClient(provider, middleware);
 
 /// This is a thrift service. Frugal will generate bindings that include
@@ -64,9 +64,9 @@ FFooClient fFooClientFactory(frugal.FServiceProvider provider, {List<frugal.Midd
 // ignore: private_collision_in_mixin_application
 class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Disposable implements FFoo {
   static final logging.Logger _frugalLog = logging.Logger('Foo');
-  Map<String, frugal.FMethod> _methods;
+  Map<String, frugal.FMethod>? _methods = {};
 
-  FFooClient(frugal.FServiceProvider provider, [List<frugal.Middleware> middleware])
+  FFooClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
       : this._provider = provider,
         super(provider, middleware) {
     _transport = provider.transport;
@@ -74,18 +74,18 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
     this._methods = {};
-    this._methods['ping'] = frugal.FMethod(this._ping, 'Foo', 'ping', combined);
-    this._methods['blah'] = frugal.FMethod(this._blah, 'Foo', 'blah', combined);
-    this._methods['oneWay'] = frugal.FMethod(this._oneWay, 'Foo', 'oneWay', combined);
-    this._methods['bin_method'] = frugal.FMethod(this._bin_method, 'Foo', 'bin_method', combined);
-    this._methods['param_modifiers'] = frugal.FMethod(this._param_modifiers, 'Foo', 'param_modifiers', combined);
-    this._methods['underlying_types_test'] = frugal.FMethod(this._underlying_types_test, 'Foo', 'underlying_types_test', combined);
-    this._methods['getThing'] = frugal.FMethod(this._getThing, 'Foo', 'getThing', combined);
-    this._methods['getMyInt'] = frugal.FMethod(this._getMyInt, 'Foo', 'getMyInt', combined);
-    this._methods['use_subdir_struct'] = frugal.FMethod(this._use_subdir_struct, 'Foo', 'use_subdir_struct', combined);
-    this._methods['sayHelloWith'] = frugal.FMethod(this._sayHelloWith, 'Foo', 'sayHelloWith', combined);
-    this._methods['whatDoYouSay'] = frugal.FMethod(this._whatDoYouSay, 'Foo', 'whatDoYouSay', combined);
-    this._methods['sayAgain'] = frugal.FMethod(this._sayAgain, 'Foo', 'sayAgain', combined);
+    this._methods?['ping'] = frugal.FMethod(this._ping, 'Foo', 'ping', combined);
+    this._methods?['blah'] = frugal.FMethod(this._blah, 'Foo', 'blah', combined);
+    this._methods?['oneWay'] = frugal.FMethod(this._oneWay, 'Foo', 'oneWay', combined);
+    this._methods?['bin_method'] = frugal.FMethod(this._bin_method, 'Foo', 'bin_method', combined);
+    this._methods?['param_modifiers'] = frugal.FMethod(this._param_modifiers, 'Foo', 'param_modifiers', combined);
+    this._methods?['underlying_types_test'] = frugal.FMethod(this._underlying_types_test, 'Foo', 'underlying_types_test', combined);
+    this._methods?['getThing'] = frugal.FMethod(this._getThing, 'Foo', 'getThing', combined);
+    this._methods?['getMyInt'] = frugal.FMethod(this._getMyInt, 'Foo', 'getMyInt', combined);
+    this._methods?['use_subdir_struct'] = frugal.FMethod(this._use_subdir_struct, 'Foo', 'use_subdir_struct', combined);
+    this._methods?['sayHelloWith'] = frugal.FMethod(this._sayHelloWith, 'Foo', 'sayHelloWith', combined);
+    this._methods?['whatDoYouSay'] = frugal.FMethod(this._whatDoYouSay, 'Foo', 'whatDoYouSay', combined);
+    this._methods?['sayAgain'] = frugal.FMethod(this._sayAgain, 'Foo', 'sayAgain', combined);
   }
 
   frugal.FServiceProvider _provider;
@@ -106,7 +106,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
   @override
   Future ping(frugal.FContext ctx) {
     _frugalLog.warning("Call to deprecated function 'Foo.ping'");
-    return this._methods['ping']([ctx]);
+    return this._methods?['ping']([ctx]);
   }
 
   Future _ping(frugal.FContext ctx) async {
@@ -119,11 +119,11 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
   }
   /// Blah the server.
   @override
-  Future<int> blah(frugal.FContext ctx, int num, String str, t_variety.Event event) {
-    return this._methods['blah']([ctx, num, str, event]).then((value) => value as int);
+  Future<int> blah(frugal.FContext ctx, int num, String? str, t_variety.Event event) {
+    return this._methods?['blah']([ctx, num, str, event]).then((value) => value as int);
   }
 
-  Future<int> _blah(frugal.FContext ctx, int num, String str, t_variety.Event event) async {
+  Future<int> _blah(frugal.FContext ctx, int num, String? str, t_variety.Event event) async {
     final args = blah_args();
     args.num = num;
     args.str = str;
@@ -149,11 +149,11 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
   }
   /// oneway methods don't receive a response from the server.
   @override
-  Future oneWay(frugal.FContext ctx, int id, Map<int, String> req) {
-    return this._methods['oneWay']([ctx, id, req]);
+  Future oneWay(frugal.FContext ctx, int id, Map<int, String?> req) {
+    return this._methods?['oneWay']([ctx, id, req]);
   }
 
-  Future _oneWay(frugal.FContext ctx, int id, Map<int, String> req) async {
+  Future _oneWay(frugal.FContext ctx, int id, Map<int, String?> req) async {
     final args = oneWay_args();
     args.id = id;
     args.req = req;
@@ -162,11 +162,11 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
   }
 
   @override
-  Future<Uint8List> bin_method(frugal.FContext ctx, Uint8List bin, String str) {
-    return this._methods['bin_method']([ctx, bin, str]).then((value) => value as Uint8List);
+  Future<Uint8List?> bin_method(frugal.FContext ctx, Uint8List? bin, String? str) {
+    return this._methods?['bin_method']([ctx, bin, str]).then((value) => value as Uint8List?);
   }
 
-  Future<Uint8List> _bin_method(frugal.FContext ctx, Uint8List bin, String str) async {
+  Future<Uint8List?> _bin_method(frugal.FContext ctx, Uint8List? bin, String? str) async {
     final args = bin_method_args();
     args.bin = bin;
     args.str = str;
@@ -188,7 +188,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
   }
   @override
   Future<int> param_modifiers(frugal.FContext ctx, int opt_num, int default_num, int req_num) {
-    return this._methods['param_modifiers']([ctx, opt_num, default_num, req_num]).then((value) => value as int);
+    return this._methods?['param_modifiers']([ctx, opt_num, default_num, req_num]).then((value) => value as int);
   }
 
   Future<int> _param_modifiers(frugal.FContext ctx, int opt_num, int default_num, int req_num) async {
@@ -210,11 +210,11 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
     );
   }
   @override
-  Future<List<int>> underlying_types_test(frugal.FContext ctx, List<int> list_type, Set<int> set_type) {
-    return this._methods['underlying_types_test']([ctx, list_type, set_type]).then((value) => value as List<int>);
+  Future<int> underlying_types_test(frugal.FContext ctx, int list_type, Set<int> set_type) {
+    return this._methods?['underlying_types_test']([ctx, list_type, set_type]).then((value) => value as int);
   }
 
-  Future<List<int>> _underlying_types_test(frugal.FContext ctx, List<int> list_type, Set<int> set_type) async {
+  Future<int> _underlying_types_test(frugal.FContext ctx, int list_type, Set<int> set_type) async {
     final args = underlying_types_test_args();
     args.list_type = list_type;
     args.set_type = set_type;
@@ -233,7 +233,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
   }
   @override
   Future<t_validStructs.Thing> getThing(frugal.FContext ctx) {
-    return this._methods['getThing']([ctx]).then((value) => value as t_validStructs.Thing);
+    return this._methods?['getThing']([ctx]).then((value) => value as t_validStructs.Thing);
   }
 
   Future<t_validStructs.Thing> _getThing(frugal.FContext ctx) async {
@@ -253,7 +253,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
   }
   @override
   Future<int> getMyInt(frugal.FContext ctx) {
-    return this._methods['getMyInt']([ctx]).then((value) => value as int);
+    return this._methods?['getMyInt']([ctx]).then((value) => value as int);
   }
 
   Future<int> _getMyInt(frugal.FContext ctx) async {
@@ -273,7 +273,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
   }
   @override
   Future<t_subdir_include_ns.A> use_subdir_struct(frugal.FContext ctx, t_subdir_include_ns.A a) {
-    return this._methods['use_subdir_struct']([ctx, a]).then((value) => value as t_subdir_include_ns.A);
+    return this._methods?['use_subdir_struct']([ctx, a]).then((value) => value as t_subdir_include_ns.A);
   }
 
   Future<t_subdir_include_ns.A> _use_subdir_struct(frugal.FContext ctx, t_subdir_include_ns.A a) async {
@@ -293,11 +293,11 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
     );
   }
   @override
-  Future<String> sayHelloWith(frugal.FContext ctx, String newMessage) {
-    return this._methods['sayHelloWith']([ctx, newMessage]).then((value) => value as String);
+  Future<String?> sayHelloWith(frugal.FContext ctx, String? newMessage) {
+    return this._methods?['sayHelloWith']([ctx, newMessage]).then((value) => value as String?);
   }
 
-  Future<String> _sayHelloWith(frugal.FContext ctx, String newMessage) async {
+  Future<String?> _sayHelloWith(frugal.FContext ctx, String? newMessage) async {
     final args = sayHelloWith_args();
     args.newMessage = newMessage;
     final message = frugal.prepareMessage(ctx, 'sayHelloWith', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit);
@@ -314,11 +314,11 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
     );
   }
   @override
-  Future<String> whatDoYouSay(frugal.FContext ctx, String messageArgs) {
-    return this._methods['whatDoYouSay']([ctx, messageArgs]).then((value) => value as String);
+  Future<String?> whatDoYouSay(frugal.FContext ctx, String? messageArgs) {
+    return this._methods?['whatDoYouSay']([ctx, messageArgs]).then((value) => value as String?);
   }
 
-  Future<String> _whatDoYouSay(frugal.FContext ctx, String messageArgs) async {
+  Future<String?> _whatDoYouSay(frugal.FContext ctx, String? messageArgs) async {
     final args = whatDoYouSay_args();
     args.messageArgs = messageArgs;
     final message = frugal.prepareMessage(ctx, 'whatDoYouSay', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit);
@@ -335,11 +335,11 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
     );
   }
   @override
-  Future<String> sayAgain(frugal.FContext ctx, String messageResult) {
-    return this._methods['sayAgain']([ctx, messageResult]).then((value) => value as String);
+  Future<String?> sayAgain(frugal.FContext ctx, String? messageResult) {
+    return this._methods?['sayAgain']([ctx, messageResult]).then((value) => value as String?);
   }
 
-  Future<String> _sayAgain(frugal.FContext ctx, String messageResult) async {
+  Future<String?> _sayAgain(frugal.FContext ctx, String? messageResult) async {
     final args = sayAgain_args();
     args.messageResult = messageResult;
     final message = frugal.prepareMessage(ctx, 'sayAgain', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit);
@@ -408,7 +408,7 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _EVENT_FIELD_DESC = thrift.TField('event', thrift.TType.STRUCT, 3);
 
   int num;
-  String str;
+  String? str;
   t_variety.Event event;
 
 
@@ -495,7 +495,7 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _REQ_FIELD_DESC = thrift.TField('req', thrift.TType.MAP, 2);
 
   int id;
-  Map<int, String> req;
+  Map<int, String?> req;
 
 
   @override
@@ -529,8 +529,8 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _BIN_FIELD_DESC = thrift.TField('bin', thrift.TType.STRING, 1);
   static final thrift.TField _STR_FIELD_DESC = thrift.TField('Str', thrift.TType.STRING, 2);
 
-  Uint8List bin;
-  String str;
+  Uint8List? bin;
+  String? str;
 
 
   @override
@@ -557,7 +557,7 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class bin_method_result extends frugal.FGeneratedArgsResultBase {
-  Uint8List success;
+  Uint8List? success;
   t_actual_base_dart.api_exception api;
 
 
@@ -673,7 +673,7 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TField _LIST_TYPE_FIELD_DESC = thrift.TField('list_type', thrift.TType.LIST, 1);
   static final thrift.TField _SET_TYPE_FIELD_DESC = thrift.TField('set_type', thrift.TType.SET, 2);
 
-  List<int> list_type;
+  int list_type;
   Set<int> set_type;
 
 
@@ -709,7 +709,7 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
-  List<int> success;
+  int success;
 
 
   @override
@@ -722,7 +722,7 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
         case 0:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem71 = iprot.readListBegin();
-            this.success = List<int>();
+            this.success = <int>[];
             for(int elem73 = 0; elem73 < elem71.length; ++elem73) {
               int elem72 = iprot.readI64();
               this.success.add(elem72);
@@ -913,7 +913,7 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayHelloWith_args');
   static final thrift.TField _NEW_MESSAGE_FIELD_DESC = thrift.TField('newMessage', thrift.TType.STRING, 1);
 
-  String newMessage;
+  String? newMessage;
 
 
   @override
@@ -935,7 +935,7 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class sayHelloWith_result extends frugal.FGeneratedArgsResultBase {
-  String success;
+  String? success;
 
 
   @override
@@ -971,7 +971,7 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('whatDoYouSay_args');
   static final thrift.TField _MESSAGE_ARGS_FIELD_DESC = thrift.TField('messageArgs', thrift.TType.STRING, 1);
 
-  String messageArgs;
+  String? messageArgs;
 
 
   @override
@@ -993,7 +993,7 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class whatDoYouSay_result extends frugal.FGeneratedArgsResultBase {
-  String success;
+  String? success;
 
 
   @override
@@ -1029,7 +1029,7 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('sayAgain_args');
   static final thrift.TField _MESSAGE_RESULT_FIELD_DESC = thrift.TField('messageResult', thrift.TType.STRING, 1);
 
-  String messageResult;
+  String? messageResult;
 
 
   @override
@@ -1051,7 +1051,7 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class sayAgain_result extends frugal.FGeneratedArgsResultBase {
-  String success;
+  String? success;
 
 
   @override

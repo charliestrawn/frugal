@@ -16,7 +16,7 @@ import 'package:variety/variety.dart' as t_variety;
 
 const String delimiter = '.';
 
-EventsPublisher eventsPublisherFactory(frugal.FScopeProvider provider, {List<frugal.Middleware> middleware}) =>
+EventsPublisher eventsPublisherFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>? middleware}) =>
     EventsPublisher(provider, middleware);
 
 /// This docstring gets added to the generated code because it has
@@ -25,17 +25,17 @@ EventsPublisher eventsPublisherFactory(frugal.FScopeProvider provider, {List<fru
 class EventsPublisher {
   frugal.FPublisherTransport transport;
   frugal.FProtocolFactory protocolFactory;
-  Map<String, frugal.FMethod> _methods;
-  EventsPublisher(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) {
+  Map<String, frugal.FMethod>? _methods = {};
+  EventsPublisher(frugal.FScopeProvider provider, [List<frugal.Middleware>? middleware]) {
     transport = provider.publisherTransportFactory.getTransport();
     protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
     this._methods = {};
-    this._methods['EventCreated'] = frugal.FMethod(this._publishEventCreated, 'Events', 'publishEventCreated', combined);
-    this._methods['SomeInt'] = frugal.FMethod(this._publishSomeInt, 'Events', 'publishSomeInt', combined);
-    this._methods['SomeStr'] = frugal.FMethod(this._publishSomeStr, 'Events', 'publishSomeStr', combined);
-    this._methods['SomeList'] = frugal.FMethod(this._publishSomeList, 'Events', 'publishSomeList', combined);
+    this._methods?['EventCreated'] = frugal.FMethod(this._publishEventCreated, 'Events', 'publishEventCreated', combined);
+    this._methods?['SomeInt'] = frugal.FMethod(this._publishSomeInt, 'Events', 'publishSomeInt', combined);
+    this._methods?['SomeStr'] = frugal.FMethod(this._publishSomeStr, 'Events', 'publishSomeStr', combined);
+    this._methods?['SomeList'] = frugal.FMethod(this._publishSomeList, 'Events', 'publishSomeList', combined);
   }
 
   Future open() {
@@ -48,7 +48,7 @@ class EventsPublisher {
 
   /// This is a docstring.
   Future publishEventCreated(frugal.FContext ctx, String user, t_variety.Event req) {
-    return this._methods['EventCreated']([ctx, user, req]);
+    return this._methods?['EventCreated']([ctx, user, req]);
   }
 
   Future _publishEventCreated(frugal.FContext ctx, String user, t_variety.Event req) async {
@@ -70,7 +70,7 @@ class EventsPublisher {
 
 
   Future publishSomeInt(frugal.FContext ctx, String user, int req) {
-    return this._methods['SomeInt']([ctx, user, req]);
+    return this._methods?['SomeInt']([ctx, user, req]);
   }
 
   Future _publishSomeInt(frugal.FContext ctx, String user, int req) async {
@@ -91,11 +91,11 @@ class EventsPublisher {
   }
 
 
-  Future publishSomeStr(frugal.FContext ctx, String user, String req) {
-    return this._methods['SomeStr']([ctx, user, req]);
+  Future publishSomeStr(frugal.FContext ctx, String user, String? req) {
+    return this._methods?['SomeStr']([ctx, user, req]);
   }
 
-  Future _publishSomeStr(frugal.FContext ctx, String user, String req) async {
+  Future _publishSomeStr(frugal.FContext ctx, String user, String? req) async {
     ctx.addRequestHeader('_topic_user', user);
     var op = 'SomeStr';
     var prefix = 'foo.$user.';
@@ -113,11 +113,11 @@ class EventsPublisher {
   }
 
 
-  Future publishSomeList(frugal.FContext ctx, String user, List<Map<int, t_variety.Event>> req) {
-    return this._methods['SomeList']([ctx, user, req]);
+  Future publishSomeList(frugal.FContext ctx, String user, Map<int, t_variety.Event> req) {
+    return this._methods?['SomeList']([ctx, user, req]);
   }
 
-  Future _publishSomeList(frugal.FContext ctx, String user, List<Map<int, t_variety.Event>> req) async {
+  Future _publishSomeList(frugal.FContext ctx, String user, Map<int, t_variety.Event> req) async {
     ctx.addRequestHeader('_topic_user', user);
     var op = 'SomeList';
     var prefix = 'foo.$user.';
@@ -145,7 +145,7 @@ class EventsPublisher {
 }
 
 
-EventsSubscriber eventsSubscriberFactory(frugal.FScopeProvider provider, {List<frugal.Middleware> middleware}) =>
+EventsSubscriber eventsSubscriberFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>? middleware}) =>
     EventsSubscriber(provider, middleware);
 
 /// This docstring gets added to the generated code because it has
@@ -153,11 +153,11 @@ EventsSubscriber eventsSubscriberFactory(frugal.FScopeProvider provider, {List<f
 /// variable.
 class EventsSubscriber {
   final frugal.FScopeProvider provider;
-  final List<frugal.Middleware> _middleware;
+  final List<frugal.Middleware>? _middleware;
 
-  EventsSubscriber(this.provider, [List<frugal.Middleware> middleware])
+  EventsSubscriber(this.provider, [List<frugal.Middleware>? middleware])
       : this._middleware = middleware ?? [] {
-    this._middleware.addAll(provider.middleware);
+    this._middleware?.addAll(provider.middleware);
 }
 
   /// This is a docstring.
@@ -220,7 +220,7 @@ class EventsSubscriber {
   }
 
 
-  Future<frugal.FSubscription> subscribeSomeStr(String user, dynamic onstring(frugal.FContext ctx, String req)) async {
+  Future<frugal.FSubscription> subscribeSomeStr(String user, dynamic onstring(frugal.FContext ctx, String? req)) async {
     var op = 'SomeStr';
     var prefix = 'foo.$user.';
     var topic = '${prefix}Events$delimiter$op';
@@ -229,7 +229,7 @@ class EventsSubscriber {
     return frugal.FSubscription(topic, transport);
   }
 
-  frugal.FAsyncCallback _recvSomeStr(String op, frugal.FProtocolFactory protocolFactory, dynamic onstring(frugal.FContext ctx, String req)) {
+  frugal.FAsyncCallback _recvSomeStr(String op, frugal.FProtocolFactory protocolFactory, dynamic onstring(frugal.FContext ctx, String? req)) {
     frugal.FMethod method = frugal.FMethod(onstring, 'Events', 'subscribestring', this._middleware);
     callbackSomeStr(thrift.TTransport transport) {
       var iprot = protocolFactory.getProtocol(transport);
@@ -241,7 +241,7 @@ class EventsSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      String req = iprot.readString();
+      String? req = iprot.readString();
       iprot.readMessageEnd();
       method([ctx, req]);
     }
@@ -249,7 +249,7 @@ class EventsSubscriber {
   }
 
 
-  Future<frugal.FSubscription> subscribeSomeList(String user, dynamic onlist(frugal.FContext ctx, List<Map<int, t_variety.Event>> req)) async {
+  Future<frugal.FSubscription> subscribeSomeList(String user, dynamic onlist(frugal.FContext ctx, Map<int, t_variety.Event> req)) async {
     var op = 'SomeList';
     var prefix = 'foo.$user.';
     var topic = '${prefix}Events$delimiter$op';
@@ -258,7 +258,7 @@ class EventsSubscriber {
     return frugal.FSubscription(topic, transport);
   }
 
-  frugal.FAsyncCallback _recvSomeList(String op, frugal.FProtocolFactory protocolFactory, dynamic onlist(frugal.FContext ctx, List<Map<int, t_variety.Event>> req)) {
+  frugal.FAsyncCallback _recvSomeList(String op, frugal.FProtocolFactory protocolFactory, dynamic onlist(frugal.FContext ctx, Map<int, t_variety.Event> req)) {
     frugal.FMethod method = frugal.FMethod(onlist, 'Events', 'subscribelist', this._middleware);
     callbackSomeList(thrift.TTransport transport) {
       var iprot = protocolFactory.getProtocol(transport);
@@ -271,7 +271,7 @@ class EventsSubscriber {
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
       thrift.TList elem76 = iprot.readListBegin();
-      List<Map<int, t_variety.Event>> req = List<Map<int, t_variety.Event>>();
+      Map<int, t_variety.Event> req = <Map<int, t_variety.Event>>[];
       for(int elem82 = 0; elem82 < elem76.length; ++elem82) {
         thrift.TMap elem78 = iprot.readMapBegin();
         Map<int, t_variety.Event> elem77 = Map<int, t_variety.Event>();

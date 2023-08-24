@@ -37,21 +37,21 @@ class EventWrapper implements thrift.TBase {
   static const int ID = 1;
   t_variety.Event ev;
   static const int EV = 2;
-  List<t_variety.Event> events;
+  t_variety.Event events;
   static const int EVENTS = 3;
   Set<t_variety.Event> events2;
   static const int EVENTS2 = 4;
   Map<int, t_variety.Event> eventMap;
   static const int EVENTMAP = 5;
-  List<List<int>> nums;
+  int nums;
   static const int NUMS = 6;
-  List<int> enums;
+  int enums;
   static const int ENUMS = 7;
   bool aBoolField;
   static const int ABOOLFIELD = 8;
   t_variety.TestingUnions a_union;
   static const int A_UNION = 9;
-  String typedefOfTypedef;
+  String? typedefOfTypedef;
   static const int TYPEDEFOFTYPEDEF = 10;
   /// This is a docstring comment for a deprecated field that has been spread
   /// across two lines.
@@ -61,13 +61,13 @@ class EventWrapper implements thrift.TBase {
   static const int DEPR = 11;
   /// Deprecated: use something else
   @deprecated
-  Uint8List deprBinary;
+  Uint8List? deprBinary;
   static const int DEPRBINARY = 12;
   /// Deprecated: use something else
   @deprecated
-  List<bool> deprList;
+  bool deprList;
   static const int DEPRLIST = 13;
-  List<t_variety.Event> eventsDefault = [
+  t_variety.Event eventsDefault = [
     ];
   static const int EVENTSDEFAULT = 14;
   Map<int, t_variety.Event> eventMapDefault = {
@@ -326,7 +326,7 @@ class EventWrapper implements thrift.TBase {
         case EVENTS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem21 = iprot.readListBegin();
-            this.events = List<t_variety.Event>();
+            this.events = <t_variety.Event>[];
             for(int elem23 = 0; elem23 < elem21.length; ++elem23) {
               t_variety.Event elem22 = t_variety.Event();
               elem22.read(iprot);
@@ -369,10 +369,10 @@ class EventWrapper implements thrift.TBase {
         case NUMS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem31 = iprot.readListBegin();
-            this.nums = List<List<int>>();
+            this.nums = <int>[];
             for(int elem36 = 0; elem36 < elem31.length; ++elem36) {
               thrift.TList elem33 = iprot.readListBegin();
-              List<int> elem32 = List<int>();
+              int elem32 = <int>[];
               for(int elem35 = 0; elem35 < elem33.length; ++elem35) {
                 int elem34 = iprot.readI32();
                 elem32.add(elem34);
@@ -388,7 +388,7 @@ class EventWrapper implements thrift.TBase {
         case ENUMS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem37 = iprot.readListBegin();
-            this.enums = List<int>();
+            this.enums = <int>[];
             for(int elem39 = 0; elem39 < elem37.length; ++elem39) {
               int elem38 = iprot.readI32();
               this.enums.add(elem38);
@@ -440,7 +440,7 @@ class EventWrapper implements thrift.TBase {
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem40 = iprot.readListBegin();
             // ignore: deprecated_member_use
-            this.deprList = List<bool>();
+            this.deprList = <bool>[];
             for(int elem42 = 0; elem42 < elem40.length; ++elem42) {
               bool elem41 = iprot.readBool();
               // ignore: deprecated_member_use
@@ -454,7 +454,7 @@ class EventWrapper implements thrift.TBase {
         case EVENTSDEFAULT:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem43 = iprot.readListBegin();
-            this.eventsDefault = List<t_variety.Event>();
+            this.eventsDefault = <t_variety.Event>[];
             for(int elem45 = 0; elem45 < elem43.length; ++elem45) {
               t_variety.Event elem44 = t_variety.Event();
               elem44.read(iprot);
@@ -826,21 +826,21 @@ class EventWrapper implements thrift.TBase {
   EventWrapper clone({
     int iD,
     t_variety.Event ev,
-    List<t_variety.Event> events,
+    t_variety.Event events,
     Set<t_variety.Event> events2,
     Map<int, t_variety.Event> eventMap,
-    List<List<int>> nums,
-    List<int> enums,
+    int nums,
+    int enums,
     bool aBoolField,
     t_variety.TestingUnions a_union,
-    String typedefOfTypedef,
+    String? typedefOfTypedef,
     // ignore: deprecated_member_use
     bool depr,
     // ignore: deprecated_member_use
-    Uint8List deprBinary,
+    Uint8List? deprBinary,
     // ignore: deprecated_member_use
-    List<bool> deprList,
-    List<t_variety.Event> eventsDefault,
+    bool deprList,
+    t_variety.Event eventsDefault,
     Map<int, t_variety.Event> eventMapDefault,
     Set<t_variety.Event> eventSetDefault,
   }) {

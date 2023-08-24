@@ -25,7 +25,7 @@ class AwesomeException extends Error implements thrift.TBase {
   fixnum.Int64 _iD = fixnum.Int64.ZERO;
   static const int ID = 1;
   /// Reason contains the error message.
-  String _reason;
+  String? _reason;
   static const int REASON = 2;
   /// Deprecated: use something else
   @deprecated
@@ -51,10 +51,10 @@ class AwesomeException extends Error implements thrift.TBase {
   }
 
   /// Reason contains the error message.
-  String get reason => this._reason;
+  String? get reason => this._reason;
 
   /// Reason contains the error message.
-  set reason(String reason) {
+  set reason(String? reason) {
     this._reason = reason;
   }
 
@@ -249,7 +249,7 @@ class AwesomeException extends Error implements thrift.TBase {
 
   AwesomeException clone({
     fixnum.Int64 iD,
-    String reason,
+    String? reason,
     // ignore: deprecated_member_use
     bool depr,
   }) {

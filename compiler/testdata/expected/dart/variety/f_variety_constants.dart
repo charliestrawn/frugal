@@ -29,11 +29,11 @@ class VarietyConstants {
   static const int? maxi53p1 = 9007199254740992;
   static const int? mini64 = -9223372036854775808;
   static const int? maxi64 = 9223372036854775807;
-  static const Map<String, String>? MAPCONSTANT = const {
+  static const Map<String?, String?>? MAPCONSTANT = const {
     "hello": "world",
     "goodnight": "moon",
   };
-  static final Set<String>? SETCONSTANT = Set<String>.from([
+  static final Set<String?>? SETCONSTANT = Set<String?>.from([
     "hello",
     "world",
   ]);
@@ -43,7 +43,7 @@ class VarietyConstants {
   static final t_variety.Event? ConstEvent2 = t_variety.Event()
     ..iD = -7
     ..message = "second one";
-  static const List<int>? NumsList = const [
+  static const int? NumsList = const [
     2,
     4,
     7,
@@ -55,17 +55,17 @@ class VarietyConstants {
     8,
     0,
   ]);
-  static final Map<String, t_variety.Event>? MAPCONSTANT2 = {
+  static final Map<String?, t_variety.Event>? MAPCONSTANT2 = {
     "hello": t_variety.Event()
       ..iD = -2
       ..message = "first here",
   };
-  static final Uint8List? bin_const = Uint8List.fromList(utf8.encode('hello'));
+  static final Uint8List?? bin_const = Uint8List.fromList(utf8.encode('hello'));
   static const bool? true_constant = true;
   static const bool? false_constant = false;
   static const int? const_hc = 2;
-  static const String? evil_string = "thin'g\" \"";
-  static const String? evil_string2 = "th'ing\"ad\"f";
+  static const String?? evil_string = "thin'g\" \"";
+  static const String?? evil_string2 = "th'ing\"ad\"f";
   static final t_variety.TestLowercase? const_lower = t_variety.TestLowercase()
     ..lowercaseInt = 2;
 }

@@ -17,7 +17,7 @@ class thing implements thrift.TBase {
 
   int _an_id = 0;
   static const int AN_ID = 1;
-  String _a_string;
+  String? _a_string;
   static const int A_STRING = 2;
 
   bool __isset_an_id = false;
@@ -35,9 +35,9 @@ class thing implements thrift.TBase {
     this.__isset_an_id = false;
   }
 
-  String get a_string => this._a_string;
+  String? get a_string => this._a_string;
 
-  set a_string(String a_string) {
+  set a_string(String? a_string) {
     this._a_string = a_string;
   }
 
@@ -178,7 +178,7 @@ class thing implements thrift.TBase {
 
   thing clone({
     int an_id,
-    String a_string,
+    String? a_string,
   }) {
     return thing()
       ..an_id = an_id ?? this.an_id

@@ -27,7 +27,7 @@ class Event implements thrift.TBase {
   fixnum.Int64 _iD = fixnum.Int64.ZERO;
   static const int ID = 1;
   /// Message contains the event payload.
-  String _message;
+  String? _message;
   static const int MESSAGE = 2;
   bool _yES_NO = false;
   static const int YES_NO = 3;
@@ -55,10 +55,10 @@ class Event implements thrift.TBase {
   }
 
   /// Message contains the event payload.
-  String get message => this._message;
+  String? get message => this._message;
 
   /// Message contains the event payload.
-  set message(String message) {
+  set message(String? message) {
     this._message = message;
   }
 
@@ -241,7 +241,7 @@ class Event implements thrift.TBase {
 
   Event clone({
     fixnum.Int64 iD,
-    String message,
+    String? message,
     bool yES_NO,
   }) {
     return Event()

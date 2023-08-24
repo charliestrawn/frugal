@@ -26,7 +26,7 @@ class Event implements thrift.TBase {
   int iD = t_variety.VarietyConstants.DEFAULT_ID;
   static const int ID = 1;
   /// Message contains the event payload.
-  String message;
+  String? message;
   static const int MESSAGE = 2;
   bool yES_NO;
   static const int YES_NO = 3;
@@ -202,7 +202,7 @@ class Event implements thrift.TBase {
 
   Event clone({
     int iD,
-    String message,
+    String? message,
     bool yES_NO,
   }) {
     return Event()
