@@ -271,7 +271,7 @@ class EventsSubscriber {
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
       thrift.TList elem76 = iprot.readListBegin();
-      Map<int, t_variety.Event> req = <Map<int, t_variety.Event>>[];
+      Map<int, t_variety.Event> req = Map<int, t_variety.Event>;
       for(int elem82 = 0; elem82 < elem76.length; ++elem82) {
         thrift.TMap elem78 = iprot.readMapBegin();
         Map<int, t_variety.Event> elem77 = Map<int, t_variety.Event>();

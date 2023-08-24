@@ -472,7 +472,7 @@ class EventWrapper implements thrift.TBase {
         case EVENTS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem21 = iprot.readListBegin();
-            this.events = <t_variety.Event>[];
+            this.events = t_variety.Event;
             for(int elem23 = 0; elem23 < elem21.length; ++elem23) {
               t_variety.Event elem22 = t_variety.Event();
               elem22.read(iprot);
@@ -515,10 +515,10 @@ class EventWrapper implements thrift.TBase {
         case NUMS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem31 = iprot.readListBegin();
-            this.nums = <int>[];
+            this.nums = int;
             for(int elem36 = 0; elem36 < elem31.length; ++elem36) {
               thrift.TList elem33 = iprot.readListBegin();
-              int elem32 = <int>[];
+              int elem32 = int;
               for(int elem35 = 0; elem35 < elem33.length; ++elem35) {
                 int elem34 = iprot.readI32();
                 elem32.add(elem34);
@@ -534,7 +534,7 @@ class EventWrapper implements thrift.TBase {
         case ENUMS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem37 = iprot.readListBegin();
-            this.enums = <int>[];
+            this.enums = int;
             for(int elem39 = 0; elem39 < elem37.length; ++elem39) {
               int elem38 = iprot.readI32();
               this.enums.add(elem38);
@@ -588,7 +588,7 @@ class EventWrapper implements thrift.TBase {
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem40 = iprot.readListBegin();
             // ignore: deprecated_member_use
-            this.deprList = <bool>[];
+            this.deprList = bool;
             for(int elem42 = 0; elem42 < elem40.length; ++elem42) {
               bool elem41 = iprot.readBool();
               // ignore: deprecated_member_use
@@ -602,7 +602,7 @@ class EventWrapper implements thrift.TBase {
         case EVENTSDEFAULT:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem43 = iprot.readListBegin();
-            this.eventsDefault = <t_variety.Event>[];
+            this.eventsDefault = t_variety.Event;
             for(int elem45 = 0; elem45 < elem43.length; ++elem45) {
               t_variety.Event elem44 = t_variety.Event();
               elem44.read(iprot);
