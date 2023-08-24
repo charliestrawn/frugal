@@ -1177,9 +1177,6 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		case "list":
 			contents += fmt.Sprintf(ind+"thrift.TList %s = iprot.readListBegin();\n", containerElem)
 			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-			// Convert to list literal
-			dartType = strings.Replace(dartType, "List", "", -1);
-			dartType = "<"+dartType+">[]";
 			contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, dartType)
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
 			contents += valContents
