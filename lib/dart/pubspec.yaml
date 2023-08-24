@@ -13,7 +13,7 @@ dependencies:
     hosted:
       name: thrift
       url: https://pub.workiva.org
-    version: ^0.0.10
+    version: ^0.0.15
   uuid: ^3.0.0
   w_common: ^3.0.0
   w_transport: '>=4.0.0 <6.0.0'
