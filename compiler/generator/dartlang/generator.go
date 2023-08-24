@@ -202,7 +202,7 @@ func (g *Generator) addToPubspec(dir string) error {
 		"logging":    "^1.0.0",
 		"thrift": dep{
 			Hosted:  hostedDep{Name: "thrift", URL: "https://pub.workiva.org"},
-			Version: "^0.0.14",
+			Version: "^0.0.15",
 		},
 		"w_common": "^3.0.0",
 	}
@@ -1177,7 +1177,10 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		case "list":
 			contents += fmt.Sprintf(ind+"thrift.TList %s = iprot.readListBegin();\n", containerElem)
 			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-			contents += fmt.Sprintf(ind+"%s%s = %s();\n", prefix, fName, dartType)
+			// Convert to list literal
+			dartType = strings.Replace(dartType, "List", "", -1);
+			dartType = "<"+dartType+">[]";
+			contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, dartType)
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
@@ -1717,7 +1720,7 @@ func (g *Generator) GeneratePublisher(file *os.File, scope *parser.Scope) error 
 	publisherClassname := fmt.Sprintf("%sPublisher", strings.Title(scope.Name))
 
 	// Generate publisher factory
-	publishers += fmt.Sprintf("%s %sFactory(frugal.FScopeProvider provider, {List<frugal.Middleware> middleware}) =>\n",
+	publishers += fmt.Sprintf("%s %sFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>? middleware}) =>\n",
 		publisherClassname, lowercaseFirstCharacter(publisherClassname))
 	publishers += tabtab + fmt.Sprintf("%s(provider, middleware);\n\n", publisherClassname)
 
@@ -1728,16 +1731,16 @@ func (g *Generator) GeneratePublisher(file *os.File, scope *parser.Scope) error 
 	publishers += fmt.Sprintf("class %s {\n", publisherClassname)
 	publishers += tab + "frugal.FPublisherTransport transport;\n"
 	publishers += tab + "frugal.FProtocolFactory protocolFactory;\n"
-	publishers += tab + "Map<String, frugal.FMethod> _methods;\n"
+	publishers += tab + "Map<String, frugal.FMethod>? _methods = {};\n"
 
-	publishers += fmt.Sprintf(tab+"%s(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) {\n", publisherClassname)
+	publishers += fmt.Sprintf(tab+"%s(frugal.FScopeProvider provider, [List<frugal.Middleware>? middleware]) {\n", publisherClassname)
 	publishers += tabtab + "transport = provider.publisherTransportFactory.getTransport();\n"
 	publishers += tabtab + "protocolFactory = provider.protocolFactory;\n"
 	publishers += tabtab + "var combined = middleware ?? [];\n"
 	publishers += tabtab + "combined.addAll(provider.middleware);\n"
 	publishers += tabtab + "this._methods = {};\n"
 	for _, operation := range scope.Operations {
-		publishers += fmt.Sprintf(tabtab+"this._methods['%s'] = frugal.FMethod(this._publish%s, '%s', 'publish%s', combined);\n",
+		publishers += fmt.Sprintf(tabtab+"this._methods?['%s'] = frugal.FMethod(this._publish%s, '%s', 'publish%s', combined);\n",
 			operation.Name, operation.Name, strings.Title(scope.Name), operation.Name)
 	}
 	publishers += tab + "}\n\n"
@@ -1768,7 +1771,7 @@ func (g *Generator) GeneratePublisher(file *os.File, scope *parser.Scope) error 
 
 		publishers += fmt.Sprintf(tab+"Future publish%s(frugal.FContext ctx, %s%s req) {\n", op.Name, args, g.getDartTypeFromThriftType(op.Type))
 
-		publishers += fmt.Sprintf(tabtab+"return this._methods['%s']([ctx, %sreq]);\n", op.Name, argsWithoutTypes)
+		publishers += fmt.Sprintf(tabtab+"return this._methods?['%s']([ctx, %sreq]);\n", op.Name, argsWithoutTypes)
 		publishers += tab + "}\n\n"
 
 		publishers += fmt.Sprintf(tab+"Future _publish%s(frugal.FContext ctx, %s%s req) async {\n", op.Name, args, g.getDartTypeFromThriftType(op.Type))
@@ -1824,7 +1827,7 @@ func (g *Generator) GenerateSubscriber(file *os.File, scope *parser.Scope) error
 	subscriberClassname := fmt.Sprintf("%sSubscriber", strings.Title(scope.Name))
 
 	// Generate subscriber factory
-	subscribers += fmt.Sprintf("%s %sFactory(frugal.FScopeProvider provider, {List<frugal.Middleware> middleware}) =>\n",
+	subscribers += fmt.Sprintf("%s %sFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>? middleware}) =>\n",
 		subscriberClassname, lowercaseFirstCharacter(subscriberClassname))
 	subscribers += tabtab + fmt.Sprintf("%s(provider, middleware);\n\n", subscriberClassname)
 
@@ -1834,11 +1837,11 @@ func (g *Generator) GenerateSubscriber(file *os.File, scope *parser.Scope) error
 	// Generate subscriber class
 	subscribers += fmt.Sprintf("class %s {\n", subscriberClassname)
 	subscribers += tab + "final frugal.FScopeProvider provider;\n"
-	subscribers += tab + "final List<frugal.Middleware> _middleware;\n\n"
+	subscribers += tab + "final List<frugal.Middleware>? _middleware;\n\n"
 
-	subscribers += tab + fmt.Sprintf("%s(this.provider, [List<frugal.Middleware> middleware])\n", subscriberClassname)
+	subscribers += tab + fmt.Sprintf("%s(this.provider, [List<frugal.Middleware>? middleware])\n", subscriberClassname)
 	subscribers += tabtabtab + ": this._middleware = middleware ?? [] {\n"
-	subscribers += tabtab + "this._middleware.addAll(provider.middleware);\n"
+	subscribers += tabtab + "this._middleware?.addAll(provider.middleware);\n"
 	subscribers += "}\n\n"
 
 	args := ""
@@ -1969,7 +1972,7 @@ func (g *Generator) generateClient(service *parser.Service) string {
 	contents := ""
 
 	// Generate client factory
-	contents += fmt.Sprintf("%s %sFactory(frugal.FServiceProvider provider, {List<frugal.Middleware> middleware}) =>\n",
+	contents += fmt.Sprintf("%s %sFactory(frugal.FServiceProvider provider, {List<frugal.Middleware>? middleware}) =>\n",
 		clientClassname, lowercaseFirstCharacter(clientClassname))
 	contents += tabtab + fmt.Sprintf("%s(provider, middleware);\n\n", clientClassname)
 
@@ -1991,14 +1994,14 @@ func (g *Generator) generateClient(service *parser.Service) string {
 			clientClassname, servTitle)
 	}
 	contents += fmt.Sprintf(tab+"static final logging.Logger _frugalLog = logging.Logger('%s');\n", servTitle)
-	contents += tab + "Map<String, frugal.FMethod> _methods;\n\n"
+	contents += tab + "Map<String, frugal.FMethod>? _methods = {};\n\n"
 
 	if service.Extends != "" {
-		contents += tab + fmt.Sprintf("%s(frugal.FServiceProvider provider, [List<frugal.Middleware> middleware])\n", clientClassname)
+		contents += tab + fmt.Sprintf("%s(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])\n", clientClassname)
 		contents += tabtabtab + ": this._provider = provider,\n"
 		contents += tabtabtab + "  super(provider, middleware) {\n"
 	} else {
-		contents += tab + fmt.Sprintf("%s(frugal.FServiceProvider provider, [List<frugal.Middleware> middleware])\n", clientClassname)
+		contents += tab + fmt.Sprintf("%s(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])\n", clientClassname)
 		contents += tabtabtab + ": this._provider = provider {\n"
 	}
 	contents += tabtab + "_transport = provider.transport;\n"
@@ -2008,7 +2011,7 @@ func (g *Generator) generateClient(service *parser.Service) string {
 	contents += tabtab + "this._methods = {};\n"
 	for _, method := range service.Methods {
 		nameLower := parser.LowercaseFirstLetter(method.Name)
-		contents += fmt.Sprintf(tabtab+"this._methods['%s'] = frugal.FMethod(this._%s, '%s', '%s', combined);\n",
+		contents += fmt.Sprintf(tabtab+"this._methods?['%s'] = frugal.FMethod(this._%s, '%s', '%s', combined);\n",
 			nameLower, nameLower, servTitle, nameLower)
 	}
 	contents += tab + "}\n\n"
@@ -2058,7 +2061,7 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 		innerTypeCast = fmt.Sprintf(".then((value) => value as %s)", g.getDartTypeFromThriftType(method.ReturnType))
 	}
 
-	contents += fmt.Sprintf(tabtab+"return this._methods['%s']([ctx%s])%s;\n",
+	contents += fmt.Sprintf(tabtab+"return this._methods?['%s']([ctx%s])%s;\n",
 		nameLower, g.generateInputArgsWithoutTypes(method.Arguments), innerTypeCast)
 
 	contents += fmt.Sprintf(tab + "}\n\n")
@@ -2226,11 +2229,11 @@ func (g *Generator) getDartTypeFromThriftType(t *parser.Type) string {
 	case "double":
 		return "double"
 	case "string":
-		return "String"
+		return "String?"
 	case "binary":
-		return "Uint8List"
+		return "Uint8List?"
 	case "list":
-		return fmt.Sprintf("List<%s>",
+		return fmt.Sprintf("%s",
 			g.getDartTypeFromThriftType(underlyingType.ValueType))
 	case "set":
 		return fmt.Sprintf("Set<%s>",
