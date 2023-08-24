@@ -49,37 +49,40 @@ final Duration _defaultTimeout = Duration(seconds: 5);
 class FContext {
   static int _globalOpId = 0;
 
-  Map<String, String> _requestHeaders = {};
-  Map<String, String> _responseHeaders = {};
+  final Map<String, String> _requestHeaders;
+  final Map<String, String> _responseHeaders;
 
   /// Create a new [FContext] with the optionally specified [correlationId].
-  FContext({String correlationId = ""}) {
+  FContext({String correlationId = ""})
+      : _requestHeaders = {},
+        _responseHeaders = {} {
     if (correlationId == "") {
       correlationId = _generateCorrelationId();
     }
     _globalOpId++;
-    _requestHeaders = {
-      _cidHeader: correlationId,
-      _opidHeader: _globalOpId.toString(),
-      _timeoutHeader: _defaultTimeout.inMilliseconds.toString(),
-    };
-    _responseHeaders = {};
+    _requestHeaders[_cidHeader] = correlationId;
+    _requestHeaders[_opidHeader] = _globalOpId.toString();
+    _requestHeaders[_timeoutHeader] = _defaultTimeout.inMilliseconds.toString();
   }
 
   /// Create a new [FContext] with the given request headers.
-  FContext.withRequestHeaders(Map<String, String> headers) {
-    if (!headers.containsKey(_cidHeader) || headers[_cidHeader] == "") {
-      headers[_cidHeader] = _generateCorrelationId();
+  FContext.withRequestHeaders(Map<String, String> headers)
+      : _requestHeaders = Map.from(headers),
+        _responseHeaders = {} {
+    if (!_requestHeaders.containsKey(_cidHeader) ||
+        _requestHeaders[_cidHeader] == "") {
+      _requestHeaders[_cidHeader] = _generateCorrelationId();
     }
-    if (!headers.containsKey(_opidHeader) || headers[_opidHeader] == "") {
+    if (!_requestHeaders.containsKey(_opidHeader) ||
+        _requestHeaders[_opidHeader] == "") {
       _globalOpId++;
-      headers[_opidHeader] = _globalOpId.toString();
+      _requestHeaders[_opidHeader] = _globalOpId.toString();
     }
-    if (!headers.containsKey(_timeoutHeader) || headers[_timeoutHeader] == "") {
-      headers[_timeoutHeader] = _defaultTimeout.inMilliseconds.toString();
+    if (!_requestHeaders.containsKey(_timeoutHeader) ||
+        _requestHeaders[_timeoutHeader] == "") {
+      _requestHeaders[_timeoutHeader] =
+          _defaultTimeout.inMilliseconds.toString();
     }
-    _requestHeaders = headers;
-    _responseHeaders = {};
   }
 
   /// The request timeout for any method call using this context.
