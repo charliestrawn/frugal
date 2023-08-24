@@ -37,12 +37,7 @@ abstract class FAsyncTransport extends FTransport {
   }
 
   @override
-  Future<TTransport> request(FContext? ctx, Uint8List? payload) async {
-    if (ctx == null || payload == null) {
-      // Handle the case where ctx or payload is null appropriately
-      throw TTransportError(
-          FrugalTTransportErrorType.NOT_OPEN, "Context or payload is null");
-    }
+  Future<TTransport> request(FContext ctx, Uint8List payload) async {
     _preflightRequestCheck(payload);
 
     Completer<Uint8List> resultCompleter = Completer();

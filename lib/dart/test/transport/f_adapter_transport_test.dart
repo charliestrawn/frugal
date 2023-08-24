@@ -82,7 +82,10 @@ void main() {
 
     test('request transport not open', () async {
       try {
-        await transport.request(null, null);
+        FContext reqCtx = FContext();
+        var frame = mockFrame(reqCtx, "request");
+        var respFrame = mockFrame(reqCtx, "response");
+        await transport.request(reqCtx, respFrame);
         fail('Should have thrown an exception');
       } on TTransportError catch (e) {
         expect(e.type, FrugalTTransportErrorType.NOT_OPEN);
