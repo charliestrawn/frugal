@@ -90,7 +90,7 @@ class MonitorRunner extends Disposable {
     }
     _reopenCompleter = Completer();
     _startReopenTimer();
-    await _reopenCompleter?.future;
+    await _reopenCompleter!.future;
   }
 
   void _startReopenTimer() {
