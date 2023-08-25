@@ -18,13 +18,12 @@ Uint8List mockFrame(FContext ctx, String message) {
 }
 
 @GenerateNiceMocks([
-  MockSpec<TSocketTransport>(), 
+  MockSpec<TSocketTransport>(),
   MockSpec<TSocket>(),
   MockSpec<FTransportMonitor>(fallbackGenerators: {
     #manageAndReturnTypedDisposable: shim_manageAndReturnTypedDisposable,
   }),
 ])
-
 T? shim_manageAndReturnTypedDisposable<T extends Disposable>(T? disposable) {}
 
 void main() {
