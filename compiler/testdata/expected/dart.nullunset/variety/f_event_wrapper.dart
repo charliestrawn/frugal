@@ -33,23 +33,23 @@ class EventWrapper implements thrift.TBase {
   static final thrift.TField _EVENT_MAP_DEFAULT_FIELD_DESC = thrift.TField('EventMapDefault', thrift.TType.MAP, 15);
   static final thrift.TField _EVENT_SET_DEFAULT_FIELD_DESC = thrift.TField('EventSetDefault', thrift.TType.SET, 16);
 
-  int iD;
+  int? iD;
   static const int ID = 1;
-  t_variety.Event ev;
+  t_variety.Event? ev;
   static const int EV = 2;
-  t_variety.Event events;
+  List<t_variety.Event>? events;
   static const int EVENTS = 3;
-  Set<t_variety.Event> events2;
+  Set<t_variety.Event>? events2;
   static const int EVENTS2 = 4;
-  Map<int, t_variety.Event> eventMap;
+  Map<int, t_variety.Event>? eventMap;
   static const int EVENTMAP = 5;
-  int nums;
+  List<List<int>>? nums;
   static const int NUMS = 6;
-  int enums;
+  List<int>? enums;
   static const int ENUMS = 7;
-  bool aBoolField;
+  bool? aBoolField;
   static const int ABOOLFIELD = 8;
-  t_variety.TestingUnions a_union;
+  t_variety.TestingUnions? a_union;
   static const int A_UNION = 9;
   String? typedefOfTypedef;
   static const int TYPEDEFOFTYPEDEF = 10;
@@ -57,7 +57,7 @@ class EventWrapper implements thrift.TBase {
   /// across two lines.
   /// Deprecated: use something else
   @deprecated
-  bool depr;
+  bool? depr;
   static const int DEPR = 11;
   /// Deprecated: use something else
   @deprecated
@@ -65,15 +65,15 @@ class EventWrapper implements thrift.TBase {
   static const int DEPRBINARY = 12;
   /// Deprecated: use something else
   @deprecated
-  bool deprList;
+  List<bool>? deprList;
   static const int DEPRLIST = 13;
-  t_variety.Event eventsDefault = [
+  List<t_variety.Event>? eventsDefault = [
     ];
   static const int EVENTSDEFAULT = 14;
-  Map<int, t_variety.Event> eventMapDefault = {
+  Map<int, t_variety.Event>? eventMapDefault = {
     };
   static const int EVENTMAPDEFAULT = 15;
-  Set<t_variety.Event> eventSetDefault = Set<t_variety.Event>.from([
+  Set<t_variety.Event>? eventSetDefault = Set<t_variety.Event>.from([
     ]);
   static const int EVENTSETDEFAULT = 16;
 
@@ -326,11 +326,11 @@ class EventWrapper implements thrift.TBase {
         case EVENTS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem21 = iprot.readListBegin();
-            this.events = t_variety.Event;
+            this.events = <t_variety.Event>[];
             for(int elem23 = 0; elem23 < elem21.length; ++elem23) {
               t_variety.Event elem22 = t_variety.Event();
               elem22.read(iprot);
-              this.events.add(elem22);
+              this.events?.add(elem22);
             }
             iprot.readListEnd();
           } else {
@@ -344,7 +344,7 @@ class EventWrapper implements thrift.TBase {
             for(int elem26 = 0; elem26 < elem24.length; ++elem26) {
               t_variety.Event elem25 = t_variety.Event();
               elem25.read(iprot);
-              this.events2.add(elem25);
+              this.events2?.add(elem25);
             }
             iprot.readSetEnd();
           } else {
@@ -359,7 +359,7 @@ class EventWrapper implements thrift.TBase {
               int elem30 = iprot.readI64();
               t_variety.Event elem28 = t_variety.Event();
               elem28.read(iprot);
-              this.eventMap[elem30] = elem28;
+              this.eventMap?[elem30] = elem28;
             }
             iprot.readMapEnd();
           } else {
@@ -369,16 +369,16 @@ class EventWrapper implements thrift.TBase {
         case NUMS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem31 = iprot.readListBegin();
-            this.nums = int;
+            this.nums = <List<int>>[];
             for(int elem36 = 0; elem36 < elem31.length; ++elem36) {
               thrift.TList elem33 = iprot.readListBegin();
-              int elem32 = int;
+              List<int> elem32 = <int>[];
               for(int elem35 = 0; elem35 < elem33.length; ++elem35) {
                 int elem34 = iprot.readI32();
                 elem32.add(elem34);
               }
               iprot.readListEnd();
-              this.nums.add(elem32);
+              this.nums?.add(elem32);
             }
             iprot.readListEnd();
           } else {
@@ -388,10 +388,10 @@ class EventWrapper implements thrift.TBase {
         case ENUMS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem37 = iprot.readListBegin();
-            this.enums = int;
+            this.enums = <int>[];
             for(int elem39 = 0; elem39 < elem37.length; ++elem39) {
               int elem38 = iprot.readI32();
-              this.enums.add(elem38);
+              this.enums?.add(elem38);
             }
             iprot.readListEnd();
           } else {
@@ -440,11 +440,11 @@ class EventWrapper implements thrift.TBase {
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem40 = iprot.readListBegin();
             // ignore: deprecated_member_use
-            this.deprList = bool;
+            this.deprList = <bool>[];
             for(int elem42 = 0; elem42 < elem40.length; ++elem42) {
               bool elem41 = iprot.readBool();
               // ignore: deprecated_member_use
-              this.deprList.add(elem41);
+              this.deprList?.add(elem41);
             }
             iprot.readListEnd();
           } else {
@@ -454,11 +454,11 @@ class EventWrapper implements thrift.TBase {
         case EVENTSDEFAULT:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem43 = iprot.readListBegin();
-            this.eventsDefault = t_variety.Event;
+            this.eventsDefault = <t_variety.Event>[];
             for(int elem45 = 0; elem45 < elem43.length; ++elem45) {
               t_variety.Event elem44 = t_variety.Event();
               elem44.read(iprot);
-              this.eventsDefault.add(elem44);
+              this.eventsDefault?.add(elem44);
             }
             iprot.readListEnd();
           } else {
@@ -473,7 +473,7 @@ class EventWrapper implements thrift.TBase {
               int elem49 = iprot.readI64();
               t_variety.Event elem47 = t_variety.Event();
               elem47.read(iprot);
-              this.eventMapDefault[elem49] = elem47;
+              this.eventMapDefault?[elem49] = elem47;
             }
             iprot.readMapEnd();
           } else {
@@ -487,7 +487,7 @@ class EventWrapper implements thrift.TBase {
             for(int elem52 = 0; elem52 < elem50.length; ++elem52) {
               t_variety.Event elem51 = t_variety.Event();
               elem51.read(iprot);
-              this.eventSetDefault.add(elem51);
+              this.eventSetDefault?.add(elem51);
             }
             iprot.readSetEnd();
           } else {
@@ -520,8 +520,8 @@ class EventWrapper implements thrift.TBase {
     oprot.writeFieldEnd();
     if (isSetEvents()) {
       oprot.writeFieldBegin(_EVENTS_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, this.events.length));
-      for(var elem53 in this.events) {
+      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, this.events!.length));
+      for(var elem53 in this.events!) {
         elem53.write(oprot);
       }
       oprot.writeListEnd();
@@ -529,8 +529,8 @@ class EventWrapper implements thrift.TBase {
     }
     if (isSetEvents2()) {
       oprot.writeFieldBegin(_EVENTS2_FIELD_DESC);
-      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, this.events2.length));
-      for(var elem54 in this.events2) {
+      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, this.events2!.length));
+      for(var elem54 in this.events2!) {
         elem54.write(oprot);
       }
       oprot.writeSetEnd();
@@ -538,18 +538,18 @@ class EventWrapper implements thrift.TBase {
     }
     if (isSetEventMap()) {
       oprot.writeFieldBegin(_EVENT_MAP_FIELD_DESC);
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, this.eventMap.length));
-      for(var elem55 in this.eventMap.keys) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, this.eventMap!.length));
+      for(var elem55 in this.eventMap!.keys) {
         oprot.writeI64(elem55);
-        eventMap[elem55].write(oprot);
+        eventMap![elem55].write(oprot);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
     }
     if (isSetNums()) {
       oprot.writeFieldBegin(_NUMS_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.LIST, this.nums.length));
-      for(var elem56 in this.nums) {
+      oprot.writeListBegin(thrift.TList(thrift.TType.LIST, this.nums!.length));
+      for(var elem56 in this.nums!) {
         oprot.writeListBegin(thrift.TList(thrift.TType.I32, elem56.length));
         for(var elem57 in elem56) {
           oprot.writeI32(elem57);
@@ -561,8 +561,8 @@ class EventWrapper implements thrift.TBase {
     }
     if (isSetEnums()) {
       oprot.writeFieldBegin(_ENUMS_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.I32, this.enums.length));
-      for(var elem58 in this.enums) {
+      oprot.writeListBegin(thrift.TList(thrift.TType.I32, this.enums!.length));
+      for(var elem58 in this.enums!) {
         oprot.writeI32(elem58);
       }
       oprot.writeListEnd();
@@ -596,9 +596,9 @@ class EventWrapper implements thrift.TBase {
     if (isSetDeprList()) {
       oprot.writeFieldBegin(_DEPR_LIST_FIELD_DESC);
       // ignore: deprecated_member_use
-      oprot.writeListBegin(thrift.TList(thrift.TType.BOOL, this.deprList.length));
+      oprot.writeListBegin(thrift.TList(thrift.TType.BOOL, this.deprList!.length));
       // ignore: deprecated_member_use
-      for(var elem59 in this.deprList) {
+      for(var elem59 in this.deprList!) {
         oprot.writeBool(elem59);
       }
       oprot.writeListEnd();
@@ -606,8 +606,8 @@ class EventWrapper implements thrift.TBase {
     }
     if (isSetEventsDefault()) {
       oprot.writeFieldBegin(_EVENTS_DEFAULT_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, this.eventsDefault.length));
-      for(var elem60 in this.eventsDefault) {
+      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, this.eventsDefault!.length));
+      for(var elem60 in this.eventsDefault!) {
         elem60.write(oprot);
       }
       oprot.writeListEnd();
@@ -615,18 +615,18 @@ class EventWrapper implements thrift.TBase {
     }
     if (isSetEventMapDefault()) {
       oprot.writeFieldBegin(_EVENT_MAP_DEFAULT_FIELD_DESC);
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, this.eventMapDefault.length));
-      for(var elem61 in this.eventMapDefault.keys) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, this.eventMapDefault!.length));
+      for(var elem61 in this.eventMapDefault!.keys) {
         oprot.writeI64(elem61);
-        eventMapDefault[elem61].write(oprot);
+        eventMapDefault![elem61].write(oprot);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
     }
     if (isSetEventSetDefault()) {
       oprot.writeFieldBegin(_EVENT_SET_DEFAULT_FIELD_DESC);
-      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, this.eventSetDefault.length));
-      for(var elem62 in this.eventSetDefault) {
+      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, this.eventSetDefault!.length));
+      for(var elem62 in this.eventSetDefault!) {
         elem62.write(oprot);
       }
       oprot.writeSetEnd();
@@ -824,25 +824,25 @@ class EventWrapper implements thrift.TBase {
   }
 
   EventWrapper clone({
-    int iD,
+    int? iD,
     t_variety.Event ev,
-    t_variety.Event events,
-    Set<t_variety.Event> events2,
-    Map<int, t_variety.Event> eventMap,
-    int nums,
-    int enums,
-    bool aBoolField,
+    List<t_variety.Event>? events,
+    Set<t_variety.Event>? events2,
+    Map<int, t_variety.Event>? eventMap,
+    List<List<int>>? nums,
+    List<int>? enums,
+    bool? aBoolField,
     t_variety.TestingUnions a_union,
     String? typedefOfTypedef,
     // ignore: deprecated_member_use
-    bool depr,
+    bool? depr,
     // ignore: deprecated_member_use
     Uint8List? deprBinary,
     // ignore: deprecated_member_use
-    bool deprList,
-    t_variety.Event eventsDefault,
-    Map<int, t_variety.Event> eventMapDefault,
-    Set<t_variety.Event> eventSetDefault,
+    List<bool>? deprList,
+    List<t_variety.Event>? eventsDefault,
+    Map<int, t_variety.Event>? eventMapDefault,
+    Set<t_variety.Event>? eventSetDefault,
   }) {
     return EventWrapper()
       ..iD = iD ?? this.iD

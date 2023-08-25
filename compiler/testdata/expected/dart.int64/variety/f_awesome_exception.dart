@@ -22,14 +22,14 @@ class AwesomeException extends Error implements thrift.TBase {
   static final thrift.TField _DEPR_FIELD_DESC = thrift.TField('depr', thrift.TType.BOOL, 3);
 
   /// ID is a unique identifier for an awesome exception.
-  fixnum.Int64 _iD = fixnum.Int64.ZERO;
+  fixnum.Int64? _iD = fixnum.Int64.ZERO;
   static const int ID = 1;
   /// Reason contains the error message.
   String? _reason;
   static const int REASON = 2;
   /// Deprecated: use something else
   @deprecated
-  bool _depr = false;
+  bool? _depr = false;
   static const int DEPR = 3;
 
   bool __isset_iD = false;
@@ -66,11 +66,11 @@ class AwesomeException extends Error implements thrift.TBase {
 
   /// Deprecated: use something else
   @deprecated
-  bool get depr => this._depr;
+  bool? get depr => this._depr;
 
   /// Deprecated: use something else
   @deprecated
-  set depr(bool depr) {
+  set depr(bool? depr) {
     this._depr = depr;
     this.__isset_depr = true;
   }
@@ -248,10 +248,10 @@ class AwesomeException extends Error implements thrift.TBase {
   }
 
   AwesomeException clone({
-    fixnum.Int64 iD,
+    fixnum.Int64? iD,
     String? reason,
     // ignore: deprecated_member_use
-    bool depr,
+    bool? depr,
   }) {
     return AwesomeException()
       ..iD = iD ?? this.iD

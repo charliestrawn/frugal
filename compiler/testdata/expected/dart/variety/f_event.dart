@@ -23,12 +23,12 @@ class Event implements thrift.TBase {
   static final thrift.TField _YE_S__NO_FIELD_DESC = thrift.TField('YES_NO', thrift.TType.BOOL, 3);
 
   /// ID is a unique identifier for an event.
-  int _iD = 0;
+  int? _iD = 0;
   static const int ID = 1;
   /// Message contains the event payload.
   String? _message;
   static const int MESSAGE = 2;
-  bool _yES_NO = false;
+  bool? _yES_NO = false;
   static const int YES_NO = 3;
 
   bool __isset_iD = false;
@@ -39,10 +39,10 @@ class Event implements thrift.TBase {
   }
 
   /// ID is a unique identifier for an event.
-  int get iD => this._iD;
+  int? get iD => this._iD;
 
   /// ID is a unique identifier for an event.
-  set iD(int iD) {
+  set iD(int? iD) {
     this._iD = iD;
     this.__isset_iD = true;
   }
@@ -67,9 +67,9 @@ class Event implements thrift.TBase {
     this.message = null;
   }
 
-  bool get yES_NO => this._yES_NO;
+  bool? get yES_NO => this._yES_NO;
 
-  set yES_NO(bool yES_NO) {
+  set yES_NO(bool? yES_NO) {
     this._yES_NO = yES_NO;
     this.__isset_yES_NO = true;
   }
@@ -239,9 +239,9 @@ class Event implements thrift.TBase {
   }
 
   Event clone({
-    int iD,
+    int? iD,
     String? message,
-    bool yES_NO,
+    bool? yES_NO,
   }) {
     return Event()
       ..iD = iD ?? this.iD

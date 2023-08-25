@@ -61,7 +61,7 @@ class EventsPublisher {
     var msg = thrift.TMessage(op, thrift.TMessageType.CALL, 0);
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
-    req.write(oprot);
+    req!.write(oprot);
     oprot.writeMessageEnd();
     // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
     // ignore: await_only_futures
@@ -91,11 +91,11 @@ class EventsPublisher {
   }
 
 
-  Future publishSomeStr(frugal.FContext ctx, String user, String? req) {
+  Future publishSomeStr(frugal.FContext ctx, String user, String req) {
     return this._methods?['SomeStr']([ctx, user, req]);
   }
 
-  Future _publishSomeStr(frugal.FContext ctx, String user, String? req) async {
+  Future _publishSomeStr(frugal.FContext ctx, String user, String req) async {
     ctx.addRequestHeader('_topic_user', user);
     var op = 'SomeStr';
     var prefix = 'foo.$user.';
@@ -113,11 +113,11 @@ class EventsPublisher {
   }
 
 
-  Future publishSomeList(frugal.FContext ctx, String user, Map<int, t_variety.Event> req) {
+  Future publishSomeList(frugal.FContext ctx, String user, List<Map<int, t_variety.Event>> req) {
     return this._methods?['SomeList']([ctx, user, req]);
   }
 
-  Future _publishSomeList(frugal.FContext ctx, String user, Map<int, t_variety.Event> req) async {
+  Future _publishSomeList(frugal.FContext ctx, String user, List<Map<int, t_variety.Event>> req) async {
     ctx.addRequestHeader('_topic_user', user);
     var op = 'SomeList';
     var prefix = 'foo.$user.';
@@ -220,7 +220,7 @@ class EventsSubscriber {
   }
 
 
-  Future<frugal.FSubscription> subscribeSomeStr(String user, dynamic onstring(frugal.FContext ctx, String? req)) async {
+  Future<frugal.FSubscription> subscribeSomeStr(String user, dynamic onstring(frugal.FContext ctx, String req)) async {
     var op = 'SomeStr';
     var prefix = 'foo.$user.';
     var topic = '${prefix}Events$delimiter$op';
@@ -229,7 +229,7 @@ class EventsSubscriber {
     return frugal.FSubscription(topic, transport);
   }
 
-  frugal.FAsyncCallback _recvSomeStr(String op, frugal.FProtocolFactory protocolFactory, dynamic onstring(frugal.FContext ctx, String? req)) {
+  frugal.FAsyncCallback _recvSomeStr(String op, frugal.FProtocolFactory protocolFactory, dynamic onstring(frugal.FContext ctx, String req)) {
     frugal.FMethod method = frugal.FMethod(onstring, 'Events', 'subscribestring', this._middleware);
     callbackSomeStr(thrift.TTransport transport) {
       var iprot = protocolFactory.getProtocol(transport);
@@ -241,7 +241,7 @@ class EventsSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      String? req = iprot.readString();
+      String req = iprot.readString();
       iprot.readMessageEnd();
       method([ctx, req]);
     }
@@ -249,7 +249,7 @@ class EventsSubscriber {
   }
 
 
-  Future<frugal.FSubscription> subscribeSomeList(String user, dynamic onlist(frugal.FContext ctx, Map<int, t_variety.Event> req)) async {
+  Future<frugal.FSubscription> subscribeSomeList(String user, dynamic onlist(frugal.FContext ctx, List<Map<int, t_variety.Event>> req)) async {
     var op = 'SomeList';
     var prefix = 'foo.$user.';
     var topic = '${prefix}Events$delimiter$op';
@@ -258,7 +258,7 @@ class EventsSubscriber {
     return frugal.FSubscription(topic, transport);
   }
 
-  frugal.FAsyncCallback _recvSomeList(String op, frugal.FProtocolFactory protocolFactory, dynamic onlist(frugal.FContext ctx, Map<int, t_variety.Event> req)) {
+  frugal.FAsyncCallback _recvSomeList(String op, frugal.FProtocolFactory protocolFactory, dynamic onlist(frugal.FContext ctx, List<Map<int, t_variety.Event>> req)) {
     frugal.FMethod method = frugal.FMethod(onlist, 'Events', 'subscribelist', this._middleware);
     callbackSomeList(thrift.TTransport transport) {
       var iprot = protocolFactory.getProtocol(transport);
@@ -271,7 +271,7 @@ class EventsSubscriber {
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
       thrift.TList elem76 = iprot.readListBegin();
-      Map<int, t_variety.Event> req = Map<int, t_variety.Event>;
+      List<Map<int, t_variety.Event>> req = <Map<int, t_variety.Event>>[];
       for(int elem82 = 0; elem82 < elem76.length; ++elem82) {
         thrift.TMap elem78 = iprot.readMapBegin();
         Map<int, t_variety.Event> elem77 = Map<int, t_variety.Event>();

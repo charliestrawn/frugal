@@ -26,23 +26,23 @@ class TestingUnions implements thrift.TBase {
   static final thrift.TField _DEPR_FIELD_DESC = thrift.TField('depr', thrift.TType.BOOL, 7);
   static final thrift.TField _WHO_A__BUDDY_FIELD_DESC = thrift.TField('WHOA_BUDDY', thrift.TType.BOOL, 8);
 
-  fixnum.Int64 _anID;
+  fixnum.Int64? _anID;
   static const int ANID = 1;
   String? _aString;
   static const int ASTRING = 2;
-  int _someotherthing;
+  int? _someotherthing;
   static const int SOMEOTHERTHING = 3;
-  int _anInt16;
+  int? _anInt16;
   static const int ANINT16 = 4;
-  Map<int, String?> _requests;
+  Map<int, String>? _requests;
   static const int REQUESTS = 5;
   Uint8List? _bin_field_in_union;
   static const int BIN_FIELD_IN_UNION = 6;
   /// Deprecated: use something else
   @deprecated
-  bool _depr;
+  bool? _depr;
   static const int DEPR = 7;
-  bool _wHOA_BUDDY;
+  bool? _wHOA_BUDDY;
   static const int WHOA_BUDDY = 8;
 
   bool __isset_anID = false;
@@ -76,9 +76,9 @@ class TestingUnions implements thrift.TBase {
     this.aString = null;
   }
 
-  int get someotherthing => this._someotherthing;
+  int? get someotherthing => this._someotherthing;
 
-  set someotherthing(int someotherthing) {
+  set someotherthing(int? someotherthing) {
     this._someotherthing = someotherthing;
     this.__isset_someotherthing = true;
   }
@@ -89,9 +89,9 @@ class TestingUnions implements thrift.TBase {
     this.__isset_someotherthing = false;
   }
 
-  int get anInt16 => this._anInt16;
+  int? get anInt16 => this._anInt16;
 
-  set anInt16(int anInt16) {
+  set anInt16(int? anInt16) {
     this._anInt16 = anInt16;
     this.__isset_anInt16 = true;
   }
@@ -102,9 +102,9 @@ class TestingUnions implements thrift.TBase {
     this.__isset_anInt16 = false;
   }
 
-  Map<int, String?> get requests => this._requests;
+  Map<int, String>? get requests => this._requests;
 
-  set requests(Map<int, String?> requests) {
+  set requests(Map<int, String>? requests) {
     this._requests = requests;
   }
 
@@ -128,11 +128,11 @@ class TestingUnions implements thrift.TBase {
 
   /// Deprecated: use something else
   @deprecated
-  bool get depr => this._depr;
+  bool? get depr => this._depr;
 
   /// Deprecated: use something else
   @deprecated
-  set depr(bool depr) {
+  set depr(bool? depr) {
     this._depr = depr;
     this.__isset_depr = true;
   }
@@ -143,9 +143,9 @@ class TestingUnions implements thrift.TBase {
     this.__isset_depr = false;
   }
 
-  bool get wHOA_BUDDY => this._wHOA_BUDDY;
+  bool? get wHOA_BUDDY => this._wHOA_BUDDY;
 
-  set wHOA_BUDDY(bool wHOA_BUDDY) {
+  set wHOA_BUDDY(bool? wHOA_BUDDY) {
     this._wHOA_BUDDY = wHOA_BUDDY;
     this.__isset_wHOA_BUDDY = true;
   }
@@ -302,11 +302,11 @@ class TestingUnions implements thrift.TBase {
         case REQUESTS:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem63 = iprot.readMapBegin();
-            this.requests = Map<int, String?>();
+            this.requests = Map<int, String>();
             for(int elem65 = 0; elem65 < elem63.length; ++elem65) {
               int elem66 = iprot.readI32();
-              String? elem64 = iprot.readString();
-              this.requests[elem66] = elem64;
+              String elem64 = iprot.readString();
+              this.requests?[elem66] = elem64;
             }
             iprot.readMapEnd();
           } else {
@@ -375,10 +375,10 @@ class TestingUnions implements thrift.TBase {
     }
     if (isSetRequests() && this.requests != null) {
       oprot.writeFieldBegin(_REQUESTS_FIELD_DESC);
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, this.requests.length));
-      for(var elem67 in this.requests.keys) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, this.requests!.length));
+      for(var elem67 in this.requests!.keys) {
         oprot.writeI32(elem67);
-        oprot.writeString(requests[elem67]);
+        oprot.writeString(requests![elem67]);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
@@ -505,15 +505,15 @@ class TestingUnions implements thrift.TBase {
   }
 
   TestingUnions clone({
-    fixnum.Int64 anID,
+    fixnum.Int64? anID,
     String? aString,
-    int someotherthing,
-    int anInt16,
-    Map<int, String?> requests,
+    int? someotherthing,
+    int? anInt16,
+    Map<int, String>? requests,
     Uint8List? bin_field_in_union,
     // ignore: deprecated_member_use
-    bool depr,
-    bool wHOA_BUDDY,
+    bool? depr,
+    bool? wHOA_BUDDY,
   }) {
     return TestingUnions()
       ..anID = anID ?? this.anID

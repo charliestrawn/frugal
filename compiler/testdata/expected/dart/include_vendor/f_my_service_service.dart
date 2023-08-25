@@ -101,8 +101,8 @@ class getItem_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class getItem_result extends frugal.FGeneratedArgsResultBase {
-  t_vendor_namespace.Item success;
-  t_excepts.InvalidData d;
+  t_vendor_namespace.Item? success;
+  t_excepts.InvalidData? d;
 
 
   @override
