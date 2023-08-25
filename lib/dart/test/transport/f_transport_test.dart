@@ -6,6 +6,8 @@ import 'package:test/test.dart';
 import 'package:thrift/thrift.dart';
 import 'package:mockito/mockito.dart';
 
+import 'f_adapter_transport_test.mocks.dart';
+
 void main() {
   group('FTransport', () {
     int requestSizeLimit = 5;
@@ -18,7 +20,7 @@ void main() {
     test(
         'test closeWithException adds the exeption to the onClose stream and properly triggers the transport monitor',
         () async {
-      var monitor = MockTransportMonitor();
+      var monitor = MockFTransportMonitor();
       transport?.monitor = monitor;
       transport?.errors = [null, TError(0, 'reopen failed'), null];
 
@@ -75,10 +77,4 @@ class _FTransportImpl extends FTransport {
 
   @override
   bool get isOpen => false;
-}
-
-/// Mock transport monitor.
-class MockTransportMonitor extends FTransportMonitor with Mock {
-  @override
-  String get disposableTypeName => 'MockTransportMonitor';
 }

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'dart:typed_data' show Uint8List;
-
+import 'package:w_common/disposable.dart';
 import 'package:frugal/frugal.dart';
 import 'package:test/test.dart';
 import 'package:thrift/thrift.dart';
@@ -17,7 +17,16 @@ Uint8List mockFrame(FContext ctx, String message) {
   return trans.writeBytes;
 }
 
-@GenerateNiceMocks([MockSpec<TSocketTransport>(), MockSpec<TSocket>()])
+@GenerateNiceMocks([
+  MockSpec<TSocketTransport>(), 
+  MockSpec<TSocket>(),
+  MockSpec<FTransportMonitor>(fallbackGenerators: {
+    #manageAndReturnTypedDisposable: shim_manageAndReturnTypedDisposable,
+  }),
+])
+
+T? shim_manageAndReturnTypedDisposable<T extends Disposable>(T? disposable) {}
+
 void main() {
   group('FAdapterTransport', () {
     late StreamController<TSocketState> stateStream;
@@ -136,7 +145,7 @@ void main() {
       when(socket.isClosed).thenAnswer((_) => true);
       when(socket.open()).thenAnswer((_) => Future.value());
       await transport.open();
-      var monitor = MockTransportMonitor();
+      var monitor = MockFTransportMonitor();
       transport.monitor = monitor;
       expect(transport.isOpen, equals(true));
 
