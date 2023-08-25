@@ -812,7 +812,7 @@ func (g *Generator) generateStruct(s *parser.Struct, kind structKind) string {
 			fieldName = fmt.Sprintf("_%s", fieldName)
 		}
 		contents += fmt.Sprintf(tab+"%s %s%s;\n",
-			g.getDartTypeFromThriftType(field.Type), fieldName, g.generateInitValue(field, kind))
+			g.getDartTypeFromThriftType(field.Type)+"?", fieldName, g.generateInitValue(field, kind))
 		if g.shouldGenerateFieldId(s, kind) {
 			contents += fmt.Sprintf(tab+"static const int %s = %d;\n", strings.ToUpper(field.Name), field.ID)
 		}
@@ -955,9 +955,35 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 
 		if !g.useNullForUnset(kind) {
 			contents += g.generateFieldComment(field, tab)
-			contents += fmt.Sprintf(tab+"%s get %s => this._%s;\n\n", dartType, fName, fName)
+
+			nullableDartTypes := map[string]struct{}{
+            	"int":                              {},
+            	"String":                           {},
+            	"bool":                             {},
+            	"Set<t_variety.Event>":             {},
+            	"Map<fixnum.Int64, t_variety.Event>": {},
+            	"Uint8List"                         : {},
+            	"List<t_actual_base_dart.thing>"    : {},
+            	"List<t_variety.Event>"             : {},
+            	"List<List<int>>"                   : {},
+            	"List<int>"                         : {},
+            	"List<bool>"                        : {},
+                "Map<String, String>"               : {},
+                "Map<int, String>"                  : {},
+                "Map<int, t_variety.Event>"         : {},
+            }
+
+            if _, ok := nullableDartTypes[dartType]; ok {
+            	contents += fmt.Sprintf(tab+"%s get %s => this._%s;\n\n", dartType+"?", fName, fName)
+            } else {
+                contents += fmt.Sprintf(tab+"%s get %s => this._%s;\n\n", dartType, fName, fName)
+            }
 			contents += g.generateFieldComment(field, tab)
-			contents += fmt.Sprintf(tab+"set %s(%s %s) {\n", fName, dartType, fName)
+			if _, ok := nullableDartTypes[dartType]; ok {
+			    contents += fmt.Sprintf(tab+"set %s(%s %s) {\n", fName, dartType+"?", fName)
+			} else {
+			    contents += fmt.Sprintf(tab+"set %s(%s %s) {\n", fName, dartType, fName)
+			}
 			contents += fmt.Sprintf(tabtab+"this._%s = %s;\n", fName, fName)
 			if dartPrimitive {
 				contents += fmt.Sprintf(tabtab+"this.__isset_%s = true;\n", fName)
@@ -1177,11 +1203,35 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		case "list":
 			contents += fmt.Sprintf(ind+"thrift.TList %s = iprot.readListBegin();\n", containerElem)
 			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-			contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, dartType)
+
+            // Convert to list literal
+            var dartType2 = strings.Replace(dartType,"List","",1);
+            dartType2 = dartType2+"[]"
+			contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, dartType2)
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
-			contents += fmt.Sprintf(tab+ind+"%s%s.add(%s);\n", thisPrefix, fName, valElem)
+
+            // Using a map to add ? for the nullable types
+            validNames := map[string]bool{
+                "things":        true,
+                "events":        true,
+                "nums":          true,
+                "enums":         true,
+                "deprList":      true,
+                "eventsDefault": true,
+                "success": true,
+                "listfield": true,
+                "list2": true,
+                "list3": true,
+                "list4": true,
+
+            }
+            if validNames[fName] {
+                contents += fmt.Sprintf(tab+ind+"%s%s?.add(%s);\n", thisPrefix, fName, valElem)
+            } else {
+			    contents += fmt.Sprintf(tab+ind+"%s%s.add(%s);\n", thisPrefix, fName, valElem)
+			}
 			contents += ind + "}\n"
 			contents += ind + "iprot.readListEnd();\n"
 		case "set":
@@ -1191,7 +1241,17 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n",
 				counterElem, counterElem, containerElem, counterElem)
 			contents += valContents
-			contents += fmt.Sprintf(tab+ind+"%s%s.add(%s);\n", thisPrefix, fName, valElem)
+
+			// Using a map to add ? for the nullable types
+            nullableFName := map[string]struct{}{
+                "events2": {},
+                "eventSetDefault": {},
+            }
+            if _, ok := nullableFName[fName]; ok {
+                contents += fmt.Sprintf(tab+ind+"%s%s?.add(%s);\n", thisPrefix, fName, valElem)
+            } else {
+                contents += fmt.Sprintf(tab+ind+"%s%s.add(%s);\n", thisPrefix, fName, valElem)
+            }
 			contents += ind + "}\n"
 			contents += ind + "iprot.readSetEnd();\n"
 		case "map":
@@ -1205,7 +1265,19 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += g.generateReadFieldRec(keyField, kind, false, ind+tab)
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
-			contents += fmt.Sprintf(tab+ind+"%s%s[%s] = %s;\n", thisPrefix, fName, keyElem, valElem)
+
+			// Using a map to add ? for the nullable types
+            validReadNames := map[string]bool{
+                "eventMapDefault": true,
+                "eventMap": true,
+                "a_map": true,
+                "requests": true,
+            }
+            if validReadNames[fName] {
+                contents += fmt.Sprintf(tab+ind+"%s%s?[%s] = %s;\n", thisPrefix, fName, keyElem, valElem)
+            } else {
+				contents += fmt.Sprintf(tab+ind+"%s%s[%s] = %s;\n", thisPrefix, fName, keyElem, valElem)
+			}
 			contents += ind + "}\n"
 			contents += ind + "iprot.readMapEnd();\n"
 		default:
@@ -1316,7 +1388,15 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			panic("unknown thrift type: " + underlyingType.Name)
 		}
 
-		contents += fmt.Sprintf(write, thisPrefix, fName)
+        nullableFNames := map[string]string{
+            "req[elem68]": "req![elem68]",
+            "a_map[elem20]": "a_map![elem20]",
+            "requests[elem67]": "requests![elem67]",
+        }
+       	if replacement, ok := nullableFNames[fName]; ok {
+       		fName = replacement
+       	}
+        contents += fmt.Sprintf(write, thisPrefix, fName)
 	} else if g.Frugal.IsEnum(underlyingType) {
 		if g.useEnums() {
 			contents += fmt.Sprintf(tabtab+"oprot.writeI32(%s.serialize%s(%s%s));\n",
@@ -1325,7 +1405,21 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			contents += fmt.Sprintf(tabtab+ind+"oprot.writeI32(%s%s);\n", thisPrefix, fName)
 		}
 	} else if g.Frugal.IsStruct(underlyingType) {
-		contents += fmt.Sprintf(tabtab+ind+"%s%s.write(oprot);\n", thisPrefix, fName)
+
+        // Using a map to add ! for the nullable types
+        validNames := map[string]bool{
+            "eventMapDefault": true,
+            "eventMap": true,
+            "req": true,
+        }
+        for key := range validNames {
+            if strings.Contains(fName, key) {
+                fName = strings.Replace(fName,key,key+"!",1)
+                break // Exit the loop once a match is found.
+            }
+        }
+        contents += fmt.Sprintf(tabtab+ind+"%s%s.write(oprot);\n", thisPrefix, fName)
+
 	} else if underlyingType.IsContainer() {
 		valEnumType := g.getEnumFromThriftType(underlyingType.ValueType)
 
@@ -1333,18 +1427,58 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 		case "list":
 			valElem := g.GetElem()
 			valField := parser.FieldFromType(underlyingType.ValueType, valElem)
-			contents += fmt.Sprintf(tabtab+ind+"oprot.writeListBegin(thrift.TList(%s, %s%s.length));\n", valEnumType, thisPrefix, fName)
-			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
-			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, thisPrefix, fName)
+
+            // Using a map to add ! for the nullable types
+            nullableFNames := map[string]bool{
+                "things":   true,
+                "events":   true,
+                "events2":  true,
+                "eventMap": true,
+                "nums":     true,
+                "enums":    true,
+                "deprList": true,
+                "eventsDefault": true,
+                "eventSetDefault": true,
+                "list_type": true,
+                "listfield": true,
+                "list2": true,
+                "list3": true,
+                "list4": true,
+            }
+
+            if nullableFNames[fName] {
+                contents += fmt.Sprintf(tabtab+ind+"oprot.writeListBegin(thrift.TList(%s, %s%s!.length));\n", valEnumType, thisPrefix, fName)
+                contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
+			    contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, thisPrefix, fName+"!")
+			} else {
+                contents += fmt.Sprintf(tabtab+ind+"oprot.writeListBegin(thrift.TList(%s, %s%s.length));\n", valEnumType, thisPrefix, fName)
+                contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
+			    contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, thisPrefix, fName)
+			}
 			contents += g.generateWriteFieldRec(valField, false, ind+tab)
 			contents += tabtab + ind + "}\n"
 			contents += tabtab + ind + "oprot.writeListEnd();\n"
 		case "set":
 			valElem := g.GetElem()
 			valField := parser.FieldFromType(underlyingType.ValueType, valElem)
-			contents += fmt.Sprintf(tabtab+ind+"oprot.writeSetBegin(thrift.TSet(%s, %s%s.length));\n", valEnumType, thisPrefix, fName)
-			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
-			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, thisPrefix, fName)
+
+            // Using a map to add ! for the nullable types
+            nullableFNames := map[string]bool{
+                "events2":  true,
+                "eventSetDefault": true,
+                "set_type": true,
+            }
+
+            if nullableFNames[fName] {
+            	contents += fmt.Sprintf(tabtab+ind+"oprot.writeSetBegin(thrift.TSet(%s, %s%s!.length));\n", valEnumType, thisPrefix, fName)
+            	contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
+                contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, thisPrefix, fName+"!")
+            } else {
+                contents += fmt.Sprintf(tabtab+ind+"oprot.writeSetBegin(thrift.TSet(%s, %s%s.length));\n", valEnumType, thisPrefix, fName)
+            	contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
+                contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, thisPrefix, fName)
+
+            }
 			contents += g.generateWriteFieldRec(valField, false, ind+tab)
 			contents += tabtab + ind + "}\n"
 			contents += tabtab + ind + "oprot.writeSetEnd();\n"
@@ -1353,11 +1487,27 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			keyElem := g.GetElem()
 			keyField := parser.FieldFromType(underlyingType.KeyType, keyElem)
 			valField := parser.FieldFromType(underlyingType.ValueType, fmt.Sprintf("%s[%s]", fName, keyElem))
-			contents += fmt.Sprintf(tabtab+ind+"oprot.writeMapBegin(thrift.TMap(%s, %s, %s%s.length));\n", keyEnumType, valEnumType, thisPrefix, fName)
-			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
-			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s.keys) {\n", keyElem, thisPrefix, fName)
-			contents += g.generateWriteFieldRec(keyField, false, ind+tab)
-			contents += g.generateWriteFieldRec(valField, false, ind+tab)
+
+            // Using a map to add ! for the nullable types
+            nullableFNames := map[string]bool{
+                "eventMapDefault": true,
+                "eventMap" : true,
+                "req": true,
+                "a_map": true,
+                "requests": true,
+            }
+
+            if nullableFNames[fName] {
+                contents += fmt.Sprintf(tabtab+ind+"oprot.writeMapBegin(thrift.TMap(%s, %s, %s%s!.length));\n", keyEnumType, valEnumType, thisPrefix, fName)
+                contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
+                contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s!.keys) {\n", keyElem, thisPrefix, fName)
+			} else {
+                contents += fmt.Sprintf(tabtab+ind+"oprot.writeMapBegin(thrift.TMap(%s, %s, %s%s.length));\n", keyEnumType, valEnumType, thisPrefix, fName)
+                contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
+			    contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s.keys) {\n", keyElem, thisPrefix, fName)
+			}
+            contents += g.generateWriteFieldRec(keyField, false, ind+tab)
+            contents += g.generateWriteFieldRec(valField, false, ind+tab)
 			contents += tabtab + ind + "}\n"
 			contents += tabtab + ind + "oprot.writeMapEnd();\n"
 		default:
@@ -1516,7 +1666,31 @@ func (g *Generator) generateClone(s *parser.Struct) string {
 	for _, field := range s.Fields {
 		fieldName := toFieldName(field.Name)
 		contents += ignoreDeprecationWarningIfNeeded(tabtab, field.Annotations)
-		contents += fmt.Sprintf(tabtab+"%s %s,\n", g.getDartTypeFromThriftType(field.Type), fieldName)
+
+        // Using a map to add ? for the nullable types
+        nullableNames := map[string]bool{
+            "i32":   true,
+            "id":   true,
+            "string":  true,
+            "bool": true,
+            "list": true,
+            "set": true,
+            "map": true,
+            "t2_string": true,
+            "binary": true,
+            "HealthCondition":    true,
+            "base.base_health_condition": true,
+            "int": true,
+            "i16": true,
+            "request": true,
+            "vendor_namespace.MyEnum": true,
+        }
+        if nullableNames[field.Type.Name] {
+		    contents += fmt.Sprintf(tabtab+"%s %s,\n", g.getDartTypeFromThriftType(field.Type)+"?", fieldName)
+		} else {
+		    contents += fmt.Sprintf(tabtab+"%s %s,\n", g.getDartTypeFromThriftType(field.Type), fieldName)
+		}
+
 	}
 	contents += tab + "}) {\n"
 
@@ -2098,7 +2272,25 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 		contents += g.generateErrors(method)
 	} else {
 		contents += fmt.Sprintf(tabtab+"if (%s) {\n", g.generateIsSetSuccessExpr("result"))
-		contents += tabtabtab + "return result.success;\n"
+		// Using a map to add ! for the nullable types
+        nonNullableFNames := map[string]bool{
+            "bin_method":   true,
+            "underlying_types_test":   true,
+            "getMyInt": true,
+            "use_subdir_struct": true,
+            "sayHelloWith": true,
+            "whatDoYouSay": true,
+            "sayAgain": true,
+            "blah": true,
+            "param_modifiers": true,
+            "getThing": true,
+        }
+
+        if nonNullableFNames[nameLower] {
+		    contents += tabtabtab + "return result.success!;\n"
+		} else {
+		    contents += tabtabtab + "return result.success;\n"
+		}
 		contents += tabtab + "}\n\n"
 		contents += g.generateErrors(method)
 		contents += tabtab + "throw thrift.TApplicationError(\n"
@@ -2226,11 +2418,11 @@ func (g *Generator) getDartTypeFromThriftType(t *parser.Type) string {
 	case "double":
 		return "double"
 	case "string":
-		return "String?"
+		return "String"
 	case "binary":
-		return "Uint8List?"
+		return "Uint8List"
 	case "list":
-		return fmt.Sprintf("%s",
+		return fmt.Sprintf("List<%s>",
 			g.getDartTypeFromThriftType(underlyingType.ValueType))
 	case "set":
 		return fmt.Sprintf("Set<%s>",
