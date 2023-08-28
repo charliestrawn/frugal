@@ -122,9 +122,7 @@ class FContext {
     if (headers == null || headers.length == 0) {
       return;
     }
-    for (var name in headers.keys) {
-      _requestHeaders[name] = headers[name]!;
-    }
+    _requestHeaders.addAll(headers);
   }
 
   /// Get the named request header.
@@ -149,9 +147,7 @@ class FContext {
     if (headers == null || headers.length == 0) {
       return;
     }
-    for (var name in headers.keys) {
-      _responseHeaders[name] = headers[name]!;
-    }
+    _responseHeaders.addAll(headers);
   }
 
   /// Get the named response header.
