@@ -74,9 +74,10 @@ abstract class FTransport extends Disposable {
           FrugalTTransportErrorType.NOT_OPEN, 'transport not open');
     }
 
+    final requestSizeLimit = this.requestSizeLimit;
     if (requestSizeLimit != null &&
-        requestSizeLimit! > 0 &&
-        payload.length > requestSizeLimit!) {
+        requestSizeLimit > 0 &&
+        payload.length > requestSizeLimit) {
       throw TTransportError(FrugalTTransportErrorType.REQUEST_TOO_LARGE);
     }
   }
