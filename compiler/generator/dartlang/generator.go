@@ -955,35 +955,9 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 
 		if !g.useNullForUnset(kind) {
 			contents += g.generateFieldComment(field, tab)
-
-			nullableDartTypes := map[string]struct{}{
-            	"int":                              {},
-            	"String":                           {},
-            	"bool":                             {},
-            	"Set<t_variety.Event>":             {},
-            	"Map<fixnum.Int64, t_variety.Event>": {},
-            	"Uint8List"                         : {},
-            	"List<t_actual_base_dart.thing>"    : {},
-            	"List<t_variety.Event>"             : {},
-            	"List<List<int>>"                   : {},
-            	"List<int>"                         : {},
-            	"List<bool>"                        : {},
-                "Map<String, String>"               : {},
-                "Map<int, String>"                  : {},
-                "Map<int, t_variety.Event>"         : {},
-            }
-
-            if _, ok := nullableDartTypes[dartType]; ok {
-            	contents += fmt.Sprintf(tab+"%s get %s => this._%s;\n\n", dartType+"?", fName, fName)
-            } else {
-                contents += fmt.Sprintf(tab+"%s get %s => this._%s;\n\n", dartType, fName, fName)
-            }
+            contents += fmt.Sprintf(tab+"%s get %s => this._%s;\n\n", dartType+"?", fName, fName)
 			contents += g.generateFieldComment(field, tab)
-			if _, ok := nullableDartTypes[dartType]; ok {
-			    contents += fmt.Sprintf(tab+"set %s(%s %s) {\n", fName, dartType+"?", fName)
-			} else {
-			    contents += fmt.Sprintf(tab+"set %s(%s %s) {\n", fName, dartType, fName)
-			}
+			contents += fmt.Sprintf(tab+"set %s(%s %s) {\n", fName, dartType+"?", fName)
 			contents += fmt.Sprintf(tabtab+"this._%s = %s;\n", fName, fName)
 			if dartPrimitive {
 				contents += fmt.Sprintf(tabtab+"this.__isset_%s = true;\n", fName)
