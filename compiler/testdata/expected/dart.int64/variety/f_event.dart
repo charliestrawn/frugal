@@ -40,10 +40,10 @@ class Event implements thrift.TBase {
   }
 
   /// ID is a unique identifier for an event.
-  fixnum.Int64 get iD => this._iD;
+  fixnum.Int64? get iD => this._iD;
 
   /// ID is a unique identifier for an event.
-  set iD(fixnum.Int64 iD) {
+  set iD(fixnum.Int64? iD) {
     this._iD = iD;
     this.__isset_iD = true;
   }

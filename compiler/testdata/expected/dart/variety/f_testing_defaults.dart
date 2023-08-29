@@ -134,9 +134,9 @@ class TestingDefaults implements thrift.TBase {
     this.__isset_iD2 = false;
   }
 
-  t_variety.Event get ev1 => this._ev1;
+  t_variety.Event? get ev1 => this._ev1;
 
-  set ev1(t_variety.Event ev1) {
+  set ev1(t_variety.Event? ev1) {
     this._ev1 = ev1;
   }
 
@@ -146,9 +146,9 @@ class TestingDefaults implements thrift.TBase {
     this.ev1 = null;
   }
 
-  t_variety.Event get ev2 => this._ev2;
+  t_variety.Event? get ev2 => this._ev2;
 
-  set ev2(t_variety.Event ev2) {
+  set ev2(t_variety.Event? ev2) {
     this._ev2 = ev2;
   }
 

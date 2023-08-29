@@ -36,10 +36,10 @@ class AwesomeException extends Error implements thrift.TBase {
   bool __isset_depr = false;
 
   /// ID is a unique identifier for an awesome exception.
-  fixnum.Int64 get iD => this._iD;
+  fixnum.Int64? get iD => this._iD;
 
   /// ID is a unique identifier for an awesome exception.
-  set iD(fixnum.Int64 iD) {
+  set iD(fixnum.Int64? iD) {
     this._iD = iD;
     this.__isset_iD = true;
   }

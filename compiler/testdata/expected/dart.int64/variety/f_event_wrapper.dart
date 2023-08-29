@@ -88,9 +88,9 @@ class EventWrapper implements thrift.TBase {
     ]);
   }
 
-  fixnum.Int64 get iD => this._iD;
+  fixnum.Int64? get iD => this._iD;
 
-  set iD(fixnum.Int64 iD) {
+  set iD(fixnum.Int64? iD) {
     this._iD = iD;
     this.__isset_iD = true;
   }
@@ -101,9 +101,9 @@ class EventWrapper implements thrift.TBase {
     this.__isset_iD = false;
   }
 
-  t_variety.Event get ev => this._ev;
+  t_variety.Event? get ev => this._ev;
 
-  set ev(t_variety.Event ev) {
+  set ev(t_variety.Event? ev) {
     this._ev = ev;
   }
 
@@ -186,9 +186,9 @@ class EventWrapper implements thrift.TBase {
     this.__isset_aBoolField = false;
   }
 
-  t_variety.TestingUnions get a_union => this._a_union;
+  t_variety.TestingUnions? get a_union => this._a_union;
 
-  set a_union(t_variety.TestingUnions a_union) {
+  set a_union(t_variety.TestingUnions? a_union) {
     this._a_union = a_union;
   }
 

@@ -51,9 +51,9 @@ class TestingUnions implements thrift.TBase {
   bool __isset_depr = false;
   bool __isset_wHOA_BUDDY = false;
 
-  fixnum.Int64 get anID => this._anID;
+  fixnum.Int64? get anID => this._anID;
 
-  set anID(fixnum.Int64 anID) {
+  set anID(fixnum.Int64? anID) {
     this._anID = anID;
     this.__isset_anID = true;
   }

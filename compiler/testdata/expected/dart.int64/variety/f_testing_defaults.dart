@@ -122,9 +122,9 @@ class TestingDefaults implements thrift.TBase {
     this._base_status = t_actual_base_dart.base_health_condition.FAIL;
   }
 
-  fixnum.Int64 get iD2 => this._iD2;
+  fixnum.Int64? get iD2 => this._iD2;
 
-  set iD2(fixnum.Int64 iD2) {
+  set iD2(fixnum.Int64? iD2) {
     this._iD2 = iD2;
     this.__isset_iD2 = true;
   }
@@ -135,9 +135,9 @@ class TestingDefaults implements thrift.TBase {
     this.__isset_iD2 = false;
   }
 
-  t_variety.Event get ev1 => this._ev1;
+  t_variety.Event? get ev1 => this._ev1;
 
-  set ev1(t_variety.Event ev1) {
+  set ev1(t_variety.Event? ev1) {
     this._ev1 = ev1;
   }
 
@@ -147,9 +147,9 @@ class TestingDefaults implements thrift.TBase {
     this.ev1 = null;
   }
 
-  t_variety.Event get ev2 => this._ev2;
+  t_variety.Event? get ev2 => this._ev2;
 
-  set ev2(t_variety.Event ev2) {
+  set ev2(t_variety.Event? ev2) {
     this._ev2 = ev2;
   }
 
@@ -159,9 +159,9 @@ class TestingDefaults implements thrift.TBase {
     this.ev2 = null;
   }
 
-  fixnum.Int64 get iD => this._iD;
+  fixnum.Int64? get iD => this._iD;
 
-  set iD(fixnum.Int64 iD) {
+  set iD(fixnum.Int64? iD) {
     this._iD = iD;
     this.__isset_iD = true;
   }
@@ -208,9 +208,9 @@ class TestingDefaults implements thrift.TBase {
     this.listfield = null;
   }
 
-  fixnum.Int64 get iD3 => this._iD3;
+  fixnum.Int64? get iD3 => this._iD3;
 
-  set iD3(fixnum.Int64 iD3) {
+  set iD3(fixnum.Int64? iD3) {
     this._iD3 = iD3;
     this.__isset_iD3 = true;
   }
