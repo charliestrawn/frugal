@@ -955,9 +955,9 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 
 		if !g.useNullForUnset(kind) {
 			contents += g.generateFieldComment(field, tab)
-            contents += fmt.Sprintf(tab+"%s get %s => this._%s;\n\n", dartType+"?", fName, fName)
+            contents += fmt.Sprintf(tab+"%s? get %s => this._%s;\n\n", dartType, fName, fName)
 			contents += g.generateFieldComment(field, tab)
-			contents += fmt.Sprintf(tab+"set %s(%s %s) {\n", fName, dartType+"?", fName)
+			contents += fmt.Sprintf(tab+"set %s(%s? %s) {\n", fName, dartType, fName)
 			contents += fmt.Sprintf(tabtab+"this._%s = %s;\n", fName, fName)
 			if dartPrimitive {
 				contents += fmt.Sprintf(tabtab+"this.__isset_%s = true;\n", fName)
