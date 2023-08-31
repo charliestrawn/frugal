@@ -501,7 +501,6 @@ class TestingDefaults implements thrift.TBase {
               String elem15 = iprot.readString();
               String elem13 = iprot.readString();
               tempMap[elem15] = elem13;
-            this.a_map = tempMap;
             }
             iprot.readMapEnd();
             this.a_map = tempMap;

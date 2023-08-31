@@ -507,7 +507,6 @@ class EventWrapper implements thrift.TBase {
               t_variety.Event elem28 = t_variety.Event();
               elem28.read(iprot);
               tempMap[elem30] = elem28;
-            this.eventMap = tempMap;
             }
             iprot.readMapEnd();
             this.eventMap = tempMap;
@@ -629,7 +628,6 @@ class EventWrapper implements thrift.TBase {
               t_variety.Event elem47 = t_variety.Event();
               elem47.read(iprot);
               tempMap[elem49] = elem47;
-            this.eventMapDefault = tempMap;
             }
             iprot.readMapEnd();
             this.eventMapDefault = tempMap;
