@@ -7,7 +7,7 @@ dependencies:
     version: ^0.0.10
   uuid: ^3.0.0
   w_common: ^3.0.0
-  w_transport: '>=4.0.0 <6.0.0'
+  w_transport: ^5.0.1
 dependency_validator:
   ignore:
   - mockito
