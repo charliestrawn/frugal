@@ -1245,7 +1245,6 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 
 			if prefix == "this." {
 				contents += fmt.Sprintf(tab+ind+"%s[%s] = %s;\n", localMapVar, keyElem, valElem)
-				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localMapVar)
 
 			} else {
 				contents += fmt.Sprintf(tab+ind+"%s%s[%s] = %s;\n", thisPrefix, fName, keyElem, valElem)
