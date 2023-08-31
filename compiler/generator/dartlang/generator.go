@@ -1133,7 +1133,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 				thriftType = "I64"
 			}
 		case "double":
-			thriftType = "Double?"
+			thriftType = "Double"
 		case "string":
 			thriftType = "String"
 		case "binary":
@@ -1177,60 +1177,64 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		case "list":
 			contents += fmt.Sprintf(ind+"thrift.TList %s = iprot.readListBegin();\n", containerElem)
 			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-
 			// Convert to list literal
 			var dartType2 = strings.Replace(dartType, "List", "", 1)
 			dartType2 = dartType2 + "[]"
-			contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, dartType2)
+			localListVar := "tempList"
+			if prefix == "this." {
+				contents += fmt.Sprintf(ind+"var %s = %s;\n", localListVar, dartType2)
+			} else {
+				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, dartType2)
+			}
+
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
-
-			// Using a map to add ? for the nullable types
-			validNames := map[string]bool{
-				"things":        true,
-				"events":        true,
-				"nums":          true,
-				"enums":         true,
-				"deprList":      true,
-				"eventsDefault": true,
-				"success":       true,
-				"listfield":     true,
-				"list2":         true,
-				"list3":         true,
-				"list4":         true,
-			}
-			if validNames[fName] {
-				contents += fmt.Sprintf(tab+ind+"%s%s?.add(%s);\n", thisPrefix, fName, valElem)
+			if prefix == "this." {
+				contents += fmt.Sprintf(tab+ind+"%s.add(%s);\n", localListVar, valElem)
 			} else {
 				contents += fmt.Sprintf(tab+ind+"%s%s.add(%s);\n", thisPrefix, fName, valElem)
 			}
 			contents += ind + "}\n"
 			contents += ind + "iprot.readListEnd();\n"
+			if prefix == "this." {
+				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localListVar)
+			}
+
 		case "set":
 			contents += fmt.Sprintf(ind+"thrift.TSet %s = iprot.readSetBegin();\n", containerElem)
 			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-			contents += fmt.Sprintf(ind+"%s%s = %s();\n", prefix, fName, dartType)
+			localSetVar := "tempSet"
+
+			if prefix == "this." {
+				contents += fmt.Sprintf(ind+"var %s = %s();\n", localSetVar, dartType)
+			} else {
+				contents += fmt.Sprintf(ind+"%s%s = %s();\n", prefix, fName, dartType)
+			}
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n",
 				counterElem, counterElem, containerElem, counterElem)
 			contents += valContents
-
-			// Using a map to add ? for the nullable types
-			nullableFName := map[string]struct{}{
-				"events2":         {},
-				"eventSetDefault": {},
-			}
-			if _, ok := nullableFName[fName]; ok {
-				contents += fmt.Sprintf(tab+ind+"%s%s?.add(%s);\n", thisPrefix, fName, valElem)
+			if prefix == "this." {
+				contents += fmt.Sprintf(tab+ind+"%s.add(%s);\n", localSetVar, valElem)
 			} else {
 				contents += fmt.Sprintf(tab+ind+"%s%s.add(%s);\n", thisPrefix, fName, valElem)
 			}
 			contents += ind + "}\n"
 			contents += ind + "iprot.readSetEnd();\n"
+			if prefix == "this." {
+				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localSetVar)
+			}
 		case "map":
 			contents += fmt.Sprintf(ind+"thrift.TMap %s = iprot.readMapBegin();\n", containerElem)
 			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-			contents += fmt.Sprintf(ind+"%s%s = %s();\n", prefix, fName, dartType)
+			localMapVar := "tempMap"
+
+			if prefix == "this." {
+				contents += fmt.Sprintf(ind+"var %s = %s();\n", localMapVar, dartType)
+			} else {
+				contents += fmt.Sprintf(ind+"%s%s = %s();\n", prefix, fName, dartType)
+			}
+
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n",
 				counterElem, counterElem, containerElem, counterElem)
 			keyElem := g.GetElem()
@@ -1239,20 +1243,19 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
 
-			// Using a map to add ? for the nullable types
-			validReadNames := map[string]bool{
-				"eventMapDefault": true,
-				"eventMap":        true,
-				"a_map":           true,
-				"requests":        true,
-			}
-			if validReadNames[fName] {
-				contents += fmt.Sprintf(tab+ind+"%s%s?[%s] = %s;\n", thisPrefix, fName, keyElem, valElem)
+			if prefix == "this." {
+				contents += fmt.Sprintf(tab+ind+"%s[%s] = %s;\n", localMapVar, keyElem, valElem)
+				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localMapVar)
+
 			} else {
 				contents += fmt.Sprintf(tab+ind+"%s%s[%s] = %s;\n", thisPrefix, fName, keyElem, valElem)
 			}
 			contents += ind + "}\n"
 			contents += ind + "iprot.readMapEnd();\n"
+
+			if prefix == "this." {
+				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localMapVar)
+			}
 		default:
 			panic("unrecognized thrift type: " + underlyingType.Name)
 		}
@@ -1369,6 +1372,7 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 		if replacement, ok := nullableFNames[fName]; ok {
 			fName = replacement
 		}
+
 		contents += fmt.Sprintf(write, thisPrefix, fName)
 	} else if g.Frugal.IsEnum(underlyingType) {
 		if g.useEnums() {
@@ -1379,7 +1383,7 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 		}
 	} else if g.Frugal.IsStruct(underlyingType) {
 
-		// Using a map to add ! for the nullable types
+		//Using a map to add ! for the nullable types
 		validNames := map[string]bool{
 			"eventMapDefault": true,
 			"eventMap":        true,
