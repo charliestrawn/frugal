@@ -405,12 +405,13 @@ class TestingDefaults implements thrift.TBase {
         case LISTFIELD:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem0 = iprot.readListBegin();
-            this.listfield = <int>[];
+            var tempList = <int>[];
             for(int elem2 = 0; elem2 < elem0.length; ++elem2) {
               int elem1 = iprot.readI32();
-              this.listfield?.add(elem1);
+              tempList.add(elem1);
             }
             iprot.readListEnd();
+            this.listfield = tempList;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -453,12 +454,13 @@ class TestingDefaults implements thrift.TBase {
         case LIST2:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem3 = iprot.readListBegin();
-            this.list2 = <int>[];
+            var tempList = <int>[];
             for(int elem5 = 0; elem5 < elem3.length; ++elem5) {
               int elem4 = iprot.readI32();
-              this.list2?.add(elem4);
+              tempList.add(elem4);
             }
             iprot.readListEnd();
+            this.list2 = tempList;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -466,12 +468,13 @@ class TestingDefaults implements thrift.TBase {
         case LIST3:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem6 = iprot.readListBegin();
-            this.list3 = <int>[];
+            var tempList = <int>[];
             for(int elem8 = 0; elem8 < elem6.length; ++elem8) {
               int elem7 = iprot.readI32();
-              this.list3?.add(elem7);
+              tempList.add(elem7);
             }
             iprot.readListEnd();
+            this.list3 = tempList;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -479,12 +482,13 @@ class TestingDefaults implements thrift.TBase {
         case LIST4:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem9 = iprot.readListBegin();
-            this.list4 = <int>[];
+            var tempList = <int>[];
             for(int elem11 = 0; elem11 < elem9.length; ++elem11) {
               int elem10 = iprot.readI32();
-              this.list4?.add(elem10);
+              tempList.add(elem10);
             }
             iprot.readListEnd();
+            this.list4 = tempList;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -492,13 +496,15 @@ class TestingDefaults implements thrift.TBase {
         case A_MAP:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem12 = iprot.readMapBegin();
-            this.a_map = Map<String, String>();
+            var tempMap = Map<String, String>();
             for(int elem14 = 0; elem14 < elem12.length; ++elem14) {
               String elem15 = iprot.readString();
               String elem13 = iprot.readString();
-              this.a_map?[elem15] = elem13;
+              tempMap[elem15] = elem13;
+            this.a_map = tempMap;
             }
             iprot.readMapEnd();
+            this.a_map = tempMap;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }

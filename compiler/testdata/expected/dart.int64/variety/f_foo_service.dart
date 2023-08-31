@@ -723,12 +723,13 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
         case 0:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem71 = iprot.readListBegin();
-            this.success = <fixnum.Int64>[];
+            var tempList = <fixnum.Int64>[];
             for(int elem73 = 0; elem73 < elem71.length; ++elem73) {
               fixnum.Int64 elem72 = iprot.readInt64();
-              this.success?.add(elem72);
+              tempList.add(elem72);
             }
             iprot.readListEnd();
+            this.success = tempList;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }

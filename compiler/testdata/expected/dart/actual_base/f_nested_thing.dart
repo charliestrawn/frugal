@@ -68,13 +68,14 @@ class nested_thing implements thrift.TBase {
         case THINGS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem83 = iprot.readListBegin();
-            this.things = <t_actual_base_dart.thing>[];
+            var tempList = <t_actual_base_dart.thing>[];
             for(int elem85 = 0; elem85 < elem83.length; ++elem85) {
               t_actual_base_dart.thing elem84 = t_actual_base_dart.thing();
               elem84.read(iprot);
-              this.things?.add(elem84);
+              tempList.add(elem84);
             }
             iprot.readListEnd();
+            this.things = tempList;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }

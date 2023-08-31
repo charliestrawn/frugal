@@ -471,13 +471,14 @@ class EventWrapper implements thrift.TBase {
         case EVENTS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem21 = iprot.readListBegin();
-            this.events = <t_variety.Event>[];
+            var tempList = <t_variety.Event>[];
             for(int elem23 = 0; elem23 < elem21.length; ++elem23) {
               t_variety.Event elem22 = t_variety.Event();
               elem22.read(iprot);
-              this.events?.add(elem22);
+              tempList.add(elem22);
             }
             iprot.readListEnd();
+            this.events = tempList;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -485,13 +486,14 @@ class EventWrapper implements thrift.TBase {
         case EVENTS2:
           if (field.type == thrift.TType.SET) {
             thrift.TSet elem24 = iprot.readSetBegin();
-            this.events2 = Set<t_variety.Event>();
+            var tempSet = Set<t_variety.Event>();
             for(int elem26 = 0; elem26 < elem24.length; ++elem26) {
               t_variety.Event elem25 = t_variety.Event();
               elem25.read(iprot);
-              this.events2?.add(elem25);
+              tempSet.add(elem25);
             }
             iprot.readSetEnd();
+            this.events2 = tempSet;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -499,14 +501,16 @@ class EventWrapper implements thrift.TBase {
         case EVENTMAP:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem27 = iprot.readMapBegin();
-            this.eventMap = Map<int, t_variety.Event>();
+            var tempMap = Map<int, t_variety.Event>();
             for(int elem29 = 0; elem29 < elem27.length; ++elem29) {
               int elem30 = iprot.readI64();
               t_variety.Event elem28 = t_variety.Event();
               elem28.read(iprot);
-              this.eventMap?[elem30] = elem28;
+              tempMap[elem30] = elem28;
+            this.eventMap = tempMap;
             }
             iprot.readMapEnd();
+            this.eventMap = tempMap;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -514,7 +518,7 @@ class EventWrapper implements thrift.TBase {
         case NUMS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem31 = iprot.readListBegin();
-            this.nums = <List<int>>[];
+            var tempList = <List<int>>[];
             for(int elem36 = 0; elem36 < elem31.length; ++elem36) {
               thrift.TList elem33 = iprot.readListBegin();
               List<int> elem32 = <int>[];
@@ -523,9 +527,10 @@ class EventWrapper implements thrift.TBase {
                 elem32.add(elem34);
               }
               iprot.readListEnd();
-              this.nums?.add(elem32);
+              tempList.add(elem32);
             }
             iprot.readListEnd();
+            this.nums = tempList;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -533,12 +538,13 @@ class EventWrapper implements thrift.TBase {
         case ENUMS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem37 = iprot.readListBegin();
-            this.enums = <int>[];
+            var tempList = <int>[];
             for(int elem39 = 0; elem39 < elem37.length; ++elem39) {
               int elem38 = iprot.readI32();
-              this.enums?.add(elem38);
+              tempList.add(elem38);
             }
             iprot.readListEnd();
+            this.enums = tempList;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -587,13 +593,14 @@ class EventWrapper implements thrift.TBase {
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem40 = iprot.readListBegin();
             // ignore: deprecated_member_use
-            this.deprList = <bool>[];
+            var tempList = <bool>[];
             for(int elem42 = 0; elem42 < elem40.length; ++elem42) {
               bool elem41 = iprot.readBool();
               // ignore: deprecated_member_use
-              this.deprList?.add(elem41);
+              tempList.add(elem41);
             }
             iprot.readListEnd();
+            this.deprList = tempList;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -601,13 +608,14 @@ class EventWrapper implements thrift.TBase {
         case EVENTSDEFAULT:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem43 = iprot.readListBegin();
-            this.eventsDefault = <t_variety.Event>[];
+            var tempList = <t_variety.Event>[];
             for(int elem45 = 0; elem45 < elem43.length; ++elem45) {
               t_variety.Event elem44 = t_variety.Event();
               elem44.read(iprot);
-              this.eventsDefault?.add(elem44);
+              tempList.add(elem44);
             }
             iprot.readListEnd();
+            this.eventsDefault = tempList;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -615,14 +623,16 @@ class EventWrapper implements thrift.TBase {
         case EVENTMAPDEFAULT:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem46 = iprot.readMapBegin();
-            this.eventMapDefault = Map<int, t_variety.Event>();
+            var tempMap = Map<int, t_variety.Event>();
             for(int elem48 = 0; elem48 < elem46.length; ++elem48) {
               int elem49 = iprot.readI64();
               t_variety.Event elem47 = t_variety.Event();
               elem47.read(iprot);
-              this.eventMapDefault?[elem49] = elem47;
+              tempMap[elem49] = elem47;
+            this.eventMapDefault = tempMap;
             }
             iprot.readMapEnd();
+            this.eventMapDefault = tempMap;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -630,13 +640,14 @@ class EventWrapper implements thrift.TBase {
         case EVENTSETDEFAULT:
           if (field.type == thrift.TType.SET) {
             thrift.TSet elem50 = iprot.readSetBegin();
-            this.eventSetDefault = Set<t_variety.Event>();
+            var tempSet = Set<t_variety.Event>();
             for(int elem52 = 0; elem52 < elem50.length; ++elem52) {
               t_variety.Event elem51 = t_variety.Event();
               elem51.read(iprot);
-              this.eventSetDefault?.add(elem51);
+              tempSet.add(elem51);
             }
             iprot.readSetEnd();
+            this.eventSetDefault = tempSet;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
