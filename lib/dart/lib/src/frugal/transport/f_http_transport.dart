@@ -36,7 +36,7 @@ class FHttpTransport extends FTransport {
   /// No limit will be enforced if set to a non-positive value (i.e. <1).
   final int responseSizeLimit;
 
-  Map<String, String> _headers = {};
+  final Map<String, String> _headers;
 
   /// Function that accepts an FContext that should return a Map<String, String>
   /// of headers to be added to every request
@@ -59,20 +59,18 @@ class FHttpTransport extends FTransport {
       {int requestSizeLimit = 0,
       this.responseSizeLimit = 0,
       Map<String, String>? additionalHeaders,
-      GetHeadersWithContext? getRequestHeaders = null})
+      GetHeadersWithContext? getRequestHeaders})
       : _getRequestHeaders = getRequestHeaders ?? ((_) => {}),
-        super(requestSizeLimit: requestSizeLimit) {
-    _headers = additionalHeaders ?? {};
-    // add and potentially overwrite with default headers
-    _headers.addAll({
-      'content-type': 'application/x-frugal',
-      'content-transfer-encoding': 'base64',
-      'accept': 'application/x-frugal'
-    });
-    if (responseSizeLimit > 0) {
-      _headers['x-frugal-payload-limit'] = responseSizeLimit.toString();
-    }
-  }
+        // Initialize the _headers field here
+        _headers = {
+          ...?additionalHeaders,
+          'content-type': 'application/x-frugal',
+          'content-transfer-encoding': 'base64',
+          'accept': 'application/x-frugal',
+          if (responseSizeLimit > 0)
+            'x-frugal-payload-limit': responseSizeLimit.toString(),
+        },
+        super(requestSizeLimit: requestSizeLimit);
 
   @override
   bool get isOpen => true;

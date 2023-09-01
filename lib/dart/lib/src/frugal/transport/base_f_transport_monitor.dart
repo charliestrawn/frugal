@@ -79,8 +79,8 @@ class BaseFTransportMonitor extends FTransportMonitor {
         return -1;
       }
       return (prevWait * 2).clamp(0, _maxWait);
-    } else
-      return 0;
+    }
+    return 0;
   }
 
   @override
