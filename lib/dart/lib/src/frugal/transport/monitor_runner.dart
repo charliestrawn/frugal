@@ -82,7 +82,7 @@ class MonitorRunner extends Disposable {
     }
 
     _log.log(Level.WARNING, 'transport was closed uncleanly because: $cause');
-    _wait = _monitor.onClosedUncleanly(cause) ?? -1;
+    _wait = _monitor.onClosedUncleanly(cause);
     if (_wait < 0) {
       _log.log(Level.WARNING, 'instructed not to reopen');
       _stop(failed: true);
