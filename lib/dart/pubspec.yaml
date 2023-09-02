@@ -1,26 +1,23 @@
+name: frugal
+version: 3.16.25
+description: A frugal client for Dart
+homepage: https://github.com/Workiva/frugal/lib/dart
+publish_to: https://pub.workiva.org
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
 dependencies:
   logging: ^1.0.0
   thrift:
     hosted:
       name: thrift
       url: https://pub.workiva.org
-    version: ^0.0.10
+    version: ^0.0.15
   uuid: ^3.0.0
   w_common: ^3.0.0
   w_transport: ^5.0.1
-dependency_validator:
-  ignore:
-  - mockito
-description: A frugal client for Dart
 dev_dependencies:
-  dart_dev: ^4.0.0
-  dart_style: ^2.0.0
-  meta: ^1.6.0
-  mockito: '>=5.0.0 <5.3.0'
-  test: ^1.15.7
-environment:
-  sdk: '>=2.11.0 <3.0.0'
-homepage: https://github.com/Workiva/frugal/lib/dart
-name: frugal
-publish_to: https://pub.workiva.org
-version: 3.16.25
+  build_runner: ^2.1.2
+  mockito: ^5.3.1
+  test: ^1.16.0
