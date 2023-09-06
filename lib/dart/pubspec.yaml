@@ -7,7 +7,7 @@ dependencies:
     version: ^0.0.15
   uuid: ^3.0.0
   w_common: ^3.0.0
-  w_transport: '>=4.0.0 <6.0.0'
+  w_transport: ^5.0.1
 description: A frugal client for Dart
 dev_dependencies:
   build_runner: ^2.1.2
@@ -18,4 +18,4 @@ environment:
 homepage: https://github.com/Workiva/frugal/lib/dart
 name: frugal
 publish_to: https://pub.workiva.org
-version: 3.16.26
+version: 3.16.27
