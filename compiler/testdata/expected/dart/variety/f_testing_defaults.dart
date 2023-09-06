@@ -656,7 +656,7 @@ class TestingDefaults implements thrift.TBase {
         case A_MAP:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem12 = iprot.readMapBegin();
-            var tempMap = Map<String, String>();
+            var tempMap = <String, String>{};
             for(int elem14 = 0; elem14 < elem12.length; ++elem14) {
               String elem15 = iprot.readString();
               String elem13 = iprot.readString();

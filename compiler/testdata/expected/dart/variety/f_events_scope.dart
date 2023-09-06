@@ -274,7 +274,7 @@ class EventsSubscriber {
       List<Map<int, t_variety.Event>> req = <Map<int, t_variety.Event>>[];
       for(int elem82 = 0; elem82 < elem76.length; ++elem82) {
         thrift.TMap elem78 = iprot.readMapBegin();
-        Map<int, t_variety.Event> elem77 = Map<int, t_variety.Event>();
+        Map<int, t_variety.Event> elem77 = <int, t_variety.Event>{};
         for(int elem80 = 0; elem80 < elem78.length; ++elem80) {
           int elem81 = iprot.readI64();
           t_variety.Event elem79 = t_variety.Event();

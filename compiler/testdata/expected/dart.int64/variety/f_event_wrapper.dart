@@ -487,7 +487,7 @@ class EventWrapper implements thrift.TBase {
         case EVENTS2:
           if (field.type == thrift.TType.SET) {
             thrift.TSet elem24 = iprot.readSetBegin();
-            var tempSet = Set<t_variety.Event>();
+            var tempSet = <t_variety.Event>{};
             for(int elem26 = 0; elem26 < elem24.length; ++elem26) {
               t_variety.Event elem25 = t_variety.Event();
               elem25.read(iprot);
@@ -502,7 +502,7 @@ class EventWrapper implements thrift.TBase {
         case EVENTMAP:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem27 = iprot.readMapBegin();
-            var tempMap = Map<fixnum.Int64, t_variety.Event>();
+            var tempMap = <fixnum.Int64, t_variety.Event>{};
             for(int elem29 = 0; elem29 < elem27.length; ++elem29) {
               fixnum.Int64 elem30 = iprot.readInt64();
               t_variety.Event elem28 = t_variety.Event();
@@ -623,7 +623,7 @@ class EventWrapper implements thrift.TBase {
         case EVENTMAPDEFAULT:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem46 = iprot.readMapBegin();
-            var tempMap = Map<fixnum.Int64, t_variety.Event>();
+            var tempMap = <fixnum.Int64, t_variety.Event>{};
             for(int elem48 = 0; elem48 < elem46.length; ++elem48) {
               fixnum.Int64 elem49 = iprot.readInt64();
               t_variety.Event elem47 = t_variety.Event();
@@ -639,7 +639,7 @@ class EventWrapper implements thrift.TBase {
         case EVENTSETDEFAULT:
           if (field.type == thrift.TType.SET) {
             thrift.TSet elem50 = iprot.readSetBegin();
-            var tempSet = Set<t_variety.Event>();
+            var tempSet = <t_variety.Event>{};
             for(int elem52 = 0; elem52 < elem50.length; ++elem52) {
               t_variety.Event elem51 = t_variety.Event();
               elem51.read(iprot);

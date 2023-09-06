@@ -1171,20 +1171,16 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		valField := parser.FieldFromType(underlyingType.ValueType, valElem)
 		valContents := g.generateReadFieldRec(valField, kind, false, ind+tab)
 		counterElem := g.GetElem()
-		dartType := g.getDartTypeFromThriftType(underlyingType)
-
+		dartType := g.getDartGenericTypeArgsFromThriftType(underlyingType) // Get generic type
 		switch underlyingType.Name {
 		case "list":
 			contents += fmt.Sprintf(ind+"thrift.TList %s = iprot.readListBegin();\n", containerElem)
 			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-			// Convert to list literal
-			var dartType2 = strings.Replace(dartType, "List", "", 1)
-			dartType2 = dartType2 + "[]"
 			localListVar := "tempList"
 			if prefix == "this." {
-				contents += fmt.Sprintf(ind+"var %s = %s;\n", localListVar, dartType2)
+				contents += fmt.Sprintf(ind+"var %s = %s[];\n", localListVar, dartType)
 			} else {
-				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, dartType2)
+				contents += fmt.Sprintf(ind+"%s%s = %s[];\n", prefix, fName, dartType)
 			}
 
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
@@ -1207,9 +1203,9 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			localSetVar := "tempSet"
 
 			if prefix == "this." {
-				contents += fmt.Sprintf(ind+"var %s = %s();\n", localSetVar, dartType)
+				contents += fmt.Sprintf(ind+"var %s = %s{};\n", localSetVar, dartType)
 			} else {
-				contents += fmt.Sprintf(ind+"%s%s = %s();\n", prefix, fName, dartType)
+				contents += fmt.Sprintf(ind+"%s%s = %s{};\n", prefix, fName, dartType)
 			}
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n",
 				counterElem, counterElem, containerElem, counterElem)
@@ -1230,9 +1226,9 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			localMapVar := "tempMap"
 
 			if prefix == "this." {
-				contents += fmt.Sprintf(ind+"var %s = %s();\n", localMapVar, dartType)
+				contents += fmt.Sprintf(ind+"var %s = %s{};\n", localMapVar, dartType)
 			} else {
-				contents += fmt.Sprintf(ind+"%s%s = %s();\n", prefix, fName, dartType)
+				contents += fmt.Sprintf(ind+"%s%s = %s{};\n", prefix, fName, dartType)
 			}
 
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n",
@@ -2365,6 +2361,32 @@ func (g *Generator) isDartCollection(t *parser.Type) bool {
 		return true
 	}
 	return false
+}
+
+func (g *Generator) getDartGenericTypeArgsFromThriftType(t *parser.Type) string {
+	if t == nil {
+		return ""
+	}
+	underlyingType := g.Frugal.UnderlyingType(t)
+
+	if g.Frugal.IsEnum(underlyingType) {
+		return ""
+	}
+
+	switch underlyingType.Name {
+	case "list":
+		return fmt.Sprintf("<%s>", g.getDartTypeFromThriftType(underlyingType.ValueType))
+	case "set":
+		return fmt.Sprintf("<%s>",
+			g.getDartTypeFromThriftType(underlyingType.ValueType))
+	case "map":
+		return fmt.Sprintf("<%s, %s>",
+			g.getDartTypeFromThriftType(underlyingType.KeyType),
+			g.getDartTypeFromThriftType(underlyingType.ValueType))
+	default:
+		// This is a custom type
+		return g.qualifiedTypeName(t)
+	}
 }
 
 func (g *Generator) getDartTypeFromThriftType(t *parser.Type) string {

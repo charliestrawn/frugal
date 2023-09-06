@@ -204,7 +204,7 @@ class TestingUnions implements thrift.TBase {
         case REQUESTS:
           if (field.type == thrift.TType.MAP) {
             thrift.TMap elem63 = iprot.readMapBegin();
-            var tempMap = Map<int, String>();
+            var tempMap = <int, String>{};
             for(int elem65 = 0; elem65 < elem63.length; ++elem65) {
               int elem66 = iprot.readI32();
               String elem64 = iprot.readString();
