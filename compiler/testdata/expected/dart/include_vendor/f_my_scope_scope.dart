@@ -23,14 +23,13 @@ MyScopePublisher myScopePublisherFactory(frugal.FScopeProvider provider, {List<f
 class MyScopePublisher {
   frugal.FPublisherTransport transport;
   frugal.FProtocolFactory protocolFactory;
-  Map<String, frugal.FMethod>? _methods = {};
+  Map<String, frugal.FMethod> _methods = {};
   MyScopePublisher(frugal.FScopeProvider provider, [List<frugal.Middleware>? middleware]) {
     transport = provider.publisherTransportFactory.getTransport();
     protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
-    this._methods = {};
-    this._methods?['newItem'] = frugal.FMethod(this._publishnewItem, 'MyScope', 'publishnewItem', combined);
+    this._methods['newItem'] = frugal.FMethod(this._publishnewItem, 'MyScope', 'publishnewItem', combined);
   }
 
   Future open() {
@@ -42,7 +41,7 @@ class MyScopePublisher {
   }
 
   Future publishnewItem(frugal.FContext ctx, t_vendor_namespace.Item req) {
-    return this._methods?['newItem']([ctx, req]);
+    return this._methods['newItem']([ctx, req]);
   }
 
   Future _publishnewItem(frugal.FContext ctx, t_vendor_namespace.Item req) async {
@@ -68,11 +67,11 @@ MyScopeSubscriber myScopeSubscriberFactory(frugal.FScopeProvider provider, {List
 
 class MyScopeSubscriber {
   final frugal.FScopeProvider provider;
-  final List<frugal.Middleware>? _middleware;
+  final List<frugal.Middleware> _middleware;
 
   MyScopeSubscriber(this.provider, [List<frugal.Middleware>? middleware])
       : this._middleware = middleware ?? [] {
-    this._middleware?.addAll(provider.middleware);
+    this._middleware.addAll(provider.middleware);
 }
 
   Future<frugal.FSubscription> subscribenewItem(dynamic onItem(frugal.FContext ctx, t_vendor_namespace.Item req)) async {

@@ -31,7 +31,7 @@ FMyServiceClient fMyServiceClientFactory(frugal.FServiceProvider provider, {List
 // ignore: private_collision_in_mixin_application
 class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient with disposable.Disposable implements FMyService {
   static final logging.Logger _frugalLog = logging.Logger('MyService');
-  Map<String, frugal.FMethod>? _methods = {};
+  Map<String, frugal.FMethod> _methods = {};
 
   FMyServiceClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
       : this._provider = provider,
@@ -40,8 +40,7 @@ class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient with dispo
     _protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
-    this._methods = {};
-    this._methods?['getItem'] = frugal.FMethod(this._getItem, 'MyService', 'getItem', combined);
+    this._methods['getItem'] = frugal.FMethod(this._getItem, 'MyService', 'getItem', combined);
   }
 
   frugal.FServiceProvider _provider;
@@ -58,7 +57,7 @@ class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient with dispo
 
   @override
   Future<t_vendor_namespace.Item> getItem(frugal.FContext ctx) {
-    return this._methods?['getItem']([ctx]).then((value) => value as t_vendor_namespace.Item);
+    return this._methods['getItem']([ctx]).then((value) => value as t_vendor_namespace.Item);
   }
 
   Future<t_vendor_namespace.Item> _getItem(frugal.FContext ctx) async {

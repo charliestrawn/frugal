@@ -25,17 +25,16 @@ EventsPublisher eventsPublisherFactory(frugal.FScopeProvider provider, {List<fru
 class EventsPublisher {
   frugal.FPublisherTransport transport;
   frugal.FProtocolFactory protocolFactory;
-  Map<String, frugal.FMethod>? _methods = {};
+  Map<String, frugal.FMethod> _methods = {};
   EventsPublisher(frugal.FScopeProvider provider, [List<frugal.Middleware>? middleware]) {
     transport = provider.publisherTransportFactory.getTransport();
     protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
-    this._methods = {};
-    this._methods?['EventCreated'] = frugal.FMethod(this._publishEventCreated, 'Events', 'publishEventCreated', combined);
-    this._methods?['SomeInt'] = frugal.FMethod(this._publishSomeInt, 'Events', 'publishSomeInt', combined);
-    this._methods?['SomeStr'] = frugal.FMethod(this._publishSomeStr, 'Events', 'publishSomeStr', combined);
-    this._methods?['SomeList'] = frugal.FMethod(this._publishSomeList, 'Events', 'publishSomeList', combined);
+    this._methods['EventCreated'] = frugal.FMethod(this._publishEventCreated, 'Events', 'publishEventCreated', combined);
+    this._methods['SomeInt'] = frugal.FMethod(this._publishSomeInt, 'Events', 'publishSomeInt', combined);
+    this._methods['SomeStr'] = frugal.FMethod(this._publishSomeStr, 'Events', 'publishSomeStr', combined);
+    this._methods['SomeList'] = frugal.FMethod(this._publishSomeList, 'Events', 'publishSomeList', combined);
   }
 
   Future open() {
@@ -48,7 +47,7 @@ class EventsPublisher {
 
   /// This is a docstring.
   Future publishEventCreated(frugal.FContext ctx, String user, t_variety.Event req) {
-    return this._methods?['EventCreated']([ctx, user, req]);
+    return this._methods['EventCreated']([ctx, user, req]);
   }
 
   Future _publishEventCreated(frugal.FContext ctx, String user, t_variety.Event req) async {
@@ -70,7 +69,7 @@ class EventsPublisher {
 
 
   Future publishSomeInt(frugal.FContext ctx, String user, fixnum.Int64 req) {
-    return this._methods?['SomeInt']([ctx, user, req]);
+    return this._methods['SomeInt']([ctx, user, req]);
   }
 
   Future _publishSomeInt(frugal.FContext ctx, String user, fixnum.Int64 req) async {
@@ -92,7 +91,7 @@ class EventsPublisher {
 
 
   Future publishSomeStr(frugal.FContext ctx, String user, String req) {
-    return this._methods?['SomeStr']([ctx, user, req]);
+    return this._methods['SomeStr']([ctx, user, req]);
   }
 
   Future _publishSomeStr(frugal.FContext ctx, String user, String req) async {
@@ -114,7 +113,7 @@ class EventsPublisher {
 
 
   Future publishSomeList(frugal.FContext ctx, String user, List<Map<fixnum.Int64, t_variety.Event>> req) {
-    return this._methods?['SomeList']([ctx, user, req]);
+    return this._methods['SomeList']([ctx, user, req]);
   }
 
   Future _publishSomeList(frugal.FContext ctx, String user, List<Map<fixnum.Int64, t_variety.Event>> req) async {
@@ -153,11 +152,11 @@ EventsSubscriber eventsSubscriberFactory(frugal.FScopeProvider provider, {List<f
 /// variable.
 class EventsSubscriber {
   final frugal.FScopeProvider provider;
-  final List<frugal.Middleware>? _middleware;
+  final List<frugal.Middleware> _middleware;
 
   EventsSubscriber(this.provider, [List<frugal.Middleware>? middleware])
       : this._middleware = middleware ?? [] {
-    this._middleware?.addAll(provider.middleware);
+    this._middleware.addAll(provider.middleware);
 }
 
   /// This is a docstring.

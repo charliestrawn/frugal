@@ -24,7 +24,7 @@ FVendoredBaseClient fVendoredBaseClientFactory(frugal.FServiceProvider provider,
 
 class FVendoredBaseClient extends disposable.Disposable implements FVendoredBase {
   static final logging.Logger _frugalLog = logging.Logger('VendoredBase');
-  Map<String, frugal.FMethod>? _methods = {};
+  Map<String, frugal.FMethod> _methods = {};
 
   FVendoredBaseClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
       : this._provider = provider {
@@ -32,7 +32,6 @@ class FVendoredBaseClient extends disposable.Disposable implements FVendoredBase
     _protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
-    this._methods = {};
   }
 
   frugal.FServiceProvider _provider;

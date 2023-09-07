@@ -1177,7 +1177,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += fmt.Sprintf(ind+"thrift.TList %s = iprot.readListBegin();\n", containerElem)
 			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
 			localListVar := "tempList"
-			if prefix == "this." {
+			if first {
 				contents += fmt.Sprintf(ind+"var %s = %s[];\n", localListVar, dartType)
 			} else {
 				contents += fmt.Sprintf(ind+"%s%s = %s[];\n", prefix, fName, dartType)
@@ -1186,14 +1186,14 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
-			if prefix == "this." {
+			if first {
 				contents += fmt.Sprintf(tab+ind+"%s.add(%s);\n", localListVar, valElem)
 			} else {
 				contents += fmt.Sprintf(tab+ind+"%s%s.add(%s);\n", thisPrefix, fName, valElem)
 			}
 			contents += ind + "}\n"
 			contents += ind + "iprot.readListEnd();\n"
-			if prefix == "this." {
+			if first {
 				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localListVar)
 			}
 
@@ -1202,7 +1202,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
 			localSetVar := "tempSet"
 
-			if prefix == "this." {
+			if first {
 				contents += fmt.Sprintf(ind+"var %s = %s{};\n", localSetVar, dartType)
 			} else {
 				contents += fmt.Sprintf(ind+"%s%s = %s{};\n", prefix, fName, dartType)
@@ -1210,14 +1210,14 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n",
 				counterElem, counterElem, containerElem, counterElem)
 			contents += valContents
-			if prefix == "this." {
+			if first {
 				contents += fmt.Sprintf(tab+ind+"%s.add(%s);\n", localSetVar, valElem)
 			} else {
 				contents += fmt.Sprintf(tab+ind+"%s%s.add(%s);\n", thisPrefix, fName, valElem)
 			}
 			contents += ind + "}\n"
 			contents += ind + "iprot.readSetEnd();\n"
-			if prefix == "this." {
+			if first {
 				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localSetVar)
 			}
 		case "map":
@@ -1225,7 +1225,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
 			localMapVar := "tempMap"
 
-			if prefix == "this." {
+			if first {
 				contents += fmt.Sprintf(ind+"var %s = %s{};\n", localMapVar, dartType)
 			} else {
 				contents += fmt.Sprintf(ind+"%s%s = %s{};\n", prefix, fName, dartType)
@@ -1239,7 +1239,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
 
-			if prefix == "this." {
+			if first {
 				contents += fmt.Sprintf(tab+ind+"%s[%s] = %s;\n", localMapVar, keyElem, valElem)
 
 			} else {
@@ -1248,7 +1248,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += ind + "}\n"
 			contents += ind + "iprot.readMapEnd();\n"
 
-			if prefix == "this." {
+			if first {
 				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localMapVar)
 			}
 		default:
@@ -1874,16 +1874,15 @@ func (g *Generator) GeneratePublisher(file *os.File, scope *parser.Scope) error 
 	publishers += fmt.Sprintf("class %s {\n", publisherClassname)
 	publishers += tab + "frugal.FPublisherTransport transport;\n"
 	publishers += tab + "frugal.FProtocolFactory protocolFactory;\n"
-	publishers += tab + "Map<String, frugal.FMethod>? _methods = {};\n"
+	publishers += tab + "Map<String, frugal.FMethod> _methods = {};\n"
 
 	publishers += fmt.Sprintf(tab+"%s(frugal.FScopeProvider provider, [List<frugal.Middleware>? middleware]) {\n", publisherClassname)
 	publishers += tabtab + "transport = provider.publisherTransportFactory.getTransport();\n"
 	publishers += tabtab + "protocolFactory = provider.protocolFactory;\n"
 	publishers += tabtab + "var combined = middleware ?? [];\n"
 	publishers += tabtab + "combined.addAll(provider.middleware);\n"
-	publishers += tabtab + "this._methods = {};\n"
 	for _, operation := range scope.Operations {
-		publishers += fmt.Sprintf(tabtab+"this._methods?['%s'] = frugal.FMethod(this._publish%s, '%s', 'publish%s', combined);\n",
+		publishers += fmt.Sprintf(tabtab+"this._methods['%s'] = frugal.FMethod(this._publish%s, '%s', 'publish%s', combined);\n",
 			operation.Name, operation.Name, strings.Title(scope.Name), operation.Name)
 	}
 	publishers += tab + "}\n\n"
@@ -1914,7 +1913,7 @@ func (g *Generator) GeneratePublisher(file *os.File, scope *parser.Scope) error 
 
 		publishers += fmt.Sprintf(tab+"Future publish%s(frugal.FContext ctx, %s%s req) {\n", op.Name, args, g.getDartTypeFromThriftType(op.Type))
 
-		publishers += fmt.Sprintf(tabtab+"return this._methods?['%s']([ctx, %sreq]);\n", op.Name, argsWithoutTypes)
+		publishers += fmt.Sprintf(tabtab+"return this._methods['%s']([ctx, %sreq]);\n", op.Name, argsWithoutTypes)
 		publishers += tab + "}\n\n"
 
 		publishers += fmt.Sprintf(tab+"Future _publish%s(frugal.FContext ctx, %s%s req) async {\n", op.Name, args, g.getDartTypeFromThriftType(op.Type))
@@ -1980,11 +1979,11 @@ func (g *Generator) GenerateSubscriber(file *os.File, scope *parser.Scope) error
 	// Generate subscriber class
 	subscribers += fmt.Sprintf("class %s {\n", subscriberClassname)
 	subscribers += tab + "final frugal.FScopeProvider provider;\n"
-	subscribers += tab + "final List<frugal.Middleware>? _middleware;\n\n"
+	subscribers += tab + "final List<frugal.Middleware> _middleware;\n\n"
 
 	subscribers += tab + fmt.Sprintf("%s(this.provider, [List<frugal.Middleware>? middleware])\n", subscriberClassname)
 	subscribers += tabtabtab + ": this._middleware = middleware ?? [] {\n"
-	subscribers += tabtab + "this._middleware?.addAll(provider.middleware);\n"
+	subscribers += tabtab + "this._middleware.addAll(provider.middleware);\n"
 	subscribers += "}\n\n"
 
 	args := ""
@@ -2137,7 +2136,7 @@ func (g *Generator) generateClient(service *parser.Service) string {
 			clientClassname, servTitle)
 	}
 	contents += fmt.Sprintf(tab+"static final logging.Logger _frugalLog = logging.Logger('%s');\n", servTitle)
-	contents += tab + "Map<String, frugal.FMethod>? _methods = {};\n\n"
+	contents += tab + "Map<String, frugal.FMethod> _methods = {};\n\n"
 
 	if service.Extends != "" {
 		contents += tab + fmt.Sprintf("%s(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])\n", clientClassname)
@@ -2151,10 +2150,9 @@ func (g *Generator) generateClient(service *parser.Service) string {
 	contents += tabtab + "_protocolFactory = provider.protocolFactory;\n"
 	contents += tabtab + "var combined = middleware ?? [];\n"
 	contents += tabtab + "combined.addAll(provider.middleware);\n"
-	contents += tabtab + "this._methods = {};\n"
 	for _, method := range service.Methods {
 		nameLower := parser.LowercaseFirstLetter(method.Name)
-		contents += fmt.Sprintf(tabtab+"this._methods?['%s'] = frugal.FMethod(this._%s, '%s', '%s', combined);\n",
+		contents += fmt.Sprintf(tabtab+"this._methods['%s'] = frugal.FMethod(this._%s, '%s', '%s', combined);\n",
 			nameLower, nameLower, servTitle, nameLower)
 	}
 	contents += tab + "}\n\n"
@@ -2204,7 +2202,7 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 		innerTypeCast = fmt.Sprintf(".then((value) => value as %s)", g.getDartTypeFromThriftType(method.ReturnType))
 	}
 
-	contents += fmt.Sprintf(tabtab+"return this._methods?['%s']([ctx%s])%s;\n",
+	contents += fmt.Sprintf(tabtab+"return this._methods['%s']([ctx%s])%s;\n",
 		nameLower, g.generateInputArgsWithoutTypes(method.Arguments), innerTypeCast)
 
 	contents += fmt.Sprintf(tab + "}\n\n")
