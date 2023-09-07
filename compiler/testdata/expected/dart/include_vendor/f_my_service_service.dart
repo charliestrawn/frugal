@@ -20,7 +20,7 @@ import 'package:include_vendor/include_vendor.dart' as t_include_vendor;
 
 
 abstract class FMyService extends t_vendor_namespace.FVendoredBase {
-  Future<t_vendor_namespace.Item> getItem(frugal.FContext ctx);
+  Future<t_vendor_namespace.Item?> getItem(frugal.FContext ctx);
 }
 
 FMyServiceClient fMyServiceClientFactory(frugal.FServiceProvider provider, {List<frugal.Middleware>? middleware}) =>
@@ -56,11 +56,11 @@ class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient with dispo
   }
 
   @override
-  Future<t_vendor_namespace.Item> getItem(frugal.FContext ctx) {
+  Future<t_vendor_namespace.Item?> getItem(frugal.FContext ctx) {
     return this._methods['getItem']([ctx]).then((value) => value as t_vendor_namespace.Item);
   }
 
-  Future<t_vendor_namespace.Item> _getItem(frugal.FContext ctx) async {
+  Future<t_vendor_namespace.Item?> _getItem(frugal.FContext ctx) async {
     final args = getItem_args();
     final message = frugal.prepareMessage(ctx, 'getItem', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit);
     var response = await _transport.request(ctx, message);

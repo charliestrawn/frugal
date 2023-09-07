@@ -2242,25 +2242,7 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 		contents += g.generateErrors(method)
 	} else {
 		contents += fmt.Sprintf(tabtab+"if (%s) {\n", g.generateIsSetSuccessExpr("result"))
-		// Using a map to add ! for the nullable types
-		nonNullableFNames := map[string]bool{
-			"bin_method":            true,
-			"underlying_types_test": true,
-			"getMyInt":              true,
-			"use_subdir_struct":     true,
-			"sayHelloWith":          true,
-			"whatDoYouSay":          true,
-			"sayAgain":              true,
-			"blah":                  true,
-			"param_modifiers":       true,
-			"getThing":              true,
-		}
-
-		if nonNullableFNames[nameLower] {
-			contents += tabtabtab + "return result.success!;\n"
-		} else {
-			contents += tabtabtab + "return result.success;\n"
-		}
+		contents += tabtabtab + "return result.success;\n"
 		contents += tabtab + "}\n\n"
 		contents += g.generateErrors(method)
 		contents += tabtab + "throw thrift.TApplicationError(\n"
@@ -2278,7 +2260,7 @@ func (g *Generator) generateReturnArg(method *parser.Method) string {
 	if method.ReturnType == nil {
 		return ""
 	}
-	return fmt.Sprintf("<%s>", g.getDartTypeFromThriftType(method.ReturnType))
+	return fmt.Sprintf("<%s>", g.getDartTypeFromThriftType(method.ReturnType)+ "?")
 }
 
 func (g *Generator) generateInputArgs(args []*parser.Field) string {
