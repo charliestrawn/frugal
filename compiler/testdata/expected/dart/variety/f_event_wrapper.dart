@@ -983,14 +983,14 @@ class EventWrapper implements thrift.TBase {
 
   EventWrapper clone({
     int? iD,
-    t_variety.Event ev,
+    t_variety.Event? ev,
     List<t_variety.Event>? events,
     Set<t_variety.Event>? events2,
     Map<int, t_variety.Event>? eventMap,
     List<List<int>>? nums,
     List<int>? enums,
     bool? aBoolField,
-    t_variety.TestingUnions a_union,
+    t_variety.TestingUnions? a_union,
     String? typedefOfTypedef,
     // ignore: deprecated_member_use
     bool? depr,

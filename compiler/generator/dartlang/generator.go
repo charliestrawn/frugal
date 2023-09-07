@@ -1639,29 +1639,7 @@ func (g *Generator) generateClone(s *parser.Struct) string {
 		fieldName := toFieldName(field.Name)
 		contents += ignoreDeprecationWarningIfNeeded(tabtab, field.Annotations)
 
-		// Using a map to add ? for the nullable types
-		nullableNames := map[string]bool{
-			"i32":                        true,
-			"id":                         true,
-			"string":                     true,
-			"bool":                       true,
-			"list":                       true,
-			"set":                        true,
-			"map":                        true,
-			"t2_string":                  true,
-			"binary":                     true,
-			"HealthCondition":            true,
-			"base.base_health_condition": true,
-			"int":                        true,
-			"i16":                        true,
-			"request":                    true,
-			"vendor_namespace.MyEnum":    true,
-		}
-		if nullableNames[field.Type.Name] {
-			contents += fmt.Sprintf(tabtab+"%s %s,\n", g.getDartTypeFromThriftType(field.Type)+"?", fieldName)
-		} else {
-			contents += fmt.Sprintf(tabtab+"%s %s,\n", g.getDartTypeFromThriftType(field.Type), fieldName)
-		}
+		contents += fmt.Sprintf(tabtab+"%s %s,\n", g.getDartTypeFromThriftType(field.Type)+"?", fieldName)
 
 	}
 	contents += tab + "}) {\n"
@@ -2260,7 +2238,7 @@ func (g *Generator) generateReturnArg(method *parser.Method) string {
 	if method.ReturnType == nil {
 		return ""
 	}
-	return fmt.Sprintf("<%s>", g.getDartTypeFromThriftType(method.ReturnType)+ "?")
+	return fmt.Sprintf("<%s>", g.getDartTypeFromThriftType(method.ReturnType)+"?")
 }
 
 func (g *Generator) generateInputArgs(args []*parser.Field) string {

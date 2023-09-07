@@ -858,8 +858,8 @@ class TestingDefaults implements thrift.TBase {
 
   TestingDefaults clone({
     int? iD2,
-    t_variety.Event ev1,
-    t_variety.Event ev2,
+    t_variety.Event? ev1,
+    t_variety.Event? ev2,
     int? iD,
     String? thing,
     String? thing2,

@@ -128,7 +128,7 @@ class TestBase implements thrift.TBase {
   }
 
   TestBase clone({
-    t_actual_base_dart.thing base_struct,
+    t_actual_base_dart.thing? base_struct,
   }) {
     return TestBase()
       ..base_struct = base_struct ?? this.base_struct;
