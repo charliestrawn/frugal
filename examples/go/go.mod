@@ -1,6 +1,6 @@
 module github.com/Workiva/frugal/examples/go
 
-go 1.18
+go 1.20
 
 require (
 	github.com/Workiva/frugal/lib/go v0.0.0
