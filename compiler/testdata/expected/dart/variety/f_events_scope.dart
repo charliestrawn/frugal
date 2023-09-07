@@ -131,7 +131,7 @@ class EventsPublisher {
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem74.length));
       for(var elem75 in elem74.keys) {
         oprot.writeI64(elem75);
-        elem74[elem75].write(oprot);
+        elem74![elem75]!.write(oprot);
       }
       oprot.writeMapEnd();
     }

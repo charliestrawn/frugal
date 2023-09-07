@@ -1359,15 +1359,6 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			panic("unknown thrift type: " + underlyingType.Name)
 		}
 
-		nullableFNames := map[string]string{
-			"req[elem68]":      "req![elem68]",
-			"a_map[elem20]":    "a_map![elem20]",
-			"requests[elem67]": "requests![elem67]",
-		}
-		if replacement, ok := nullableFNames[fName]; ok {
-			fName = replacement
-		}
-
 		contents += fmt.Sprintf(write, thisPrefix, fName)
 	} else if g.Frugal.IsEnum(underlyingType) {
 		if g.useEnums() {
@@ -1378,19 +1369,11 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 		}
 	} else if g.Frugal.IsStruct(underlyingType) {
 
-		//Using a map to add ! for the nullable types
-		validNames := map[string]bool{
-			"eventMapDefault": true,
-			"eventMap":        true,
-			"req":             true,
-		}
-		for key := range validNames {
-			if strings.Contains(fName, key) {
-				fName = strings.Replace(fName, key, key+"!", 1)
-				break // Exit the loop once a match is found.
-			}
-		}
-		contents += fmt.Sprintf(tabtab+ind+"%s%s.write(oprot);\n", thisPrefix, fName)
+        if first {
+        	contents += fmt.Sprintf(tabtab+ind+"%s%s.write(oprot);\n", thisPrefix, fName)
+        } else {
+        	contents += fmt.Sprintf(tabtab+ind+"%s%s!.write(oprot);\n", thisPrefix, fName)
+        }
 
 	} else if underlyingType.IsContainer() {
 		valEnumType := g.getEnumFromThriftType(underlyingType.ValueType)
@@ -1400,25 +1383,7 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			valElem := g.GetElem()
 			valField := parser.FieldFromType(underlyingType.ValueType, valElem)
 
-			// Using a map to add ! for the nullable types
-			nullableFNames := map[string]bool{
-				"things":          true,
-				"events":          true,
-				"events2":         true,
-				"eventMap":        true,
-				"nums":            true,
-				"enums":           true,
-				"deprList":        true,
-				"eventsDefault":   true,
-				"eventSetDefault": true,
-				"list_type":       true,
-				"listfield":       true,
-				"list2":           true,
-				"list3":           true,
-				"list4":           true,
-			}
-
-			if nullableFNames[fName] {
+			if first {
 				contents += fmt.Sprintf(tabtab+ind+"oprot.writeListBegin(thrift.TList(%s, %s%s!.length));\n", valEnumType, thisPrefix, fName)
 				contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
 				contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, thisPrefix, fName+"!")
@@ -1434,14 +1399,7 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			valElem := g.GetElem()
 			valField := parser.FieldFromType(underlyingType.ValueType, valElem)
 
-			// Using a map to add ! for the nullable types
-			nullableFNames := map[string]bool{
-				"events2":         true,
-				"eventSetDefault": true,
-				"set_type":        true,
-			}
-
-			if nullableFNames[fName] {
+			if first {
 				contents += fmt.Sprintf(tabtab+ind+"oprot.writeSetBegin(thrift.TSet(%s, %s%s!.length));\n", valEnumType, thisPrefix, fName)
 				contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
 				contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, thisPrefix, fName+"!")
@@ -1458,18 +1416,9 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			keyEnumType := g.getEnumFromThriftType(underlyingType.KeyType)
 			keyElem := g.GetElem()
 			keyField := parser.FieldFromType(underlyingType.KeyType, keyElem)
-			valField := parser.FieldFromType(underlyingType.ValueType, fmt.Sprintf("%s[%s]", fName, keyElem))
+			valField := parser.FieldFromType(underlyingType.ValueType, fmt.Sprintf("%s![%s]", fName, keyElem))
 
-			// Using a map to add ! for the nullable types
-			nullableFNames := map[string]bool{
-				"eventMapDefault": true,
-				"eventMap":        true,
-				"req":             true,
-				"a_map":           true,
-				"requests":        true,
-			}
-
-			if nullableFNames[fName] {
+			if first {
 				contents += fmt.Sprintf(tabtab+ind+"oprot.writeMapBegin(thrift.TMap(%s, %s, %s%s!.length));\n", keyEnumType, valEnumType, thisPrefix, fName)
 				contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
 				contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s!.keys) {\n", keyElem, thisPrefix, fName)
