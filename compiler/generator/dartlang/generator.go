@@ -1369,11 +1369,11 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 		}
 	} else if g.Frugal.IsStruct(underlyingType) {
 
-        if first {
-        	contents += fmt.Sprintf(tabtab+ind+"%s%s.write(oprot);\n", thisPrefix, fName)
-        } else {
-        	contents += fmt.Sprintf(tabtab+ind+"%s%s!.write(oprot);\n", thisPrefix, fName)
-        }
+		if first {
+			contents += fmt.Sprintf(tabtab+ind+"%s%s.write(oprot);\n", thisPrefix, fName)
+		} else {
+			contents += fmt.Sprintf(tabtab+ind+"%s%s!.write(oprot);\n", thisPrefix, fName)
+		}
 
 	} else if underlyingType.IsContainer() {
 		valEnumType := g.getEnumFromThriftType(underlyingType.ValueType)
@@ -2276,10 +2276,6 @@ func (g *Generator) getDartGenericTypeArgsFromThriftType(t *parser.Type) string 
 	}
 	underlyingType := g.Frugal.UnderlyingType(t)
 
-	if g.Frugal.IsEnum(underlyingType) {
-		return ""
-	}
-
 	switch underlyingType.Name {
 	case "list":
 		return fmt.Sprintf("<%s>", g.getDartTypeFromThriftType(underlyingType.ValueType))
@@ -2291,8 +2287,7 @@ func (g *Generator) getDartGenericTypeArgsFromThriftType(t *parser.Type) string 
 			g.getDartTypeFromThriftType(underlyingType.KeyType),
 			g.getDartTypeFromThriftType(underlyingType.ValueType))
 	default:
-		// This is a custom type
-		return g.qualifiedTypeName(t)
+		panic("Unsupported Thrift type: " + underlyingType.Name)
 	}
 }
 
