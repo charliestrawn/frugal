@@ -1172,17 +1172,20 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		valContents := g.generateReadFieldRec(valField, kind, false, ind+tab)
 		counterElem := g.GetElem()
 		dartType := g.getDartGenericTypeArgsFromThriftType(underlyingType) // Get generic type
+		initializer := "{}"
+		if underlyingType.Name == "list" {
+			initializer = "[]"
+		}
 		switch underlyingType.Name {
 		case "list":
 			contents += fmt.Sprintf(ind+"thrift.TList %s = iprot.readListBegin();\n", containerElem)
 			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
 			localListVar := "tempList"
 			if first {
-				contents += fmt.Sprintf(ind+"var %s = %s[];\n", localListVar, dartType)
+				contents += fmt.Sprintf(ind+"var %s = %s%s;\n", localListVar, dartType, initializer)
 			} else {
-				contents += fmt.Sprintf(ind+"%s%s = %s[];\n", prefix, fName, dartType)
+				contents += fmt.Sprintf(ind+"%s%s = %s%s;\n", prefix, fName, dartType, initializer)
 			}
-
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
@@ -1203,9 +1206,9 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			localSetVar := "tempSet"
 
 			if first {
-				contents += fmt.Sprintf(ind+"var %s = %s{};\n", localSetVar, dartType)
+				contents += fmt.Sprintf(ind+"var %s = %s%s;\n", localSetVar, dartType, initializer)
 			} else {
-				contents += fmt.Sprintf(ind+"%s%s = %s{};\n", prefix, fName, dartType)
+				contents += fmt.Sprintf(ind+"%s%s = %s%s;\n", prefix, fName, dartType, initializer)
 			}
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n",
 				counterElem, counterElem, containerElem, counterElem)
@@ -1226,11 +1229,10 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			localMapVar := "tempMap"
 
 			if first {
-				contents += fmt.Sprintf(ind+"var %s = %s{};\n", localMapVar, dartType)
+				contents += fmt.Sprintf(ind+"var %s = %s%s;\n", localMapVar, dartType, initializer)
 			} else {
-				contents += fmt.Sprintf(ind+"%s%s = %s{};\n", prefix, fName, dartType)
+				contents += fmt.Sprintf(ind+"%s%s = %s%s;\n", prefix, fName, dartType, initializer)
 			}
-
 			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n",
 				counterElem, counterElem, containerElem, counterElem)
 			keyElem := g.GetElem()
