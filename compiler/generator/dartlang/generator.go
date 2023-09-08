@@ -433,7 +433,7 @@ func (g *Generator) GenerateConstantsContents(constants []*parser.Constant) erro
 			immutableKeyword = "const"
 		}
 		contents += fmt.Sprintf(tab+"static %s %s %s = %s;\n",
-			immutableKeyword, g.getDartTypeFromThriftType(constant.Type)+"?", constant.Name, value)
+			immutableKeyword, g.getDartTypeFromThriftType(constant.Type), constant.Name, value)
 	}
 	contents += "}\n"
 	_, err = file.WriteString(contents)

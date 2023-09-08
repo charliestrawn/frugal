@@ -11,5 +11,5 @@ import 'package:thrift/thrift.dart' as thrift;
 import 'package:actual_base_dart/actual_base_dart.dart' as t_actual_base_dart;
 
 class ActualBaseDartConstants {
-  static const int? const_i32_from_base = 582;
+  static const int const_i32_from_base = 582;
 }
