@@ -1172,89 +1172,48 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		valContents := g.generateReadFieldRec(valField, kind, false, ind+tab)
 		counterElem := g.GetElem()
 		dartType := g.getDartGenericTypeArgsFromThriftType(underlyingType) // Get generic type
-		initializer := "{}"
+		initializer := "{}"                                                // Set a initializer
 		if underlyingType.Name == "list" {
 			initializer = "[]"
 		}
+		underlyingNameWithCapitalType := strings.Title(underlyingType.Name) // Capitalize first letter of underlyingType.Name
+		localVar := "temp" + underlyingNameWithCapitalType                  // Set a local temp var as per the type
+		contents += fmt.Sprintf(ind+"thrift.T%s %s = iprot.read%sBegin();\n", underlyingNameWithCapitalType, containerElem, underlyingNameWithCapitalType)
+		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
+
+		// Define a local variable when first
+		if first {
+			contents += fmt.Sprintf(ind+"var %s = %s%s;\n", localVar, dartType, initializer)
+		} else {
+			contents += fmt.Sprintf(ind+"%s%s = %s%s;\n", prefix, fName, dartType, initializer)
+		}
+
+		contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
 		switch underlyingType.Name {
-		case "list":
-			contents += fmt.Sprintf(ind+"thrift.TList %s = iprot.readListBegin();\n", containerElem)
-			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-			localListVar := "tempList"
-			if first {
-				contents += fmt.Sprintf(ind+"var %s = %s%s;\n", localListVar, dartType, initializer)
-			} else {
-				contents += fmt.Sprintf(ind+"%s%s = %s%s;\n", prefix, fName, dartType, initializer)
-			}
-			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
+		case "list", "set":
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
 			if first {
-				contents += fmt.Sprintf(tab+ind+"%s.add(%s);\n", localListVar, valElem)
+				contents += fmt.Sprintf(tab+ind+"%s.add(%s);\n", localVar, valElem)
 			} else {
 				contents += fmt.Sprintf(tab+ind+"%s%s.add(%s);\n", thisPrefix, fName, valElem)
-			}
-			contents += ind + "}\n"
-			contents += ind + "iprot.readListEnd();\n"
-			if first {
-				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localListVar)
-			}
-
-		case "set":
-			contents += fmt.Sprintf(ind+"thrift.TSet %s = iprot.readSetBegin();\n", containerElem)
-			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-			localSetVar := "tempSet"
-
-			if first {
-				contents += fmt.Sprintf(ind+"var %s = %s%s;\n", localSetVar, dartType, initializer)
-			} else {
-				contents += fmt.Sprintf(ind+"%s%s = %s%s;\n", prefix, fName, dartType, initializer)
-			}
-			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n",
-				counterElem, counterElem, containerElem, counterElem)
-			contents += valContents
-			if first {
-				contents += fmt.Sprintf(tab+ind+"%s.add(%s);\n", localSetVar, valElem)
-			} else {
-				contents += fmt.Sprintf(tab+ind+"%s%s.add(%s);\n", thisPrefix, fName, valElem)
-			}
-			contents += ind + "}\n"
-			contents += ind + "iprot.readSetEnd();\n"
-			if first {
-				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localSetVar)
 			}
 		case "map":
-			contents += fmt.Sprintf(ind+"thrift.TMap %s = iprot.readMapBegin();\n", containerElem)
-			contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-			localMapVar := "tempMap"
-
-			if first {
-				contents += fmt.Sprintf(ind+"var %s = %s%s;\n", localMapVar, dartType, initializer)
-			} else {
-				contents += fmt.Sprintf(ind+"%s%s = %s%s;\n", prefix, fName, dartType, initializer)
-			}
-			contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n",
-				counterElem, counterElem, containerElem, counterElem)
 			keyElem := g.GetElem()
 			keyField := parser.FieldFromType(underlyingType.KeyType, keyElem)
 			contents += g.generateReadFieldRec(keyField, kind, false, ind+tab)
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
-
 			if first {
-				contents += fmt.Sprintf(tab+ind+"%s[%s] = %s;\n", localMapVar, keyElem, valElem)
-
+				contents += fmt.Sprintf(tab+ind+"%s[%s] = %s;\n", localVar, keyElem, valElem)
 			} else {
 				contents += fmt.Sprintf(tab+ind+"%s%s[%s] = %s;\n", thisPrefix, fName, keyElem, valElem)
 			}
-			contents += ind + "}\n"
-			contents += ind + "iprot.readMapEnd();\n"
-
-			if first {
-				contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localMapVar)
-			}
-		default:
-			panic("unrecognized thrift type: " + underlyingType.Name)
+		}
+		contents += ind + "}\n"
+		contents += fmt.Sprintf(ind+"iprot.read%sEnd();\n", underlyingNameWithCapitalType)
+		if first {
+			contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, localVar)
 		}
 	}
 
