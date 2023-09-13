@@ -1187,28 +1187,26 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		} else {
 			contents += fmt.Sprintf(ind+"%s%s = %s%s;\n", prefix, fName, dartType, initializer)
 		}
-
 		contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
+
 		switch underlyingType.Name {
 		case "list", "set":
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
-			if first {
-				contents += fmt.Sprintf(tab+ind+"%s.add(%s);\n", localVar, valElem)
-			} else {
-				contents += fmt.Sprintf(tab+ind+"%s%s.add(%s);\n", thisPrefix, fName, valElem)
+			if !first {
+				localVar = thisPrefix + fName
 			}
+			contents += fmt.Sprintf(tab+ind+"%s.add(%s);\n", localVar, valElem)
 		case "map":
 			keyElem := g.GetElem()
 			keyField := parser.FieldFromType(underlyingType.KeyType, keyElem)
 			contents += g.generateReadFieldRec(keyField, kind, false, ind+tab)
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
-			if first {
-				contents += fmt.Sprintf(tab+ind+"%s[%s] = %s;\n", localVar, keyElem, valElem)
-			} else {
-				contents += fmt.Sprintf(tab+ind+"%s%s[%s] = %s;\n", thisPrefix, fName, keyElem, valElem)
+			if !first {
+				localVar = thisPrefix + fName
 			}
+			contents += fmt.Sprintf(tab+ind+"%s[%s] = %s;\n", localVar, keyElem, valElem)
 		}
 		contents += ind + "}\n"
 		contents += fmt.Sprintf(ind+"iprot.read%sEnd();\n", underlyingNameWithCapitalType)
