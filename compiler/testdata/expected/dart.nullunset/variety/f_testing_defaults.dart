@@ -568,8 +568,9 @@ class TestingDefaults implements thrift.TBase {
     }
     if (isSetListfield()) {
       oprot.writeFieldBegin(_LISTFIELD_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.I32, this.listfield!.length));
-      for(var elem16 in this.listfield!) {
+      final temp = this.listfield!;
+      oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
+      for(var elem16 in temp) {
         oprot.writeI32(elem16);
       }
       oprot.writeListEnd();
@@ -600,8 +601,9 @@ class TestingDefaults implements thrift.TBase {
     }
     if (isSetList2()) {
       oprot.writeFieldBegin(_LIST2_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.I32, this.list2!.length));
-      for(var elem17 in this.list2!) {
+      final temp = this.list2!;
+      oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
+      for(var elem17 in temp) {
         oprot.writeI32(elem17);
       }
       oprot.writeListEnd();
@@ -609,8 +611,9 @@ class TestingDefaults implements thrift.TBase {
     }
     if (isSetList3()) {
       oprot.writeFieldBegin(_LIST3_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.I32, this.list3!.length));
-      for(var elem18 in this.list3!) {
+      final temp = this.list3!;
+      oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
+      for(var elem18 in temp) {
         oprot.writeI32(elem18);
       }
       oprot.writeListEnd();
@@ -618,8 +621,9 @@ class TestingDefaults implements thrift.TBase {
     }
     if (isSetList4()) {
       oprot.writeFieldBegin(_LIST4_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.I32, this.list4!.length));
-      for(var elem19 in this.list4!) {
+      final temp = this.list4!;
+      oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
+      for(var elem19 in temp) {
         oprot.writeI32(elem19);
       }
       oprot.writeListEnd();
@@ -627,8 +631,9 @@ class TestingDefaults implements thrift.TBase {
     }
     if (isSetA_map()) {
       oprot.writeFieldBegin(_A_MAP_FIELD_DESC);
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.STRING, thrift.TType.STRING, this.a_map!.length));
-      for(var elem20 in this.a_map!.keys) {
+      final temp = this.a_map!;
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.STRING, thrift.TType.STRING, temp.length));
+      for(var elem20 in temp.keys) {
         oprot.writeString(elem20);
         oprot.writeString(a_map![elem20]);
       }

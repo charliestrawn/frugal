@@ -376,8 +376,9 @@ class TestingUnions implements thrift.TBase {
     }
     if (isSetRequests() && this.requests != null) {
       oprot.writeFieldBegin(_REQUESTS_FIELD_DESC);
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, this.requests!.length));
-      for(var elem67 in this.requests!.keys) {
+      final temp = this.requests!;
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp.length));
+      for(var elem67 in temp.keys) {
         oprot.writeI32(elem67);
         oprot.writeString(requests![elem67]);
       }

@@ -507,8 +507,9 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeFieldEnd();
     if (this.req != null) {
       oprot.writeFieldBegin(_REQ_FIELD_DESC);
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, this.req!.length));
-      for(var elem68 in this.req!.keys) {
+      final temp = this.req!;
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp.length));
+      for(var elem68 in temp.keys) {
         oprot.writeI32(elem68);
         oprot.writeString(req![elem68]);
       }
@@ -683,8 +684,9 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     if (this.list_type != null) {
       oprot.writeFieldBegin(_LIST_TYPE_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.I64, this.list_type!.length));
-      for(var elem69 in this.list_type!) {
+      final temp = this.list_type!;
+      oprot.writeListBegin(thrift.TList(thrift.TType.I64, temp.length));
+      for(var elem69 in temp) {
         oprot.writeI64(elem69);
       }
       oprot.writeListEnd();
@@ -692,8 +694,9 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
     }
     if (this.set_type != null) {
       oprot.writeFieldBegin(_SET_TYPE_FIELD_DESC);
-      oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, this.set_type!.length));
-      for(var elem70 in this.set_type!) {
+      final temp = this.set_type!;
+      oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, temp.length));
+      for(var elem70 in temp) {
         oprot.writeI64(elem70);
       }
       oprot.writeSetEnd();
