@@ -1177,14 +1177,16 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			initializer = "[]"
 		}
 		underlyingNameWithCapitalType := strings.Title(underlyingType.Name) // Capitalize first letter of underlyingType.Name
-		localVar := "temp" + underlyingNameWithCapitalType                  // Set a local temp var as per the type
 		contents += fmt.Sprintf(ind+"thrift.T%s %s = iprot.read%sBegin();\n", underlyingNameWithCapitalType, containerElem, underlyingNameWithCapitalType)
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
 
 		// Define a local variable when first
+		var localVar string
 		if first {
+			localVar = "temp" + underlyingNameWithCapitalType
 			contents += fmt.Sprintf(ind+"var %s = %s%s;\n", localVar, dartType, initializer)
 		} else {
+			localVar = thisPrefix + fName
 			contents += fmt.Sprintf(ind+"%s%s = %s%s;\n", prefix, fName, dartType, initializer)
 		}
 		contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
@@ -1193,9 +1195,6 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		case "list", "set":
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
-			if !first {
-				localVar = thisPrefix + fName
-			}
 			contents += fmt.Sprintf(tab+ind+"%s.add(%s);\n", localVar, valElem)
 		case "map":
 			keyElem := g.GetElem()
@@ -1203,9 +1202,6 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += g.generateReadFieldRec(keyField, kind, false, ind+tab)
 			contents += valContents
 			contents += ignoreDeprecationWarningIfNeeded(tab+ind, field.Annotations)
-			if !first {
-				localVar = thisPrefix + fName
-			}
 			contents += fmt.Sprintf(tab+ind+"%s[%s] = %s;\n", localVar, keyElem, valElem)
 		}
 		contents += ind + "}\n"
