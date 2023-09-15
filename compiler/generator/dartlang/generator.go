@@ -1103,11 +1103,9 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 	contents := ""
 
 	prefix := ""
-	thisPrefix := ""
 	dartType := g.getDartTypeFromThriftType(field.Type)
 	if first {
 		prefix = "this."
-		thisPrefix = "this."
 	} else {
 		prefix = dartType + " "
 	}
@@ -1181,14 +1179,11 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
 
 		// Define a local variable when first
-		var localVar string
+		localVar := fName
 		if first {
-			localVar = "temp" + underlyingNameWithCapitalType
-			contents += fmt.Sprintf(ind+"var %s = %s%s;\n", localVar, dartType, initializer)
-		} else {
-			localVar = thisPrefix + fName
-			contents += fmt.Sprintf(ind+"%s%s = %s%s;\n", prefix, fName, dartType, initializer)
+			localVar = g.GetElem()
 		}
+		contents += fmt.Sprintf(ind+"final %s = %s%s;\n", localVar, dartType, initializer)
 		contents += fmt.Sprintf(ind+"for(int %s = 0; %s < %s.length; ++%s) {\n", counterElem, counterElem, containerElem, counterElem)
 
 		switch underlyingType.Name {
@@ -1323,13 +1318,7 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			contents += fmt.Sprintf(tabtab+ind+"oprot.writeI32(%s%s);\n", thisPrefix, fName)
 		}
 	} else if g.Frugal.IsStruct(underlyingType) {
-
-		if first {
-			contents += fmt.Sprintf(tabtab+ind+"%s%s.write(oprot);\n", thisPrefix, fName)
-		} else {
-			contents += fmt.Sprintf(tabtab+ind+"%s%s!.write(oprot);\n", thisPrefix, fName)
-		}
-
+		contents += fmt.Sprintf(tabtab+ind+"%s%s.write(oprot);\n", thisPrefix, fName)
 	} else if underlyingType.IsContainer() {
 		valEnumType := g.getEnumFromThriftType(underlyingType.ValueType)
 		localVar := fName

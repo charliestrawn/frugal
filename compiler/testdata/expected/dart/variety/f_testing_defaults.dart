@@ -564,13 +564,13 @@ class TestingDefaults implements thrift.TBase {
         case LISTFIELD:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem0 = iprot.readListBegin();
-            var tempList = <int>[];
+            final elem3 = <int>[];
             for(int elem2 = 0; elem2 < elem0.length; ++elem2) {
               int elem1 = iprot.readI32();
-              tempList.add(elem1);
+              elem3.add(elem1);
             }
             iprot.readListEnd();
-            this.listfield = tempList;
+            this.listfield = elem3;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -613,57 +613,57 @@ class TestingDefaults implements thrift.TBase {
           break;
         case LIST2:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem3 = iprot.readListBegin();
-            var tempList = <int>[];
-            for(int elem5 = 0; elem5 < elem3.length; ++elem5) {
-              int elem4 = iprot.readI32();
-              tempList.add(elem4);
+            thrift.TList elem4 = iprot.readListBegin();
+            final elem7 = <int>[];
+            for(int elem6 = 0; elem6 < elem4.length; ++elem6) {
+              int elem5 = iprot.readI32();
+              elem7.add(elem5);
             }
             iprot.readListEnd();
-            this.list2 = tempList;
+            this.list2 = elem7;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case LIST3:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem6 = iprot.readListBegin();
-            var tempList = <int>[];
-            for(int elem8 = 0; elem8 < elem6.length; ++elem8) {
-              int elem7 = iprot.readI32();
-              tempList.add(elem7);
+            thrift.TList elem8 = iprot.readListBegin();
+            final elem11 = <int>[];
+            for(int elem10 = 0; elem10 < elem8.length; ++elem10) {
+              int elem9 = iprot.readI32();
+              elem11.add(elem9);
             }
             iprot.readListEnd();
-            this.list3 = tempList;
+            this.list3 = elem11;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case LIST4:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem9 = iprot.readListBegin();
-            var tempList = <int>[];
-            for(int elem11 = 0; elem11 < elem9.length; ++elem11) {
-              int elem10 = iprot.readI32();
-              tempList.add(elem10);
+            thrift.TList elem12 = iprot.readListBegin();
+            final elem15 = <int>[];
+            for(int elem14 = 0; elem14 < elem12.length; ++elem14) {
+              int elem13 = iprot.readI32();
+              elem15.add(elem13);
             }
             iprot.readListEnd();
-            this.list4 = tempList;
+            this.list4 = elem15;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case A_MAP:
           if (field.type == thrift.TType.MAP) {
-            thrift.TMap elem12 = iprot.readMapBegin();
-            var tempMap = <String, String>{};
-            for(int elem14 = 0; elem14 < elem12.length; ++elem14) {
-              String elem15 = iprot.readString();
-              String elem13 = iprot.readString();
-              tempMap[elem15] = elem13;
+            thrift.TMap elem16 = iprot.readMapBegin();
+            final elem19 = <String, String>{};
+            for(int elem18 = 0; elem18 < elem16.length; ++elem18) {
+              String elem20 = iprot.readString();
+              String elem17 = iprot.readString();
+              elem19[elem20] = elem17;
             }
             iprot.readMapEnd();
-            this.a_map = tempMap;
+            this.a_map = elem19;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -732,8 +732,8 @@ class TestingDefaults implements thrift.TBase {
       oprot.writeFieldBegin(_LISTFIELD_FIELD_DESC);
       final temp = this.listfield!;
       oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
-      for(var elem16 in temp) {
-        oprot.writeI32(elem16);
+      for(var elem21 in temp) {
+        oprot.writeI32(elem21);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
@@ -765,8 +765,8 @@ class TestingDefaults implements thrift.TBase {
       oprot.writeFieldBegin(_LIST2_FIELD_DESC);
       final temp = this.list2!;
       oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
-      for(var elem17 in temp) {
-        oprot.writeI32(elem17);
+      for(var elem22 in temp) {
+        oprot.writeI32(elem22);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
@@ -775,8 +775,8 @@ class TestingDefaults implements thrift.TBase {
       oprot.writeFieldBegin(_LIST3_FIELD_DESC);
       final temp = this.list3!;
       oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
-      for(var elem18 in temp) {
-        oprot.writeI32(elem18);
+      for(var elem23 in temp) {
+        oprot.writeI32(elem23);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
@@ -785,8 +785,8 @@ class TestingDefaults implements thrift.TBase {
       oprot.writeFieldBegin(_LIST4_FIELD_DESC);
       final temp = this.list4!;
       oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
-      for(var elem19 in temp) {
-        oprot.writeI32(elem19);
+      for(var elem24 in temp) {
+        oprot.writeI32(elem24);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
@@ -795,9 +795,9 @@ class TestingDefaults implements thrift.TBase {
       oprot.writeFieldBegin(_A_MAP_FIELD_DESC);
       final temp = this.a_map!;
       oprot.writeMapBegin(thrift.TMap(thrift.TType.STRING, thrift.TType.STRING, temp.length));
-      for(var elem20 in temp.keys) {
-        oprot.writeString(elem20);
-        oprot.writeString(a_map![elem20]);
+      for(var elem25 in temp.keys) {
+        oprot.writeString(elem25);
+        oprot.writeString(a_map![elem25]);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();

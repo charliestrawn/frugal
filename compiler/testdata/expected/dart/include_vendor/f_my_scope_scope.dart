@@ -53,7 +53,7 @@ class MyScopePublisher {
     var msg = thrift.TMessage(op, thrift.TMessageType.CALL, 0);
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
-    req!.write(oprot);
+    req.write(oprot);
     oprot.writeMessageEnd();
     // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
     // ignore: await_only_futures

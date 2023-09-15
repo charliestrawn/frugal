@@ -203,15 +203,15 @@ class TestingUnions implements thrift.TBase {
           break;
         case REQUESTS:
           if (field.type == thrift.TType.MAP) {
-            thrift.TMap elem63 = iprot.readMapBegin();
-            var tempMap = <int, String>{};
-            for(int elem65 = 0; elem65 < elem63.length; ++elem65) {
-              int elem66 = iprot.readI32();
-              String elem64 = iprot.readString();
-              tempMap[elem66] = elem64;
+            thrift.TMap elem77 = iprot.readMapBegin();
+            final elem80 = <int, String>{};
+            for(int elem79 = 0; elem79 < elem77.length; ++elem79) {
+              int elem81 = iprot.readI32();
+              String elem78 = iprot.readString();
+              elem80[elem81] = elem78;
             }
             iprot.readMapEnd();
-            this.requests = tempMap;
+            this.requests = elem80;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -278,9 +278,9 @@ class TestingUnions implements thrift.TBase {
       oprot.writeFieldBegin(_REQUESTS_FIELD_DESC);
       final temp = this.requests!;
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp.length));
-      for(var elem67 in temp.keys) {
-        oprot.writeI32(elem67);
-        oprot.writeString(requests![elem67]);
+      for(var elem82 in temp.keys) {
+        oprot.writeI32(elem82);
+        oprot.writeString(requests![elem82]);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();

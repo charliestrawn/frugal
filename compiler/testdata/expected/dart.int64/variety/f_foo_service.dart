@@ -510,9 +510,9 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
       oprot.writeFieldBegin(_REQ_FIELD_DESC);
       final temp = this.req!;
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp.length));
-      for(var elem68 in temp.keys) {
-        oprot.writeI32(elem68);
-        oprot.writeString(req![elem68]);
+      for(var elem83 in temp.keys) {
+        oprot.writeI32(elem83);
+        oprot.writeString(req![elem83]);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
@@ -687,8 +687,8 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
       oprot.writeFieldBegin(_LIST_TYPE_FIELD_DESC);
       final temp = this.list_type!;
       oprot.writeListBegin(thrift.TList(thrift.TType.I64, temp.length));
-      for(var elem69 in temp) {
-        oprot.writeInt64(elem69);
+      for(var elem84 in temp) {
+        oprot.writeInt64(elem84);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
@@ -697,8 +697,8 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
       oprot.writeFieldBegin(_SET_TYPE_FIELD_DESC);
       final temp = this.set_type!;
       oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, temp.length));
-      for(var elem70 in temp) {
-        oprot.writeInt64(elem70);
+      for(var elem85 in temp) {
+        oprot.writeInt64(elem85);
       }
       oprot.writeSetEnd();
       oprot.writeFieldEnd();
@@ -724,14 +724,14 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
       switch (field.id) {
         case 0:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem71 = iprot.readListBegin();
-            var tempList = <fixnum.Int64>[];
-            for(int elem73 = 0; elem73 < elem71.length; ++elem73) {
-              fixnum.Int64 elem72 = iprot.readInt64();
-              tempList.add(elem72);
+            thrift.TList elem86 = iprot.readListBegin();
+            final elem89 = <fixnum.Int64>[];
+            for(int elem88 = 0; elem88 < elem86.length; ++elem88) {
+              fixnum.Int64 elem87 = iprot.readInt64();
+              elem89.add(elem87);
             }
             iprot.readListEnd();
-            this.success = tempList;
+            this.success = elem89;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
