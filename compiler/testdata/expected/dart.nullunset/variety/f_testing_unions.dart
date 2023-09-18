@@ -280,7 +280,7 @@ class TestingUnions implements thrift.TBase {
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp.length));
       for(var elem82 in temp.keys) {
         oprot.writeI32(elem82);
-        oprot.writeString(requests[elem82]);
+        oprot.writeString(temp[elem82]);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();

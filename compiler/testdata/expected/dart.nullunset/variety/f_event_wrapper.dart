@@ -553,7 +553,7 @@ class EventWrapper implements thrift.TBase {
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, temp.length));
       for(var elem69 in temp.keys) {
         oprot.writeI64(elem69);
-        eventMap[elem69].write(oprot);
+        temp[elem69].write(oprot);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
@@ -635,7 +635,7 @@ class EventWrapper implements thrift.TBase {
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, temp.length));
       for(var elem75 in temp.keys) {
         oprot.writeI64(elem75);
-        eventMapDefault[elem75].write(oprot);
+        temp[elem75].write(oprot);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();

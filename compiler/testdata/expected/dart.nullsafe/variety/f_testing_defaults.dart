@@ -797,7 +797,7 @@ class TestingDefaults implements thrift.TBase {
       oprot.writeMapBegin(thrift.TMap(thrift.TType.STRING, thrift.TType.STRING, temp.length));
       for(var elem25 in temp.keys) {
         oprot.writeString(elem25);
-        oprot.writeString(a_map[elem25]);
+        oprot.writeString(temp[elem25]);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();

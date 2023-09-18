@@ -968,7 +968,7 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 			contents += g.generateFieldComment(field, tab)
 			contents += fmt.Sprintf(tab+"%s%s get %s => this._%s;\n\n", dartType, g.nullableOperator, fName, fName)
 			contents += g.generateFieldComment(field, tab)
-			contents += fmt.Sprintf(tab+"set %s(%s%s %s) {\n", fName, g.nullableOperator, dartType, fName)
+			contents += fmt.Sprintf(tab+"set %s(%s%s %s) {\n", fName, dartType, g.nullableOperator, fName)
 			contents += fmt.Sprintf(tabtab+"this._%s = %s;\n", fName, fName)
 			if dartPrimitive {
 				contents += fmt.Sprintf(tabtab+"this.__isset_%s = true;\n", fName)
@@ -1335,7 +1335,7 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 		localVar := fName
 		if first {
 			localVar = "temp"
-			contents += fmt.Sprintf(tabtab+ind+"final %s = this.%s%s;\n", localVar, g.notNullOperator, fName)
+			contents += fmt.Sprintf(tabtab+ind+"final %s = this.%s%s;\n", localVar, fName, g.notNullOperator)
 		}
 		switch underlyingType.Name {
 		case "list":
@@ -1360,7 +1360,7 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			keyEnumType := g.getEnumFromThriftType(underlyingType.KeyType)
 			keyElem := g.GetElem()
 			keyField := parser.FieldFromType(underlyingType.KeyType, keyElem)
-			valField := parser.FieldFromType(underlyingType.ValueType, fmt.Sprintf("%s%s[%s]", fName, g.notNullOperator, keyElem))
+			valField := parser.FieldFromType(underlyingType.ValueType, fmt.Sprintf("%s[%s]", localVar, keyElem))
 			contents += fmt.Sprintf(tabtab+ind+"oprot.writeMapBegin(thrift.TMap(%s, %s, %s.length));\n", keyEnumType, valEnumType, localVar)
 			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
 			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s.keys) {\n", keyElem, localVar)

@@ -512,7 +512,7 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp.length));
       for(var elem83 in temp.keys) {
         oprot.writeI32(elem83);
-        oprot.writeString(req[elem83]);
+        oprot.writeString(temp[elem83]);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
