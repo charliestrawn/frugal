@@ -35,23 +35,23 @@ class TestingDefaults implements thrift.TBase {
   static final thrift.TField _STATUS_FIELD_DESC = thrift.TField('status', thrift.TType.I32, 17);
   static final thrift.TField _BASE_STATUS_FIELD_DESC = thrift.TField('base_status', thrift.TType.I32, 18);
 
-  int? iD2 = t_variety.VarietyConstants.DEFAULT_ID;
+  int iD2 = t_variety.VarietyConstants.DEFAULT_ID;
   static const int ID2 = 1;
-  t_variety.Event? ev1 = t_variety.Event()
+  t_variety.Event ev1 = t_variety.Event()
       ..iD = t_variety.VarietyConstants.DEFAULT_ID
       ..message = "a message";
   static const int EV1 = 2;
-  t_variety.Event? ev2 = t_variety.Event()
+  t_variety.Event ev2 = t_variety.Event()
       ..iD = 5
       ..message = "a message2";
   static const int EV2 = 3;
-  int? iD = -2;
+  int iD = -2;
   static const int ID = 4;
-  String? thing = "a constant";
+  String thing = "a constant";
   static const int THING = 5;
-  String? thing2 = "another constant";
+  String thing2 = "another constant";
   static const int THING2 = 6;
-  List<int>? listfield = [
+  List<int> listfield = [
       1,
       2,
       3,
@@ -59,17 +59,17 @@ class TestingDefaults implements thrift.TBase {
       5,
     ];
   static const int LISTFIELD = 7;
-  int? iD3 = t_variety.VarietyConstants.other_default;
+  int iD3 = t_variety.VarietyConstants.other_default;
   static const int ID3 = 8;
-  Uint8List? bin_field;
+  Uint8List bin_field;
   static const int BIN_FIELD = 9;
-  Uint8List? bin_field2;
+  Uint8List bin_field2;
   static const int BIN_FIELD2 = 10;
-  Uint8List? bin_field3;
+  Uint8List bin_field3;
   static const int BIN_FIELD3 = 11;
-  Uint8List? bin_field4 = t_variety.VarietyConstants.bin_const;
+  Uint8List bin_field4 = t_variety.VarietyConstants.bin_const;
   static const int BIN_FIELD4 = 12;
-  List<int>? list2 = [
+  List<int> list2 = [
       1,
       3,
       4,
@@ -77,25 +77,25 @@ class TestingDefaults implements thrift.TBase {
       8,
     ];
   static const int LIST2 = 13;
-  List<int>? list3;
+  List<int> list3;
   static const int LIST3 = 14;
-  List<int>? list4 = [
+  List<int> list4 = [
       1,
       2,
       3,
       6,
     ];
   static const int LIST4 = 15;
-  Map<String, String>? a_map = {
+  Map<String, String> a_map = {
       "k1": "v1",
       "k2": "v2",
     };
   static const int A_MAP = 16;
   /// [t_variety.HealthCondition] Comment for enum field.
-  int? status = t_variety.HealthCondition.PASS;
+  int status = t_variety.HealthCondition.PASS;
   static const int STATUS = 17;
   /// [t_actual_base_dart.base_health_condition]
-  int? base_status = t_actual_base_dart.base_health_condition.FAIL;
+  int base_status = t_actual_base_dart.base_health_condition.FAIL;
   static const int BASE_STATUS = 18;
 
 
@@ -568,7 +568,7 @@ class TestingDefaults implements thrift.TBase {
     }
     if (isSetListfield()) {
       oprot.writeFieldBegin(_LISTFIELD_FIELD_DESC);
-      final temp = this.listfield!;
+      final temp = this.listfield;
       oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
       for(var elem21 in temp) {
         oprot.writeI32(elem21);
@@ -601,7 +601,7 @@ class TestingDefaults implements thrift.TBase {
     }
     if (isSetList2()) {
       oprot.writeFieldBegin(_LIST2_FIELD_DESC);
-      final temp = this.list2!;
+      final temp = this.list2;
       oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
       for(var elem22 in temp) {
         oprot.writeI32(elem22);
@@ -611,7 +611,7 @@ class TestingDefaults implements thrift.TBase {
     }
     if (isSetList3()) {
       oprot.writeFieldBegin(_LIST3_FIELD_DESC);
-      final temp = this.list3!;
+      final temp = this.list3;
       oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
       for(var elem23 in temp) {
         oprot.writeI32(elem23);
@@ -621,7 +621,7 @@ class TestingDefaults implements thrift.TBase {
     }
     if (isSetList4()) {
       oprot.writeFieldBegin(_LIST4_FIELD_DESC);
-      final temp = this.list4!;
+      final temp = this.list4;
       oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
       for(var elem24 in temp) {
         oprot.writeI32(elem24);
@@ -631,11 +631,11 @@ class TestingDefaults implements thrift.TBase {
     }
     if (isSetA_map()) {
       oprot.writeFieldBegin(_A_MAP_FIELD_DESC);
-      final temp = this.a_map!;
+      final temp = this.a_map;
       oprot.writeMapBegin(thrift.TMap(thrift.TType.STRING, thrift.TType.STRING, temp.length));
       for(var elem25 in temp.keys) {
         oprot.writeString(elem25);
-        oprot.writeString(a_map![elem25]);
+        oprot.writeString(a_map[elem25]);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
@@ -862,24 +862,24 @@ class TestingDefaults implements thrift.TBase {
   }
 
   TestingDefaults clone({
-    int? iD2,
-    t_variety.Event? ev1,
-    t_variety.Event? ev2,
-    int? iD,
-    String? thing,
-    String? thing2,
-    List<int>? listfield,
-    int? iD3,
-    Uint8List? bin_field,
-    Uint8List? bin_field2,
-    Uint8List? bin_field3,
-    Uint8List? bin_field4,
-    List<int>? list2,
-    List<int>? list3,
-    List<int>? list4,
-    Map<String, String>? a_map,
-    int? status,
-    int? base_status,
+    int iD2,
+    t_variety.Event ev1,
+    t_variety.Event ev2,
+    int iD,
+    String thing,
+    String thing2,
+    List<int> listfield,
+    int iD3,
+    Uint8List bin_field,
+    Uint8List bin_field2,
+    Uint8List bin_field3,
+    Uint8List bin_field4,
+    List<int> list2,
+    List<int> list3,
+    List<int> list4,
+    Map<String, String> a_map,
+    int status,
+    int base_status,
   }) {
     return TestingDefaults()
       ..iD2 = iD2 ?? this.iD2

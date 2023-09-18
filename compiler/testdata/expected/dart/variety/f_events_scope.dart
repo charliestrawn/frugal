@@ -16,7 +16,7 @@ import 'package:variety/variety.dart' as t_variety;
 
 const String delimiter = '.';
 
-EventsPublisher eventsPublisherFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>? middleware}) =>
+EventsPublisher eventsPublisherFactory(frugal.FScopeProvider provider, {List<frugal.Middleware> middleware}) =>
     EventsPublisher(provider, middleware);
 
 /// This docstring gets added to the generated code because it has
@@ -26,7 +26,7 @@ class EventsPublisher {
   frugal.FPublisherTransport transport;
   frugal.FProtocolFactory protocolFactory;
   Map<String, frugal.FMethod> _methods = {};
-  EventsPublisher(frugal.FScopeProvider provider, [List<frugal.Middleware>? middleware]) {
+  EventsPublisher(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) {
     transport = provider.publisherTransportFactory.getTransport();
     protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
@@ -131,7 +131,7 @@ class EventsPublisher {
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem90.length));
       for(var elem91 in elem90.keys) {
         oprot.writeI64(elem91);
-        elem90![elem91].write(oprot);
+        elem90[elem91].write(oprot);
       }
       oprot.writeMapEnd();
     }
@@ -144,7 +144,7 @@ class EventsPublisher {
 }
 
 
-EventsSubscriber eventsSubscriberFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>? middleware}) =>
+EventsSubscriber eventsSubscriberFactory(frugal.FScopeProvider provider, {List<frugal.Middleware> middleware}) =>
     EventsSubscriber(provider, middleware);
 
 /// This docstring gets added to the generated code because it has
@@ -154,7 +154,7 @@ class EventsSubscriber {
   final frugal.FScopeProvider provider;
   final List<frugal.Middleware> _middleware;
 
-  EventsSubscriber(this.provider, [List<frugal.Middleware>? middleware])
+  EventsSubscriber(this.provider, [List<frugal.Middleware> middleware])
       : this._middleware = middleware ?? [] {
     this._middleware.addAll(provider.middleware);
 }

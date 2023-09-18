@@ -21,14 +21,14 @@ abstract class FBaseFoo {
   Future basePing(frugal.FContext ctx);
 }
 
-FBaseFooClient fBaseFooClientFactory(frugal.FServiceProvider provider, {List<frugal.Middleware>? middleware}) =>
+FBaseFooClient fBaseFooClientFactory(frugal.FServiceProvider provider, {List<frugal.Middleware> middleware}) =>
     FBaseFooClient(provider, middleware);
 
 class FBaseFooClient extends disposable.Disposable implements FBaseFoo {
   static final logging.Logger _frugalLog = logging.Logger('BaseFoo');
   Map<String, frugal.FMethod> _methods = {};
 
-  FBaseFooClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
+  FBaseFooClient(frugal.FServiceProvider provider, [List<frugal.Middleware> middleware])
       : this._provider = provider {
     _transport = provider.transport;
     _protocolFactory = provider.protocolFactory;

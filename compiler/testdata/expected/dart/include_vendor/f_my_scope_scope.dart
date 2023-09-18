@@ -17,14 +17,14 @@ import 'package:include_vendor/include_vendor.dart' as t_include_vendor;
 
 const String delimiter = '.';
 
-MyScopePublisher myScopePublisherFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>? middleware}) =>
+MyScopePublisher myScopePublisherFactory(frugal.FScopeProvider provider, {List<frugal.Middleware> middleware}) =>
     MyScopePublisher(provider, middleware);
 
 class MyScopePublisher {
   frugal.FPublisherTransport transport;
   frugal.FProtocolFactory protocolFactory;
   Map<String, frugal.FMethod> _methods = {};
-  MyScopePublisher(frugal.FScopeProvider provider, [List<frugal.Middleware>? middleware]) {
+  MyScopePublisher(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) {
     transport = provider.publisherTransportFactory.getTransport();
     protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
@@ -62,14 +62,14 @@ class MyScopePublisher {
 }
 
 
-MyScopeSubscriber myScopeSubscriberFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>? middleware}) =>
+MyScopeSubscriber myScopeSubscriberFactory(frugal.FScopeProvider provider, {List<frugal.Middleware> middleware}) =>
     MyScopeSubscriber(provider, middleware);
 
 class MyScopeSubscriber {
   final frugal.FScopeProvider provider;
   final List<frugal.Middleware> _middleware;
 
-  MyScopeSubscriber(this.provider, [List<frugal.Middleware>? middleware])
+  MyScopeSubscriber(this.provider, [List<frugal.Middleware> middleware])
       : this._middleware = middleware ?? [] {
     this._middleware.addAll(provider.middleware);
 }
