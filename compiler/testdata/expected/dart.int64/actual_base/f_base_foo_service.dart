@@ -59,7 +59,7 @@ class FBaseFooClient extends disposable.Disposable implements FBaseFoo {
   Future _basePing(frugal.FContext ctx) async {
     final args = basePing_args();
     final message = frugal.prepareMessage(ctx, 'basePing', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit);
-    var response = (await _transport.request(ctx, message))!;
+    var response = (await _transport.request(ctx, message));
 
     final result = basePing_result();
     frugal.processReply(ctx, result, response, _protocolFactory);

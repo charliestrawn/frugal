@@ -72,7 +72,7 @@ class nested_thing implements thrift.TBase {
             final elem102 = <t_actual_base_dart.thing?>[];
             for(int elem101 = 0; elem101 < elem99.length; ++elem101) {
               t_actual_base_dart.thing elem100 = t_actual_base_dart.thing();
-              elem100.read(iprot);
+              elem100?.read(iprot);
               elem102.add(elem100);
             }
             iprot.readListEnd();
@@ -102,7 +102,7 @@ class nested_thing implements thrift.TBase {
       final temp = this.things!;
       oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, temp.length));
       for(var elem103 in temp) {
-        elem103.write(oprot);
+        elem103?.write(oprot);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();

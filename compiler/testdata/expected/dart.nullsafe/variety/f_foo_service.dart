@@ -427,7 +427,7 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
     }
     if (this.event != null) {
       oprot.writeFieldBegin(_EVENT_FIELD_DESC);
-      this.event.write(oprot);
+      this.event?.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -461,7 +461,7 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
         case 1:
           if (field.type == thrift.TType.STRUCT) {
             this.awe = t_variety.AwesomeException();
-            awe.read(iprot);
+            awe?.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -469,7 +469,7 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
         case 2:
           if (field.type == thrift.TType.STRUCT) {
             this.api = t_actual_base_dart.api_exception();
-            api.read(iprot);
+            api?.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -579,7 +579,7 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
         case 1:
           if (field.type == thrift.TType.STRUCT) {
             this.api = t_actual_base_dart.api_exception();
-            api.read(iprot);
+            api?.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -783,7 +783,7 @@ class getThing_result extends frugal.FGeneratedArgsResultBase {
         case 0:
           if (field.type == thrift.TType.STRUCT) {
             this.success = t_validStructs.Thing();
-            success.read(iprot);
+            success?.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -868,7 +868,7 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     if (this.a != null) {
       oprot.writeFieldBegin(_A_FIELD_DESC);
-      this.a.write(oprot);
+      this.a?.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -893,7 +893,7 @@ class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
         case 0:
           if (field.type == thrift.TType.STRUCT) {
             this.success = t_subdir_include_ns.A();
-            success.read(iprot);
+            success?.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }

@@ -64,7 +64,7 @@ class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient with dispo
   Future<t_vendor_namespace.Item> _getItem(frugal.FContext ctx) async {
     final args = getItem_args();
     final message = frugal.prepareMessage(ctx, 'getItem', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit);
-    var response = (await _transport.request(ctx, message))!;
+    var response = (await _transport.request(ctx, message));
 
     final result = getItem_result();
     frugal.processReply(ctx, result, response, _protocolFactory);

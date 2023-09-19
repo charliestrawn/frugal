@@ -62,7 +62,7 @@ class EventsPublisher {
     var msg = thrift.TMessage(op, thrift.TMessageType.CALL, 0);
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
-    req.write(oprot);
+    req?.write(oprot);
     oprot.writeMessageEnd();
     // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
     // ignore: await_only_futures, use_of_void_result
@@ -133,7 +133,7 @@ class EventsPublisher {
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem90.length));
       for(var elem91 in elem90.keys) {
         oprot.writeI64(elem91);
-        elem90[elem91].write(oprot);
+        elem90[elem91]?.write(oprot);
       }
       oprot.writeMapEnd();
     }
@@ -184,7 +184,7 @@ class EventsSubscriber {
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
       t_variety.Event req = t_variety.Event();
-      req.read(iprot);
+      req?.read(iprot);
       iprot.readMessageEnd();
       method([ctx, req]);
     }
@@ -279,7 +279,7 @@ class EventsSubscriber {
         for(int elem96 = 0; elem96 < elem94.length; ++elem96) {
           int elem97 = iprot.readI64();
           t_variety.Event elem95 = t_variety.Event();
-          elem95.read(iprot);
+          elem95?.read(iprot);
           elem93[elem97] = elem95;
         }
         iprot.readMapEnd();

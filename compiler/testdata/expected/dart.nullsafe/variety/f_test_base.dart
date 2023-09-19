@@ -73,7 +73,7 @@ class TestBase implements thrift.TBase {
         case BASE_STRUCT:
           if (field.type == thrift.TType.STRUCT) {
             this.base_struct = t_actual_base_dart.thing();
-            base_struct.read(iprot);
+            base_struct?.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -96,7 +96,7 @@ class TestBase implements thrift.TBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     if (this.base_struct != null) {
       oprot.writeFieldBegin(_BASE_STRUCT_FIELD_DESC);
-      this.base_struct.write(oprot);
+      this.base_struct?.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

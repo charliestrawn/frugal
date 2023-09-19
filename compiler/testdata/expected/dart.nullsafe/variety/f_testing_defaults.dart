@@ -527,7 +527,7 @@ class TestingDefaults implements thrift.TBase {
         case EV1:
           if (field.type == thrift.TType.STRUCT) {
             this.ev1 = t_variety.Event();
-            ev1.read(iprot);
+            ev1?.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -535,7 +535,7 @@ class TestingDefaults implements thrift.TBase {
         case EV2:
           if (field.type == thrift.TType.STRUCT) {
             this.ev2 = t_variety.Event();
-            ev2.read(iprot);
+            ev2?.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -708,12 +708,12 @@ class TestingDefaults implements thrift.TBase {
     }
     if (this.ev1 != null) {
       oprot.writeFieldBegin(_EV1_FIELD_DESC);
-      this.ev1.write(oprot);
+      this.ev1?.write(oprot);
       oprot.writeFieldEnd();
     }
     if (this.ev2 != null) {
       oprot.writeFieldBegin(_EV2_FIELD_DESC);
-      this.ev2.write(oprot);
+      this.ev2?.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldBegin(_ID_FIELD_DESC);
@@ -948,7 +948,7 @@ class TestingDefaults implements thrift.TBase {
 
     ret.write(', ');
     ret.write('status:');
-    String status_name = t_variety.HealthCondition.VALUES_TO_NAMES[this.status];
+    String status_name = t_variety.HealthCondition.VALUES_TO_NAMES[this.status]!;
     if (status_name != null) {
       ret.write(status_name);
       ret.write(' (');
@@ -960,7 +960,7 @@ class TestingDefaults implements thrift.TBase {
 
     ret.write(', ');
     ret.write('base_status:');
-    String base_status_name = t_actual_base_dart.base_health_condition.VALUES_TO_NAMES[this.base_status];
+    String base_status_name = t_actual_base_dart.base_health_condition.VALUES_TO_NAMES[this.base_status]!;
     if (base_status_name != null) {
       ret.write(base_status_name);
       ret.write(' (');

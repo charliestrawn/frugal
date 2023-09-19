@@ -1185,7 +1185,7 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
 		contents += fmt.Sprintf(ind+"%s%s = %s();\n", prefix, fName, dartType)
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-		contents += fmt.Sprintf(ind+"%s.read(iprot);\n", fName)
+		contents += fmt.Sprintf(ind+"%s%s.read(iprot);\n", fName, g.nullableOperator)
 	} else if underlyingType.IsContainer() {
 		containerElem := g.GetElem()
 		valElem := g.GetElem()
@@ -1341,7 +1341,7 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			contents += fmt.Sprintf(tabtab+ind+"oprot.writeI32(%s%s);\n", thisPrefix, fName)
 		}
 	} else if g.Frugal.IsStruct(underlyingType) {
-		contents += fmt.Sprintf(tabtab+ind+"%s%s.write(oprot);\n", thisPrefix, fName)
+		contents += fmt.Sprintf(tabtab+ind+"%s%s%s.write(oprot);\n", thisPrefix, fName, g.nullableOperator)
 	} else if underlyingType.IsContainer() {
 		valEnumType := g.getEnumFromThriftType(underlyingType.ValueType)
 		localVar := fName
@@ -1423,8 +1423,8 @@ func (g *Generator) generateToString(s *parser.Struct, kind structKind) string {
 			contents += tabtab + ind + "ret.write('BINARY');\n"
 		} else if g.Frugal.IsEnum(underlyingType) {
 			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
-			contents += fmt.Sprintf(tabtab+ind+"String %s_name = %s.VALUES_TO_NAMES[this.%s];\n",
-				fName, g.qualifiedTypeName(field.Type), fName)
+			contents += fmt.Sprintf(tabtab+ind+"String %s_name = %s.VALUES_TO_NAMES[this.%s]%s;\n",
+				fName, g.qualifiedTypeName(field.Type), fName, g.notNullOperator)
 			contents += fmt.Sprintf(tabtab+ind+"if (%s_name != null) {\n", fName)
 			contents += fmt.Sprintf(tabtabtab+ind+"ret.write(%s_name);\n", fName)
 			contents += tabtabtab + ind + "ret.write(' (');\n"
@@ -2109,7 +2109,7 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 		return contents
 	}
 
-	contents += indent + "var response = (await _transport.request(ctx, message))!;\n"
+	contents += indent + fmt.Sprintf("var response = (await _transport.request(ctx, message))%s;\n", g.notNullOperator)
 	contents += "\n"
 
 	contents += fmt.Sprintf(tabtab+"final result = %s_result();\n", method.Name)
