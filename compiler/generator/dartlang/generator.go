@@ -31,21 +31,22 @@ import (
 )
 
 const (
-	lang                = "dart"
-	defaultOutputDir    = "gen-dart"
-	serviceSuffix       = "_service"
-	scopeSuffix         = "_scope"
-	allowedDartSdkRange = ">=2.11.0 <3.0.0"
-	tab                 = "  "
-	tabtab              = tab + tab
-	tabtabtab           = tab + tab + tab
-	tabtabtabtab        = tab + tab + tab + tab
-	tabtabtabtabtab     = tab + tab + tab + tab + tab
-	tabtabtabtabtabtab  = tab + tab + tab + tab + tab + tab
-	libraryPrefixOption = "library_prefix"
-	useInt64            = "use_int64"
-	useVendorOption     = "use_vendor"
-	nullsafe            = "nullsafe"
+	lang                 = "dart"
+	defaultOutputDir     = "gen-dart"
+	serviceSuffix        = "_service"
+	scopeSuffix          = "_scope"
+	nullableDartSdkRange = ">=2.11.0 <3.0.0"
+	nullsafeDartSdkRange = ">=2.12.0 <3.0.0"
+	tab                  = "  "
+	tabtab               = tab + tab
+	tabtabtab            = tab + tab + tab
+	tabtabtabtab         = tab + tab + tab + tab
+	tabtabtabtabtab      = tab + tab + tab + tab + tab
+	tabtabtabtabtabtab   = tab + tab + tab + tab + tab + tab
+	libraryPrefixOption  = "library_prefix"
+	useInt64             = "use_int64"
+	useVendorOption      = "use_vendor"
+	nullsafe             = "nullsafe"
 )
 
 // Generator implements the LanguageGenerator interface for Dart.
@@ -64,13 +65,13 @@ func NewGenerator(options map[string]string) generator.LanguageGenerator {
 	generator := &Generator{
 		BaseGenerator: &generator.BaseGenerator{Options: options},
 	}
-	generator.sdkRange = allowedDartSdkRange
+	generator.sdkRange = nullableDartSdkRange
 	generator.dartComment = "// @dart=2.11"
 	if _, ok := options[nullsafe]; ok {
 		generator.genNullsafe = true
 		generator.nullableOperator = "?"
 		generator.notNullOperator = "!"
-		generator.sdkRange = ">=2.12.0 <3.0.0"
+		generator.sdkRange = nullsafeDartSdkRange
 		generator.dartComment = "// @dart=2.12"
 	}
 
