@@ -76,7 +76,7 @@ func TestValidDartNullsafe(t *testing.T) {
 	options := compiler.Options{
 		File:    frugalGenFile,
 		Gen:     "dart:nullsafe",
-		Out:     outputDir + "/nullsafe",
+		Out:     outputDir,
 		Delim:   delim,
 		Recurse: true,
 	}
@@ -95,6 +95,7 @@ func TestValidDartNullsafe(t *testing.T) {
 		{"dart.nullsafe/variety/f_events_scope.dart", "variety/lib/src/f_events_scope.dart"},
 		{"dart.nullsafe/variety/f_foo_service.dart", "variety/lib/src/f_foo_service.dart"},
 		{"dart.nullsafe/variety/variety.dart", "variety/lib/variety.dart"},
+		{"dart.nullsafe/variety/pubspec.yaml", "variety/pubspec.yaml"},
 
 		{"dart.nullsafe/actual_base/f_actual_base_dart_constants.dart", "actual_base_dart/lib/src/f_actual_base_dart_constants.dart"},
 		{"dart.nullsafe/actual_base/f_api_exception.dart", "actual_base_dart/lib/src/f_api_exception.dart"},
@@ -103,6 +104,7 @@ func TestValidDartNullsafe(t *testing.T) {
 		{"dart.nullsafe/actual_base/f_base_foo_service.dart", "actual_base_dart/lib/src/f_base_foo_service.dart"},
 		{"dart.nullsafe/actual_base/f_nested_thing.dart", "actual_base_dart/lib/src/f_nested_thing.dart"},
 		{"dart.nullsafe/actual_base/actual_base_dart.dart", "actual_base_dart/lib/actual_base_dart.dart"},
+		{"dart.nullsafe/actual_base/pubspec.yaml", "actual_base_dart/pubspec.yaml"},
 	}
 	suite.Run(t, options)
 }
