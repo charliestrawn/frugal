@@ -75,8 +75,8 @@ func TestValidDartFrugalCompiler(t *testing.T) {
 func TestValidDartNullsafe(t *testing.T) {
 	options := compiler.Options{
 		File:    frugalGenFile,
-		Gen:     "dart",
-		Out:     outputDir,
+		Gen:     "dart:nullsafe",
+		Out:     outputDir + "/nullsafe",
 		Delim:   delim,
 		Recurse: true,
 	}

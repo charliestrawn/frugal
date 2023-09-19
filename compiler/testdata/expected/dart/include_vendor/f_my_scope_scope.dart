@@ -24,9 +24,10 @@ class MyScopePublisher {
   frugal.FPublisherTransport transport;
   frugal.FProtocolFactory protocolFactory;
   Map<String, frugal.FMethod> _methods = {};
-  MyScopePublisher(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) {
-    transport = provider.publisherTransportFactory.getTransport();
-    protocolFactory = provider.protocolFactory;
+  MyScopePublisher(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) :
+    transport = provider.publisherTransportFactory.getTransport(),
+    protocolFactory = provider.protocolFactory
+  {
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
     this._methods['newItem'] = frugal.FMethod(this._publishnewItem, 'MyScope', 'publishnewItem', combined);
@@ -56,7 +57,7 @@ class MyScopePublisher {
     req.write(oprot);
     oprot.writeMessageEnd();
     // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures
+    // ignore: await_only_futures, use_of_void_result
     await transport.publish(topic, memoryBuffer.writeBytes);
   }
 }
@@ -70,7 +71,7 @@ class MyScopeSubscriber {
   final List<frugal.Middleware> _middleware;
 
   MyScopeSubscriber(this.provider, [List<frugal.Middleware> middleware])
-      : this._middleware = middleware ?? [] {
+      : this._middleware = middleware {
     this._middleware.addAll(provider.middleware);
 }
 

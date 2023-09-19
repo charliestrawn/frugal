@@ -26,9 +26,10 @@ class EventsPublisher {
   frugal.FPublisherTransport transport;
   frugal.FProtocolFactory protocolFactory;
   Map<String, frugal.FMethod> _methods = {};
-  EventsPublisher(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) {
-    transport = provider.publisherTransportFactory.getTransport();
-    protocolFactory = provider.protocolFactory;
+  EventsPublisher(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) :
+    transport = provider.publisherTransportFactory.getTransport(),
+    protocolFactory = provider.protocolFactory
+  {
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
     this._methods['EventCreated'] = frugal.FMethod(this._publishEventCreated, 'Events', 'publishEventCreated', combined);
@@ -63,7 +64,7 @@ class EventsPublisher {
     req.write(oprot);
     oprot.writeMessageEnd();
     // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures
+    // ignore: await_only_futures, use_of_void_result
     await transport.publish(topic, memoryBuffer.writeBytes);
   }
 
@@ -85,7 +86,7 @@ class EventsPublisher {
     oprot.writeInt64(req);
     oprot.writeMessageEnd();
     // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures
+    // ignore: await_only_futures, use_of_void_result
     await transport.publish(topic, memoryBuffer.writeBytes);
   }
 
@@ -107,7 +108,7 @@ class EventsPublisher {
     oprot.writeString(req);
     oprot.writeMessageEnd();
     // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures
+    // ignore: await_only_futures, use_of_void_result
     await transport.publish(topic, memoryBuffer.writeBytes);
   }
 
@@ -138,7 +139,7 @@ class EventsPublisher {
     oprot.writeListEnd();
     oprot.writeMessageEnd();
     // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures
+    // ignore: await_only_futures, use_of_void_result
     await transport.publish(topic, memoryBuffer.writeBytes);
   }
 }
@@ -155,7 +156,7 @@ class EventsSubscriber {
   final List<frugal.Middleware> _middleware;
 
   EventsSubscriber(this.provider, [List<frugal.Middleware> middleware])
-      : this._middleware = middleware ?? [] {
+      : this._middleware = middleware {
     this._middleware.addAll(provider.middleware);
 }
 

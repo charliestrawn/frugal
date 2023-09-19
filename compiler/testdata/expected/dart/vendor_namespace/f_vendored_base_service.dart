@@ -27,9 +27,9 @@ class FVendoredBaseClient extends disposable.Disposable implements FVendoredBase
   Map<String, frugal.FMethod> _methods = {};
 
   FVendoredBaseClient(frugal.FServiceProvider provider, [List<frugal.Middleware> middleware])
-      : this._provider = provider {
-    _transport = provider.transport;
-    _protocolFactory = provider.protocolFactory;
+      : this._provider = provider,
+    _transport = provider.transport,
+    _protocolFactory = provider.protocolFactory {
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
   }
