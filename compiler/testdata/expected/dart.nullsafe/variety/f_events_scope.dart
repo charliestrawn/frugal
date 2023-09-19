@@ -154,11 +154,11 @@ EventsSubscriber eventsSubscriberFactory(frugal.FScopeProvider provider, {List<f
 /// variable.
 class EventsSubscriber {
   final frugal.FScopeProvider provider;
-  final List<frugal.Middleware> _middleware;
+  final List<frugal.Middleware>? _middleware;
 
   EventsSubscriber(this.provider, [List<frugal.Middleware>? middleware])
       : this._middleware = middleware {
-    this._middleware.addAll(provider.middleware);
+    this._middleware?.addAll(provider.middleware);
 }
 
   /// This is a docstring.

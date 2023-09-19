@@ -1856,11 +1856,11 @@ func (g *Generator) GenerateSubscriber(file *os.File, scope *parser.Scope) error
 	// Generate subscriber class
 	subscribers += fmt.Sprintf("class %s {\n", subscriberClassname)
 	subscribers += tab + "final frugal.FScopeProvider provider;\n"
-	subscribers += tab + "final List<frugal.Middleware> _middleware;\n\n"
+	subscribers += tab + fmt.Sprintf("final List<frugal.Middleware>%s _middleware;\n\n", g.nullableOperator)
 
 	subscribers += tab + fmt.Sprintf("%s(this.provider, [List<frugal.Middleware>%s middleware])\n", subscriberClassname, g.nullableOperator)
 	subscribers += tabtabtab + ": this._middleware = middleware {\n"
-	subscribers += tabtab + "this._middleware.addAll(provider.middleware);\n"
+	subscribers += tabtab + fmt.Sprintf("this._middleware%s.addAll(provider.middleware);\n", g.nullableOperator)
 	subscribers += "}\n\n"
 
 	args := ""
