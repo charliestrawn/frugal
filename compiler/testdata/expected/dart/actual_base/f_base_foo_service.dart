@@ -27,14 +27,15 @@ FBaseFooClient fBaseFooClientFactory(frugal.FServiceProvider provider, {List<fru
 
 class FBaseFooClient extends disposable.Disposable implements FBaseFoo {
   static final logging.Logger _frugalLog = logging.Logger('BaseFoo');
-  Map<String, frugal.FMethod> _methods = {};
+  Map<String, frugal.FMethod> _methods;
 
   FBaseFooClient(frugal.FServiceProvider provider, [List<frugal.Middleware> middleware])
-      : this._provider = provider,
-    _transport = provider.transport,
-    _protocolFactory = provider.protocolFactory {
+      : this._provider = provider {
+    _transport = provider.transport;
+    _protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
+    this._methods = {};
     this._methods['basePing'] = frugal.FMethod(this._basePing, 'BaseFoo', 'basePing', combined);
   }
 
@@ -58,7 +59,7 @@ class FBaseFooClient extends disposable.Disposable implements FBaseFoo {
   Future _basePing(frugal.FContext ctx) async {
     final args = basePing_args();
     final message = frugal.prepareMessage(ctx, 'basePing', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit);
-    var response = (await _transport.request(ctx, message));
+    var response = await _transport.request(ctx, message);
 
     final result = basePing_result();
     frugal.processReply(ctx, result, response, _protocolFactory);

@@ -32,15 +32,16 @@ FMyServiceClient fMyServiceClientFactory(frugal.FServiceProvider provider, {List
 // ignore: private_collision_in_mixin_application
 class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient with disposable.Disposable implements FMyService {
   static final logging.Logger _frugalLog = logging.Logger('MyService');
-  Map<String, frugal.FMethod> _methods = {};
+  Map<String, frugal.FMethod> _methods;
 
   FMyServiceClient(frugal.FServiceProvider provider, [List<frugal.Middleware> middleware])
       : this._provider = provider,
-    _transport = provider.transport,
-    _protocolFactory = provider.protocolFactory,
         super(provider, middleware) {
+    _transport = provider.transport;
+    _protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
+    this._methods = {};
     this._methods['getItem'] = frugal.FMethod(this._getItem, 'MyService', 'getItem', combined);
   }
 
@@ -64,7 +65,7 @@ class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient with dispo
   Future<t_vendor_namespace.Item> _getItem(frugal.FContext ctx) async {
     final args = getItem_args();
     final message = frugal.prepareMessage(ctx, 'getItem', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit);
-    var response = (await _transport.request(ctx, message));
+    var response = await _transport.request(ctx, message);
 
     final result = getItem_result();
     frugal.processReply(ctx, result, response, _protocolFactory);

@@ -24,13 +24,13 @@ MyScopePublisher myScopePublisherFactory(frugal.FScopeProvider provider, {List<f
 class MyScopePublisher {
   frugal.FPublisherTransport transport;
   frugal.FProtocolFactory protocolFactory;
-  Map<String, frugal.FMethod> _methods = {};
-  MyScopePublisher(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) :
-    transport = provider.publisherTransportFactory.getTransport(),
-    protocolFactory = provider.protocolFactory
-  {
+  Map<String, frugal.FMethod> _methods;
+  MyScopePublisher(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) {
+    transport = provider.publisherTransportFactory.getTransport();
+    protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
+    this._methods = {};
     this._methods['newItem'] = frugal.FMethod(this._publishnewItem, 'MyScope', 'publishnewItem', combined);
   }
 
@@ -72,7 +72,7 @@ class MyScopeSubscriber {
   final List<frugal.Middleware> _middleware;
 
   MyScopeSubscriber(this.provider, [List<frugal.Middleware> middleware])
-      : this._middleware = middleware {
+      : this._middleware = middleware ?? [] {
     this._middleware.addAll(provider.middleware);
 }
 

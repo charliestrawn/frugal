@@ -69,11 +69,12 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
   FFooClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
       : this._provider = provider,
-    _transport = provider.transport,
-    _protocolFactory = provider.protocolFactory,
         super(provider, middleware) {
+    _transport = provider.transport;
+    _protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
+    this._methods = {};
     this._methods['ping'] = frugal.FMethod(this._ping, 'Foo', 'ping', combined);
     this._methods['blah'] = frugal.FMethod(this._blah, 'Foo', 'blah', combined);
     this._methods['oneWay'] = frugal.FMethod(this._oneWay, 'Foo', 'oneWay', combined);

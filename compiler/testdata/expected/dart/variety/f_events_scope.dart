@@ -26,13 +26,13 @@ EventsPublisher eventsPublisherFactory(frugal.FScopeProvider provider, {List<fru
 class EventsPublisher {
   frugal.FPublisherTransport transport;
   frugal.FProtocolFactory protocolFactory;
-  Map<String, frugal.FMethod> _methods = {};
-  EventsPublisher(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) :
-    transport = provider.publisherTransportFactory.getTransport(),
-    protocolFactory = provider.protocolFactory
-  {
+  Map<String, frugal.FMethod> _methods;
+  EventsPublisher(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) {
+    transport = provider.publisherTransportFactory.getTransport();
+    protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
+    this._methods = {};
     this._methods['EventCreated'] = frugal.FMethod(this._publishEventCreated, 'Events', 'publishEventCreated', combined);
     this._methods['SomeInt'] = frugal.FMethod(this._publishSomeInt, 'Events', 'publishSomeInt', combined);
     this._methods['SomeStr'] = frugal.FMethod(this._publishSomeStr, 'Events', 'publishSomeStr', combined);
@@ -157,7 +157,7 @@ class EventsSubscriber {
   final List<frugal.Middleware> _middleware;
 
   EventsSubscriber(this.provider, [List<frugal.Middleware> middleware])
-      : this._middleware = middleware {
+      : this._middleware = middleware ?? [] {
     this._middleware.addAll(provider.middleware);
 }
 

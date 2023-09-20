@@ -30,11 +30,12 @@ class FBaseFooClient extends disposable.Disposable implements FBaseFoo {
   Map<String, frugal.FMethod> _methods = {};
 
   FBaseFooClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
-      : this._provider = provider,
-    _transport = provider.transport,
-    _protocolFactory = provider.protocolFactory {
+      : this._provider = provider {
+    _transport = provider.transport;
+    _protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
+    this._methods = {};
     this._methods['basePing'] = frugal.FMethod(this._basePing, 'BaseFoo', 'basePing', combined);
   }
 
