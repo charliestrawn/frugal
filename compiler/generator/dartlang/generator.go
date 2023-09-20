@@ -2229,7 +2229,7 @@ func (g *Generator) getDartGenericTypeArgsFromThriftType(t *parser.Type) string 
 
 	switch underlyingType.Name {
 	case "list":
-		return fmt.Sprintf("<%s%s>", g.getDartTypeFromThriftType(underlyingType.ValueType), g.nullableOperator)
+		return fmt.Sprintf("<%s>", g.getDartTypeFromThriftType(underlyingType.ValueType))
 	case "set":
 		return fmt.Sprintf("<%s>",
 			g.getDartTypeFromThriftType(underlyingType.ValueType))

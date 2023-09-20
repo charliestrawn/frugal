@@ -69,7 +69,7 @@ class nested_thing implements thrift.TBase {
         case THINGS:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem99 = iprot.readListBegin();
-            final elem102 = <t_actual_base_dart.thing?>[];
+            final elem102 = <t_actual_base_dart.thing>[];
             for(int elem101 = 0; elem101 < elem99.length; ++elem101) {
               t_actual_base_dart.thing elem100 = t_actual_base_dart.thing();
               elem100?.read(iprot);

@@ -725,7 +725,7 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
         case 0:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem86 = iprot.readListBegin();
-            final elem89 = <int?>[];
+            final elem89 = <int>[];
             for(int elem88 = 0; elem88 < elem86.length; ++elem88) {
               int elem87 = iprot.readI64();
               elem89.add(elem87);

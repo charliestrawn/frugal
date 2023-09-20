@@ -565,7 +565,7 @@ class TestingDefaults implements thrift.TBase {
         case LISTFIELD:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem0 = iprot.readListBegin();
-            final elem3 = <int?>[];
+            final elem3 = <int>[];
             for(int elem2 = 0; elem2 < elem0.length; ++elem2) {
               int elem1 = iprot.readI32();
               elem3.add(elem1);
@@ -615,7 +615,7 @@ class TestingDefaults implements thrift.TBase {
         case LIST2:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem4 = iprot.readListBegin();
-            final elem7 = <int?>[];
+            final elem7 = <int>[];
             for(int elem6 = 0; elem6 < elem4.length; ++elem6) {
               int elem5 = iprot.readI32();
               elem7.add(elem5);
@@ -629,7 +629,7 @@ class TestingDefaults implements thrift.TBase {
         case LIST3:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem8 = iprot.readListBegin();
-            final elem11 = <int?>[];
+            final elem11 = <int>[];
             for(int elem10 = 0; elem10 < elem8.length; ++elem10) {
               int elem9 = iprot.readI32();
               elem11.add(elem9);
@@ -643,7 +643,7 @@ class TestingDefaults implements thrift.TBase {
         case LIST4:
           if (field.type == thrift.TType.LIST) {
             thrift.TList elem12 = iprot.readListBegin();
-            final elem15 = <int?>[];
+            final elem15 = <int>[];
             for(int elem14 = 0; elem14 < elem12.length; ++elem14) {
               int elem13 = iprot.readI32();
               elem15.add(elem13);
