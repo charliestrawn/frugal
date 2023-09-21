@@ -61,6 +61,7 @@ type Generator struct {
 	genNullsafe      bool
 	nullableOperator string
 	notNullOperator  string
+	lateOperator     string
 	sdkRange         string
 	dartComment      string
 	collectionVer    string
@@ -80,6 +81,7 @@ func NewGenerator(options map[string]string) generator.LanguageGenerator {
 		generator.genNullsafe = true
 		generator.nullableOperator = "?"
 		generator.notNullOperator = "!"
+		generator.lateOperator = "late"
 		generator.sdkRange = nullsafeDartSdkRange
 		generator.dartComment = "// @dart=2.12"
 		generator.collectionVer = nullsafeCollectionVer
@@ -2009,6 +2011,11 @@ func (g *Generator) getServiceExtendsName(service *parser.Service) string {
 func (g *Generator) generateClient(service *parser.Service) string {
 	servTitle := strings.Title(service.Name)
 	clientClassname := fmt.Sprintf("F%sClient", servTitle)
+
+	lateKeyword := ""
+	if g.genNullsafe {
+		lateKeyword = g.lateOperator + " "
+	}
 	contents := ""
 
 	// Generate client factory
@@ -2062,8 +2069,8 @@ func (g *Generator) generateClient(service *parser.Service) string {
 	contents += tab + "}\n\n"
 
 	contents += tab + "frugal.FServiceProvider _provider;\n"
-	contents += tab + "frugal.FTransport _transport;\n"
-	contents += tab + "frugal.FProtocolFactory _protocolFactory;\n\n"
+	contents += fmt.Sprintf(tab+"%sfrugal.FTransport _transport;\n", lateKeyword)
+	contents += fmt.Sprintf(tab+"%sfrugal.FProtocolFactory _protocolFactory;\n\n", lateKeyword)
 
 	/// Dispose of the provider if possible
 	contents += tab + "@override\n"

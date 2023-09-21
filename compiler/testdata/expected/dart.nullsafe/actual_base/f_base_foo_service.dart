@@ -40,8 +40,8 @@ class FBaseFooClient extends disposable.Disposable implements FBaseFoo {
   }
 
   frugal.FServiceProvider _provider;
-  frugal.FTransport _transport;
-  frugal.FProtocolFactory _protocolFactory;
+  late frugal.FTransport _transport;
+  late frugal.FProtocolFactory _protocolFactory;
 
   @override
   Future<Null> onDispose() async {

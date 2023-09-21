@@ -90,8 +90,8 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
   }
 
   frugal.FServiceProvider _provider;
-  frugal.FTransport _transport;
-  frugal.FProtocolFactory _protocolFactory;
+  late frugal.FTransport _transport;
+  late frugal.FProtocolFactory _protocolFactory;
 
   @override
   Future<Null> onDispose() async {
