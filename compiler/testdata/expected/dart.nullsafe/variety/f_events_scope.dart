@@ -128,10 +128,10 @@ class EventsPublisher {
     var msg = thrift.TMessage(op, thrift.TMessageType.CALL, 0);
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
-    oprot.writeListBegin(thrift.TList(thrift.TType.MAP, req.length));
-    for(var elem90 in req) {
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem90.length));
-      for(var elem91 in elem90.keys) {
+    oprot.writeListBegin(thrift.TList(thrift.TType.MAP, req!.length));
+    for(var elem90 in req!) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem90!.length));
+      for(var elem91 in elem90!.keys) {
         oprot.writeI64(elem91);
         elem90[elem91]?.write(oprot);
       }

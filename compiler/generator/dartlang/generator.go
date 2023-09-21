@@ -1365,18 +1365,18 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 		case "list":
 			valElem := g.GetElem()
 			valField := parser.FieldFromType(underlyingType.ValueType, valElem)
-			contents += fmt.Sprintf(tabtab+ind+"oprot.writeListBegin(thrift.TList(%s, %s.length));\n", valEnumType, localVar)
+			contents += fmt.Sprintf(tabtab+ind+"oprot.writeListBegin(thrift.TList(%s, %s%s.length));\n", valEnumType, localVar, g.notNullOperator)
 			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
-			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s) {\n", valElem, localVar)
+			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, localVar, g.notNullOperator)
 			contents += g.generateWriteFieldRec(valField, false, ind+tab)
 			contents += tabtab + ind + "}\n"
 			contents += tabtab + ind + "oprot.writeListEnd();\n"
 		case "set":
 			valElem := g.GetElem()
 			valField := parser.FieldFromType(underlyingType.ValueType, valElem)
-			contents += fmt.Sprintf(tabtab+ind+"oprot.writeSetBegin(thrift.TSet(%s, %s.length));\n", valEnumType, localVar)
+			contents += fmt.Sprintf(tabtab+ind+"oprot.writeSetBegin(thrift.TSet(%s, %s%s.length));\n", valEnumType, localVar, g.notNullOperator)
 			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
-			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s) {\n", valElem, localVar)
+			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, localVar, g.notNullOperator)
 			contents += g.generateWriteFieldRec(valField, false, ind+tab)
 			contents += tabtab + ind + "}\n"
 			contents += tabtab + ind + "oprot.writeSetEnd();\n"
@@ -1385,9 +1385,9 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			keyElem := g.GetElem()
 			keyField := parser.FieldFromType(underlyingType.KeyType, keyElem)
 			valField := parser.FieldFromType(underlyingType.ValueType, fmt.Sprintf("%s[%s]", localVar, keyElem))
-			contents += fmt.Sprintf(tabtab+ind+"oprot.writeMapBegin(thrift.TMap(%s, %s, %s.length));\n", keyEnumType, valEnumType, localVar)
+			contents += fmt.Sprintf(tabtab+ind+"oprot.writeMapBegin(thrift.TMap(%s, %s, %s%s.length));\n", keyEnumType, valEnumType, localVar, g.notNullOperator)
 			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
-			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s.keys) {\n", keyElem, localVar)
+			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s.keys) {\n", keyElem, localVar, g.notNullOperator)
 			contents += g.generateWriteFieldRec(keyField, false, ind+tab)
 			contents += g.generateWriteFieldRec(valField, false, ind+tab)
 			contents += tabtab + ind + "}\n"

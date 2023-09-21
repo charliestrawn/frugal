@@ -680,8 +680,8 @@ class EventWrapper implements thrift.TBase {
     if (this.events != null) {
       oprot.writeFieldBegin(_EVENTS_FIELD_DESC);
       final temp = this.events!;
-      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, temp.length));
-      for(var elem67 in temp) {
+      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, temp!.length));
+      for(var elem67 in temp!) {
         elem67?.write(oprot);
       }
       oprot.writeListEnd();
@@ -690,8 +690,8 @@ class EventWrapper implements thrift.TBase {
     if (this.events2 != null) {
       oprot.writeFieldBegin(_EVENTS2_FIELD_DESC);
       final temp = this.events2!;
-      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, temp.length));
-      for(var elem68 in temp) {
+      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, temp!.length));
+      for(var elem68 in temp!) {
         elem68?.write(oprot);
       }
       oprot.writeSetEnd();
@@ -700,8 +700,8 @@ class EventWrapper implements thrift.TBase {
     if (this.eventMap != null) {
       oprot.writeFieldBegin(_EVENT_MAP_FIELD_DESC);
       final temp = this.eventMap!;
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, temp.length));
-      for(var elem69 in temp.keys) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, temp!.length));
+      for(var elem69 in temp!.keys) {
         oprot.writeI64(elem69);
         temp[elem69]?.write(oprot);
       }
@@ -711,10 +711,10 @@ class EventWrapper implements thrift.TBase {
     if (this.nums != null) {
       oprot.writeFieldBegin(_NUMS_FIELD_DESC);
       final temp = this.nums!;
-      oprot.writeListBegin(thrift.TList(thrift.TType.LIST, temp.length));
-      for(var elem70 in temp) {
-        oprot.writeListBegin(thrift.TList(thrift.TType.I32, elem70.length));
-        for(var elem71 in elem70) {
+      oprot.writeListBegin(thrift.TList(thrift.TType.LIST, temp!.length));
+      for(var elem70 in temp!) {
+        oprot.writeListBegin(thrift.TList(thrift.TType.I32, elem70!.length));
+        for(var elem71 in elem70!) {
           oprot.writeI32(elem71);
         }
         oprot.writeListEnd();
@@ -725,8 +725,8 @@ class EventWrapper implements thrift.TBase {
     if (this.enums != null) {
       oprot.writeFieldBegin(_ENUMS_FIELD_DESC);
       final temp = this.enums!;
-      oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp.length));
-      for(var elem72 in temp) {
+      oprot.writeListBegin(thrift.TList(thrift.TType.I32, temp!.length));
+      for(var elem72 in temp!) {
         oprot.writeI32(elem72);
       }
       oprot.writeListEnd();
@@ -761,9 +761,9 @@ class EventWrapper implements thrift.TBase {
       oprot.writeFieldBegin(_DEPR_LIST_FIELD_DESC);
       // ignore: deprecated_member_use
       final temp = this.deprList!;
-      oprot.writeListBegin(thrift.TList(thrift.TType.BOOL, temp.length));
+      oprot.writeListBegin(thrift.TList(thrift.TType.BOOL, temp!.length));
       // ignore: deprecated_member_use
-      for(var elem73 in temp) {
+      for(var elem73 in temp!) {
         oprot.writeBool(elem73);
       }
       oprot.writeListEnd();
@@ -772,8 +772,8 @@ class EventWrapper implements thrift.TBase {
     if (isSetEventsDefault() && this.eventsDefault != null) {
       oprot.writeFieldBegin(_EVENTS_DEFAULT_FIELD_DESC);
       final temp = this.eventsDefault!;
-      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, temp.length));
-      for(var elem74 in temp) {
+      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, temp!.length));
+      for(var elem74 in temp!) {
         elem74?.write(oprot);
       }
       oprot.writeListEnd();
@@ -782,8 +782,8 @@ class EventWrapper implements thrift.TBase {
     if (isSetEventMapDefault() && this.eventMapDefault != null) {
       oprot.writeFieldBegin(_EVENT_MAP_DEFAULT_FIELD_DESC);
       final temp = this.eventMapDefault!;
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, temp.length));
-      for(var elem75 in temp.keys) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, temp!.length));
+      for(var elem75 in temp!.keys) {
         oprot.writeI64(elem75);
         temp[elem75]?.write(oprot);
       }
@@ -793,8 +793,8 @@ class EventWrapper implements thrift.TBase {
     if (isSetEventSetDefault() && this.eventSetDefault != null) {
       oprot.writeFieldBegin(_EVENT_SET_DEFAULT_FIELD_DESC);
       final temp = this.eventSetDefault!;
-      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, temp.length));
-      for(var elem76 in temp) {
+      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, temp!.length));
+      for(var elem76 in temp!) {
         elem76?.write(oprot);
       }
       oprot.writeSetEnd();
