@@ -47,7 +47,7 @@ const (
 	useInt64              = "use_int64"
 	useVendorOption       = "use_vendor"
 	nullsafe              = "nullsafe"
-	addDartComment        = true
+	addDartComment        = false // Enable this when debugging Dart generated code
 	thriftVer             = "^0.0.14"
 	collectionVer         = "^1.14.12"
 	nullsafeThriftVer     = "^0.0.15"
