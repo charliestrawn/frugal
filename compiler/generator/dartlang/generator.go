@@ -61,7 +61,6 @@ type Generator struct {
 	genNullsafe      bool
 	nullableOperator string
 	notNullOperator  string
-	lateOperator     string
 	sdkRange         string
 	dartComment      string
 	collectionVer    string
@@ -81,7 +80,6 @@ func NewGenerator(options map[string]string) generator.LanguageGenerator {
 		generator.genNullsafe = true
 		generator.nullableOperator = "?"
 		generator.notNullOperator = "!"
-		generator.lateOperator = "late"
 		generator.sdkRange = nullsafeDartSdkRange
 		generator.dartComment = "// @dart=2.12"
 		generator.collectionVer = nullsafeCollectionVer
@@ -2012,10 +2010,6 @@ func (g *Generator) generateClient(service *parser.Service) string {
 	servTitle := strings.Title(service.Name)
 	clientClassname := fmt.Sprintf("F%sClient", servTitle)
 
-	lateKeyword := ""
-	if g.genNullsafe {
-		lateKeyword = g.lateOperator + " "
-	}
 	contents := ""
 
 	// Generate client factory
@@ -2052,12 +2046,26 @@ func (g *Generator) generateClient(service *parser.Service) string {
 
 	if service.Extends != "" {
 		contents += tabtabtab + ": this._provider = provider,\n"
+		if g.genNullsafe {
+			contents += tabtabtab + "this._transport = provider.transport,\n"
+			contents += tabtabtab + "this._protocolFactory = provider.protocolFactory, \n"
+		}
 		contents += tabtabtab + "  super(provider, middleware) {\n"
+		if !g.genNullsafe {
+			contents += tabtab + "_transport = provider.transport;\n"
+			contents += tabtab + "_protocolFactory = provider.protocolFactory;\n"
+		}
 	} else {
-		contents += tabtabtab + ": this._provider = provider {\n"
+		if g.genNullsafe {
+			contents += tabtabtab + ": this._provider = provider,\n"
+			contents += tabtabtab + "this._transport = provider.transport,\n"
+			contents += tabtabtab + "this._protocolFactory = provider.protocolFactory { \n"
+		} else {
+			contents += tabtabtab + ": this._provider = provider {\n"
+			contents += tabtab + "_transport = provider.transport;\n"
+			contents += tabtab + "_protocolFactory = provider.protocolFactory;\n"
+		}
 	}
-	contents += tabtab + "_transport = provider.transport;\n"
-	contents += tabtab + "_protocolFactory = provider.protocolFactory;\n"
 	contents += tabtab + "var combined = middleware ?? [];\n"
 	contents += tabtab + "combined.addAll(provider.middleware);\n"
 	contents += tabtab + "this._methods = {};\n"
@@ -2069,8 +2077,8 @@ func (g *Generator) generateClient(service *parser.Service) string {
 	contents += tab + "}\n\n"
 
 	contents += tab + "frugal.FServiceProvider _provider;\n"
-	contents += fmt.Sprintf(tab+"%sfrugal.FTransport _transport;\n", lateKeyword)
-	contents += fmt.Sprintf(tab+"%sfrugal.FProtocolFactory _protocolFactory;\n\n", lateKeyword)
+	contents += fmt.Sprintf(tab + "frugal.FTransport _transport;\n")
+	contents += fmt.Sprintf(tab + "frugal.FProtocolFactory _protocolFactory;\n\n")
 
 	/// Dispose of the provider if possible
 	contents += tab + "@override\n"

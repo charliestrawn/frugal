@@ -30,9 +30,9 @@ class FBaseFooClient extends disposable.Disposable implements FBaseFoo {
   Map<String, frugal.FMethod> _methods = {};
 
   FBaseFooClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
-      : this._provider = provider {
-    _transport = provider.transport;
-    _protocolFactory = provider.protocolFactory;
+      : this._provider = provider,
+      this._transport = provider.transport,
+      this._protocolFactory = provider.protocolFactory { 
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
     this._methods = {};
@@ -40,8 +40,8 @@ class FBaseFooClient extends disposable.Disposable implements FBaseFoo {
   }
 
   frugal.FServiceProvider _provider;
-  late frugal.FTransport _transport;
-  late frugal.FProtocolFactory _protocolFactory;
+  frugal.FTransport _transport;
+  frugal.FProtocolFactory _protocolFactory;
 
   @override
   Future<Null> onDispose() async {
