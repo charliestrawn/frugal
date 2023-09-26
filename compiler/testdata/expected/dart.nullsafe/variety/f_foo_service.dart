@@ -5,6 +5,9 @@
 
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
+// ignore_for_file: invalid_null_aware_operator
+// ignore_for_file: unnecessary_non_null_assertion
+// ignore_for_file: unnecessary_null_comparison
 import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
@@ -94,7 +97,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
   @override
   Future<Null> onDispose() async {
-    if (_provider is disposable.Disposable && !_provider.isOrWillBeDisposed)  {
+    if (!_provider.isOrWillBeDisposed)  {
       return _provider.dispose();
     }
     return null;
@@ -138,10 +141,10 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
     }
 
     if (result.awe != null) {
-      throw result.awe;
+      throw result.awe!;
     }
     if (result.api != null) {
-      throw result.api;
+      throw result.api!;
     }
     throw thrift.TApplicationError(
       frugal.FrugalTApplicationErrorType.MISSING_RESULT, 'blah failed: unknown result'
@@ -180,7 +183,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
     }
 
     if (result.api != null) {
-      throw result.api;
+      throw result.api!;
     }
     throw thrift.TApplicationError(
       frugal.FrugalTApplicationErrorType.MISSING_RESULT, 'bin_method failed: unknown result'

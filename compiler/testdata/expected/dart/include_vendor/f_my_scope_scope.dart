@@ -5,6 +5,9 @@
 
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
+// ignore_for_file: invalid_null_aware_operator
+// ignore_for_file: unnecessary_non_null_assertion
+// ignore_for_file: unnecessary_null_comparison
 import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
@@ -57,7 +60,7 @@ class MyScopePublisher {
     req.write(oprot);
     oprot.writeMessageEnd();
     // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures, use_of_void_result
+    // ignore: await_only_futures
     await transport.publish(topic, memoryBuffer.writeBytes);
   }
 }
