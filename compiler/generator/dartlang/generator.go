@@ -432,6 +432,10 @@ func (g *Generator) GenerateConstantsContents(constants []*parser.Constant) erro
 	// Add ignores to make lints less noisy in dart consumers
 	ignores := "// ignore_for_file: unused_import\n"
 	ignores += "// ignore_for_file: unused_field\n"
+	ignores += "// ignore_for_file: invalid_null_aware_operator\n"
+	ignores += "// ignore_for_file: unnecessary_non_null_assertion\n"
+	ignores += "// ignore_for_file: unnecessary_null_comparison\n"
+	
 	if _, err = file.WriteString(ignores); err != nil {
 		return err
 	}
@@ -686,6 +690,9 @@ func (g *Generator) GenerateStruct(s *parser.Struct) error {
 	// Add ignores to make lints less noisy in dart consumers
 	ignores := "// ignore_for_file: unused_import\n"
 	ignores += "// ignore_for_file: unused_field\n"
+	ignores += "// ignore_for_file: invalid_null_aware_operator\n"
+	ignores += "// ignore_for_file: unnecessary_non_null_assertion\n"
+	ignores += "// ignore_for_file: unnecessary_null_comparison\n"
 	if _, err = file.WriteString(ignores); err != nil {
 		return err
 	}
@@ -1675,6 +1682,9 @@ func (g *Generator) writeThriftImports(file *os.File) error {
 func (g *Generator) GenerateServiceImports(file *os.File, s *parser.Service) error {
 	imports := "// ignore_for_file: unused_import\n"
 	imports += "// ignore_for_file: unused_field\n"
+	imports += "// ignore_for_file: invalid_null_aware_operator\n"
+	imports += "// ignore_for_file: unnecessary_non_null_assertion\n"
+	imports += "// ignore_for_file: unnecessary_null_comparison\n"
 	imports += "import 'dart:async';\n"
 	imports += "import 'dart:typed_data' show Uint8List;\n\n"
 
@@ -1711,6 +1721,9 @@ func (g *Generator) GenerateScopeImports(file *os.File, s *parser.Scope) error {
 	// Add ignores to make lints less noisy in dart consumers
 	imports := "// ignore_for_file: unused_import\n"
 	imports += "// ignore_for_file: unused_field\n"
+	imports += "// ignore_for_file: invalid_null_aware_operator\n"
+	imports += "// ignore_for_file: unnecessary_non_null_assertion\n"
+	imports += "// ignore_for_file: unnecessary_null_comparison\n"
 	imports += "import 'dart:async';\n"
 	imports += "import 'dart:typed_data' show Uint8List;\n\n"
 
@@ -1832,7 +1845,11 @@ func (g *Generator) GeneratePublisher(file *os.File, scope *parser.Scope) error 
 		publishers += g.generateWriteFieldRec(parser.FieldFromType(op.Type, "req"), false, "")
 		publishers += tabtab + "oprot.writeMessageEnd();\n"
 		publishers += tabtab + "// sync in this version but async in v2. Mitigate breaking changes by always awaiting.\n"
-		publishers += tabtab + "// ignore: await_only_futures, use_of_void_result\n"
+		publishers += tabtab + "// ignore: await_only_futures"
+		if g.genNullsafe {
+			publishers += ", use_of_void_result"
+		}
+		publishers += "\n"
 		publishers += tabtab + "await transport.publish(topic, memoryBuffer.writeBytes);\n"
 		publishers += tab + "}\n"
 	}
@@ -2083,7 +2100,7 @@ func (g *Generator) generateClient(service *parser.Service) string {
 	/// Dispose of the provider if possible
 	contents += tab + "@override\n"
 	contents += tab + "Future<Null> onDispose() async {\n"
-	contents += tabtab + "if (_provider is disposable.Disposable && !_provider.isOrWillBeDisposed)  {\n"
+	contents += tabtab + "if (!_provider.isOrWillBeDisposed)  {\n"
 	contents += tabtabtab + "return _provider.dispose();\n"
 	contents += tabtab + "}\n"
 	contents += tabtab + "return null;\n"
@@ -2207,7 +2224,7 @@ func (g *Generator) generateErrors(method *parser.Method) string {
 	contents := ""
 	for _, exp := range method.Exceptions {
 		contents += fmt.Sprintf(tabtab+"if (result.%s != null) {\n", parser.LowercaseFirstLetter(exp.Name))
-		contents += fmt.Sprintf(tabtabtab+"throw result.%s;\n", parser.LowercaseFirstLetter(exp.Name))
+		contents += fmt.Sprintf(tabtabtab+"throw result.%s%s;\n", parser.LowercaseFirstLetter(exp.Name), g.notNullOperator)
 		contents += tabtab + "}\n"
 	}
 	return contents
