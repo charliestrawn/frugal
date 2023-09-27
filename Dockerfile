@@ -24,14 +24,14 @@ ENV MAVEN_ROOT /go/src/github.com/Workiva/frugal/lib/java
 
 RUN git config --global url.git@github.com:.insteadOf https://github.com
 ENV FRUGAL_HOME=/go/src/github.com/Workiva/frugal
-RUN echo "Starting the script section" && \
-		./scripts/smithy.sh && \
-		cat $FRUGAL_HOME/test_results/smithy_dart.sh_out.txt && \
-		cat $FRUGAL_HOME/test_results/smithy_go.sh_out.txt && \
-		cat $FRUGAL_HOME/test_results/smithy_generator.sh_out.txt && \
-		cat $FRUGAL_HOME/test_results/smithy_python.sh_out.txt && \
-		cat $FRUGAL_HOME/test_results/smithy_java.sh_out.txt && \
-		echo "script section completed"
+RUN echo "Starting the script section"
+RUN ./scripts/smithy.sh
+RUN cat $FRUGAL_HOME/test_results/smithy_dart.sh_out.txt
+RUN cat $FRUGAL_HOME/test_results/smithy_go.sh_out.txt
+RUN cat $FRUGAL_HOME/test_results/smithy_generator.sh_out.txt
+RUN cat $FRUGAL_HOME/test_results/smithy_python.sh_out.txt
+RUN cat $FRUGAL_HOME/test_results/smithy_java.sh_out.txt
+RUN echo "script section completed"
 
 ARG BUILD_ARTIFACTS_RELEASE=/go/src/github.com/Workiva/frugal/frugal
 ARG BUILD_ARTIFACTS_AUDIT=/go/src/github.com/Workiva/frugal/python2_pip_deps.txt:/go/src/github.com/Workiva/frugal/python3_pip_deps.txt:/go/src/github.com/Workiva/frugal/lib/go/go.mod:/go/src/github.com/Workiva/frugal/lib/dart/pubspec.lock:/go/src/github.com/Workiva/frugal/lib/java/pom.xml

@@ -5,6 +5,9 @@
 
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
+// ignore_for_file: invalid_null_aware_operator
+// ignore_for_file: unnecessary_non_null_assertion
+// ignore_for_file: unnecessary_null_comparison
 import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
@@ -94,7 +97,7 @@ class FFooClient extends t_actual_base_dart.FBaseFooClient with disposable.Dispo
 
   @override
   Future<Null> onDispose() async {
-    if (_provider is disposable.Disposable && !_provider.isOrWillBeDisposed)  {
+    if (!_provider.isOrWillBeDisposed)  {
       return _provider.dispose();
     }
     return null;
@@ -508,10 +511,11 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeFieldEnd();
     if (this.req != null) {
       oprot.writeFieldBegin(_REQ_FIELD_DESC);
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, this.req.length));
-      for(var elem68 in this.req.keys) {
-        oprot.writeI32(elem68);
-        oprot.writeString(req[elem68]);
+      final temp = this.req;
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp.length));
+      for(var elem83 in temp.keys) {
+        oprot.writeI32(elem83);
+        oprot.writeString(temp[elem83]);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
@@ -684,18 +688,20 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     if (this.list_type != null) {
       oprot.writeFieldBegin(_LIST_TYPE_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.I64, this.list_type.length));
-      for(var elem69 in this.list_type) {
-        oprot.writeI64(elem69);
+      final temp = this.list_type;
+      oprot.writeListBegin(thrift.TList(thrift.TType.I64, temp.length));
+      for(var elem84 in temp) {
+        oprot.writeI64(elem84);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
     if (this.set_type != null) {
       oprot.writeFieldBegin(_SET_TYPE_FIELD_DESC);
-      oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, this.set_type.length));
-      for(var elem70 in this.set_type) {
-        oprot.writeI64(elem70);
+      final temp = this.set_type;
+      oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, temp.length));
+      for(var elem85 in temp) {
+        oprot.writeI64(elem85);
       }
       oprot.writeSetEnd();
       oprot.writeFieldEnd();
@@ -721,13 +727,14 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
       switch (field.id) {
         case 0:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem71 = iprot.readListBegin();
-            this.success = List<int>();
-            for(int elem73 = 0; elem73 < elem71.length; ++elem73) {
-              int elem72 = iprot.readI64();
-              this.success.add(elem72);
+            thrift.TList elem86 = iprot.readListBegin();
+            final elem89 = <int>[];
+            for(int elem88 = 0; elem88 < elem86.length; ++elem88) {
+              int elem87 = iprot.readI64();
+              elem89.add(elem87);
             }
             iprot.readListEnd();
+            this.success = elem89;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }

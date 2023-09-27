@@ -5,6 +5,9 @@
 
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
+// ignore_for_file: invalid_null_aware_operator
+// ignore_for_file: unnecessary_non_null_assertion
+// ignore_for_file: unnecessary_null_comparison
 import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
@@ -128,11 +131,11 @@ class EventsPublisher {
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
     oprot.writeListBegin(thrift.TList(thrift.TType.MAP, req.length));
-    for(var elem74 in req) {
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem74.length));
-      for(var elem75 in elem74.keys) {
-        oprot.writeInt64(elem75);
-        elem74[elem75].write(oprot);
+    for(var elem90 in req) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem90.length));
+      for(var elem91 in elem90.keys) {
+        oprot.writeInt64(elem91);
+        elem90[elem91].write(oprot);
       }
       oprot.writeMapEnd();
     }
@@ -270,19 +273,19 @@ class EventsSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      thrift.TList elem76 = iprot.readListBegin();
-      List<Map<fixnum.Int64, t_variety.Event>> req = List<Map<fixnum.Int64, t_variety.Event>>();
-      for(int elem82 = 0; elem82 < elem76.length; ++elem82) {
-        thrift.TMap elem78 = iprot.readMapBegin();
-        Map<fixnum.Int64, t_variety.Event> elem77 = Map<fixnum.Int64, t_variety.Event>();
-        for(int elem80 = 0; elem80 < elem78.length; ++elem80) {
-          fixnum.Int64 elem81 = iprot.readInt64();
-          t_variety.Event elem79 = t_variety.Event();
-          elem79.read(iprot);
-          elem77[elem81] = elem79;
+      thrift.TList elem92 = iprot.readListBegin();
+      final req = <Map<fixnum.Int64, t_variety.Event>>[];
+      for(int elem98 = 0; elem98 < elem92.length; ++elem98) {
+        thrift.TMap elem94 = iprot.readMapBegin();
+        final elem93 = <fixnum.Int64, t_variety.Event>{};
+        for(int elem96 = 0; elem96 < elem94.length; ++elem96) {
+          fixnum.Int64 elem97 = iprot.readInt64();
+          t_variety.Event elem95 = t_variety.Event();
+          elem95.read(iprot);
+          elem93[elem97] = elem95;
         }
         iprot.readMapEnd();
-        req.add(elem77);
+        req.add(elem93);
       }
       iprot.readListEnd();
       iprot.readMessageEnd();
