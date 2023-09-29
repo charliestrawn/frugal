@@ -405,11 +405,11 @@ class TestingDefaults implements thrift.TBase {
         break;
 
       case EV1:
-        this.ev1 = value as dynamic;
+        this.ev1 = value as t_variety.Event;
         break;
 
       case EV2:
-        this.ev2 = value as dynamic;
+        this.ev2 = value as t_variety.Event;
         break;
 
       case ID:
@@ -421,15 +421,15 @@ class TestingDefaults implements thrift.TBase {
         break;
 
       case THING:
-        this.thing = value as dynamic;
+        this.thing = value as String;
         break;
 
       case THING2:
-        this.thing2 = value as dynamic;
+        this.thing2 = value as String;
         break;
 
       case LISTFIELD:
-        this.listfield = value as dynamic;
+        this.listfield = value as List<int>;
         break;
 
       case ID3:
@@ -441,35 +441,35 @@ class TestingDefaults implements thrift.TBase {
         break;
 
       case BIN_FIELD:
-        this.bin_field = value as dynamic;
+        this.bin_field = value as Uint8List;
         break;
 
       case BIN_FIELD2:
-        this.bin_field2 = value as dynamic;
+        this.bin_field2 = value as Uint8List;
         break;
 
       case BIN_FIELD3:
-        this.bin_field3 = value as dynamic;
+        this.bin_field3 = value as Uint8List;
         break;
 
       case BIN_FIELD4:
-        this.bin_field4 = value as dynamic;
+        this.bin_field4 = value as Uint8List;
         break;
 
       case LIST2:
-        this.list2 = value as dynamic;
+        this.list2 = value as List<int>;
         break;
 
       case LIST3:
-        this.list3 = value as dynamic;
+        this.list3 = value as List<int>;
         break;
 
       case LIST4:
-        this.list4 = value as dynamic;
+        this.list4 = value as List<int>;
         break;
 
       case A_MAP:
-        this.a_map = value as dynamic;
+        this.a_map = value as Map<String, String>;
         break;
 
       case STATUS:

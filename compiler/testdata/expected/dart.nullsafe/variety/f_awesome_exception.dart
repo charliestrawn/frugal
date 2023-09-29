@@ -99,18 +99,18 @@ class AwesomeException extends Error implements thrift.TBase {
   }
 
   @override
-  setFieldValue(int fieldID, Object value) {
+  setFieldValue(int fieldID, Object? value) {
     switch (fieldID) {
       case ID:
         if (value == null) {
           unsetID();
         } else {
-          this.iD = value as int;
+          this.iD = value as int?;
         }
         break;
 
       case REASON:
-        this.reason = value as dynamic;
+        this.reason = value as String?;
         break;
 
       case DEPR:
@@ -118,7 +118,7 @@ class AwesomeException extends Error implements thrift.TBase {
           unsetDepr();
         } else {
           // ignore: deprecated_member_use
-          this.depr = value as bool;
+          this.depr = value as bool?;
         }
         break;
 

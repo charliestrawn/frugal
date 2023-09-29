@@ -44,10 +44,10 @@ class nested_thing implements thrift.TBase {
   }
 
   @override
-  setFieldValue(int fieldID, Object value) {
+  setFieldValue(int fieldID, Object? value) {
     switch (fieldID) {
       case THINGS:
-        this.things = value as dynamic;
+        this.things = value as List<t_actual_base_dart.thing>?;
         break;
 
       default:

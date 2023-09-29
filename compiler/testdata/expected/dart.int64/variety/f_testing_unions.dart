@@ -196,7 +196,7 @@ class TestingUnions implements thrift.TBase {
         break;
 
       case ASTRING:
-        this.aString = value as dynamic;
+        this.aString = value as String;
         break;
 
       case SOMEOTHERTHING:
@@ -216,11 +216,11 @@ class TestingUnions implements thrift.TBase {
         break;
 
       case REQUESTS:
-        this.requests = value as dynamic;
+        this.requests = value as Map<int, String>;
         break;
 
       case BIN_FIELD_IN_UNION:
-        this.bin_field_in_union = value as dynamic;
+        this.bin_field_in_union = value as Uint8List;
         break;
 
       case DEPR:
