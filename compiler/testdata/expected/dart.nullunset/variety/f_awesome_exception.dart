@@ -73,16 +73,16 @@ class AwesomeException extends Error implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case ID:
-        this.iD = value as dynamic;
+        this.iD = value as int;
         break;
 
       case REASON:
-        this.reason = value as dynamic;
+        this.reason = value as String;
         break;
 
       case DEPR:
         // ignore: deprecated_member_use
-        this.depr = value as dynamic;
+        this.depr = value as bool;
         break;
 
       default:

@@ -1055,20 +1055,20 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 	// setFieldValue
 	if kind.export() {
 		contents += tab + "@override\n"
-		contents += tab + "setFieldValue(int fieldID, Object value) {\n"
+		contents += tab + fmt.Sprintf("setFieldValue(int fieldID, Object%s value) {\n", g.nullableOperator)
 		contents += tabtab + "switch (fieldID) {\n"
 		for _, field := range s.Fields {
 			fName := toFieldName(field.Name)
 			contents += fmt.Sprintf(tabtabtab+"case %s:\n", g.generateFieldIdExpr(s, kind, field))
 			if g.useNullForIsSetExpr(kind, field) {
 				contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
-				contents += fmt.Sprintf(tabtabtabtab+"this.%s = value as dynamic;\n", fName)
+				contents += fmt.Sprintf(tabtabtabtab+"this.%s = value as %s%s;\n", fName, g.getDartTypeFromThriftType(field.Type), g.nullableOperator)
 			} else {
 				contents += tabtabtabtab + "if (value == null) {\n"
 				contents += fmt.Sprintf(tabtabtabtabtab+"unset%s();\n", strings.Title(field.Name))
 				contents += tabtabtabtab + "} else {\n"
 				contents += ignoreDeprecationWarningIfNeeded(tabtabtabtabtab, field.Annotations)
-				contents += fmt.Sprintf(tabtabtabtabtab+"this.%s = value as %s;\n", fName, g.getDartTypeFromThriftType(field.Type))
+				contents += fmt.Sprintf(tabtabtabtabtab+"this.%s = value as %s%s;\n", fName, g.getDartTypeFromThriftType(field.Type), g.nullableOperator)
 				contents += tabtabtabtab + "}\n"
 			}
 			contents += tabtabtabtab + "break;\n\n"

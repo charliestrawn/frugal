@@ -62,18 +62,18 @@ class thing implements thrift.TBase {
   }
 
   @override
-  setFieldValue(int fieldID, Object value) {
+  setFieldValue(int fieldID, Object? value) {
     switch (fieldID) {
       case AN_ID:
         if (value == null) {
           unsetAn_id();
         } else {
-          this.an_id = value as int;
+          this.an_id = value as int?;
         }
         break;
 
       case A_STRING:
-        this.a_string = value as dynamic;
+        this.a_string = value as String?;
         break;
 
       default:

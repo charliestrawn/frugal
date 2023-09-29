@@ -110,7 +110,7 @@ class Event implements thrift.TBase {
         break;
 
       case MESSAGE:
-        this.message = value as dynamic;
+        this.message = value as String;
         break;
 
       case YES_NO:

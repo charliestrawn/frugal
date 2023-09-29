@@ -51,11 +51,11 @@ class thing implements thrift.TBase {
   setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
       case AN_ID:
-        this.an_id = value as dynamic;
+        this.an_id = value as int;
         break;
 
       case A_STRING:
-        this.a_string = value as dynamic;
+        this.a_string = value as String;
         break;
 
       default:

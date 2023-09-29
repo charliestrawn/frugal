@@ -50,13 +50,13 @@ class TestLowercase implements thrift.TBase {
   }
 
   @override
-  setFieldValue(int fieldID, Object value) {
+  setFieldValue(int fieldID, Object? value) {
     switch (fieldID) {
       case LOWERCASEINT:
         if (value == null) {
           unsetLowercaseInt();
         } else {
-          this.lowercaseInt = value as int;
+          this.lowercaseInt = value as int?;
         }
         break;
 
