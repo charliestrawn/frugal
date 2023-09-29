@@ -3,7 +3,7 @@
 
     <groupId>com.workiva.frugal</groupId>
     <artifactId>examples</artifactId>
-    <version>3.17.1</version>
+    <version>3.17.2</version>
 
 
     <properties>
@@ -27,7 +27,7 @@
         <dependency>
             <groupId>com.workiva</groupId>
             <artifactId>frugal</artifactId>
-            <version>3.17.1</version>
+            <version>3.17.2</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
