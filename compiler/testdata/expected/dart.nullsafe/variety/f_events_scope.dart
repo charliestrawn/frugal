@@ -6,8 +6,6 @@
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
 // ignore_for_file: invalid_null_aware_operator
-// ignore_for_file: unnecessary_non_null_assertion
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
@@ -64,11 +62,9 @@ class EventsPublisher {
     var msg = thrift.TMessage(op, thrift.TMessageType.CALL, 0);
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
-    req?.write(oprot);
+    req.write(oprot);
     oprot.writeMessageEnd();
-    // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures, use_of_void_result
-    await transport.publish(topic, memoryBuffer.writeBytes);
+    transport.publish(topic, memoryBuffer.writeBytes);
   }
 
 
@@ -88,9 +84,7 @@ class EventsPublisher {
     oprot.writeMessageBegin(msg);
     oprot.writeI64(req);
     oprot.writeMessageEnd();
-    // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures, use_of_void_result
-    await transport.publish(topic, memoryBuffer.writeBytes);
+    transport.publish(topic, memoryBuffer.writeBytes);
   }
 
 
@@ -110,9 +104,7 @@ class EventsPublisher {
     oprot.writeMessageBegin(msg);
     oprot.writeString(req);
     oprot.writeMessageEnd();
-    // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures, use_of_void_result
-    await transport.publish(topic, memoryBuffer.writeBytes);
+    transport.publish(topic, memoryBuffer.writeBytes);
   }
 
 
@@ -130,20 +122,18 @@ class EventsPublisher {
     var msg = thrift.TMessage(op, thrift.TMessageType.CALL, 0);
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
-    oprot.writeListBegin(thrift.TList(thrift.TType.MAP, req!.length));
-    for(var elem90 in req!) {
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem90!.length));
-      for(var elem91 in elem90!.keys) {
+    oprot.writeListBegin(thrift.TList(thrift.TType.MAP, req.length));
+    for(var elem90 in req) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem90.length));
+      for(var elem91 in elem90.keys) {
         oprot.writeI64(elem91);
-        elem90[elem91]?.write(oprot);
+        elem90[elem91].write(oprot);
       }
       oprot.writeMapEnd();
     }
     oprot.writeListEnd();
     oprot.writeMessageEnd();
-    // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures, use_of_void_result
-    await transport.publish(topic, memoryBuffer.writeBytes);
+    transport.publish(topic, memoryBuffer.writeBytes);
   }
 }
 
@@ -186,7 +176,7 @@ class EventsSubscriber {
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
       t_variety.Event req = t_variety.Event();
-      req?.read(iprot);
+      req.read(iprot);
       iprot.readMessageEnd();
       method([ctx, req]);
     }
@@ -281,7 +271,7 @@ class EventsSubscriber {
         for(int elem96 = 0; elem96 < elem94.length; ++elem96) {
           int elem97 = iprot.readI64();
           t_variety.Event elem95 = t_variety.Event();
-          elem95?.read(iprot);
+          elem95.read(iprot);
           elem93[elem97] = elem95;
         }
         iprot.readMapEnd();

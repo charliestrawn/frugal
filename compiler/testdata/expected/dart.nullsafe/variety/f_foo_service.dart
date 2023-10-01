@@ -6,8 +6,6 @@
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
 // ignore_for_file: invalid_null_aware_operator
-// ignore_for_file: unnecessary_non_null_assertion
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
@@ -430,7 +428,7 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
     }
     if (this.event != null) {
       oprot.writeFieldBegin(_EVENT_FIELD_DESC);
-      this.event?.write(oprot);
+      this.event.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -464,7 +462,7 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
         case 1:
           if (field.type == thrift.TType.STRUCT) {
             this.awe = t_variety.AwesomeException();
-            awe?.read(iprot);
+            awe.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -472,7 +470,7 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
         case 2:
           if (field.type == thrift.TType.STRUCT) {
             this.api = t_actual_base_dart.api_exception();
-            api?.read(iprot);
+            api.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -512,8 +510,8 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
     if (this.req != null) {
       oprot.writeFieldBegin(_REQ_FIELD_DESC);
       final temp = this.req!;
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp!.length));
-      for(var elem83 in temp!.keys) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp.length));
+      for(var elem83 in temp.keys) {
         oprot.writeI32(elem83);
         oprot.writeString(temp[elem83]);
       }
@@ -582,7 +580,7 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
         case 1:
           if (field.type == thrift.TType.STRUCT) {
             this.api = t_actual_base_dart.api_exception();
-            api?.read(iprot);
+            api.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -689,8 +687,8 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
     if (this.list_type != null) {
       oprot.writeFieldBegin(_LIST_TYPE_FIELD_DESC);
       final temp = this.list_type!;
-      oprot.writeListBegin(thrift.TList(thrift.TType.I64, temp!.length));
-      for(var elem84 in temp!) {
+      oprot.writeListBegin(thrift.TList(thrift.TType.I64, temp.length));
+      for(var elem84 in temp) {
         oprot.writeI64(elem84);
       }
       oprot.writeListEnd();
@@ -699,8 +697,8 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
     if (this.set_type != null) {
       oprot.writeFieldBegin(_SET_TYPE_FIELD_DESC);
       final temp = this.set_type!;
-      oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, temp!.length));
-      for(var elem85 in temp!) {
+      oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, temp.length));
+      for(var elem85 in temp) {
         oprot.writeI64(elem85);
       }
       oprot.writeSetEnd();
@@ -786,7 +784,7 @@ class getThing_result extends frugal.FGeneratedArgsResultBase {
         case 0:
           if (field.type == thrift.TType.STRUCT) {
             this.success = t_validStructs.Thing();
-            success?.read(iprot);
+            success.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -871,7 +869,7 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
     oprot.writeStructBegin(_STRUCT_DESC);
     if (this.a != null) {
       oprot.writeFieldBegin(_A_FIELD_DESC);
-      this.a?.write(oprot);
+      this.a.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -896,7 +894,7 @@ class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
         case 0:
           if (field.type == thrift.TType.STRUCT) {
             this.success = t_subdir_include_ns.A();
-            success?.read(iprot);
+            success.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }

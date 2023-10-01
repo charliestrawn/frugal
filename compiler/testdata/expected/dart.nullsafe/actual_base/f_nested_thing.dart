@@ -3,9 +3,6 @@
 
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
-// ignore_for_file: invalid_null_aware_operator
-// ignore_for_file: unnecessary_non_null_assertion
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
@@ -74,7 +71,7 @@ class nested_thing implements thrift.TBase {
             final elem102 = <t_actual_base_dart.thing>[];
             for(int elem101 = 0; elem101 < elem99.length; ++elem101) {
               t_actual_base_dart.thing elem100 = t_actual_base_dart.thing();
-              elem100?.read(iprot);
+              elem100.read(iprot);
               elem102.add(elem100);
             }
             iprot.readListEnd();
@@ -102,9 +99,9 @@ class nested_thing implements thrift.TBase {
     if (this.things != null) {
       oprot.writeFieldBegin(_THINGS_FIELD_DESC);
       final temp = this.things!;
-      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, temp!.length));
-      for(var elem103 in temp!) {
-        elem103?.write(oprot);
+      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, temp.length));
+      for(var elem103 in temp) {
+        elem103.write(oprot);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();

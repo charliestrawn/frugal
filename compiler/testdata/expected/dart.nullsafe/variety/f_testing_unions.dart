@@ -3,9 +3,6 @@
 
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
-// ignore_for_file: invalid_null_aware_operator
-// ignore_for_file: unnecessary_non_null_assertion
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
@@ -379,8 +376,8 @@ class TestingUnions implements thrift.TBase {
     if (isSetRequests() && this.requests != null) {
       oprot.writeFieldBegin(_REQUESTS_FIELD_DESC);
       final temp = this.requests!;
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp!.length));
-      for(var elem82 in temp!.keys) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp.length));
+      for(var elem82 in temp.keys) {
         oprot.writeI32(elem82);
         oprot.writeString(temp[elem82]);
       }
