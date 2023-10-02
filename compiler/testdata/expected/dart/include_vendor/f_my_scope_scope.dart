@@ -95,8 +95,9 @@ class MyScopeSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      t_vendor_namespace.Item req = t_vendor_namespace.Item();
-      req.read(iprot);
+      final tmp_req = t_vendor_namespace.Item();
+      t_vendor_namespace.Item req = tmp_req;
+      tmp_req.read(iprot);
       iprot.readMessageEnd();
       method([ctx, req]);
     }

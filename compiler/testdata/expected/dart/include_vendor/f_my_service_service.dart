@@ -115,16 +115,18 @@ class getItem_result extends frugal.FGeneratedArgsResultBase {
       switch (field.id) {
         case 0:
           if (field.type == thrift.TType.STRUCT) {
-            this.success = t_vendor_namespace.Item();
-            success.read(iprot);
+            final tmp_success = t_vendor_namespace.Item();
+            this.success = tmp_success;
+            tmp_success.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case 1:
           if (field.type == thrift.TType.STRUCT) {
-            this.d = t_excepts.InvalidData();
-            d.read(iprot);
+            final tmp_d = t_excepts.InvalidData();
+            this.d = tmp_d;
+            tmp_d.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }

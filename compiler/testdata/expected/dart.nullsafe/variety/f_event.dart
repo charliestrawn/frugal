@@ -180,16 +180,19 @@ class Event implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
+    final elem2 = iD;
     oprot.writeFieldBegin(_ID_FIELD_DESC);
-    oprot.writeI64(this.iD);
+    oprot.writeI64(elem2);
     oprot.writeFieldEnd();
-    if (this.message != null) {
+    final elem3 = message;
+    if (elem3 != null) {
       oprot.writeFieldBegin(_MESSAGE_FIELD_DESC);
-      oprot.writeString(this.message);
+      oprot.writeString(elem3);
       oprot.writeFieldEnd();
     }
+    final elem4 = yES_NO;
     oprot.writeFieldBegin(_YE_S__NO_FIELD_DESC);
-    oprot.writeBool(this.yES_NO);
+    oprot.writeBool(elem4);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();

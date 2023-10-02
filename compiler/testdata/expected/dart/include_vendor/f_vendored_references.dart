@@ -145,14 +145,16 @@ class VendoredReferences implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
+    final elem0 = reference_vendored_const;
     if (isSetReference_vendored_const()) {
       oprot.writeFieldBegin(_REFERENCE_VENDORED_CONST_FIELD_DESC);
-      oprot.writeI32(this.reference_vendored_const);
+      oprot.writeI32(elem0);
       oprot.writeFieldEnd();
     }
+    final elem1 = reference_vendored_enum;
     if (isSetReference_vendored_enum()) {
       oprot.writeFieldBegin(_REFERENCE_VENDORED_ENUM_FIELD_DESC);
-      oprot.writeI32(this.reference_vendored_enum);
+      oprot.writeI32(elem1);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

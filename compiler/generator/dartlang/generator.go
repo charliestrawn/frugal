@@ -1195,9 +1195,10 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 		}
 	} else if g.Frugal.IsStruct(underlyingType) {
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-		contents += fmt.Sprintf(ind+"%s%s = %s();\n", prefix, fName, dartType)
+		contents += fmt.Sprintf(ind+"final tmp_%s = %s();\n", fName, dartType)
+		contents += fmt.Sprintf(ind+"%s%s = tmp_%s;\n", prefix, fName, fName)
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-		contents += fmt.Sprintf(ind+"%s.read(iprot);\n", fName)
+		contents += fmt.Sprintf(ind+"tmp_%s.read(iprot);\n", fName)
 	} else if underlyingType.IsContainer() {
 		containerElem := g.GetElem()
 		valElem := g.GetElem()
@@ -1249,8 +1250,14 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 	contents += tab + "write(thrift.TProtocol oprot) {\n"
 	contents += tabtab + "validate();\n\n"
 	contents += tabtab + "oprot.writeStructBegin(_STRUCT_DESC);\n"
+
 	for _, field := range s.Fields {
 		fName := toFieldName(field.Name)
+
+		tmpElem := g.GetElem()
+		tmpField := parser.FieldFromType(field.Type, tmpElem)
+		contents += tabtab + fmt.Sprintf("final %s = %s;\n", tmpElem, fName)
+
 		var isSet bool
 		var isNull bool
 		if g.useNullForUnset(kind) {
@@ -1286,13 +1293,13 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 				contents += " && "
 			}
 			if isNull {
-				contents += fmt.Sprintf("this.%s != null", fName)
+				contents += fmt.Sprintf("%s != null", tmpElem)
 			}
 			contents += ") {\n"
 		}
 
 		contents += fmt.Sprintf(tabtab+ind+"oprot.writeFieldBegin(_%s_FIELD_DESC);\n", toScreamingCapsConstant(field.Name))
-		contents += g.generateWriteFieldRec(field, true, ind)
+		contents += g.generateWriteFieldRec(tmpField, false, ind)
 		contents += fmt.Sprintf(tabtab + ind + "oprot.writeFieldEnd();\n")
 
 		if isSet || isNull {
@@ -1384,10 +1391,11 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			keyEnumType := g.getEnumFromThriftType(underlyingType.KeyType)
 			keyElem := g.GetElem()
 			keyField := parser.FieldFromType(underlyingType.KeyType, keyElem)
-			valField := parser.FieldFromType(underlyingType.ValueType, fmt.Sprintf("%s[%s]", localVar, keyElem))
+			valField := parser.FieldFromType(underlyingType.ValueType, fmt.Sprintf("val"))
 			contents += fmt.Sprintf(tabtab+ind+"oprot.writeMapBegin(thrift.TMap(%s, %s, %s.length));\n", keyEnumType, valEnumType, localVar)
 			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
 			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s.keys) {\n", keyElem, localVar)
+			contents += tabtabtab+ind+fmt.Sprintf("final val = %s[%s]%s;\n", localVar, keyElem, g.notNullOperator)
 			contents += g.generateWriteFieldRec(keyField, false, ind+tab)
 			contents += g.generateWriteFieldRec(valField, false, ind+tab)
 			contents += tabtab + ind + "}\n"
