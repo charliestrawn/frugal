@@ -123,12 +123,12 @@ class EventsPublisher {
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
     oprot.writeListBegin(thrift.TList(thrift.TType.MAP, req.length));
-    for(var elem159 in req) {
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem159.length));
-      for(var elem160 in elem159.keys) {
-        final val = elem159[elem160]!;
-        oprot.writeI64(elem160);
-        val.write(oprot);
+    for(var elem164 in req) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem164.length));
+      for(var elem165 in elem164.keys) {
+        final elem166 = elem164[elem165]!;
+        oprot.writeI64(elem165);
+        elem166.write(oprot);
       }
       oprot.writeMapEnd();
     }
@@ -265,20 +265,20 @@ class EventsSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      thrift.TList elem161 = iprot.readListBegin();
+      thrift.TList elem167 = iprot.readListBegin();
       final req = <Map<int, t_variety.Event>>[];
-      for(int elem167 = 0; elem167 < elem161.length; ++elem167) {
-        thrift.TMap elem163 = iprot.readMapBegin();
-        final elem162 = <int, t_variety.Event>{};
-        for(int elem165 = 0; elem165 < elem163.length; ++elem165) {
-          int elem166 = iprot.readI64();
-          final tmp_elem164 = t_variety.Event();
-          t_variety.Event elem164 = tmp_elem164;
-          tmp_elem164.read(iprot);
-          elem162[elem166] = elem164;
+      for(int elem173 = 0; elem173 < elem167.length; ++elem173) {
+        thrift.TMap elem169 = iprot.readMapBegin();
+        final elem168 = <int, t_variety.Event>{};
+        for(int elem171 = 0; elem171 < elem169.length; ++elem171) {
+          int elem172 = iprot.readI64();
+          final tmp_elem170 = t_variety.Event();
+          t_variety.Event elem170 = tmp_elem170;
+          tmp_elem170.read(iprot);
+          elem168[elem172] = elem170;
         }
         iprot.readMapEnd();
-        req.add(elem162);
+        req.add(elem168);
       }
       iprot.readListEnd();
       iprot.readMessageEnd();

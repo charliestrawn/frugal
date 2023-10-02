@@ -647,20 +647,20 @@ class TestingDefaults implements thrift.TBase {
       oprot.writeFieldBegin(_A_MAP_FIELD_DESC);
       oprot.writeMapBegin(thrift.TMap(thrift.TType.STRING, thrift.TType.STRING, elem45.length));
       for(var elem46 in elem45.keys) {
-        final val = elem45[elem46];
+        final elem47 = elem45[elem46];
         oprot.writeString(elem46);
-        oprot.writeString(val);
+        oprot.writeString(elem47);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
     }
-    final elem47 = status;
+    final elem48 = status;
     oprot.writeFieldBegin(_STATUS_FIELD_DESC);
-    oprot.writeI32(elem47);
-    oprot.writeFieldEnd();
-    final elem48 = base_status;
-    oprot.writeFieldBegin(_BASE_STATUS_FIELD_DESC);
     oprot.writeI32(elem48);
+    oprot.writeFieldEnd();
+    final elem49 = base_status;
+    oprot.writeFieldBegin(_BASE_STATUS_FIELD_DESC);
+    oprot.writeI32(elem49);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();

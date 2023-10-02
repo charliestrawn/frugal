@@ -1390,12 +1390,13 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 		case "map":
 			keyEnumType := g.getEnumFromThriftType(underlyingType.KeyType)
 			keyElem := g.GetElem()
+			valElem := g.GetElem()
 			keyField := parser.FieldFromType(underlyingType.KeyType, keyElem)
-			valField := parser.FieldFromType(underlyingType.ValueType, fmt.Sprintf("val"))
+			valField := parser.FieldFromType(underlyingType.ValueType, valElem)
 			contents += fmt.Sprintf(tabtab+ind+"oprot.writeMapBegin(thrift.TMap(%s, %s, %s.length));\n", keyEnumType, valEnumType, localVar)
 			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
 			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s.keys) {\n", keyElem, localVar)
-			contents += tabtabtab+ind+fmt.Sprintf("final val = %s[%s]%s;\n", localVar, keyElem, g.notNullOperator)
+			contents += tabtabtab+ind+fmt.Sprintf("final %s = %s[%s]%s;\n", valElem, localVar, keyElem, g.notNullOperator)
 			contents += g.generateWriteFieldRec(keyField, false, ind+tab)
 			contents += g.generateWriteFieldRec(valField, false, ind+tab)
 			contents += tabtab + ind + "}\n"
