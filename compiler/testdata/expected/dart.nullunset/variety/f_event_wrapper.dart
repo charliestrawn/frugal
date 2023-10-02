@@ -317,92 +317,92 @@ class EventWrapper implements thrift.TBase {
           break;
         case EV:
           if (field.type == thrift.TType.STRUCT) {
-            final tmp_ev = t_variety.Event();
-            this.ev = tmp_ev;
-            tmp_ev.read(iprot);
+            final elem53 = t_variety.Event();
+            this.ev = elem53;
+            elem53.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case EVENTS:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem50 = iprot.readListBegin();
-            final elem53 = <t_variety.Event>[];
-            for(int elem52 = 0; elem52 < elem50.length; ++elem52) {
-              final tmp_elem51 = t_variety.Event();
-              t_variety.Event elem51 = tmp_elem51;
-              tmp_elem51.read(iprot);
-              elem53.add(elem51);
+            thrift.TList elem54 = iprot.readListBegin();
+            final elem58 = <t_variety.Event>[];
+            for(int elem57 = 0; elem57 < elem54.length; ++elem57) {
+              final elem56 = t_variety.Event();
+              t_variety.Event elem55 = elem56;
+              elem56.read(iprot);
+              elem58.add(elem55);
             }
             iprot.readListEnd();
-            this.events = elem53;
+            this.events = elem58;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case EVENTS2:
           if (field.type == thrift.TType.SET) {
-            thrift.TSet elem54 = iprot.readSetBegin();
-            final elem57 = <t_variety.Event>{};
-            for(int elem56 = 0; elem56 < elem54.length; ++elem56) {
-              final tmp_elem55 = t_variety.Event();
-              t_variety.Event elem55 = tmp_elem55;
-              tmp_elem55.read(iprot);
-              elem57.add(elem55);
+            thrift.TSet elem59 = iprot.readSetBegin();
+            final elem63 = <t_variety.Event>{};
+            for(int elem62 = 0; elem62 < elem59.length; ++elem62) {
+              final elem61 = t_variety.Event();
+              t_variety.Event elem60 = elem61;
+              elem61.read(iprot);
+              elem63.add(elem60);
             }
             iprot.readSetEnd();
-            this.events2 = elem57;
+            this.events2 = elem63;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case EVENTMAP:
           if (field.type == thrift.TType.MAP) {
-            thrift.TMap elem58 = iprot.readMapBegin();
-            final elem61 = <int, t_variety.Event>{};
-            for(int elem60 = 0; elem60 < elem58.length; ++elem60) {
-              int elem62 = iprot.readI64();
-              final tmp_elem59 = t_variety.Event();
-              t_variety.Event elem59 = tmp_elem59;
-              tmp_elem59.read(iprot);
-              elem61[elem62] = elem59;
+            thrift.TMap elem64 = iprot.readMapBegin();
+            final elem68 = <int, t_variety.Event>{};
+            for(int elem67 = 0; elem67 < elem64.length; ++elem67) {
+              int elem69 = iprot.readI64();
+              final elem66 = t_variety.Event();
+              t_variety.Event elem65 = elem66;
+              elem66.read(iprot);
+              elem68[elem69] = elem65;
             }
             iprot.readMapEnd();
-            this.eventMap = elem61;
+            this.eventMap = elem68;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case NUMS:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem63 = iprot.readListBegin();
-            final elem69 = <List<int>>[];
-            for(int elem68 = 0; elem68 < elem63.length; ++elem68) {
-              thrift.TList elem65 = iprot.readListBegin();
-              final elem64 = <int>[];
-              for(int elem67 = 0; elem67 < elem65.length; ++elem67) {
-                int elem66 = iprot.readI32();
-                elem64.add(elem66);
+            thrift.TList elem70 = iprot.readListBegin();
+            final elem76 = <List<int>>[];
+            for(int elem75 = 0; elem75 < elem70.length; ++elem75) {
+              thrift.TList elem72 = iprot.readListBegin();
+              final elem71 = <int>[];
+              for(int elem74 = 0; elem74 < elem72.length; ++elem74) {
+                int elem73 = iprot.readI32();
+                elem71.add(elem73);
               }
               iprot.readListEnd();
-              elem69.add(elem64);
+              elem76.add(elem71);
             }
             iprot.readListEnd();
-            this.nums = elem69;
+            this.nums = elem76;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case ENUMS:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem70 = iprot.readListBegin();
-            final elem73 = <int>[];
-            for(int elem72 = 0; elem72 < elem70.length; ++elem72) {
-              int elem71 = iprot.readI32();
-              elem73.add(elem71);
+            thrift.TList elem77 = iprot.readListBegin();
+            final elem80 = <int>[];
+            for(int elem79 = 0; elem79 < elem77.length; ++elem79) {
+              int elem78 = iprot.readI32();
+              elem80.add(elem78);
             }
             iprot.readListEnd();
-            this.enums = elem73;
+            this.enums = elem80;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -416,9 +416,9 @@ class EventWrapper implements thrift.TBase {
           break;
         case A_UNION:
           if (field.type == thrift.TType.STRUCT) {
-            final tmp_a_union = t_variety.TestingUnions();
-            this.a_union = tmp_a_union;
-            tmp_a_union.read(iprot);
+            final elem81 = t_variety.TestingUnions();
+            this.a_union = elem81;
+            elem81.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -448,65 +448,65 @@ class EventWrapper implements thrift.TBase {
           break;
         case DEPRLIST:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem74 = iprot.readListBegin();
+            thrift.TList elem82 = iprot.readListBegin();
             // ignore: deprecated_member_use
-            final elem77 = <bool>[];
-            for(int elem76 = 0; elem76 < elem74.length; ++elem76) {
-              bool elem75 = iprot.readBool();
+            final elem85 = <bool>[];
+            for(int elem84 = 0; elem84 < elem82.length; ++elem84) {
+              bool elem83 = iprot.readBool();
               // ignore: deprecated_member_use
-              elem77.add(elem75);
+              elem85.add(elem83);
             }
             iprot.readListEnd();
-            this.deprList = elem77;
+            this.deprList = elem85;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case EVENTSDEFAULT:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem78 = iprot.readListBegin();
-            final elem81 = <t_variety.Event>[];
-            for(int elem80 = 0; elem80 < elem78.length; ++elem80) {
-              final tmp_elem79 = t_variety.Event();
-              t_variety.Event elem79 = tmp_elem79;
-              tmp_elem79.read(iprot);
-              elem81.add(elem79);
+            thrift.TList elem86 = iprot.readListBegin();
+            final elem90 = <t_variety.Event>[];
+            for(int elem89 = 0; elem89 < elem86.length; ++elem89) {
+              final elem88 = t_variety.Event();
+              t_variety.Event elem87 = elem88;
+              elem88.read(iprot);
+              elem90.add(elem87);
             }
             iprot.readListEnd();
-            this.eventsDefault = elem81;
+            this.eventsDefault = elem90;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case EVENTMAPDEFAULT:
           if (field.type == thrift.TType.MAP) {
-            thrift.TMap elem82 = iprot.readMapBegin();
-            final elem85 = <int, t_variety.Event>{};
-            for(int elem84 = 0; elem84 < elem82.length; ++elem84) {
-              int elem86 = iprot.readI64();
-              final tmp_elem83 = t_variety.Event();
-              t_variety.Event elem83 = tmp_elem83;
-              tmp_elem83.read(iprot);
-              elem85[elem86] = elem83;
+            thrift.TMap elem91 = iprot.readMapBegin();
+            final elem95 = <int, t_variety.Event>{};
+            for(int elem94 = 0; elem94 < elem91.length; ++elem94) {
+              int elem96 = iprot.readI64();
+              final elem93 = t_variety.Event();
+              t_variety.Event elem92 = elem93;
+              elem93.read(iprot);
+              elem95[elem96] = elem92;
             }
             iprot.readMapEnd();
-            this.eventMapDefault = elem85;
+            this.eventMapDefault = elem95;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case EVENTSETDEFAULT:
           if (field.type == thrift.TType.SET) {
-            thrift.TSet elem87 = iprot.readSetBegin();
-            final elem90 = <t_variety.Event>{};
-            for(int elem89 = 0; elem89 < elem87.length; ++elem89) {
-              final tmp_elem88 = t_variety.Event();
-              t_variety.Event elem88 = tmp_elem88;
-              tmp_elem88.read(iprot);
-              elem90.add(elem88);
+            thrift.TSet elem97 = iprot.readSetBegin();
+            final elem101 = <t_variety.Event>{};
+            for(int elem100 = 0; elem100 < elem97.length; ++elem100) {
+              final elem99 = t_variety.Event();
+              t_variety.Event elem98 = elem99;
+              elem99.read(iprot);
+              elem101.add(elem98);
             }
             iprot.readSetEnd();
-            this.eventSetDefault = elem90;
+            this.eventSetDefault = elem101;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -527,138 +527,138 @@ class EventWrapper implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    final elem91 = iD;
+    final elem102 = iD;
     if (isSetID()) {
       oprot.writeFieldBegin(_ID_FIELD_DESC);
-      oprot.writeI64(elem91);
+      oprot.writeI64(elem102);
       oprot.writeFieldEnd();
     }
-    final elem92 = ev;
+    final elem103 = ev;
     oprot.writeFieldBegin(_EV_FIELD_DESC);
-    elem92.write(oprot);
+    elem103.write(oprot);
     oprot.writeFieldEnd();
-    final elem93 = events;
+    final elem104 = events;
     if (isSetEvents()) {
       oprot.writeFieldBegin(_EVENTS_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, elem93.length));
-      for(var elem94 in elem93) {
-        elem94.write(oprot);
+      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, elem104.length));
+      for(var elem105 in elem104) {
+        elem105.write(oprot);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    final elem95 = events2;
+    final elem106 = events2;
     if (isSetEvents2()) {
       oprot.writeFieldBegin(_EVENTS2_FIELD_DESC);
-      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, elem95.length));
-      for(var elem96 in elem95) {
-        elem96.write(oprot);
+      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, elem106.length));
+      for(var elem107 in elem106) {
+        elem107.write(oprot);
       }
       oprot.writeSetEnd();
       oprot.writeFieldEnd();
     }
-    final elem97 = eventMap;
+    final elem108 = eventMap;
     if (isSetEventMap()) {
       oprot.writeFieldBegin(_EVENT_MAP_FIELD_DESC);
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem97.length));
-      for(var elem98 in elem97.keys) {
-        final elem99 = elem97[elem98];
-        oprot.writeI64(elem98);
-        elem99.write(oprot);
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem108.length));
+      for(var elem109 in elem108.keys) {
+        final elem110 = elem108[elem109];
+        oprot.writeI64(elem109);
+        elem110.write(oprot);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
     }
-    final elem100 = nums;
+    final elem111 = nums;
     if (isSetNums()) {
       oprot.writeFieldBegin(_NUMS_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.LIST, elem100.length));
-      for(var elem101 in elem100) {
-        oprot.writeListBegin(thrift.TList(thrift.TType.I32, elem101.length));
-        for(var elem102 in elem101) {
-          oprot.writeI32(elem102);
+      oprot.writeListBegin(thrift.TList(thrift.TType.LIST, elem111.length));
+      for(var elem112 in elem111) {
+        oprot.writeListBegin(thrift.TList(thrift.TType.I32, elem112.length));
+        for(var elem113 in elem112) {
+          oprot.writeI32(elem113);
         }
         oprot.writeListEnd();
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    final elem103 = enums;
+    final elem114 = enums;
     if (isSetEnums()) {
       oprot.writeFieldBegin(_ENUMS_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.I32, elem103.length));
-      for(var elem104 in elem103) {
-        oprot.writeI32(elem104);
+      oprot.writeListBegin(thrift.TList(thrift.TType.I32, elem114.length));
+      for(var elem115 in elem114) {
+        oprot.writeI32(elem115);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    final elem105 = aBoolField;
+    final elem116 = aBoolField;
     oprot.writeFieldBegin(_A_BOOL_FIELD_FIELD_DESC);
-    oprot.writeBool(elem105);
+    oprot.writeBool(elem116);
     oprot.writeFieldEnd();
-    final elem106 = a_union;
+    final elem117 = a_union;
     if (isSetA_union()) {
       oprot.writeFieldBegin(_A_UNION_FIELD_DESC);
-      elem106.write(oprot);
+      elem117.write(oprot);
       oprot.writeFieldEnd();
     }
-    final elem107 = typedefOfTypedef;
+    final elem118 = typedefOfTypedef;
     if (isSetTypedefOfTypedef()) {
       oprot.writeFieldBegin(_TYPEDEF_OF_TYPEDEF_FIELD_DESC);
-      oprot.writeString(elem107);
+      oprot.writeString(elem118);
       oprot.writeFieldEnd();
     }
-    final elem108 = depr;
+    final elem119 = depr;
     oprot.writeFieldBegin(_DEPR_FIELD_DESC);
-    oprot.writeBool(elem108);
+    oprot.writeBool(elem119);
     oprot.writeFieldEnd();
-    final elem109 = deprBinary;
+    final elem120 = deprBinary;
     // ignore: deprecated_member_use
     if (isSetDeprBinary()) {
       oprot.writeFieldBegin(_DEPR_BINARY_FIELD_DESC);
-      oprot.writeBinary(elem109);
+      oprot.writeBinary(elem120);
       oprot.writeFieldEnd();
     }
-    final elem110 = deprList;
+    final elem121 = deprList;
     // ignore: deprecated_member_use
     if (isSetDeprList()) {
       oprot.writeFieldBegin(_DEPR_LIST_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.BOOL, elem110.length));
-      for(var elem111 in elem110) {
-        oprot.writeBool(elem111);
+      oprot.writeListBegin(thrift.TList(thrift.TType.BOOL, elem121.length));
+      for(var elem122 in elem121) {
+        oprot.writeBool(elem122);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    final elem112 = eventsDefault;
+    final elem123 = eventsDefault;
     if (isSetEventsDefault()) {
       oprot.writeFieldBegin(_EVENTS_DEFAULT_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, elem112.length));
-      for(var elem113 in elem112) {
-        elem113.write(oprot);
+      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, elem123.length));
+      for(var elem124 in elem123) {
+        elem124.write(oprot);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    final elem114 = eventMapDefault;
+    final elem125 = eventMapDefault;
     if (isSetEventMapDefault()) {
       oprot.writeFieldBegin(_EVENT_MAP_DEFAULT_FIELD_DESC);
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem114.length));
-      for(var elem115 in elem114.keys) {
-        final elem116 = elem114[elem115];
-        oprot.writeI64(elem115);
-        elem116.write(oprot);
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem125.length));
+      for(var elem126 in elem125.keys) {
+        final elem127 = elem125[elem126];
+        oprot.writeI64(elem126);
+        elem127.write(oprot);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
     }
-    final elem117 = eventSetDefault;
+    final elem128 = eventSetDefault;
     if (isSetEventSetDefault()) {
       oprot.writeFieldBegin(_EVENT_SET_DEFAULT_FIELD_DESC);
-      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, elem117.length));
-      for(var elem118 in elem117) {
-        elem118.write(oprot);
+      oprot.writeSetBegin(thrift.TSet(thrift.TType.STRUCT, elem128.length));
+      for(var elem129 in elem128) {
+        elem129.write(oprot);
       }
       oprot.writeSetEnd();
       oprot.writeFieldEnd();

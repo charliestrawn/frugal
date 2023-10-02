@@ -1194,11 +1194,12 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += fmt.Sprintf(ind+"this.__isset_%s = true;\n", fName)
 		}
 	} else if g.Frugal.IsStruct(underlyingType) {
+		valElem := g.GetElem()
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-		contents += fmt.Sprintf(ind+"final tmp_%s = %s();\n", fName, dartType)
-		contents += fmt.Sprintf(ind+"%s%s = tmp_%s;\n", prefix, fName, fName)
+		contents += fmt.Sprintf(ind+"final %s = %s();\n", valElem, dartType)
+		contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, valElem)
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-		contents += fmt.Sprintf(ind+"tmp_%s.read(iprot);\n", fName)
+		contents += fmt.Sprintf(ind+"%s.read(iprot);\n", valElem)
 	} else if underlyingType.IsContainer() {
 		containerElem := g.GetElem()
 		valElem := g.GetElem()
