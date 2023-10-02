@@ -301,15 +301,15 @@ class TestingUnions implements thrift.TBase {
           break;
         case REQUESTS:
           if (field.type == thrift.TType.MAP) {
-            thrift.TMap elem133 = iprot.readMapBegin();
-            final elem136 = <int, String>{};
-            for(int elem135 = 0; elem135 < elem133.length; ++elem135) {
-              int elem137 = iprot.readI32();
-              String elem134 = iprot.readString();
-              elem136[elem137] = elem134;
+            thrift.TMap elem127 = iprot.readMapBegin();
+            final elem130 = <int, String>{};
+            for(int elem129 = 0; elem129 < elem127.length; ++elem129) {
+              int elem131 = iprot.readI32();
+              String elem128 = iprot.readString();
+              elem130[elem131] = elem128;
             }
             iprot.readMapEnd();
-            this.requests = elem136;
+            this.requests = elem130;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -354,59 +354,58 @@ class TestingUnions implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    final elem138 = anID;
+    final elem132 = anID;
     if (isSetAnID()) {
       oprot.writeFieldBegin(_AN_ID_FIELD_DESC);
-      oprot.writeInt64(elem138);
+      oprot.writeInt64(elem132);
       oprot.writeFieldEnd();
     }
-    final elem139 = aString;
-    if (isSetAString() && elem139 != null) {
+    final elem133 = aString;
+    if (isSetAString() && elem133 != null) {
       oprot.writeFieldBegin(_A_STRING_FIELD_DESC);
-      oprot.writeString(elem139);
+      oprot.writeString(elem133);
       oprot.writeFieldEnd();
     }
-    final elem140 = someotherthing;
+    final elem134 = someotherthing;
     if (isSetSomeotherthing()) {
       oprot.writeFieldBegin(_SOMEOTHERTHING_FIELD_DESC);
-      oprot.writeI32(elem140);
+      oprot.writeI32(elem134);
       oprot.writeFieldEnd();
     }
-    final elem141 = anInt16;
+    final elem135 = anInt16;
     if (isSetAnInt16()) {
       oprot.writeFieldBegin(_AN_INT16_FIELD_DESC);
-      oprot.writeI16(elem141);
+      oprot.writeI16(elem135);
       oprot.writeFieldEnd();
     }
-    final elem142 = requests;
-    if (isSetRequests() && elem142 != null) {
+    final elem136 = requests;
+    if (isSetRequests() && elem136 != null) {
       oprot.writeFieldBegin(_REQUESTS_FIELD_DESC);
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, elem142.length));
-      for(var elem143 in elem142.keys) {
-        final elem144 = elem142[elem143];
-        oprot.writeI32(elem143);
-        oprot.writeString(elem144);
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, elem136.length));
+      for(var entry in elem136.entries) {
+        oprot.writeI32(entry.key);
+        oprot.writeString(entry.value);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
     }
-    final elem145 = bin_field_in_union;
-    if (isSetBin_field_in_union() && elem145 != null) {
+    final elem137 = bin_field_in_union;
+    if (isSetBin_field_in_union() && elem137 != null) {
       oprot.writeFieldBegin(_BIN_FIELD_IN_UNION_FIELD_DESC);
-      oprot.writeBinary(elem145);
+      oprot.writeBinary(elem137);
       oprot.writeFieldEnd();
     }
-    final elem146 = depr;
+    final elem138 = depr;
     // ignore: deprecated_member_use
     if (isSetDepr()) {
       oprot.writeFieldBegin(_DEPR_FIELD_DESC);
-      oprot.writeBool(elem146);
+      oprot.writeBool(elem138);
       oprot.writeFieldEnd();
     }
-    final elem147 = wHOA_BUDDY;
+    final elem139 = wHOA_BUDDY;
     if (isSetWHOA_BUDDY()) {
       oprot.writeFieldBegin(_WHO_A__BUDDY_FIELD_DESC);
-      oprot.writeBool(elem147);
+      oprot.writeBool(elem139);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

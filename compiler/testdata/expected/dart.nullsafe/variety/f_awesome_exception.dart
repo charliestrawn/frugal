@@ -184,19 +184,19 @@ class AwesomeException extends Error implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    final elem148 = iD;
+    final elem140 = iD;
     oprot.writeFieldBegin(_ID_FIELD_DESC);
-    oprot.writeI64(elem148);
+    oprot.writeI64(elem140);
     oprot.writeFieldEnd();
-    final elem149 = reason;
-    if (elem149 != null) {
+    final elem141 = reason;
+    if (elem141 != null) {
       oprot.writeFieldBegin(_REASON_FIELD_DESC);
-      oprot.writeString(elem149);
+      oprot.writeString(elem141);
       oprot.writeFieldEnd();
     }
-    final elem150 = depr;
+    final elem142 = depr;
     oprot.writeFieldBegin(_DEPR_FIELD_DESC);
-    oprot.writeBool(elem150);
+    oprot.writeBool(elem142);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();

@@ -68,16 +68,16 @@ class nested_thing implements thrift.TBase {
       switch (field.id) {
         case THINGS:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem194 = iprot.readListBegin();
-            final elem198 = <t_actual_base_dart.thing>[];
-            for(int elem197 = 0; elem197 < elem194.length; ++elem197) {
-              final elem196 = t_actual_base_dart.thing();
-              t_actual_base_dart.thing elem195 = elem196;
-              elem196.read(iprot);
-              elem198.add(elem195);
+            thrift.TList elem182 = iprot.readListBegin();
+            final elem186 = <t_actual_base_dart.thing>[];
+            for(int elem185 = 0; elem185 < elem182.length; ++elem185) {
+              final elem184 = t_actual_base_dart.thing();
+              t_actual_base_dart.thing elem183 = elem184;
+              elem184.read(iprot);
+              elem186.add(elem183);
             }
             iprot.readListEnd();
-            this.things = elem198;
+            this.things = elem186;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -98,12 +98,12 @@ class nested_thing implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    final elem199 = things;
-    if (elem199 != null) {
+    final elem187 = things;
+    if (elem187 != null) {
       oprot.writeFieldBegin(_THINGS_FIELD_DESC);
-      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, elem199.length));
-      for(var elem200 in elem199) {
-        elem200.write(oprot);
+      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, elem187.length));
+      for(var elem188 in elem187) {
+        elem188.write(oprot);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();

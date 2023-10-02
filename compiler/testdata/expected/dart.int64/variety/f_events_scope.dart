@@ -123,12 +123,11 @@ class EventsPublisher {
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
     oprot.writeListBegin(thrift.TList(thrift.TType.MAP, req.length));
-    for(var elem180 in req) {
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem180.length));
-      for(var elem181 in elem180.keys) {
-        final elem182 = elem180[elem181];
-        oprot.writeInt64(elem181);
-        elem182.write(oprot);
+    for(var elem170 in req) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem170.length));
+      for(var entry in elem170.entries) {
+        oprot.writeInt64(entry.key);
+        entry.value.write(oprot);
       }
       oprot.writeMapEnd();
     }
@@ -176,9 +175,9 @@ class EventsSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      final elem183 = t_variety.Event();
-      t_variety.Event req = elem183;
-      elem183.read(iprot);
+      final elem171 = t_variety.Event();
+      t_variety.Event req = elem171;
+      elem171.read(iprot);
       iprot.readMessageEnd();
       method([ctx, req]);
     }
@@ -265,20 +264,20 @@ class EventsSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      thrift.TList elem184 = iprot.readListBegin();
+      thrift.TList elem172 = iprot.readListBegin();
       final req = <Map<fixnum.Int64, t_variety.Event>>[];
-      for(int elem191 = 0; elem191 < elem184.length; ++elem191) {
-        thrift.TMap elem186 = iprot.readMapBegin();
-        final elem185 = <fixnum.Int64, t_variety.Event>{};
-        for(int elem189 = 0; elem189 < elem186.length; ++elem189) {
-          fixnum.Int64 elem190 = iprot.readInt64();
-          final elem188 = t_variety.Event();
-          t_variety.Event elem187 = elem188;
-          elem188.read(iprot);
-          elem185[elem190] = elem187;
+      for(int elem179 = 0; elem179 < elem172.length; ++elem179) {
+        thrift.TMap elem174 = iprot.readMapBegin();
+        final elem173 = <fixnum.Int64, t_variety.Event>{};
+        for(int elem177 = 0; elem177 < elem174.length; ++elem177) {
+          fixnum.Int64 elem178 = iprot.readInt64();
+          final elem176 = t_variety.Event();
+          t_variety.Event elem175 = elem176;
+          elem176.read(iprot);
+          elem173[elem178] = elem175;
         }
         iprot.readMapEnd();
-        req.add(elem185);
+        req.add(elem173);
       }
       iprot.readListEnd();
       iprot.readMessageEnd();
