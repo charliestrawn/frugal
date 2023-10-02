@@ -3,9 +3,6 @@
 
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
-// ignore_for_file: invalid_null_aware_operator
-// ignore_for_file: unnecessary_non_null_assertion
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
@@ -152,19 +149,22 @@ class FooArgs implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.newMessage != null) {
+    final elem124 = newMessage;
+    if (elem124 != null) {
       oprot.writeFieldBegin(_NEW_MESSAGE_FIELD_DESC);
-      oprot.writeString(this.newMessage);
+      oprot.writeString(elem124);
       oprot.writeFieldEnd();
     }
-    if (this.messageArgs != null) {
+    final elem125 = messageArgs;
+    if (elem125 != null) {
       oprot.writeFieldBegin(_MESSAGE_ARGS_FIELD_DESC);
-      oprot.writeString(this.messageArgs);
+      oprot.writeString(elem125);
       oprot.writeFieldEnd();
     }
-    if (this.messageResult != null) {
+    final elem126 = messageResult;
+    if (elem126 != null) {
       oprot.writeFieldBegin(_MESSAGE_RESULT_FIELD_DESC);
-      oprot.writeString(this.messageResult);
+      oprot.writeString(elem126);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

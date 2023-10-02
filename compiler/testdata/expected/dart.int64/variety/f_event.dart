@@ -3,9 +3,6 @@
 
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
-// ignore_for_file: invalid_null_aware_operator
-// ignore_for_file: unnecessary_non_null_assertion
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
@@ -184,16 +181,19 @@ class Event implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
+    final elem3 = iD;
     oprot.writeFieldBegin(_ID_FIELD_DESC);
-    oprot.writeInt64(this.iD);
+    oprot.writeInt64(elem3);
     oprot.writeFieldEnd();
-    if (this.message != null) {
+    final elem4 = message;
+    if (elem4 != null) {
       oprot.writeFieldBegin(_MESSAGE_FIELD_DESC);
-      oprot.writeString(this.message);
+      oprot.writeString(elem4);
       oprot.writeFieldEnd();
     }
+    final elem5 = yES_NO;
     oprot.writeFieldBegin(_YE_S__NO_FIELD_DESC);
-    oprot.writeBool(this.yES_NO);
+    oprot.writeBool(elem5);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();

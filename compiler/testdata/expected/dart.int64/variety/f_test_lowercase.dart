@@ -3,9 +3,6 @@
 
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
-// ignore_for_file: invalid_null_aware_operator
-// ignore_for_file: unnecessary_non_null_assertion
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
@@ -107,8 +104,9 @@ class TestLowercase implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
+    final elem2 = lowercaseInt;
     oprot.writeFieldBegin(_LOWERCASE_INT_FIELD_DESC);
-    oprot.writeI32(this.lowercaseInt);
+    oprot.writeI32(elem2);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();

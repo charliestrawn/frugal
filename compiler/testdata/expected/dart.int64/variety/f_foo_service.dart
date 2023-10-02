@@ -6,8 +6,6 @@
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
 // ignore_for_file: invalid_null_aware_operator
-// ignore_for_file: unnecessary_non_null_assertion
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
@@ -421,17 +419,20 @@ class blah_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
+    final elem143 = num;
     oprot.writeFieldBegin(_NUM_FIELD_DESC);
-    oprot.writeI32(this.num);
+    oprot.writeI32(elem143);
     oprot.writeFieldEnd();
-    if (this.str != null) {
+    final elem144 = str;
+    if (elem144 != null) {
       oprot.writeFieldBegin(_STR_FIELD_DESC);
-      oprot.writeString(this.str);
+      oprot.writeString(elem144);
       oprot.writeFieldEnd();
     }
-    if (this.event != null) {
+    final elem145 = event;
+    if (elem145 != null) {
       oprot.writeFieldBegin(_EVENT_FIELD_DESC);
-      this.event.write(oprot);
+      elem145.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -464,16 +465,18 @@ class blah_result extends frugal.FGeneratedArgsResultBase {
           break;
         case 1:
           if (field.type == thrift.TType.STRUCT) {
-            this.awe = t_variety.AwesomeException();
-            awe.read(iprot);
+            final elem146 = t_variety.AwesomeException();
+            this.awe = elem146;
+            elem146.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
           break;
         case 2:
           if (field.type == thrift.TType.STRUCT) {
-            this.api = t_actual_base_dart.api_exception();
-            api.read(iprot);
+            final elem147 = t_actual_base_dart.api_exception();
+            this.api = elem147;
+            elem147.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -507,16 +510,17 @@ class oneWay_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
+    final elem148 = id;
     oprot.writeFieldBegin(_ID_FIELD_DESC);
-    oprot.writeInt64(this.id);
+    oprot.writeInt64(elem148);
     oprot.writeFieldEnd();
-    if (this.req != null) {
+    final elem149 = req;
+    if (elem149 != null) {
       oprot.writeFieldBegin(_REQ_FIELD_DESC);
-      final temp = this.req;
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, temp.length));
-      for(var elem83 in temp.keys) {
-        oprot.writeI32(elem83);
-        oprot.writeString(temp[elem83]);
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, elem149.length));
+      for(var entry in elem149.entries) {
+        oprot.writeI32(entry.key);
+        oprot.writeString(entry.value);
       }
       oprot.writeMapEnd();
       oprot.writeFieldEnd();
@@ -543,14 +547,16 @@ class bin_method_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.bin != null) {
+    final elem150 = bin;
+    if (elem150 != null) {
       oprot.writeFieldBegin(_BIN_FIELD_DESC);
-      oprot.writeBinary(this.bin);
+      oprot.writeBinary(elem150);
       oprot.writeFieldEnd();
     }
-    if (this.str != null) {
+    final elem151 = str;
+    if (elem151 != null) {
       oprot.writeFieldBegin(_STR_FIELD_DESC);
-      oprot.writeString(this.str);
+      oprot.writeString(elem151);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -582,8 +588,9 @@ class bin_method_result extends frugal.FGeneratedArgsResultBase {
           break;
         case 1:
           if (field.type == thrift.TType.STRUCT) {
-            this.api = t_actual_base_dart.api_exception();
-            api.read(iprot);
+            final elem152 = t_actual_base_dart.api_exception();
+            this.api = elem152;
+            elem152.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -619,14 +626,17 @@ class param_modifiers_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
+    final elem153 = opt_num;
     oprot.writeFieldBegin(_OPT_NUM_FIELD_DESC);
-    oprot.writeI32(this.opt_num);
+    oprot.writeI32(elem153);
     oprot.writeFieldEnd();
+    final elem154 = default_num;
     oprot.writeFieldBegin(_DEFAULT_NUM_FIELD_DESC);
-    oprot.writeI32(this.default_num);
+    oprot.writeI32(elem154);
     oprot.writeFieldEnd();
+    final elem155 = req_num;
     oprot.writeFieldBegin(_REQ_NUM_FIELD_DESC);
-    oprot.writeI32(this.req_num);
+    oprot.writeI32(elem155);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -687,22 +697,22 @@ class underlying_types_test_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.list_type != null) {
+    final elem156 = list_type;
+    if (elem156 != null) {
       oprot.writeFieldBegin(_LIST_TYPE_FIELD_DESC);
-      final temp = this.list_type;
-      oprot.writeListBegin(thrift.TList(thrift.TType.I64, temp.length));
-      for(var elem84 in temp) {
-        oprot.writeInt64(elem84);
+      oprot.writeListBegin(thrift.TList(thrift.TType.I64, elem156.length));
+      for(var elem157 in elem156) {
+        oprot.writeInt64(elem157);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();
     }
-    if (this.set_type != null) {
+    final elem158 = set_type;
+    if (elem158 != null) {
       oprot.writeFieldBegin(_SET_TYPE_FIELD_DESC);
-      final temp = this.set_type;
-      oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, temp.length));
-      for(var elem85 in temp) {
-        oprot.writeInt64(elem85);
+      oprot.writeSetBegin(thrift.TSet(thrift.TType.I64, elem158.length));
+      for(var elem159 in elem158) {
+        oprot.writeInt64(elem159);
       }
       oprot.writeSetEnd();
       oprot.writeFieldEnd();
@@ -728,14 +738,14 @@ class underlying_types_test_result extends frugal.FGeneratedArgsResultBase {
       switch (field.id) {
         case 0:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem86 = iprot.readListBegin();
-            final elem89 = <fixnum.Int64>[];
-            for(int elem88 = 0; elem88 < elem86.length; ++elem88) {
-              fixnum.Int64 elem87 = iprot.readInt64();
-              elem89.add(elem87);
+            thrift.TList elem160 = iprot.readListBegin();
+            final elem163 = <fixnum.Int64>[];
+            for(int elem162 = 0; elem162 < elem160.length; ++elem162) {
+              fixnum.Int64 elem161 = iprot.readInt64();
+              elem163.add(elem161);
             }
             iprot.readListEnd();
-            this.success = elem89;
+            this.success = elem163;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -786,8 +796,9 @@ class getThing_result extends frugal.FGeneratedArgsResultBase {
       switch (field.id) {
         case 0:
           if (field.type == thrift.TType.STRUCT) {
-            this.success = t_validStructs.Thing();
-            success.read(iprot);
+            final elem164 = t_validStructs.Thing();
+            this.success = elem164;
+            elem164.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -870,9 +881,10 @@ class use_subdir_struct_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.a != null) {
+    final elem165 = a;
+    if (elem165 != null) {
       oprot.writeFieldBegin(_A_FIELD_DESC);
-      this.a.write(oprot);
+      elem165.write(oprot);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -896,8 +908,9 @@ class use_subdir_struct_result extends frugal.FGeneratedArgsResultBase {
       switch (field.id) {
         case 0:
           if (field.type == thrift.TType.STRUCT) {
-            this.success = t_subdir_include_ns.A();
-            success.read(iprot);
+            final elem166 = t_subdir_include_ns.A();
+            this.success = elem166;
+            elem166.read(iprot);
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -929,9 +942,10 @@ class sayHelloWith_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.newMessage != null) {
+    final elem167 = newMessage;
+    if (elem167 != null) {
       oprot.writeFieldBegin(_NEW_MESSAGE_FIELD_DESC);
-      oprot.writeString(this.newMessage);
+      oprot.writeString(elem167);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -987,9 +1001,10 @@ class whatDoYouSay_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.messageArgs != null) {
+    final elem168 = messageArgs;
+    if (elem168 != null) {
       oprot.writeFieldBegin(_MESSAGE_ARGS_FIELD_DESC);
-      oprot.writeString(this.messageArgs);
+      oprot.writeString(elem168);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -1045,9 +1060,10 @@ class sayAgain_args extends frugal.FGeneratedArgsResultBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.messageResult != null) {
+    final elem169 = messageResult;
+    if (elem169 != null) {
       oprot.writeFieldBegin(_MESSAGE_RESULT_FIELD_DESC);
-      oprot.writeString(this.messageResult);
+      oprot.writeString(elem169);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

@@ -432,9 +432,6 @@ func (g *Generator) GenerateConstantsContents(constants []*parser.Constant) erro
 	// Add ignores to make lints less noisy in dart consumers
 	ignores := "// ignore_for_file: unused_import\n"
 	ignores += "// ignore_for_file: unused_field\n"
-	ignores += "// ignore_for_file: invalid_null_aware_operator\n"
-	ignores += "// ignore_for_file: unnecessary_non_null_assertion\n"
-	ignores += "// ignore_for_file: unnecessary_null_comparison\n"
 	
 	if _, err = file.WriteString(ignores); err != nil {
 		return err
@@ -690,9 +687,7 @@ func (g *Generator) GenerateStruct(s *parser.Struct) error {
 	// Add ignores to make lints less noisy in dart consumers
 	ignores := "// ignore_for_file: unused_import\n"
 	ignores += "// ignore_for_file: unused_field\n"
-	ignores += "// ignore_for_file: invalid_null_aware_operator\n"
-	ignores += "// ignore_for_file: unnecessary_non_null_assertion\n"
-	ignores += "// ignore_for_file: unnecessary_null_comparison\n"
+	
 	if _, err = file.WriteString(ignores); err != nil {
 		return err
 	}
@@ -1199,10 +1194,12 @@ func (g *Generator) generateReadFieldRec(field *parser.Field, kind structKind, f
 			contents += fmt.Sprintf(ind+"this.__isset_%s = true;\n", fName)
 		}
 	} else if g.Frugal.IsStruct(underlyingType) {
+		valElem := g.GetElem()
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-		contents += fmt.Sprintf(ind+"%s%s = %s();\n", prefix, fName, dartType)
+		contents += fmt.Sprintf(ind+"final %s = %s();\n", valElem, dartType)
+		contents += fmt.Sprintf(ind+"%s%s = %s;\n", prefix, fName, valElem)
 		contents += ignoreDeprecationWarningIfNeeded(ind, field.Annotations)
-		contents += fmt.Sprintf(ind+"%s%s.read(iprot);\n", fName, g.nullableOperator)
+		contents += fmt.Sprintf(ind+"%s.read(iprot);\n", valElem)
 	} else if underlyingType.IsContainer() {
 		containerElem := g.GetElem()
 		valElem := g.GetElem()
@@ -1254,8 +1251,14 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 	contents += tab + "write(thrift.TProtocol oprot) {\n"
 	contents += tabtab + "validate();\n\n"
 	contents += tabtab + "oprot.writeStructBegin(_STRUCT_DESC);\n"
+
 	for _, field := range s.Fields {
 		fName := toFieldName(field.Name)
+
+		tmpElem := g.GetElem()
+		tmpField := parser.FieldFromType(field.Type, tmpElem)
+		contents += tabtab + fmt.Sprintf("final %s = %s;\n", tmpElem, fName)
+
 		var isSet bool
 		var isNull bool
 		if g.useNullForUnset(kind) {
@@ -1291,13 +1294,13 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 				contents += " && "
 			}
 			if isNull {
-				contents += fmt.Sprintf("this.%s != null", fName)
+				contents += fmt.Sprintf("%s != null", tmpElem)
 			}
 			contents += ") {\n"
 		}
 
 		contents += fmt.Sprintf(tabtab+ind+"oprot.writeFieldBegin(_%s_FIELD_DESC);\n", toScreamingCapsConstant(field.Name))
-		contents += g.generateWriteFieldRec(field, true, ind)
+		contents += g.generateWriteFieldRec(tmpField, false, ind)
 		contents += fmt.Sprintf(tabtab + ind + "oprot.writeFieldEnd();\n")
 
 		if isSet || isNull {
@@ -1358,41 +1361,41 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 			contents += fmt.Sprintf(tabtab+ind+"oprot.writeI32(%s%s);\n", thisPrefix, fName)
 		}
 	} else if g.Frugal.IsStruct(underlyingType) {
-		contents += fmt.Sprintf(tabtab+ind+"%s%s%s.write(oprot);\n", thisPrefix, fName, g.nullableOperator)
+		contents += fmt.Sprintf(tabtab+ind+"%s%s.write(oprot);\n", thisPrefix, fName)
 	} else if underlyingType.IsContainer() {
 		valEnumType := g.getEnumFromThriftType(underlyingType.ValueType)
 		localVar := fName
 		if first {
-			localVar = "temp"
+			localVar = g.GetElem()
 			contents += fmt.Sprintf(tabtab+ind+"final %s = this.%s%s;\n", localVar, fName, g.notNullOperator)
 		}
 		switch underlyingType.Name {
 		case "list":
 			valElem := g.GetElem()
 			valField := parser.FieldFromType(underlyingType.ValueType, valElem)
-			contents += fmt.Sprintf(tabtab+ind+"oprot.writeListBegin(thrift.TList(%s, %s%s.length));\n", valEnumType, localVar, g.notNullOperator)
+			contents += fmt.Sprintf(tabtab+ind+"oprot.writeListBegin(thrift.TList(%s, %s.length));\n", valEnumType, localVar)
 			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
-			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, localVar, g.notNullOperator)
+			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s) {\n", valElem, localVar)
 			contents += g.generateWriteFieldRec(valField, false, ind+tab)
 			contents += tabtab + ind + "}\n"
 			contents += tabtab + ind + "oprot.writeListEnd();\n"
 		case "set":
 			valElem := g.GetElem()
 			valField := parser.FieldFromType(underlyingType.ValueType, valElem)
-			contents += fmt.Sprintf(tabtab+ind+"oprot.writeSetBegin(thrift.TSet(%s, %s%s.length));\n", valEnumType, localVar, g.notNullOperator)
+			contents += fmt.Sprintf(tabtab+ind+"oprot.writeSetBegin(thrift.TSet(%s, %s.length));\n", valEnumType, localVar)
 			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
-			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s) {\n", valElem, localVar, g.notNullOperator)
+			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s) {\n", valElem, localVar)
 			contents += g.generateWriteFieldRec(valField, false, ind+tab)
 			contents += tabtab + ind + "}\n"
 			contents += tabtab + ind + "oprot.writeSetEnd();\n"
 		case "map":
 			keyEnumType := g.getEnumFromThriftType(underlyingType.KeyType)
-			keyElem := g.GetElem()
-			keyField := parser.FieldFromType(underlyingType.KeyType, keyElem)
-			valField := parser.FieldFromType(underlyingType.ValueType, fmt.Sprintf("%s[%s]", localVar, keyElem))
-			contents += fmt.Sprintf(tabtab+ind+"oprot.writeMapBegin(thrift.TMap(%s, %s, %s%s.length));\n", keyEnumType, valEnumType, localVar, g.notNullOperator)
+			
+			keyField := parser.FieldFromType(underlyingType.KeyType, "entry.key")
+			valField := parser.FieldFromType(underlyingType.ValueType, "entry.value")
+			contents += fmt.Sprintf(tabtab+ind+"oprot.writeMapBegin(thrift.TMap(%s, %s, %s.length));\n", keyEnumType, valEnumType, localVar)
 			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
-			contents += fmt.Sprintf(tabtab+ind+"for(var %s in %s%s.keys) {\n", keyElem, localVar, g.notNullOperator)
+			contents += fmt.Sprintf(tabtab+ind+"for(var entry in %s.entries) {\n", localVar)
 			contents += g.generateWriteFieldRec(keyField, false, ind+tab)
 			contents += g.generateWriteFieldRec(valField, false, ind+tab)
 			contents += tabtab + ind + "}\n"
@@ -1683,8 +1686,6 @@ func (g *Generator) GenerateServiceImports(file *os.File, s *parser.Service) err
 	imports := "// ignore_for_file: unused_import\n"
 	imports += "// ignore_for_file: unused_field\n"
 	imports += "// ignore_for_file: invalid_null_aware_operator\n"
-	imports += "// ignore_for_file: unnecessary_non_null_assertion\n"
-	imports += "// ignore_for_file: unnecessary_null_comparison\n"
 	imports += "import 'dart:async';\n"
 	imports += "import 'dart:typed_data' show Uint8List;\n\n"
 
@@ -1722,8 +1723,6 @@ func (g *Generator) GenerateScopeImports(file *os.File, s *parser.Scope) error {
 	imports := "// ignore_for_file: unused_import\n"
 	imports += "// ignore_for_file: unused_field\n"
 	imports += "// ignore_for_file: invalid_null_aware_operator\n"
-	imports += "// ignore_for_file: unnecessary_non_null_assertion\n"
-	imports += "// ignore_for_file: unnecessary_null_comparison\n"
 	imports += "import 'dart:async';\n"
 	imports += "import 'dart:typed_data' show Uint8List;\n\n"
 
@@ -1844,13 +1843,7 @@ func (g *Generator) GeneratePublisher(file *os.File, scope *parser.Scope) error 
 		publishers += tabtab + "oprot.writeMessageBegin(msg);\n"
 		publishers += g.generateWriteFieldRec(parser.FieldFromType(op.Type, "req"), false, "")
 		publishers += tabtab + "oprot.writeMessageEnd();\n"
-		publishers += tabtab + "// sync in this version but async in v2. Mitigate breaking changes by always awaiting.\n"
-		publishers += tabtab + "// ignore: await_only_futures"
-		if g.genNullsafe {
-			publishers += ", use_of_void_result"
-		}
-		publishers += "\n"
-		publishers += tabtab + "await transport.publish(topic, memoryBuffer.writeBytes);\n"
+		publishers += tabtab + "transport.publish(topic, memoryBuffer.writeBytes);\n"
 		publishers += tab + "}\n"
 	}
 

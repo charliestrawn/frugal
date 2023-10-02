@@ -6,8 +6,6 @@
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
 // ignore_for_file: invalid_null_aware_operator
-// ignore_for_file: unnecessary_non_null_assertion
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
@@ -66,9 +64,7 @@ class EventsPublisher {
     oprot.writeMessageBegin(msg);
     req.write(oprot);
     oprot.writeMessageEnd();
-    // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures
-    await transport.publish(topic, memoryBuffer.writeBytes);
+    transport.publish(topic, memoryBuffer.writeBytes);
   }
 
 
@@ -88,9 +84,7 @@ class EventsPublisher {
     oprot.writeMessageBegin(msg);
     oprot.writeI64(req);
     oprot.writeMessageEnd();
-    // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures
-    await transport.publish(topic, memoryBuffer.writeBytes);
+    transport.publish(topic, memoryBuffer.writeBytes);
   }
 
 
@@ -110,9 +104,7 @@ class EventsPublisher {
     oprot.writeMessageBegin(msg);
     oprot.writeString(req);
     oprot.writeMessageEnd();
-    // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures
-    await transport.publish(topic, memoryBuffer.writeBytes);
+    transport.publish(topic, memoryBuffer.writeBytes);
   }
 
 
@@ -131,19 +123,17 @@ class EventsPublisher {
     oprot.writeRequestHeader(ctx);
     oprot.writeMessageBegin(msg);
     oprot.writeListBegin(thrift.TList(thrift.TType.MAP, req.length));
-    for(var elem90 in req) {
-      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem90.length));
-      for(var elem91 in elem90.keys) {
-        oprot.writeI64(elem91);
-        elem90[elem91].write(oprot);
+    for(var elem170 in req) {
+      oprot.writeMapBegin(thrift.TMap(thrift.TType.I64, thrift.TType.STRUCT, elem170.length));
+      for(var entry in elem170.entries) {
+        oprot.writeI64(entry.key);
+        entry.value.write(oprot);
       }
       oprot.writeMapEnd();
     }
     oprot.writeListEnd();
     oprot.writeMessageEnd();
-    // sync in this version but async in v2. Mitigate breaking changes by always awaiting.
-    // ignore: await_only_futures
-    await transport.publish(topic, memoryBuffer.writeBytes);
+    transport.publish(topic, memoryBuffer.writeBytes);
   }
 }
 
@@ -185,8 +175,9 @@ class EventsSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      t_variety.Event req = t_variety.Event();
-      req.read(iprot);
+      final elem171 = t_variety.Event();
+      t_variety.Event req = elem171;
+      elem171.read(iprot);
       iprot.readMessageEnd();
       method([ctx, req]);
     }
@@ -273,19 +264,20 @@ class EventsSubscriber {
         throw thrift.TApplicationError(
         frugal.FrugalTApplicationErrorType.UNKNOWN_METHOD, tMsg.name);
       }
-      thrift.TList elem92 = iprot.readListBegin();
+      thrift.TList elem172 = iprot.readListBegin();
       final req = <Map<int, t_variety.Event>>[];
-      for(int elem98 = 0; elem98 < elem92.length; ++elem98) {
-        thrift.TMap elem94 = iprot.readMapBegin();
-        final elem93 = <int, t_variety.Event>{};
-        for(int elem96 = 0; elem96 < elem94.length; ++elem96) {
-          int elem97 = iprot.readI64();
-          t_variety.Event elem95 = t_variety.Event();
-          elem95.read(iprot);
-          elem93[elem97] = elem95;
+      for(int elem179 = 0; elem179 < elem172.length; ++elem179) {
+        thrift.TMap elem174 = iprot.readMapBegin();
+        final elem173 = <int, t_variety.Event>{};
+        for(int elem177 = 0; elem177 < elem174.length; ++elem177) {
+          int elem178 = iprot.readI64();
+          final elem176 = t_variety.Event();
+          t_variety.Event elem175 = elem176;
+          elem176.read(iprot);
+          elem173[elem178] = elem175;
         }
         iprot.readMapEnd();
-        req.add(elem93);
+        req.add(elem173);
       }
       iprot.readListEnd();
       iprot.readMessageEnd();

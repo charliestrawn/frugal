@@ -3,9 +3,6 @@
 
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
-// ignore_for_file: invalid_null_aware_operator
-// ignore_for_file: unnecessary_non_null_assertion
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
@@ -71,15 +68,16 @@ class nested_thing implements thrift.TBase {
       switch (field.id) {
         case THINGS:
           if (field.type == thrift.TType.LIST) {
-            thrift.TList elem99 = iprot.readListBegin();
-            final elem102 = <t_actual_base_dart.thing>[];
-            for(int elem101 = 0; elem101 < elem99.length; ++elem101) {
-              t_actual_base_dart.thing elem100 = t_actual_base_dart.thing();
-              elem100.read(iprot);
-              elem102.add(elem100);
+            thrift.TList elem182 = iprot.readListBegin();
+            final elem186 = <t_actual_base_dart.thing>[];
+            for(int elem185 = 0; elem185 < elem182.length; ++elem185) {
+              final elem184 = t_actual_base_dart.thing();
+              t_actual_base_dart.thing elem183 = elem184;
+              elem184.read(iprot);
+              elem186.add(elem183);
             }
             iprot.readListEnd();
-            this.things = elem102;
+            this.things = elem186;
           } else {
             thrift.TProtocolUtil.skip(iprot, field.type);
           }
@@ -100,12 +98,12 @@ class nested_thing implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    if (this.things != null) {
+    final elem187 = things;
+    if (elem187 != null) {
       oprot.writeFieldBegin(_THINGS_FIELD_DESC);
-      final temp = this.things;
-      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, temp.length));
-      for(var elem103 in temp) {
-        elem103.write(oprot);
+      oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, elem187.length));
+      for(var elem188 in elem187) {
+        elem188.write(oprot);
       }
       oprot.writeListEnd();
       oprot.writeFieldEnd();

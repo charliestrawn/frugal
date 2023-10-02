@@ -3,9 +3,6 @@
 
 // ignore_for_file: unused_import
 // ignore_for_file: unused_field
-// ignore_for_file: invalid_null_aware_operator
-// ignore_for_file: unnecessary_non_null_assertion
-// ignore_for_file: unnecessary_null_comparison
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
@@ -187,17 +184,19 @@ class AwesomeException extends Error implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
+    final elem140 = iD;
     oprot.writeFieldBegin(_ID_FIELD_DESC);
-    oprot.writeI64(this.iD);
+    oprot.writeI64(elem140);
     oprot.writeFieldEnd();
-    if (this.reason != null) {
+    final elem141 = reason;
+    if (elem141 != null) {
       oprot.writeFieldBegin(_REASON_FIELD_DESC);
-      oprot.writeString(this.reason);
+      oprot.writeString(elem141);
       oprot.writeFieldEnd();
     }
+    final elem142 = depr;
     oprot.writeFieldBegin(_DEPR_FIELD_DESC);
-    // ignore: deprecated_member_use
-    oprot.writeBool(this.depr);
+    oprot.writeBool(elem142);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
