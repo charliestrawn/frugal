@@ -1366,7 +1366,7 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 		valEnumType := g.getEnumFromThriftType(underlyingType.ValueType)
 		localVar := fName
 		if first {
-			localVar = "temp"
+			localVar = g.GetElem() // this used to be "temp"
 			contents += fmt.Sprintf(tabtab+ind+"final %s = this.%s%s;\n", localVar, fName, g.notNullOperator)
 		}
 		switch underlyingType.Name {
