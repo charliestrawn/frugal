@@ -27,10 +27,7 @@ abstract class FMyService extends t_vendor_namespace.FVendoredBase {
 FMyServiceClient fMyServiceClientFactory(frugal.FServiceProvider provider, {List<frugal.Middleware> middleware}) =>
     FMyServiceClient(provider, middleware);
 
-// The below ignore statement is only needed to workaround https://github.com/dart-lang/sdk/issues/29751, which is fixed on Dart 2.8.0 and later.
-// Dart versions before 2.8.0 need this ignore to analyze properly.
-// ignore: private_collision_in_mixin_application
-class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient with disposable.Disposable implements FMyService {
+class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient implements FMyService {
   static final logging.Logger _frugalLog = logging.Logger('MyService');
   Map<String, frugal.FMethod> _methods;
 
