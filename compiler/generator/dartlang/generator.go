@@ -1254,6 +1254,7 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 
 	for _, field := range s.Fields {
 		fName := toFieldName(field.Name)
+		underlyingType := g.Frugal.UnderlyingType(field.Type)
 
 		tmpElem := g.GetElem()
 		tmpField := parser.FieldFromType(field.Type, tmpElem)
@@ -1263,7 +1264,7 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 		var isNull bool
 		if g.useNullForUnset(kind) {
 			check := false
-			if g.isDartPrimitive(g.Frugal.UnderlyingType(field.Type)) {
+			if g.isDartPrimitive(underlyingType) {
 				// Don't check isSet for default requiredness.
 				check = field.Modifier == parser.Optional
 			} else {
@@ -1279,7 +1280,7 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 			}
 		} else {
 			isSet = field.Modifier == parser.Optional
-			isNull = !g.isDartPrimitive(g.Frugal.UnderlyingType(field.Type))
+			isNull = !g.isDartPrimitive(underlyingType)
 		}
 
 		ind := ""
