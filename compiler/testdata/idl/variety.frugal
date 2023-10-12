@@ -162,6 +162,9 @@ struct EventWrapper {
     14: optional list<Event> EventsDefault = []
     15: optional map<id, Event> EventMapDefault = {}
     16: optional set<Event> EventSetDefault = []
+    17: required list<Event> EventsRequired = []
+    18: required map<id, Event> EventMapRequired = {}
+    19: required set<Event> EventSetRequired = []
 }
 
 struct FooArgs {

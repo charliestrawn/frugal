@@ -1568,14 +1568,21 @@ type EventWrapper struct {
 	// Deprecated: use something else
 	DeprBinary []byte `thrift:"deprBinary,12" db:"deprBinary" json:"deprBinary"`
 	// Deprecated: use something else
-	DeprList        []bool           `thrift:"deprList,13" db:"deprList" json:"deprList"`
-	EventsDefault   *[]*Event        `thrift:"EventsDefault,14" db:"EventsDefault" json:"EventsDefault,omitempty"`
-	EventMapDefault *map[ID]*Event   `thrift:"EventMapDefault,15" db:"EventMapDefault" json:"EventMapDefault,omitempty"`
-	EventSetDefault *map[*Event]bool `thrift:"EventSetDefault,16" db:"EventSetDefault" json:"EventSetDefault,omitempty"`
+	DeprList         []bool           `thrift:"deprList,13" db:"deprList" json:"deprList"`
+	EventsDefault    *[]*Event        `thrift:"EventsDefault,14" db:"EventsDefault" json:"EventsDefault,omitempty"`
+	EventMapDefault  *map[ID]*Event   `thrift:"EventMapDefault,15" db:"EventMapDefault" json:"EventMapDefault,omitempty"`
+	EventSetDefault  *map[*Event]bool `thrift:"EventSetDefault,16" db:"EventSetDefault" json:"EventSetDefault,omitempty"`
+	EventsRequired   []*Event         `thrift:"EventsRequired,17,required" db:"EventsRequired" json:"EventsRequired"`
+	EventMapRequired map[ID]*Event    `thrift:"EventMapRequired,18,required" db:"EventMapRequired" json:"EventMapRequired"`
+	EventSetRequired map[*Event]bool  `thrift:"EventSetRequired,19,required" db:"EventSetRequired" json:"EventSetRequired"`
 }
 
 func NewEventWrapper() *EventWrapper {
-	return &EventWrapper{}
+	return &EventWrapper{
+		EventsRequired:   []*Event{},
+		EventMapRequired: map[ID]*Event{},
+		EventSetRequired: map[*Event]bool{},
+	}
 }
 
 var EventWrapper_ID_DEFAULT ID
@@ -1696,12 +1703,27 @@ func (p *EventWrapper) GetEventSetDefault() map[*Event]bool {
 	return *p.EventSetDefault
 }
 
+func (p *EventWrapper) GetEventsRequired() []*Event {
+	return p.EventsRequired
+}
+
+func (p *EventWrapper) GetEventMapRequired() map[ID]*Event {
+	return p.EventMapRequired
+}
+
+func (p *EventWrapper) GetEventSetRequired() map[*Event]bool {
+	return p.EventSetRequired
+}
+
 func (p *EventWrapper) Read(ctx context.Context, iprot thrift.TProtocol) error {
 	if _, err := iprot.ReadStructBegin(ctx); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
 	}
 
 	issetEv := false
+	issetEventsRequired := false
+	issetEventMapRequired := false
+	issetEventSetRequired := false
 
 	for {
 		_, fieldTypeId, fieldId, err := iprot.ReadFieldBegin(ctx)
@@ -1777,6 +1799,21 @@ func (p *EventWrapper) Read(ctx context.Context, iprot thrift.TProtocol) error {
 			if err := p.ReadField16(ctx, iprot); err != nil {
 				return err
 			}
+		case 17:
+			if err := p.ReadField17(ctx, iprot); err != nil {
+				return err
+			}
+			issetEventsRequired = true
+		case 18:
+			if err := p.ReadField18(ctx, iprot); err != nil {
+				return err
+			}
+			issetEventMapRequired = true
+		case 19:
+			if err := p.ReadField19(ctx, iprot); err != nil {
+				return err
+			}
+			issetEventSetRequired = true
 		default:
 			if err := iprot.Skip(ctx, fieldTypeId); err != nil {
 				return err
@@ -1791,6 +1828,15 @@ func (p *EventWrapper) Read(ctx context.Context, iprot thrift.TProtocol) error {
 	}
 	if !issetEv {
 		return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field 'Ev' is not present in struct 'EventWrapper'"))
+	}
+	if !issetEventsRequired {
+		return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field 'EventsRequired' is not present in struct 'EventWrapper'"))
+	}
+	if !issetEventMapRequired {
+		return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field 'EventMapRequired' is not present in struct 'EventWrapper'"))
+	}
+	if !issetEventSetRequired {
+		return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field 'EventSetRequired' is not present in struct 'EventWrapper'"))
 	}
 	return nil
 }
@@ -2065,6 +2111,70 @@ func (p *EventWrapper) ReadField16(ctx context.Context, iprot thrift.TProtocol) 
 	return nil
 }
 
+func (p *EventWrapper) ReadField17(ctx context.Context, iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin(ctx)
+	if err != nil {
+		return thrift.PrependError("error reading list begin: ", err)
+	}
+	p.EventsRequired = make([]*Event, 0, size)
+	for i := 0; i < size; i++ {
+		elem18 := NewEvent()
+		if err := elem18.Read(ctx, iprot); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", elem18), err)
+		}
+		p.EventsRequired = append(p.EventsRequired, elem18)
+	}
+	if err := iprot.ReadListEnd(ctx); err != nil {
+		return thrift.PrependError("error reading list end: ", err)
+	}
+	return nil
+}
+
+func (p *EventWrapper) ReadField18(ctx context.Context, iprot thrift.TProtocol) error {
+	_, _, size, err := iprot.ReadMapBegin(ctx)
+	if err != nil {
+		return thrift.PrependError("error reading map begin: ", err)
+	}
+	p.EventMapRequired = make(map[ID]*Event, size)
+	for i := 0; i < size; i++ {
+		var elem19 ID
+		if v, err := iprot.ReadI64(ctx); err != nil {
+			return thrift.PrependError("error reading field 0: ", err)
+		} else {
+			temp := ID(v)
+			elem19 = temp
+		}
+		elem20 := NewEvent()
+		if err := elem20.Read(ctx, iprot); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", elem20), err)
+		}
+		(p.EventMapRequired)[elem19] = elem20
+	}
+	if err := iprot.ReadMapEnd(ctx); err != nil {
+		return thrift.PrependError("error reading map end: ", err)
+	}
+	return nil
+}
+
+func (p *EventWrapper) ReadField19(ctx context.Context, iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadSetBegin(ctx)
+	if err != nil {
+		return thrift.PrependError("error reading set begin: ", err)
+	}
+	p.EventSetRequired = make(map[*Event]bool, size)
+	for i := 0; i < size; i++ {
+		elem21 := NewEvent()
+		if err := elem21.Read(ctx, iprot); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", elem21), err)
+		}
+		(p.EventSetRequired)[elem21] = true
+	}
+	if err := iprot.ReadSetEnd(ctx); err != nil {
+		return thrift.PrependError("error reading set end: ", err)
+	}
+	return nil
+}
+
 func (p *EventWrapper) Write(ctx context.Context, oprot thrift.TProtocol) error {
 	if err := oprot.WriteStructBegin(ctx, "EventWrapper"); err != nil {
 		return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
@@ -2115,6 +2225,15 @@ func (p *EventWrapper) Write(ctx context.Context, oprot thrift.TProtocol) error 
 		return err
 	}
 	if err := p.writeField16(ctx, oprot); err != nil {
+		return err
+	}
+	if err := p.writeField17(ctx, oprot); err != nil {
+		return err
+	}
+	if err := p.writeField18(ctx, oprot); err != nil {
+		return err
+	}
+	if err := p.writeField19(ctx, oprot); err != nil {
 		return err
 	}
 	if err := oprot.WriteFieldStop(ctx); err != nil {
@@ -2424,6 +2543,72 @@ func (p *EventWrapper) writeField16(ctx context.Context, oprot thrift.TProtocol)
 		if err := oprot.WriteFieldEnd(ctx); err != nil {
 			return thrift.PrependError(fmt.Sprintf("%T write field end error 16:EventSetDefault: ", p), err)
 		}
+	}
+	return nil
+}
+
+func (p *EventWrapper) writeField17(ctx context.Context, oprot thrift.TProtocol) error {
+	if err := oprot.WriteFieldBegin(ctx, "EventsRequired", thrift.LIST, 17); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field begin error 17:EventsRequired: ", p), err)
+	}
+	if err := oprot.WriteListBegin(ctx, thrift.STRUCT, len(p.EventsRequired)); err != nil {
+		return thrift.PrependError("error writing list begin: ", err)
+	}
+	for _, v := range p.EventsRequired {
+		if err := v.Write(ctx, oprot); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+		}
+	}
+	if err := oprot.WriteListEnd(ctx); err != nil {
+		return thrift.PrependError("error writing list end: ", err)
+	}
+	if err := oprot.WriteFieldEnd(ctx); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field end error 17:EventsRequired: ", p), err)
+	}
+	return nil
+}
+
+func (p *EventWrapper) writeField18(ctx context.Context, oprot thrift.TProtocol) error {
+	if err := oprot.WriteFieldBegin(ctx, "EventMapRequired", thrift.MAP, 18); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field begin error 18:EventMapRequired: ", p), err)
+	}
+	if err := oprot.WriteMapBegin(ctx, thrift.I64, thrift.STRUCT, len(p.EventMapRequired)); err != nil {
+		return thrift.PrependError("error writing map begin: ", err)
+	}
+	for k, v := range p.EventMapRequired {
+		if err := oprot.WriteI64(ctx, int64(k)); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err)
+		}
+		if err := v.Write(ctx, oprot); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+		}
+	}
+	if err := oprot.WriteMapEnd(ctx); err != nil {
+		return thrift.PrependError("error writing map end: ", err)
+	}
+	if err := oprot.WriteFieldEnd(ctx); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field end error 18:EventMapRequired: ", p), err)
+	}
+	return nil
+}
+
+func (p *EventWrapper) writeField19(ctx context.Context, oprot thrift.TProtocol) error {
+	if err := oprot.WriteFieldBegin(ctx, "EventSetRequired", thrift.SET, 19); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field begin error 19:EventSetRequired: ", p), err)
+	}
+	if err := oprot.WriteSetBegin(ctx, thrift.STRUCT, len(p.EventSetRequired)); err != nil {
+		return thrift.PrependError("error writing set begin: ", err)
+	}
+	for v, _ := range p.EventSetRequired {
+		if err := v.Write(ctx, oprot); err != nil {
+			return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", v), err)
+		}
+	}
+	if err := oprot.WriteSetEnd(ctx); err != nil {
+		return thrift.PrependError("error writing set end: ", err)
+	}
+	if err := oprot.WriteFieldEnd(ctx); err != nil {
+		return thrift.PrependError(fmt.Sprintf("%T write field end error 19:EventSetRequired: ", p), err)
 	}
 	return nil
 }
@@ -2845,20 +3030,20 @@ func (p *TestingUnions) ReadField5(ctx context.Context, iprot thrift.TProtocol) 
 	}
 	p.Requests = make(Request, size)
 	for i := 0; i < size; i++ {
-		var elem18 Int
+		var elem22 Int
 		if v, err := iprot.ReadI32(ctx); err != nil {
 			return thrift.PrependError("error reading field 0: ", err)
 		} else {
 			temp := Int(v)
-			elem18 = temp
+			elem22 = temp
 		}
-		var elem19 string
+		var elem23 string
 		if v, err := iprot.ReadString(ctx); err != nil {
 			return thrift.PrependError("error reading field 0: ", err)
 		} else {
-			elem19 = v
+			elem23 = v
 		}
-		(p.Requests)[elem18] = elem19
+		(p.Requests)[elem22] = elem23
 	}
 	if err := iprot.ReadMapEnd(ctx); err != nil {
 		return thrift.PrependError("error reading map end: ", err)

@@ -149,11 +149,11 @@ class EventsPublisher(object):
         oprot.write_request_headers(ctx)
         oprot.writeMessageBegin(op, TMessageType.CALL, 0)
         oprot.writeListBegin(TType.MAP, len(req))
-        for elem70 in req:
-            oprot.writeMapBegin(TType.I64, TType.STRUCT, len(elem70))
-            for elem72, elem71 in elem70.items():
-                oprot.writeI64(elem72)
-                elem71.write(oprot)
+        for elem81 in req:
+            oprot.writeMapBegin(TType.I64, TType.STRUCT, len(elem81))
+            for elem83, elem82 in elem81.items():
+                oprot.writeI64(elem83)
+                elem82.write(oprot)
             oprot.writeMapEnd()
         oprot.writeListEnd()
         oprot.writeMessageEnd()

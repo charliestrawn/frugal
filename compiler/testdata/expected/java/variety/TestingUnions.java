@@ -279,12 +279,12 @@ public class TestingUnions extends org.apache.thrift.TUnion<TestingUnions, Testi
 					}
 				case REQUESTS:
 					if (field.type == REQUESTS_FIELD_DESC.type) {
-						org.apache.thrift.protocol.TMap elem130 = iprot.readMapBegin();
-						java.util.Map<Integer, String> Requests = new HashMap<Integer,String>(2*elem130.size);
-						for (int elem131 = 0; elem131 < elem130.size; ++elem131) {
-							Integer elem133 = iprot.readI32();
-							String elem132 = iprot.readString();
-							Requests.put(elem133, elem132);
+						org.apache.thrift.protocol.TMap elem151 = iprot.readMapBegin();
+						java.util.Map<Integer, String> Requests = new HashMap<Integer,String>(2*elem151.size);
+						for (int elem152 = 0; elem152 < elem151.size; ++elem152) {
+							Integer elem154 = iprot.readI32();
+							String elem153 = iprot.readString();
+							Requests.put(elem154, elem153);
 						}
 						iprot.readMapEnd();
 						return Requests;
@@ -330,49 +330,49 @@ public class TestingUnions extends org.apache.thrift.TUnion<TestingUnions, Testi
 		switch (setField_) {
 			case AN_ID:
 				Long AnID = (Long)value_;
-				long elem134 = AnID;
-				oprot.writeI64(elem134);
+				long elem155 = AnID;
+				oprot.writeI64(elem155);
 				return;
 			case A_STRING:
 				String aString = (String)value_;
-				String elem135 = aString;
-				oprot.writeString(elem135);
+				String elem156 = aString;
+				oprot.writeString(elem156);
 				return;
 			case SOMEOTHERTHING:
 				Integer someotherthing = (Integer)value_;
-				int elem136 = someotherthing;
-				oprot.writeI32(elem136);
+				int elem157 = someotherthing;
+				oprot.writeI32(elem157);
 				return;
 			case AN_INT16:
 				Short AnInt16 = (Short)value_;
-				short elem137 = AnInt16;
-				oprot.writeI16(elem137);
+				short elem158 = AnInt16;
+				oprot.writeI16(elem158);
 				return;
 			case REQUESTS:
 				java.util.Map<Integer, String> Requests = (java.util.Map<Integer, String>)value_;
 				oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.STRING, Requests.size()));
-				for (Map.Entry<Integer, String> elem138 : Requests.entrySet()) {
-					int elem139 = elem138.getKey();
-					oprot.writeI32(elem139);
-					String elem140 = elem138.getValue();
-					oprot.writeString(elem140);
+				for (Map.Entry<Integer, String> elem159 : Requests.entrySet()) {
+					int elem160 = elem159.getKey();
+					oprot.writeI32(elem160);
+					String elem161 = elem159.getValue();
+					oprot.writeString(elem161);
 				}
 				oprot.writeMapEnd();
 				return;
 			case BIN_FIELD_IN_UNION:
 				java.nio.ByteBuffer bin_field_in_union = (java.nio.ByteBuffer)value_;
-				java.nio.ByteBuffer elem141 = bin_field_in_union;
-				oprot.writeBinary(elem141);
+				java.nio.ByteBuffer elem162 = bin_field_in_union;
+				oprot.writeBinary(elem162);
 				return;
 			case DEPR:
 				Boolean depr = (Boolean)value_;
-				boolean elem142 = depr;
-				oprot.writeBool(elem142);
+				boolean elem163 = depr;
+				oprot.writeBool(elem163);
 				return;
 			case WHO_A__BUDDY:
 				Boolean WHOA_BUDDY = (Boolean)value_;
-				boolean elem143 = WHOA_BUDDY;
-				oprot.writeBool(elem143);
+				boolean elem164 = WHOA_BUDDY;
+				oprot.writeBool(elem164);
 				return;
 			default:
 				throw new IllegalStateException("Cannot write union with unknown field " + setField_);
@@ -397,12 +397,12 @@ public class TestingUnions extends org.apache.thrift.TUnion<TestingUnions, Testi
 					Short AnInt16 = iprot.readI16();
 					return AnInt16;
 				case REQUESTS:
-					org.apache.thrift.protocol.TMap elem144 = iprot.readMapBegin();
-					java.util.Map<Integer, String> Requests = new HashMap<Integer,String>(2*elem144.size);
-					for (int elem145 = 0; elem145 < elem144.size; ++elem145) {
-						Integer elem147 = iprot.readI32();
-						String elem146 = iprot.readString();
-						Requests.put(elem147, elem146);
+					org.apache.thrift.protocol.TMap elem165 = iprot.readMapBegin();
+					java.util.Map<Integer, String> Requests = new HashMap<Integer,String>(2*elem165.size);
+					for (int elem166 = 0; elem166 < elem165.size; ++elem166) {
+						Integer elem168 = iprot.readI32();
+						String elem167 = iprot.readString();
+						Requests.put(elem168, elem167);
 					}
 					iprot.readMapEnd();
 					return Requests;
@@ -428,49 +428,49 @@ public class TestingUnions extends org.apache.thrift.TUnion<TestingUnions, Testi
 		switch (setField_) {
 			case AN_ID:
 				Long AnID = (Long)value_;
-				long elem148 = AnID;
-				oprot.writeI64(elem148);
+				long elem169 = AnID;
+				oprot.writeI64(elem169);
 				return;
 			case A_STRING:
 				String aString = (String)value_;
-				String elem149 = aString;
-				oprot.writeString(elem149);
+				String elem170 = aString;
+				oprot.writeString(elem170);
 				return;
 			case SOMEOTHERTHING:
 				Integer someotherthing = (Integer)value_;
-				int elem150 = someotherthing;
-				oprot.writeI32(elem150);
+				int elem171 = someotherthing;
+				oprot.writeI32(elem171);
 				return;
 			case AN_INT16:
 				Short AnInt16 = (Short)value_;
-				short elem151 = AnInt16;
-				oprot.writeI16(elem151);
+				short elem172 = AnInt16;
+				oprot.writeI16(elem172);
 				return;
 			case REQUESTS:
 				java.util.Map<Integer, String> Requests = (java.util.Map<Integer, String>)value_;
 				oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.STRING, Requests.size()));
-				for (Map.Entry<Integer, String> elem152 : Requests.entrySet()) {
-					int elem153 = elem152.getKey();
-					oprot.writeI32(elem153);
-					String elem154 = elem152.getValue();
-					oprot.writeString(elem154);
+				for (Map.Entry<Integer, String> elem173 : Requests.entrySet()) {
+					int elem174 = elem173.getKey();
+					oprot.writeI32(elem174);
+					String elem175 = elem173.getValue();
+					oprot.writeString(elem175);
 				}
 				oprot.writeMapEnd();
 				return;
 			case BIN_FIELD_IN_UNION:
 				java.nio.ByteBuffer bin_field_in_union = (java.nio.ByteBuffer)value_;
-				java.nio.ByteBuffer elem155 = bin_field_in_union;
-				oprot.writeBinary(elem155);
+				java.nio.ByteBuffer elem176 = bin_field_in_union;
+				oprot.writeBinary(elem176);
 				return;
 			case DEPR:
 				Boolean depr = (Boolean)value_;
-				boolean elem156 = depr;
-				oprot.writeBool(elem156);
+				boolean elem177 = depr;
+				oprot.writeBool(elem177);
 				return;
 			case WHO_A__BUDDY:
 				Boolean WHOA_BUDDY = (Boolean)value_;
-				boolean elem157 = WHOA_BUDDY;
-				oprot.writeBool(elem157);
+				boolean elem178 = WHOA_BUDDY;
+				oprot.writeBool(elem178);
 				return;
 			default:
 				throw new IllegalStateException("Cannot write union with unknown field " + setField_);

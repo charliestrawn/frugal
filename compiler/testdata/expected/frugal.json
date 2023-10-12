@@ -456,6 +456,33 @@
               }
             }
           },
+          "17": {
+            "n": "EventsRequired",
+            "t": {
+              "v": {
+                "n": "Event"
+              }
+            }
+          },
+          "18": {
+            "n": "EventMapRequired",
+            "t": {
+              "k": {
+                "n": "id"
+              },
+              "v": {
+                "n": "Event"
+              }
+            }
+          },
+          "19": {
+            "n": "EventSetRequired",
+            "t": {
+              "k": {
+                "n": "Event"
+              }
+            }
+          },
           "2": {
             "n": "Ev",
             "t": {
