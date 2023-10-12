@@ -255,31 +255,31 @@ class TestingUnions implements thrift.TBase {
 
     oprot.writeStructBegin(_STRUCT_DESC);
     final elem153 = anID;
-    if (isSetAnID()) {
+    if (elem153 != null) {
       oprot.writeFieldBegin(_AN_ID_FIELD_DESC);
       oprot.writeI64(elem153);
       oprot.writeFieldEnd();
     }
     final elem154 = aString;
-    if (isSetAString()) {
+    if (elem154 != null) {
       oprot.writeFieldBegin(_A_STRING_FIELD_DESC);
       oprot.writeString(elem154);
       oprot.writeFieldEnd();
     }
     final elem155 = someotherthing;
-    if (isSetSomeotherthing()) {
+    if (elem155 != null) {
       oprot.writeFieldBegin(_SOMEOTHERTHING_FIELD_DESC);
       oprot.writeI32(elem155);
       oprot.writeFieldEnd();
     }
     final elem156 = anInt16;
-    if (isSetAnInt16()) {
+    if (elem156 != null) {
       oprot.writeFieldBegin(_AN_INT16_FIELD_DESC);
       oprot.writeI16(elem156);
       oprot.writeFieldEnd();
     }
     final elem157 = requests;
-    if (isSetRequests()) {
+    if (elem157 != null) {
       oprot.writeFieldBegin(_REQUESTS_FIELD_DESC);
       oprot.writeMapBegin(thrift.TMap(thrift.TType.I32, thrift.TType.STRING, elem157.length));
       for(var entry in elem157.entries) {
@@ -290,20 +290,20 @@ class TestingUnions implements thrift.TBase {
       oprot.writeFieldEnd();
     }
     final elem158 = bin_field_in_union;
-    if (isSetBin_field_in_union()) {
+    if (elem158 != null) {
       oprot.writeFieldBegin(_BIN_FIELD_IN_UNION_FIELD_DESC);
       oprot.writeBinary(elem158);
       oprot.writeFieldEnd();
     }
     final elem159 = depr;
     // ignore: deprecated_member_use
-    if (isSetDepr()) {
+    if (elem159 != null) {
       oprot.writeFieldBegin(_DEPR_FIELD_DESC);
       oprot.writeBool(elem159);
       oprot.writeFieldEnd();
     }
     final elem160 = wHOA_BUDDY;
-    if (isSetWHOA_BUDDY()) {
+    if (elem160 != null) {
       oprot.writeFieldBegin(_WHO_A__BUDDY_FIELD_DESC);
       oprot.writeBool(elem160);
       oprot.writeFieldEnd();

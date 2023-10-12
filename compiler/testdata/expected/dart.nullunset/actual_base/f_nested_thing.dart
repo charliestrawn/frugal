@@ -92,7 +92,7 @@ class nested_thing implements thrift.TBase {
 
     oprot.writeStructBegin(_STRUCT_DESC);
     final elem208 = things;
-    if (isSetThings()) {
+    if (elem208 != null) {
       oprot.writeFieldBegin(_THINGS_FIELD_DESC);
       oprot.writeListBegin(thrift.TList(thrift.TType.STRUCT, elem208.length));
       for(var elem209 in elem208) {

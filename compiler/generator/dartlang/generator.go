@@ -1258,7 +1258,6 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 
 		tmpElem := g.GetElem()
 		tmpField := parser.FieldFromType(field.Type, tmpElem)
-		contents += tabtab + fmt.Sprintf("final %s = %s;\n", tmpElem, fName)
 
 		var isSet bool
 		var isNull bool
@@ -1272,10 +1271,10 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 			}
 
 			if check {
-				if g.shouldGenerateIsSet(kind, field) {
-					isSet = true
-				} else {
+				if g.useNullForIsSetExpr(kind, field) {
 					isNull = true
+				} else {
+					isSet = true
 				}
 			}
 		} else {
@@ -1285,6 +1284,7 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 
 		ind := ""
 		if isSet || isNull {
+			contents += tabtab + fmt.Sprintf("final %s = %s;\n", tmpElem, fName)
 			ind = tab
 			contents += ignoreDeprecationWarningIfNeeded(tabtab, field.Annotations)
 			contents += tabtab + "if ("
@@ -1298,6 +1298,13 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 				contents += fmt.Sprintf("%s != null", tmpElem)
 			}
 			contents += ") {\n"
+		} else {
+			notNullOperator := g.notNullOperator
+			if g.isDartPrimitive(underlyingType) {
+				// generateWriteFieldRec tolerates null.
+				notNullOperator = ""
+			}
+			contents += tabtab + fmt.Sprintf("final %s = %s%s;\n", tmpElem, fName, notNullOperator)
 		}
 
 		contents += fmt.Sprintf(tabtab+ind+"oprot.writeFieldBegin(_%s_FIELD_DESC);\n", toScreamingCapsConstant(field.Name))

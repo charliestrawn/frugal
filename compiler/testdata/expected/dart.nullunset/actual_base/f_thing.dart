@@ -108,7 +108,7 @@ class thing implements thrift.TBase {
     oprot.writeI32(elem201);
     oprot.writeFieldEnd();
     final elem202 = a_string;
-    if (isSetA_string()) {
+    if (elem202 != null) {
       oprot.writeFieldBegin(_A_STRING_FIELD_DESC);
       oprot.writeString(elem202);
       oprot.writeFieldEnd();
