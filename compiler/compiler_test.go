@@ -179,6 +179,41 @@ func TestValidDartUseNullForUnset(t *testing.T) {
 	suite.Run(t, options)
 }
 
+func TestValidDartUseNullForUnsetSafe(t *testing.T) {
+	options := compiler.Options{
+		File:    frugalGenFile,
+		Gen:     "dart:use_null_for_unset",
+		Out:     outputDir + "/nullunsetsafe",
+		Delim:   delim,
+		Recurse: true,
+	}
+	suite := ComparisonList{
+		{"dart.nullunsetsafe/variety/f_awesome_exception.dart", "nullunsetsafe/variety/lib/src/f_awesome_exception.dart"},
+		{"dart.nullunsetsafe/variety/f_event.dart", "nullunsetsafe/variety/lib/src/f_event.dart"},
+		{"dart.nullunsetsafe/variety/f_event_wrapper.dart", "nullunsetsafe/variety/lib/src/f_event_wrapper.dart"},
+		{"dart.nullunsetsafe/variety/f_its_an_enum.dart", "nullunsetsafe/variety/lib/src/f_its_an_enum.dart"},
+		{"dart.nullunsetsafe/variety/f_test_base.dart", "nullunsetsafe/variety/lib/src/f_test_base.dart"},
+		{"dart.nullunsetsafe/variety/f_testing_defaults.dart", "nullunsetsafe/variety/lib/src/f_testing_defaults.dart"},
+		{"dart.nullunsetsafe/variety/f_testing_unions.dart", "nullunsetsafe/variety/lib/src/f_testing_unions.dart"},
+		{"dart.nullunsetsafe/variety/f_health_condition.dart", "nullunsetsafe/variety/lib/src/f_health_condition.dart"},
+		{"dart.nullunsetsafe/variety/f_test_lowercase.dart", "nullunsetsafe/variety/lib/src/f_test_lowercase.dart"},
+		{"dart.nullunsetsafe/variety/f_foo_args.dart", "nullunsetsafe/variety/lib/src/f_foo_args.dart"},
+		{"dart.nullunsetsafe/variety/f_variety_constants.dart", "nullunsetsafe/variety/lib/src/f_variety_constants.dart"},
+		{"dart.nullunsetsafe/variety/f_events_scope.dart", "nullunsetsafe/variety/lib/src/f_events_scope.dart"},
+		{"dart.nullunsetsafe/variety/f_foo_service.dart", "nullunsetsafe/variety/lib/src/f_foo_service.dart"},
+		{"dart.nullunsetsafe/variety/variety.dart", "nullunsetsafe/variety/lib/variety.dart"},
+
+		{"dart.nullunsetsafe/actual_base/f_actual_base_dart_constants.dart", "nullunsetsafe/actual_base_dart/lib/src/f_actual_base_dart_constants.dart"},
+		{"dart.nullunsetsafe/actual_base/f_api_exception.dart", "nullunsetsafe/actual_base_dart/lib/src/f_api_exception.dart"},
+		{"dart.nullunsetsafe/actual_base/f_thing.dart", "nullunsetsafe/actual_base_dart/lib/src/f_thing.dart"},
+		{"dart.nullunsetsafe/actual_base/f_base_health_condition.dart", "nullunsetsafe/actual_base_dart/lib/src/f_base_health_condition.dart"},
+		{"dart.nullunsetsafe/actual_base/f_base_foo_service.dart", "nullunsetsafe/actual_base_dart/lib/src/f_base_foo_service.dart"},
+		{"dart.nullunsetsafe/actual_base/f_nested_thing.dart", "nullunsetsafe/actual_base_dart/lib/src/f_nested_thing.dart"},
+		{"dart.nullunsetsafe/actual_base/actual_base_dart.dart", "nullunsetsafe/actual_base_dart/lib/actual_base_dart.dart"},
+	}
+	suite.Run(t, options)
+}
+
 func TestValidDartEnums(t *testing.T) {
 	options := compiler.Options{
 		File:    idl("enum.frugal"),
