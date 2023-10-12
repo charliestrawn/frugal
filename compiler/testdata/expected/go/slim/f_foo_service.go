@@ -1230,20 +1230,20 @@ func (p *FooOneWayArgs) Read(ctx context.Context, iprot thrift.TProtocol) error 
 			}
 			p.Req = make(Request, size)
 			for i := 0; i < size; i++ {
-				var elem20 Int
+				var elem24 Int
 				if v, err := iprot.ReadI32(ctx); err != nil {
 					return thrift.PrependError("error reading field 0: ", err)
 				} else {
 					temp := Int(v)
-					elem20 = temp
+					elem24 = temp
 				}
-				var elem21 string
+				var elem25 string
 				if v, err := iprot.ReadString(ctx); err != nil {
 					return thrift.PrependError("error reading field 0: ", err)
 				} else {
-					elem21 = v
+					elem25 = v
 				}
-				(p.Req)[elem20] = elem21
+				(p.Req)[elem24] = elem25
 			}
 			if err := iprot.ReadMapEnd(ctx); err != nil {
 				return thrift.PrependError("error reading map end: ", err)
@@ -1722,14 +1722,14 @@ func (p *FooUnderlyingTypesTestArgs) Read(ctx context.Context, iprot thrift.TPro
 			}
 			p.ListType = make([]ID, 0, size)
 			for i := 0; i < size; i++ {
-				var elem22 ID
+				var elem26 ID
 				if v, err := iprot.ReadI64(ctx); err != nil {
 					return thrift.PrependError("error reading field 0: ", err)
 				} else {
 					temp := ID(v)
-					elem22 = temp
+					elem26 = temp
 				}
-				p.ListType = append(p.ListType, elem22)
+				p.ListType = append(p.ListType, elem26)
 			}
 			if err := iprot.ReadListEnd(ctx); err != nil {
 				return thrift.PrependError("error reading list end: ", err)
@@ -1741,14 +1741,14 @@ func (p *FooUnderlyingTypesTestArgs) Read(ctx context.Context, iprot thrift.TPro
 			}
 			p.SetType = make(map[ID]bool, size)
 			for i := 0; i < size; i++ {
-				var elem23 ID
+				var elem27 ID
 				if v, err := iprot.ReadI64(ctx); err != nil {
 					return thrift.PrependError("error reading field 0: ", err)
 				} else {
 					temp := ID(v)
-					elem23 = temp
+					elem27 = temp
 				}
-				(p.SetType)[elem23] = true
+				(p.SetType)[elem27] = true
 			}
 			if err := iprot.ReadSetEnd(ctx); err != nil {
 				return thrift.PrependError("error reading set end: ", err)
@@ -1875,14 +1875,14 @@ func (p *FooUnderlyingTypesTestResult) Read(ctx context.Context, iprot thrift.TP
 			}
 			p.Success = make([]ID, 0, size)
 			for i := 0; i < size; i++ {
-				var elem24 ID
+				var elem28 ID
 				if v, err := iprot.ReadI64(ctx); err != nil {
 					return thrift.PrependError("error reading field 0: ", err)
 				} else {
 					temp := ID(v)
-					elem24 = temp
+					elem28 = temp
 				}
-				p.Success = append(p.Success, elem24)
+				p.Success = append(p.Success, elem28)
 			}
 			if err := iprot.ReadListEnd(ctx); err != nil {
 				return thrift.PrependError("error reading list end: ", err)

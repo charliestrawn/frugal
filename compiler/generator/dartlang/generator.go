@@ -1254,16 +1254,16 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 
 	for _, field := range s.Fields {
 		fName := toFieldName(field.Name)
+		underlyingType := g.Frugal.UnderlyingType(field.Type)
 
 		tmpElem := g.GetElem()
 		tmpField := parser.FieldFromType(field.Type, tmpElem)
-		contents += tabtab + fmt.Sprintf("final %s = %s;\n", tmpElem, fName)
 
 		var isSet bool
 		var isNull bool
 		if g.useNullForUnset(kind) {
 			check := false
-			if g.isDartPrimitive(g.Frugal.UnderlyingType(field.Type)) {
+			if g.isDartPrimitive(underlyingType) {
 				// Don't check isSet for default requiredness.
 				check = field.Modifier == parser.Optional
 			} else {
@@ -1271,19 +1271,20 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 			}
 
 			if check {
-				if g.shouldGenerateIsSet(kind, field) {
-					isSet = true
-				} else {
+				if g.useNullForIsSetExpr(kind, field) {
 					isNull = true
+				} else {
+					isSet = true
 				}
 			}
 		} else {
 			isSet = field.Modifier == parser.Optional
-			isNull = !g.isDartPrimitive(g.Frugal.UnderlyingType(field.Type))
+			isNull = !g.isDartPrimitive(underlyingType)
 		}
 
 		ind := ""
 		if isSet || isNull {
+			contents += tabtab + fmt.Sprintf("final %s = %s;\n", tmpElem, fName)
 			ind = tab
 			contents += ignoreDeprecationWarningIfNeeded(tabtab, field.Annotations)
 			contents += tabtab + "if ("
@@ -1297,6 +1298,13 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 				contents += fmt.Sprintf("%s != null", tmpElem)
 			}
 			contents += ") {\n"
+		} else {
+			notNullOperator := g.notNullOperator
+			if g.isDartPrimitive(underlyingType) {
+				// generateWriteFieldRec tolerates null.
+				notNullOperator = ""
+			}
+			contents += tabtab + fmt.Sprintf("final %s = %s%s;\n", tmpElem, fName, notNullOperator)
 		}
 
 		contents += fmt.Sprintf(tabtab+ind+"oprot.writeFieldBegin(_%s_FIELD_DESC);\n", toScreamingCapsConstant(field.Name))
