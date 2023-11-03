@@ -43,10 +43,10 @@ const (
 
 // ParseFrugal parses the given Frugal file into its semantic representation.
 func ParseFrugal(filePath string) (*Frugal, error) {
-	return parseFrugal(filePath, []string{})
+	return parseFrugal(filePath, []string{}, map[string]*Frugal{})
 }
 
-func parseFrugal(filePath string, visitedIncludes []string) (*Frugal, error) {
+func parseFrugal(filePath string, visitedIncludes []string, cache map[string]*Frugal) (*Frugal, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -61,6 +61,11 @@ func parseFrugal(filePath string, visitedIncludes []string) (*Frugal, error) {
 	if contains(visitedIncludes, name) {
 		return nil, fmt.Errorf("Circular include: %s", append(visitedIncludes, name))
 	}
+
+	if cached, ok := cache[filePath]; ok {
+		return cached, nil
+	}
+
 	visitedIncludes = append(visitedIncludes, name)
 
 	parsed, err := ParseReader(filePath, file)
@@ -79,7 +84,7 @@ func parseFrugal(filePath string, visitedIncludes []string) (*Frugal, error) {
 			return nil, fmt.Errorf("Bad include name: %s", include)
 		}
 
-		parsedIncl, err := parseFrugal(filepath.Join(frugal.Dir, include), visitedIncludes)
+		parsedIncl, err := parseFrugal(filepath.Join(frugal.Dir, include), visitedIncludes, cache)
 		if err != nil {
 			return nil, fmt.Errorf("Include %s: %s", include, err)
 		}
@@ -100,6 +105,7 @@ func parseFrugal(filePath string, visitedIncludes []string) (*Frugal, error) {
 	frugal.sort() // For determinism in generated code
 	frugal.assignFrugal()
 
+	cache[filePath] = frugal
 	return frugal, nil
 }
 
