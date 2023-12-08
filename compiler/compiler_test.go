@@ -488,6 +488,25 @@ func TestValidJavaWithAsync(t *testing.T) {
 	suite.Run(t, options)
 }
 
+func TestValidJavaWithDefaultUnsupported(t *testing.T) {
+	nowBefore := globals.Now
+	defer func() {
+		globals.Now = nowBefore
+	}()
+	globals.Now = time.Date(2015, 11, 24, 0, 0, 0, 0, time.UTC)
+
+	options := compiler.Options{
+		File:  frugalGenFile,
+		Gen:   "java",
+		Out:   outputDir + "/defaultunsupported",
+		Delim: delim,
+	}
+	suite := ComparisonList{
+		{"java/variety_defaultunsupported/FFoo.java", "defaultunsupported/variety/java/FFoo.java"},
+	}
+	suite.Run(t, options)
+}
+
 func TestValidJavaFrugalCompiler(t *testing.T) {
 	defer globals.Reset()
 	nowBefore := globals.Now
