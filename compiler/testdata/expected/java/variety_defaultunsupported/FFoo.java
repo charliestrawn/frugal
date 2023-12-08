@@ -75,35 +75,59 @@ public class FFoo {
 		 * @deprecated don't use this; use "something else"
 		 */
 		@Deprecated
-		public void Ping(FContext ctx) throws TException;
+		public default void Ping(FContext ctx) throws TException {
+			throw new TApplicationException("unsupported");
+		}
 
 		/**
 		 * Blah the server.
 		 */
-		public long blah(FContext ctx, int num, String Str, Event event) throws TException, AwesomeException, actual_base.java.api_exception;
+		public default long blah(FContext ctx, int num, String Str, Event event) throws TException, AwesomeException, actual_base.java.api_exception {
+			throw new TApplicationException("unsupported");
+		}
 
 		/**
 		 * oneway methods don't receive a response from the server.
 		 */
-		public void oneWay(FContext ctx, long id, java.util.Map<Integer, String> req) throws TException;
+		public default void oneWay(FContext ctx, long id, java.util.Map<Integer, String> req) throws TException {
+			throw new TApplicationException("unsupported");
+		}
 
-		public java.nio.ByteBuffer bin_method(FContext ctx, java.nio.ByteBuffer bin, String Str) throws TException, actual_base.java.api_exception;
+		public default java.nio.ByteBuffer bin_method(FContext ctx, java.nio.ByteBuffer bin, String Str) throws TException, actual_base.java.api_exception {
+			throw new TApplicationException("unsupported");
+		}
 
-		public long param_modifiers(FContext ctx, int opt_num, int default_num, int req_num) throws TException;
+		public default long param_modifiers(FContext ctx, int opt_num, int default_num, int req_num) throws TException {
+			throw new TApplicationException("unsupported");
+		}
 
-		public java.util.List<Long> underlying_types_test(FContext ctx, java.util.List<Long> list_type, java.util.Set<Long> set_type) throws TException;
+		public default java.util.List<Long> underlying_types_test(FContext ctx, java.util.List<Long> list_type, java.util.Set<Long> set_type) throws TException {
+			throw new TApplicationException("unsupported");
+		}
 
-		public Thing getThing(FContext ctx) throws TException;
+		public default Thing getThing(FContext ctx) throws TException {
+			throw new TApplicationException("unsupported");
+		}
 
-		public int getMyInt(FContext ctx) throws TException;
+		public default int getMyInt(FContext ctx) throws TException {
+			throw new TApplicationException("unsupported");
+		}
 
-		public A use_subdir_struct(FContext ctx, A a) throws TException;
+		public default A use_subdir_struct(FContext ctx, A a) throws TException {
+			throw new TApplicationException("unsupported");
+		}
 
-		public String sayHelloWith(FContext ctx, String newMessage) throws TException;
+		public default String sayHelloWith(FContext ctx, String newMessage) throws TException {
+			throw new TApplicationException("unsupported");
+		}
 
-		public String whatDoYouSay(FContext ctx, String messageArgs) throws TException;
+		public default String whatDoYouSay(FContext ctx, String messageArgs) throws TException {
+			throw new TApplicationException("unsupported");
+		}
 
-		public String sayAgain(FContext ctx, String messageResult) throws TException;
+		public default String sayAgain(FContext ctx, String messageResult) throws TException {
+			throw new TApplicationException("unsupported");
+		}
 
 	}
 

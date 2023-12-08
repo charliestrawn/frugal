@@ -497,7 +497,7 @@ func TestValidJavaWithDefaultUnsupported(t *testing.T) {
 
 	options := compiler.Options{
 		File:  frugalGenFile,
-		Gen:   "java",
+		Gen:   "java:default_unsupported",
 		Out:   outputDir + "/defaultunsupported",
 		Delim: delim,
 	}
