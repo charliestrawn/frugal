@@ -65,6 +65,7 @@ var Languages = LanguageOptions{
 			"suppress (default): suppress the annotations",
 		"async":                       "Generate async client code using futures",
 		"boxed_primitives":            "Generate primitives as the boxed equivalents",
+		"default_unsupported":         "Generate service interface methods with default implementations that throw an unsupported exception",
 		"use_vendor":                  "Use specified import references for vendored includes and do not generate code for them",
 		"suppress_deprecated_logging": "Suppress decrecated API usage warning logging",
 	},
