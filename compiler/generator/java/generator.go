@@ -30,6 +30,7 @@ import (
 const (
 	lang                        = "java"
 	defaultOutputDir            = "gen-java"
+	defaultUnsupportedOption    = "default_unsupported"
 	generatedAnnotations        = "generated_annotations"
 	useVendorOption             = "use_vendor"
 	suppressDeprecatedLogging   = "suppress_deprecated_logging"
@@ -90,6 +91,11 @@ func (g *Generator) getIsSetType(s *parser.Struct) (IsSetType, string) {
 	default:
 		return IsSetBitSet, ""
 	}
+}
+
+func (g *Generator) defaultUnsupported() bool {
+	_, ok := g.Options[defaultUnsupportedOption]
+	return ok
 }
 
 // Suppress deprecated API usage warning logging
@@ -2632,8 +2638,16 @@ func (g *Generator) generateServiceInterface(service *parser.Service, indent str
 	contents += indent + "public interface InternalIface {\n\n"
 	for _, method := range service.Methods {
 		contents += g.generateCommentWithDeprecated(method.Comment, indent+tab, method.Annotations)
-		contents += indent + tab + fmt.Sprintf("public %s %s(FContext ctx%s) %s;\n\n",
-			g.generateReturnValue(method), method.Name, g.generateArgs(method.Arguments, false), g.generateExceptions(method.Exceptions))
+		defaultStr := ""
+		body := ";"
+		if g.defaultUnsupported() {
+			defaultStr = " default"
+			body = " {\n" +
+				indent + tab + tab + "throw new TApplicationException(\"unsupported\");\n" +
+				indent + tab + "}"
+		}
+		contents += indent + tab + fmt.Sprintf("public%s %s %s(FContext ctx%s) %s%s\n\n",
+			defaultStr, g.generateReturnValue(method), method.Name, g.generateArgs(method.Arguments, false), g.generateExceptions(method.Exceptions), body)
 	}
 	contents += indent + "}\n\n"
 	return contents
