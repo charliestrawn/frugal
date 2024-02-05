@@ -25,23 +25,23 @@ class TestingUnions implements thrift.TBase {
   static final thrift.TField _DEPR_FIELD_DESC = thrift.TField('depr', thrift.TType.BOOL, 7);
   static final thrift.TField _WHO_A__BUDDY_FIELD_DESC = thrift.TField('WHOA_BUDDY', thrift.TType.BOOL, 8);
 
-  int anID;
+  int? anID;
   static const int ANID = 1;
-  String aString;
+  String? aString;
   static const int ASTRING = 2;
-  int someotherthing;
+  int? someotherthing;
   static const int SOMEOTHERTHING = 3;
-  int anInt16;
+  int? anInt16;
   static const int ANINT16 = 4;
-  Map<int, String> requests;
+  Map<int, String>? requests;
   static const int REQUESTS = 5;
-  Uint8List bin_field_in_union;
+  Uint8List? bin_field_in_union;
   static const int BIN_FIELD_IN_UNION = 6;
   /// Deprecated: use something else
   @deprecated
-  bool depr;
+  bool? depr;
   static const int DEPR = 7;
-  bool wHOA_BUDDY;
+  bool? wHOA_BUDDY;
   static const int WHOA_BUDDY = 8;
 
 
@@ -120,39 +120,39 @@ class TestingUnions implements thrift.TBase {
   }
 
   @override
-  setFieldValue(int fieldID, Object value) {
+  setFieldValue(int fieldID, Object? value) {
     switch (fieldID) {
       case ANID:
-        this.anID = value as int;
+        this.anID = value as int?;
         break;
 
       case ASTRING:
-        this.aString = value as String;
+        this.aString = value as String?;
         break;
 
       case SOMEOTHERTHING:
-        this.someotherthing = value as int;
+        this.someotherthing = value as int?;
         break;
 
       case ANINT16:
-        this.anInt16 = value as int;
+        this.anInt16 = value as int?;
         break;
 
       case REQUESTS:
-        this.requests = value as Map<int, String>;
+        this.requests = value as Map<int, String>?;
         break;
 
       case BIN_FIELD_IN_UNION:
-        this.bin_field_in_union = value as Uint8List;
+        this.bin_field_in_union = value as Uint8List?;
         break;
 
       case DEPR:
         // ignore: deprecated_member_use
-        this.depr = value as bool;
+        this.depr = value as bool?;
         break;
 
       case WHOA_BUDDY:
-        this.wHOA_BUDDY = value as bool;
+        this.wHOA_BUDDY = value as bool?;
         break;
 
       default:
@@ -413,15 +413,15 @@ class TestingUnions implements thrift.TBase {
   }
 
   TestingUnions clone({
-    int anID,
-    String aString,
-    int someotherthing,
-    int anInt16,
-    Map<int, String> requests,
-    Uint8List bin_field_in_union,
+    int? anID,
+    String? aString,
+    int? someotherthing,
+    int? anInt16,
+    Map<int, String>? requests,
+    Uint8List? bin_field_in_union,
     // ignore: deprecated_member_use
-    bool depr,
-    bool wHOA_BUDDY,
+    bool? depr,
+    bool? wHOA_BUDDY,
   }) {
     return TestingUnions()
       ..anID = anID ?? this.anID

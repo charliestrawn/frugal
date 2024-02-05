@@ -18,7 +18,7 @@ class TestBase implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('TestBase');
   static final thrift.TField _BASE_STRUCT_FIELD_DESC = thrift.TField('base_struct', thrift.TType.STRUCT, 1);
 
-  t_actual_base_dart.thing base_struct;
+  t_actual_base_dart.thing? base_struct;
   static const int BASE_STRUCT = 1;
 
 
@@ -39,10 +39,10 @@ class TestBase implements thrift.TBase {
   }
 
   @override
-  setFieldValue(int fieldID, Object value) {
+  setFieldValue(int fieldID, Object? value) {
     switch (fieldID) {
       case BASE_STRUCT:
-        this.base_struct = value as t_actual_base_dart.thing;
+        this.base_struct = value as t_actual_base_dart.thing?;
         break;
 
       default:
@@ -130,7 +130,7 @@ class TestBase implements thrift.TBase {
   }
 
   TestBase clone({
-    t_actual_base_dart.thing base_struct,
+    t_actual_base_dart.thing? base_struct,
   }) {
     return TestBase()
       ..base_struct = base_struct ?? this.base_struct;

@@ -15,16 +15,16 @@ class thing implements thrift.TBase {
   static final thrift.TField _AN_ID_FIELD_DESC = thrift.TField('an_id', thrift.TType.I32, 1);
   static final thrift.TField _A_STRING_FIELD_DESC = thrift.TField('a_string', thrift.TType.STRING, 2);
 
-  int _an_id = 0;
+  int? _an_id = 0;
   static const int AN_ID = 1;
-  String _a_string;
+  String? _a_string;
   static const int A_STRING = 2;
 
   bool __isset_an_id = false;
 
-  int get an_id => this._an_id;
+  int? get an_id => this._an_id;
 
-  set an_id(int an_id) {
+  set an_id(int? an_id) {
     this._an_id = an_id;
     this.__isset_an_id = true;
   }
@@ -35,9 +35,9 @@ class thing implements thrift.TBase {
     this.__isset_an_id = false;
   }
 
-  String get a_string => this._a_string;
+  String? get a_string => this._a_string;
 
-  set a_string(String a_string) {
+  set a_string(String? a_string) {
     this._a_string = a_string;
   }
 
@@ -60,18 +60,18 @@ class thing implements thrift.TBase {
   }
 
   @override
-  setFieldValue(int fieldID, Object value) {
+  setFieldValue(int fieldID, Object? value) {
     switch (fieldID) {
       case AN_ID:
         if (value == null) {
           unsetAn_id();
         } else {
-          this.an_id = value as int;
+          this.an_id = value as int?;
         }
         break;
 
       case A_STRING:
-        this.a_string = value as String;
+        this.a_string = value as String?;
         break;
 
       default:
@@ -179,8 +179,8 @@ class thing implements thrift.TBase {
   }
 
   thing clone({
-    int an_id,
-    String a_string,
+    int? an_id,
+    String? a_string,
   }) {
     return thing()
       ..an_id = an_id ?? this.an_id

@@ -23,7 +23,7 @@ class Item implements thrift.TBase {
   }
 
   @override
-  setFieldValue(int fieldID, Object value) {
+  setFieldValue(int fieldID, Object? value) {
     switch (fieldID) {
       default:
         throw ArgumentError("Field $fieldID doesn't exist!");

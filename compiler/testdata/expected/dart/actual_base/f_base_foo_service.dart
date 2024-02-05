@@ -22,17 +22,17 @@ abstract class FBaseFoo {
   Future basePing(frugal.FContext ctx);
 }
 
-FBaseFooClient fBaseFooClientFactory(frugal.FServiceProvider provider, {List<frugal.Middleware> middleware}) =>
+FBaseFooClient fBaseFooClientFactory(frugal.FServiceProvider provider, {List<frugal.Middleware>? middleware}) =>
     FBaseFooClient(provider, middleware);
 
 class FBaseFooClient extends disposable.Disposable implements FBaseFoo {
   static final logging.Logger _frugalLog = logging.Logger('BaseFoo');
-  Map<String, frugal.FMethod> _methods;
+  Map<String, frugal.FMethod> _methods = {};
 
-  FBaseFooClient(frugal.FServiceProvider provider, [List<frugal.Middleware> middleware])
-      : this._provider = provider {
-    _transport = provider.transport;
-    _protocolFactory = provider.protocolFactory;
+  FBaseFooClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
+      : this._provider = provider,
+      this._transport = provider.transport,
+      this._protocolFactory = provider.protocolFactory { 
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
     this._methods = {};
@@ -53,13 +53,13 @@ class FBaseFooClient extends disposable.Disposable implements FBaseFoo {
 
   @override
   Future basePing(frugal.FContext ctx) {
-    return this._methods['basePing']([ctx]);
+    return this._methods['basePing']!([ctx]);
   }
 
   Future _basePing(frugal.FContext ctx) async {
     final args = basePing_args();
-    final message = frugal.prepareMessage(ctx, 'basePing', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit);
-    var response = await _transport.request(ctx, message);
+    final message = frugal.prepareMessage(ctx, 'basePing', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit!);
+    var response = (await _transport.request(ctx, message))!;
 
     final result = basePing_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
