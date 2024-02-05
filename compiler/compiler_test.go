@@ -75,7 +75,7 @@ func TestValidDartFrugalCompiler(t *testing.T) {
 func TestValidDartNullsafe(t *testing.T) {
 	options := compiler.Options{
 		File:    frugalGenFile,
-		Gen:     "dart:nullsafe",
+		Gen:     "dart",
 		Out:     outputDir,
 		Delim:   delim,
 		Recurse: true,
@@ -182,7 +182,7 @@ func TestValidDartUseNullForUnset(t *testing.T) {
 func TestValidDartUseNullForUnsetSafe(t *testing.T) {
 	options := compiler.Options{
 		File:    frugalGenFile,
-		Gen:     "dart:use_null_for_unset,nullsafe",
+		Gen:     "dart:use_null_for_unset",
 		Out:     outputDir + "/nullunsetsafe",
 		Delim:   delim,
 		Recurse: true,
