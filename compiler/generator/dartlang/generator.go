@@ -54,11 +54,10 @@ const (
 // Generator implements the LanguageGenerator interface for Dart.
 type Generator struct {
 	*generator.BaseGenerator
-	outputDir       string
-	notNullOperator string
-	sdkRange        string
-	collectionVer   string
-	thriftVer       string
+	outputDir     string
+	sdkRange      string
+	collectionVer string
+	thriftVer     string
 }
 
 // NewGenerator creates a new Dart LanguageGenerator.
@@ -66,8 +65,6 @@ func NewGenerator(options map[string]string) generator.LanguageGenerator {
 	generator := &Generator{
 		BaseGenerator: &generator.BaseGenerator{Options: options},
 	}
-	generator.notNullOperator = "!"
-
 	return generator
 }
 
@@ -1278,7 +1275,7 @@ func (g *Generator) generateWrite(s *parser.Struct, kind structKind) string {
 			}
 			contents += ") {\n"
 		} else {
-			notNullOperator := g.notNullOperator
+			notNullOperator := "!"
 			if g.isDartPrimitive(underlyingType) {
 				// generateWriteFieldRec tolerates null.
 				notNullOperator = ""
@@ -1354,7 +1351,7 @@ func (g *Generator) generateWriteFieldRec(field *parser.Field, first bool, ind s
 		localVar := fName
 		if first {
 			localVar = g.GetElem()
-			contents += fmt.Sprintf(tabtab+ind+"final %s = this.%s%s;\n", localVar, fName, g.notNullOperator)
+			contents += fmt.Sprintf(tabtab+ind+"final %s = this.%s!;\n", localVar, fName)
 		}
 		switch underlyingType.Name {
 		case "list":
@@ -1430,8 +1427,8 @@ func (g *Generator) generateToString(s *parser.Struct, kind structKind) string {
 			contents += tabtab + ind + "ret.write('BINARY');\n"
 		} else if g.Frugal.IsEnum(underlyingType) {
 			contents += ignoreDeprecationWarningIfNeeded(tabtab+ind, field.Annotations)
-			contents += fmt.Sprintf(tabtab+ind+"String %s_name = %s.VALUES_TO_NAMES[this.%s]%s;\n",
-				fName, g.qualifiedTypeName(field.Type), fName, g.notNullOperator)
+			contents += fmt.Sprintf(tabtab+ind+"String %s_name = %s.VALUES_TO_NAMES[this.%s]!;\n",
+				fName, g.qualifiedTypeName(field.Type), fName)
 			contents += fmt.Sprintf(tabtab+ind+"if (%s_name != null) {\n", fName)
 			contents += fmt.Sprintf(tabtabtab+ind+"ret.write(%s_name);\n", fName)
 			contents += tabtabtab + ind + "ret.write(' (');\n"
@@ -1800,7 +1797,7 @@ func (g *Generator) GeneratePublisher(file *os.File, scope *parser.Scope) error 
 
 		publishers += fmt.Sprintf(tab+"Future publish%s(frugal.FContext ctx, %s%s req) {\n", op.Name, args, g.getDartTypeFromThriftType(op.Type))
 
-		publishers += fmt.Sprintf(tabtab+"return this._methods['%s']%s([ctx, %sreq]);\n", op.Name, g.notNullOperator, argsWithoutTypes)
+		publishers += fmt.Sprintf(tabtab+"return this._methods['%s']!([ctx, %sreq]);\n", op.Name, argsWithoutTypes)
 		publishers += tab + "}\n\n"
 
 		publishers += fmt.Sprintf(tab+"Future _publish%s(frugal.FContext ctx, %s%s req) async {\n", op.Name, args, g.getDartTypeFromThriftType(op.Type))
@@ -2088,8 +2085,8 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 		innerTypeCast = fmt.Sprintf(".then((value) => value as %s)", g.getDartTypeFromThriftType(method.ReturnType))
 	}
 
-	contents += fmt.Sprintf(tabtab+"return this._methods['%s']%s([ctx%s])%s;\n",
-		nameLower, g.notNullOperator, g.generateInputArgsWithoutTypes(method.Arguments), innerTypeCast)
+	contents += fmt.Sprintf(tabtab+"return this._methods['%s']!([ctx%s])%s;\n",
+		nameLower, g.generateInputArgsWithoutTypes(method.Arguments), innerTypeCast)
 
 	contents += fmt.Sprintf(tab + "}\n\n")
 
@@ -2109,8 +2106,8 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 		msgType = "ONEWAY"
 	}
 
-	contents += fmt.Sprintf(indent+"final message = frugal.prepareMessage(ctx, '%s', args, thrift.TMessageType.%s, _protocolFactory, _transport.requestSizeLimit%s);\n",
-		nameLower, msgType, g.notNullOperator)
+	contents += fmt.Sprintf(indent+"final message = frugal.prepareMessage(ctx, '%s', args, thrift.TMessageType.%s, _protocolFactory, _transport.requestSizeLimit!);\n",
+		nameLower, msgType)
 
 	if method.Oneway {
 		contents += indent + "await _transport.oneway(ctx, message);\n"
@@ -2118,7 +2115,7 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 		return contents
 	}
 
-	contents += indent + fmt.Sprintf("var response = (await _transport.request(ctx, message))%s;\n", g.notNullOperator)
+	contents += indent + "var response = (await _transport.request(ctx, message))!;\n"
 	contents += "\n"
 
 	contents += fmt.Sprintf(tabtab+"final result = %s_result();\n", method.Name)
@@ -2170,7 +2167,7 @@ func (g *Generator) generateErrors(method *parser.Method) string {
 	contents := ""
 	for _, exp := range method.Exceptions {
 		contents += fmt.Sprintf(tabtab+"if (result.%s != null) {\n", parser.LowercaseFirstLetter(exp.Name))
-		contents += fmt.Sprintf(tabtabtab+"throw result.%s%s;\n", parser.LowercaseFirstLetter(exp.Name), g.notNullOperator)
+		contents += fmt.Sprintf(tabtabtab+"throw result.%s!;\n", parser.LowercaseFirstLetter(exp.Name))
 		contents += tabtab + "}\n"
 	}
 	return contents
