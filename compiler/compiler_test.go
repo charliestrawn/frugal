@@ -145,7 +145,7 @@ func TestValidDartUseNullForUnset(t *testing.T) {
 func TestValidDartUseNullForUnsetSafe(t *testing.T) {
 	options := compiler.Options{
 		File:    frugalGenFile,
-		Gen:     "dart:use_null_for_unset",
+		Gen:     "dart:use_null_for_unset,nullsafe",
 		Out:     outputDir + "/nullunsetsafe",
 		Delim:   delim,
 		Recurse: true,
