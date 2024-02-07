@@ -45,19 +45,12 @@ const (
 	libraryPrefixOption = "library_prefix"
 	useInt64            = "use_int64"
 	useVendorOption     = "use_vendor"
-	nullsafe            = "nullsafe"
-	addDartComment      = false // Enable this when debugging Dart generated code
-	thriftVer           = "^0.0.15"
-	collectionVer       = "^1.15.0"
 )
 
 // Generator implements the LanguageGenerator interface for Dart.
 type Generator struct {
 	*generator.BaseGenerator
-	outputDir     string
-	sdkRange      string
-	collectionVer string
-	thriftVer     string
+	outputDir string
 }
 
 // NewGenerator creates a new Dart LanguageGenerator.
@@ -205,11 +198,11 @@ func (g *Generator) addToPubspec(dir string) error {
 	pubFilePath := filepath.Join(dir, "pubspec.yaml")
 
 	deps := map[interface{}]interface{}{
-		"collection": collectionVer,
+		"collection": "^1.15.0",
 		"logging":    "^1.0.0",
 		"thrift": dep{
 			Hosted:  hostedDep{Name: "thrift", URL: "https://pub.workiva.org"},
-			Version: thriftVer,
+			Version: "^0.0.15",
 		},
 		"w_common": "^3.0.0",
 	}
