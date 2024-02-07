@@ -31,35 +31,34 @@ import (
 )
 
 const (
-	lang                  = "dart"
-	defaultOutputDir      = "gen-dart"
-	serviceSuffix         = "_service"
-	scopeSuffix           = "_scope"
-	sdkRange              = ">=2.12.0 <3.0.0"
-	tab                   = "  "
-	tabtab                = tab + tab
-	tabtabtab             = tab + tab + tab
-	tabtabtabtab          = tab + tab + tab + tab
-	tabtabtabtabtab       = tab + tab + tab + tab + tab
-	tabtabtabtabtabtab    = tab + tab + tab + tab + tab + tab
-	libraryPrefixOption   = "library_prefix"
-	useInt64              = "use_int64"
-	useVendorOption       = "use_vendor"
-	nullsafe              = "nullsafe"
-	addDartComment        = false // Enable this when debugging Dart generated code
-	thriftVer             = "^0.0.15"
-	collectionVer         = "^1.15.0"
+	lang                = "dart"
+	defaultOutputDir    = "gen-dart"
+	serviceSuffix       = "_service"
+	scopeSuffix         = "_scope"
+	sdkRange            = ">=2.12.0 <3.0.0"
+	tab                 = "  "
+	tabtab              = tab + tab
+	tabtabtab           = tab + tab + tab
+	tabtabtabtab        = tab + tab + tab + tab
+	tabtabtabtabtab     = tab + tab + tab + tab + tab
+	tabtabtabtabtabtab  = tab + tab + tab + tab + tab + tab
+	libraryPrefixOption = "library_prefix"
+	useInt64            = "use_int64"
+	useVendorOption     = "use_vendor"
+	nullsafe            = "nullsafe"
+	addDartComment      = false // Enable this when debugging Dart generated code
+	thriftVer           = "^0.0.15"
+	collectionVer       = "^1.15.0"
 )
 
 // Generator implements the LanguageGenerator interface for Dart.
 type Generator struct {
 	*generator.BaseGenerator
-	outputDir        string
-	nullableOperator string
-	notNullOperator  string
-	sdkRange         string
-	collectionVer    string
-	thriftVer        string
+	outputDir       string
+	notNullOperator string
+	sdkRange        string
+	collectionVer   string
+	thriftVer       string
 }
 
 // NewGenerator creates a new Dart LanguageGenerator.
@@ -67,7 +66,6 @@ func NewGenerator(options map[string]string) generator.LanguageGenerator {
 	generator := &Generator{
 		BaseGenerator: &generator.BaseGenerator{Options: options},
 	}
-	generator.nullableOperator = "?"
 	generator.notNullOperator = "!"
 
 	return generator
@@ -826,8 +824,8 @@ func (g *Generator) generateStruct(s *parser.Struct, kind structKind) string {
 		if !g.useNullForUnset(kind) {
 			fieldName = fmt.Sprintf("_%s", fieldName)
 		}
-		contents += fmt.Sprintf(tab+"%s%s %s%s;\n",
-			g.getDartTypeFromThriftType(field.Type), g.nullableOperator, fieldName, g.generateInitValue(field, kind))
+		contents += fmt.Sprintf(tab+"%s? %s%s;\n",
+			g.getDartTypeFromThriftType(field.Type), fieldName, g.generateInitValue(field, kind))
 		if g.shouldGenerateFieldId(s, kind) {
 			contents += fmt.Sprintf(tab+"static const int %s = %d;\n", strings.ToUpper(field.Name), field.ID)
 		}
@@ -971,9 +969,9 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 
 		if !g.useNullForUnset(kind) {
 			contents += g.generateFieldComment(field, tab)
-			contents += fmt.Sprintf(tab+"%s%s get %s => this._%s;\n\n", dartType, g.nullableOperator, fName, fName)
+			contents += fmt.Sprintf(tab+"%s? get %s => this._%s;\n\n", dartType, fName, fName)
 			contents += g.generateFieldComment(field, tab)
-			contents += fmt.Sprintf(tab+"set %s(%s%s %s) {\n", fName, dartType, g.nullableOperator, fName)
+			contents += fmt.Sprintf(tab+"set %s(%s? %s) {\n", fName, dartType, fName)
 			contents += fmt.Sprintf(tabtab+"this._%s = %s;\n", fName, fName)
 			if dartPrimitive {
 				contents += fmt.Sprintf(tabtab+"this.__isset_%s = true;\n", fName)
@@ -1031,20 +1029,20 @@ func (g *Generator) generateFieldMethods(s *parser.Struct, kind structKind) stri
 	// setFieldValue
 	if kind.export() {
 		contents += tab + "@override\n"
-		contents += tab + fmt.Sprintf("setFieldValue(int fieldID, Object%s value) {\n", g.nullableOperator)
+		contents += tab + fmt.Sprintf("setFieldValue(int fieldID, Object? value) {\n")
 		contents += tabtab + "switch (fieldID) {\n"
 		for _, field := range s.Fields {
 			fName := toFieldName(field.Name)
 			contents += fmt.Sprintf(tabtabtab+"case %s:\n", g.generateFieldIdExpr(s, kind, field))
 			if g.useNullForIsSetExpr(kind, field) {
 				contents += ignoreDeprecationWarningIfNeeded(tabtabtabtab, field.Annotations)
-				contents += fmt.Sprintf(tabtabtabtab+"this.%s = value as %s%s;\n", fName, g.getDartTypeFromThriftType(field.Type), g.nullableOperator)
+				contents += fmt.Sprintf(tabtabtabtab+"this.%s = value as %s?;\n", fName, g.getDartTypeFromThriftType(field.Type))
 			} else {
 				contents += tabtabtabtab + "if (value == null) {\n"
 				contents += fmt.Sprintf(tabtabtabtabtab+"unset%s();\n", strings.Title(field.Name))
 				contents += tabtabtabtab + "} else {\n"
 				contents += ignoreDeprecationWarningIfNeeded(tabtabtabtabtab, field.Annotations)
-				contents += fmt.Sprintf(tabtabtabtabtab+"this.%s = value as %s%s;\n", fName, g.getDartTypeFromThriftType(field.Type), g.nullableOperator)
+				contents += fmt.Sprintf(tabtabtabtabtab+"this.%s = value as %s?;\n", fName, g.getDartTypeFromThriftType(field.Type))
 				contents += tabtabtabtab + "}\n"
 			}
 			contents += tabtabtabtab + "break;\n\n"
@@ -1546,7 +1544,7 @@ func (g *Generator) generateClone(s *parser.Struct) string {
 		fieldName := toFieldName(field.Name)
 		contents += ignoreDeprecationWarningIfNeeded(tabtab, field.Annotations)
 
-		contents += fmt.Sprintf(tabtab+"%s%s %s,\n", g.getDartTypeFromThriftType(field.Type), g.nullableOperator, fieldName)
+		contents += fmt.Sprintf(tabtab+"%s? %s,\n", g.getDartTypeFromThriftType(field.Type), fieldName)
 
 	}
 	contents += tab + "}) {\n"
@@ -1750,8 +1748,8 @@ func (g *Generator) GeneratePublisher(file *os.File, scope *parser.Scope) error 
 	publisherClassname := fmt.Sprintf("%sPublisher", strings.Title(scope.Name))
 
 	// Generate publisher factory
-	publishers += fmt.Sprintf("%s %sFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>%s middleware}) =>\n",
-		publisherClassname, lowercaseFirstCharacter(publisherClassname), g.nullableOperator)
+	publishers += fmt.Sprintf("%s %sFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>? middleware}) =>\n",
+		publisherClassname, lowercaseFirstCharacter(publisherClassname))
 	publishers += tabtab + fmt.Sprintf("%s(provider, middleware);\n\n", publisherClassname)
 
 	if scope.Comment != nil {
@@ -1762,13 +1760,13 @@ func (g *Generator) GeneratePublisher(file *os.File, scope *parser.Scope) error 
 	publishers += tab + "frugal.FPublisherTransport transport;\n"
 	publishers += tab + "frugal.FProtocolFactory protocolFactory;\n"
 
-    publishers += tab + "Map<String, frugal.FMethod> _methods = {};\n"
-    publishers += fmt.Sprintf(tab+"%s(frugal.FScopeProvider provider, [List<frugal.Middleware>%s middleware]) :\n", publisherClassname, g.nullableOperator)
-    publishers += tabtab + "transport = provider.publisherTransportFactory.getTransport(),\n"
-    publishers += tabtab + "protocolFactory = provider.protocolFactory\n"
-    publishers += tab + "{\n"
-    publishers += tabtab + "var combined = middleware ?? [];\n"
-    publishers += tabtab + "combined.addAll(provider.middleware);\n"
+	publishers += tab + "Map<String, frugal.FMethod> _methods = {};\n"
+	publishers += fmt.Sprintf(tab+"%s(frugal.FScopeProvider provider, [List<frugal.Middleware>? middleware]) :\n", publisherClassname)
+	publishers += tabtab + "transport = provider.publisherTransportFactory.getTransport(),\n"
+	publishers += tabtab + "protocolFactory = provider.protocolFactory\n"
+	publishers += tab + "{\n"
+	publishers += tabtab + "var combined = middleware ?? [];\n"
+	publishers += tabtab + "combined.addAll(provider.middleware);\n"
 
 	for _, operation := range scope.Operations {
 		publishers += fmt.Sprintf(tabtab+"this._methods['%s'] = frugal.FMethod(this._publish%s, '%s', 'publish%s', combined);\n",
@@ -1856,8 +1854,8 @@ func (g *Generator) GenerateSubscriber(file *os.File, scope *parser.Scope) error
 	subscriberClassname := fmt.Sprintf("%sSubscriber", strings.Title(scope.Name))
 
 	// Generate subscriber factory
-	subscribers += fmt.Sprintf("%s %sFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>%s middleware}) =>\n",
-		subscriberClassname, lowercaseFirstCharacter(subscriberClassname), g.nullableOperator)
+	subscribers += fmt.Sprintf("%s %sFactory(frugal.FScopeProvider provider, {List<frugal.Middleware>? middleware}) =>\n",
+		subscriberClassname, lowercaseFirstCharacter(subscriberClassname))
 	subscribers += tabtab + fmt.Sprintf("%s(provider, middleware);\n\n", subscriberClassname)
 
 	if scope.Comment != nil {
@@ -1866,11 +1864,11 @@ func (g *Generator) GenerateSubscriber(file *os.File, scope *parser.Scope) error
 	// Generate subscriber class
 	subscribers += fmt.Sprintf("class %s {\n", subscriberClassname)
 	subscribers += tab + "final frugal.FScopeProvider provider;\n"
-	subscribers += tab + fmt.Sprintf("final List<frugal.Middleware>%s _middleware;\n\n", g.nullableOperator)
+	subscribers += tab + "final List<frugal.Middleware>? _middleware;\n\n"
 
-	subscribers += tab + fmt.Sprintf("%s(this.provider, [List<frugal.Middleware>%s middleware])\n", subscriberClassname, g.nullableOperator)
+	subscribers += tab + fmt.Sprintf("%s(this.provider, [List<frugal.Middleware>? middleware])\n", subscriberClassname)
 	subscribers += tabtabtab + ": this._middleware = middleware ?? [] {\n"
-	subscribers += tabtab + fmt.Sprintf("this._middleware%s.addAll(provider.middleware);\n", g.nullableOperator)
+	subscribers += tabtab + "this._middleware?.addAll(provider.middleware);\n"
 	subscribers += "}\n\n"
 
 	args := ""
@@ -2002,8 +2000,8 @@ func (g *Generator) generateClient(service *parser.Service) string {
 	contents := ""
 
 	// Generate client factory
-	contents += fmt.Sprintf("%s %sFactory(frugal.FServiceProvider provider, {List<frugal.Middleware>%s middleware}) =>\n",
-		clientClassname, lowercaseFirstCharacter(clientClassname), g.nullableOperator)
+	contents += fmt.Sprintf("%s %sFactory(frugal.FServiceProvider provider, {List<frugal.Middleware>? middleware}) =>\n",
+		clientClassname, lowercaseFirstCharacter(clientClassname))
 	contents += tabtab + fmt.Sprintf("%s(provider, middleware);\n\n", clientClassname)
 
 	if service.Comment != nil {
@@ -2021,19 +2019,19 @@ func (g *Generator) generateClient(service *parser.Service) string {
 	}
 	contents += fmt.Sprintf(tab+"static final logging.Logger _frugalLog = logging.Logger('%s');\n", servTitle)
 
-    contents += tab + "Map<String, frugal.FMethod> _methods = {};\n\n"
+	contents += tab + "Map<String, frugal.FMethod> _methods = {};\n\n"
 
-	contents += tab + fmt.Sprintf("%s(frugal.FServiceProvider provider, [List<frugal.Middleware>%s middleware])\n", clientClassname, g.nullableOperator)
+	contents += tab + fmt.Sprintf("%s(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])\n", clientClassname)
 
 	if service.Extends != "" {
 		contents += tabtabtab + ": this._provider = provider,\n"
-        contents += tabtabtab + "this._transport = provider.transport,\n"
-        contents += tabtabtab + "this._protocolFactory = provider.protocolFactory, \n"
+		contents += tabtabtab + "this._transport = provider.transport,\n"
+		contents += tabtabtab + "this._protocolFactory = provider.protocolFactory, \n"
 		contents += tabtabtab + "  super(provider, middleware) {\n"
 	} else {
-        contents += tabtabtab + ": this._provider = provider,\n"
-        contents += tabtabtab + "this._transport = provider.transport,\n"
-        contents += tabtabtab + "this._protocolFactory = provider.protocolFactory { \n"
+		contents += tabtabtab + ": this._provider = provider,\n"
+		contents += tabtabtab + "this._transport = provider.transport,\n"
+		contents += tabtabtab + "this._protocolFactory = provider.protocolFactory { \n"
 	}
 	contents += tabtab + "var combined = middleware ?? [];\n"
 	contents += tabtab + "combined.addAll(provider.middleware);\n"
@@ -2149,7 +2147,7 @@ func (g *Generator) generateReturnArg(method *parser.Method) string {
 		return ""
 	}
 
-	return fmt.Sprintf("<%s%s>", g.getDartTypeFromThriftType(method.ReturnType), g.nullableOperator)
+	return fmt.Sprintf("<%s?>", g.getDartTypeFromThriftType(method.ReturnType))
 }
 
 func (g *Generator) generateInputArgs(args []*parser.Field) string {
