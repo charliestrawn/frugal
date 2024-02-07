@@ -58,7 +58,6 @@ const (
 type Generator struct {
 	*generator.BaseGenerator
 	outputDir        string
-	genNullsafe      bool
 	nullableOperator string
 	notNullOperator  string
 	sdkRange         string
@@ -72,7 +71,6 @@ func NewGenerator(options map[string]string) generator.LanguageGenerator {
 	generator := &Generator{
 		BaseGenerator: &generator.BaseGenerator{Options: options},
 	}
-	generator.genNullsafe = true
 	generator.nullableOperator = "?"
 	generator.notNullOperator = "!"
 	generator.sdkRange = nullsafeDartSdkRange
@@ -1775,23 +1773,13 @@ func (g *Generator) GeneratePublisher(file *os.File, scope *parser.Scope) error 
 	publishers += tab + "frugal.FPublisherTransport transport;\n"
 	publishers += tab + "frugal.FProtocolFactory protocolFactory;\n"
 
-	if g.genNullsafe {
-		publishers += tab + "Map<String, frugal.FMethod> _methods = {};\n"
-		publishers += fmt.Sprintf(tab+"%s(frugal.FScopeProvider provider, [List<frugal.Middleware>%s middleware]) :\n", publisherClassname, g.nullableOperator)
-		publishers += tabtab + "transport = provider.publisherTransportFactory.getTransport(),\n"
-		publishers += tabtab + "protocolFactory = provider.protocolFactory\n"
-		publishers += tab + "{\n"
-		publishers += tabtab + "var combined = middleware ?? [];\n"
-		publishers += tabtab + "combined.addAll(provider.middleware);\n"
-	} else {
-		publishers += tab + "Map<String, frugal.FMethod> _methods;\n"
-		publishers += fmt.Sprintf(tab+"%s(frugal.FScopeProvider provider, [List<frugal.Middleware> middleware]) {\n", publisherClassname)
-		publishers += tabtab + "transport = provider.publisherTransportFactory.getTransport();\n"
-		publishers += tabtab + "protocolFactory = provider.protocolFactory;\n"
-		publishers += tabtab + "var combined = middleware ?? [];\n"
-		publishers += tabtab + "combined.addAll(provider.middleware);\n"
-		publishers += tabtab + "this._methods = {};\n"
-	}
+    publishers += tab + "Map<String, frugal.FMethod> _methods = {};\n"
+    publishers += fmt.Sprintf(tab+"%s(frugal.FScopeProvider provider, [List<frugal.Middleware>%s middleware]) :\n", publisherClassname, g.nullableOperator)
+    publishers += tabtab + "transport = provider.publisherTransportFactory.getTransport(),\n"
+    publishers += tabtab + "protocolFactory = provider.protocolFactory\n"
+    publishers += tab + "{\n"
+    publishers += tabtab + "var combined = middleware ?? [];\n"
+    publishers += tabtab + "combined.addAll(provider.middleware);\n"
 
 	for _, operation := range scope.Operations {
 		publishers += fmt.Sprintf(tabtab+"this._methods['%s'] = frugal.FMethod(this._publish%s, '%s', 'publish%s', combined);\n",
@@ -2044,35 +2032,19 @@ func (g *Generator) generateClient(service *parser.Service) string {
 	}
 	contents += fmt.Sprintf(tab+"static final logging.Logger _frugalLog = logging.Logger('%s');\n", servTitle)
 
-	if g.genNullsafe {
-		contents += tab + "Map<String, frugal.FMethod> _methods = {};\n\n"
-	} else {
-		contents += tab + "Map<String, frugal.FMethod> _methods;\n\n"
-	}
+    contents += tab + "Map<String, frugal.FMethod> _methods = {};\n\n"
 
 	contents += tab + fmt.Sprintf("%s(frugal.FServiceProvider provider, [List<frugal.Middleware>%s middleware])\n", clientClassname, g.nullableOperator)
 
 	if service.Extends != "" {
 		contents += tabtabtab + ": this._provider = provider,\n"
-		if g.genNullsafe {
-			contents += tabtabtab + "this._transport = provider.transport,\n"
-			contents += tabtabtab + "this._protocolFactory = provider.protocolFactory, \n"
-		}
+        contents += tabtabtab + "this._transport = provider.transport,\n"
+        contents += tabtabtab + "this._protocolFactory = provider.protocolFactory, \n"
 		contents += tabtabtab + "  super(provider, middleware) {\n"
-		if !g.genNullsafe {
-			contents += tabtab + "_transport = provider.transport;\n"
-			contents += tabtab + "_protocolFactory = provider.protocolFactory;\n"
-		}
 	} else {
-		if g.genNullsafe {
-			contents += tabtabtab + ": this._provider = provider,\n"
-			contents += tabtabtab + "this._transport = provider.transport,\n"
-			contents += tabtabtab + "this._protocolFactory = provider.protocolFactory { \n"
-		} else {
-			contents += tabtabtab + ": this._provider = provider {\n"
-			contents += tabtab + "_transport = provider.transport;\n"
-			contents += tabtab + "_protocolFactory = provider.protocolFactory;\n"
-		}
+        contents += tabtabtab + ": this._provider = provider,\n"
+        contents += tabtabtab + "this._transport = provider.transport,\n"
+        contents += tabtabtab + "this._protocolFactory = provider.protocolFactory { \n"
 	}
 	contents += tabtab + "var combined = middleware ?? [];\n"
 	contents += tabtab + "combined.addAll(provider.middleware);\n"
@@ -2159,11 +2131,7 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 		return contents
 	}
 
-	if g.genNullsafe {
-		contents += indent + fmt.Sprintf("var response = (await _transport.request(ctx, message))%s;\n", g.notNullOperator)
-	} else {
-		contents += indent + "var response = await _transport.request(ctx, message);\n"
-	}
+	contents += indent + fmt.Sprintf("var response = (await _transport.request(ctx, message))%s;\n", g.notNullOperator)
 	contents += "\n"
 
 	contents += fmt.Sprintf(tabtab+"final result = %s_result();\n", method.Name)
