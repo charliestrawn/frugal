@@ -21,21 +21,21 @@ import 'package:include_vendor/include_vendor.dart' as t_include_vendor;
 
 
 abstract class FMyService extends t_vendor_namespace.FVendoredBase {
-  Future<t_vendor_namespace.Item> getItem(frugal.FContext ctx);
+  Future<t_vendor_namespace.Item?> getItem(frugal.FContext ctx);
 }
 
-FMyServiceClient fMyServiceClientFactory(frugal.FServiceProvider provider, {List<frugal.Middleware> middleware}) =>
+FMyServiceClient fMyServiceClientFactory(frugal.FServiceProvider provider, {List<frugal.Middleware>? middleware}) =>
     FMyServiceClient(provider, middleware);
 
 class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient implements FMyService {
   static final logging.Logger _frugalLog = logging.Logger('MyService');
-  Map<String, frugal.FMethod> _methods;
+  Map<String, frugal.FMethod> _methods = {};
 
-  FMyServiceClient(frugal.FServiceProvider provider, [List<frugal.Middleware> middleware])
+  FMyServiceClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
       : this._provider = provider,
+      this._transport = provider.transport,
+      this._protocolFactory = provider.protocolFactory, 
         super(provider, middleware) {
-    _transport = provider.transport;
-    _protocolFactory = provider.protocolFactory;
     var combined = middleware ?? [];
     combined.addAll(provider.middleware);
     this._methods = {};
@@ -55,14 +55,14 @@ class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient implements
   }
 
   @override
-  Future<t_vendor_namespace.Item> getItem(frugal.FContext ctx) {
-    return this._methods['getItem']([ctx]).then((value) => value as t_vendor_namespace.Item);
+  Future<t_vendor_namespace.Item?> getItem(frugal.FContext ctx) {
+    return this._methods['getItem']!([ctx]).then((value) => value as t_vendor_namespace.Item);
   }
 
-  Future<t_vendor_namespace.Item> _getItem(frugal.FContext ctx) async {
+  Future<t_vendor_namespace.Item?> _getItem(frugal.FContext ctx) async {
     final args = getItem_args();
-    final message = frugal.prepareMessage(ctx, 'getItem', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit);
-    var response = await _transport.request(ctx, message);
+    final message = frugal.prepareMessage(ctx, 'getItem', args, thrift.TMessageType.CALL, _protocolFactory, _transport.requestSizeLimit!);
+    var response = (await _transport.request(ctx, message))!;
 
     final result = getItem_result();
     frugal.processReply(ctx, result, response, _protocolFactory);
@@ -71,7 +71,7 @@ class FMyServiceClient extends t_vendor_namespace.FVendoredBaseClient implements
     }
 
     if (result.d != null) {
-      throw result.d;
+      throw result.d!;
     }
     throw thrift.TApplicationError(
       frugal.FrugalTApplicationErrorType.MISSING_RESULT, 'getItem failed: unknown result'
@@ -99,8 +99,8 @@ class getItem_args extends frugal.FGeneratedArgsResultBase {
 }
 // ignore: camel_case_types
 class getItem_result extends frugal.FGeneratedArgsResultBase {
-  t_vendor_namespace.Item success;
-  t_excepts.InvalidData d;
+  t_vendor_namespace.Item? success;
+  t_excepts.InvalidData? d;
 
 
   @override

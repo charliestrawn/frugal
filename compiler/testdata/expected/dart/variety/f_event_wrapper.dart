@@ -36,51 +36,51 @@ class EventWrapper implements thrift.TBase {
   static final thrift.TField _EVENT_MAP_REQUIRED_FIELD_DESC = thrift.TField('EventMapRequired', thrift.TType.MAP, 18);
   static final thrift.TField _EVENT_SET_REQUIRED_FIELD_DESC = thrift.TField('EventSetRequired', thrift.TType.SET, 19);
 
-  int _iD;
+  int? _iD;
   static const int ID = 1;
-  t_variety.Event _ev;
+  t_variety.Event? _ev;
   static const int EV = 2;
-  List<t_variety.Event> _events;
+  List<t_variety.Event>? _events;
   static const int EVENTS = 3;
-  Set<t_variety.Event> _events2;
+  Set<t_variety.Event>? _events2;
   static const int EVENTS2 = 4;
-  Map<int, t_variety.Event> _eventMap;
+  Map<int, t_variety.Event>? _eventMap;
   static const int EVENTMAP = 5;
-  List<List<int>> _nums;
+  List<List<int>>? _nums;
   static const int NUMS = 6;
-  List<int> _enums;
+  List<int>? _enums;
   static const int ENUMS = 7;
-  bool _aBoolField = false;
+  bool? _aBoolField = false;
   static const int ABOOLFIELD = 8;
-  t_variety.TestingUnions _a_union;
+  t_variety.TestingUnions? _a_union;
   static const int A_UNION = 9;
-  String _typedefOfTypedef;
+  String? _typedefOfTypedef;
   static const int TYPEDEFOFTYPEDEF = 10;
   /// This is a docstring comment for a deprecated field that has been spread
   /// across two lines.
   /// Deprecated: use something else
   @deprecated
-  bool _depr = false;
+  bool? _depr = false;
   static const int DEPR = 11;
   /// Deprecated: use something else
   @deprecated
-  Uint8List _deprBinary;
+  Uint8List? _deprBinary;
   static const int DEPRBINARY = 12;
   /// Deprecated: use something else
   @deprecated
-  List<bool> _deprList;
+  List<bool>? _deprList;
   static const int DEPRLIST = 13;
-  List<t_variety.Event> _eventsDefault;
+  List<t_variety.Event>? _eventsDefault;
   static const int EVENTSDEFAULT = 14;
-  Map<int, t_variety.Event> _eventMapDefault;
+  Map<int, t_variety.Event>? _eventMapDefault;
   static const int EVENTMAPDEFAULT = 15;
-  Set<t_variety.Event> _eventSetDefault;
+  Set<t_variety.Event>? _eventSetDefault;
   static const int EVENTSETDEFAULT = 16;
-  List<t_variety.Event> _eventsRequired;
+  List<t_variety.Event>? _eventsRequired;
   static const int EVENTSREQUIRED = 17;
-  Map<int, t_variety.Event> _eventMapRequired;
+  Map<int, t_variety.Event>? _eventMapRequired;
   static const int EVENTMAPREQUIRED = 18;
-  Set<t_variety.Event> _eventSetRequired;
+  Set<t_variety.Event>? _eventSetRequired;
   static const int EVENTSETREQUIRED = 19;
 
   bool __isset_iD = false;
@@ -102,9 +102,9 @@ class EventWrapper implements thrift.TBase {
     ]);
   }
 
-  int get iD => this._iD;
+  int? get iD => this._iD;
 
-  set iD(int iD) {
+  set iD(int? iD) {
     this._iD = iD;
     this.__isset_iD = true;
   }
@@ -115,9 +115,9 @@ class EventWrapper implements thrift.TBase {
     this.__isset_iD = false;
   }
 
-  t_variety.Event get ev => this._ev;
+  t_variety.Event? get ev => this._ev;
 
-  set ev(t_variety.Event ev) {
+  set ev(t_variety.Event? ev) {
     this._ev = ev;
   }
 
@@ -127,9 +127,9 @@ class EventWrapper implements thrift.TBase {
     this.ev = null;
   }
 
-  List<t_variety.Event> get events => this._events;
+  List<t_variety.Event>? get events => this._events;
 
-  set events(List<t_variety.Event> events) {
+  set events(List<t_variety.Event>? events) {
     this._events = events;
   }
 
@@ -139,9 +139,9 @@ class EventWrapper implements thrift.TBase {
     this.events = null;
   }
 
-  Set<t_variety.Event> get events2 => this._events2;
+  Set<t_variety.Event>? get events2 => this._events2;
 
-  set events2(Set<t_variety.Event> events2) {
+  set events2(Set<t_variety.Event>? events2) {
     this._events2 = events2;
   }
 
@@ -151,9 +151,9 @@ class EventWrapper implements thrift.TBase {
     this.events2 = null;
   }
 
-  Map<int, t_variety.Event> get eventMap => this._eventMap;
+  Map<int, t_variety.Event>? get eventMap => this._eventMap;
 
-  set eventMap(Map<int, t_variety.Event> eventMap) {
+  set eventMap(Map<int, t_variety.Event>? eventMap) {
     this._eventMap = eventMap;
   }
 
@@ -163,9 +163,9 @@ class EventWrapper implements thrift.TBase {
     this.eventMap = null;
   }
 
-  List<List<int>> get nums => this._nums;
+  List<List<int>>? get nums => this._nums;
 
-  set nums(List<List<int>> nums) {
+  set nums(List<List<int>>? nums) {
     this._nums = nums;
   }
 
@@ -175,9 +175,9 @@ class EventWrapper implements thrift.TBase {
     this.nums = null;
   }
 
-  List<int> get enums => this._enums;
+  List<int>? get enums => this._enums;
 
-  set enums(List<int> enums) {
+  set enums(List<int>? enums) {
     this._enums = enums;
   }
 
@@ -187,9 +187,9 @@ class EventWrapper implements thrift.TBase {
     this.enums = null;
   }
 
-  bool get aBoolField => this._aBoolField;
+  bool? get aBoolField => this._aBoolField;
 
-  set aBoolField(bool aBoolField) {
+  set aBoolField(bool? aBoolField) {
     this._aBoolField = aBoolField;
     this.__isset_aBoolField = true;
   }
@@ -200,9 +200,9 @@ class EventWrapper implements thrift.TBase {
     this.__isset_aBoolField = false;
   }
 
-  t_variety.TestingUnions get a_union => this._a_union;
+  t_variety.TestingUnions? get a_union => this._a_union;
 
-  set a_union(t_variety.TestingUnions a_union) {
+  set a_union(t_variety.TestingUnions? a_union) {
     this._a_union = a_union;
   }
 
@@ -212,9 +212,9 @@ class EventWrapper implements thrift.TBase {
     this.a_union = null;
   }
 
-  String get typedefOfTypedef => this._typedefOfTypedef;
+  String? get typedefOfTypedef => this._typedefOfTypedef;
 
-  set typedefOfTypedef(String typedefOfTypedef) {
+  set typedefOfTypedef(String? typedefOfTypedef) {
     this._typedefOfTypedef = typedefOfTypedef;
   }
 
@@ -228,13 +228,13 @@ class EventWrapper implements thrift.TBase {
   /// across two lines.
   /// Deprecated: use something else
   @deprecated
-  bool get depr => this._depr;
+  bool? get depr => this._depr;
 
   /// This is a docstring comment for a deprecated field that has been spread
   /// across two lines.
   /// Deprecated: use something else
   @deprecated
-  set depr(bool depr) {
+  set depr(bool? depr) {
     this._depr = depr;
     this.__isset_depr = true;
   }
@@ -247,11 +247,11 @@ class EventWrapper implements thrift.TBase {
 
   /// Deprecated: use something else
   @deprecated
-  Uint8List get deprBinary => this._deprBinary;
+  Uint8List? get deprBinary => this._deprBinary;
 
   /// Deprecated: use something else
   @deprecated
-  set deprBinary(Uint8List deprBinary) {
+  set deprBinary(Uint8List? deprBinary) {
     this._deprBinary = deprBinary;
   }
 
@@ -264,11 +264,11 @@ class EventWrapper implements thrift.TBase {
 
   /// Deprecated: use something else
   @deprecated
-  List<bool> get deprList => this._deprList;
+  List<bool>? get deprList => this._deprList;
 
   /// Deprecated: use something else
   @deprecated
-  set deprList(List<bool> deprList) {
+  set deprList(List<bool>? deprList) {
     this._deprList = deprList;
   }
 
@@ -279,9 +279,9 @@ class EventWrapper implements thrift.TBase {
     this.deprList = null;
   }
 
-  List<t_variety.Event> get eventsDefault => this._eventsDefault;
+  List<t_variety.Event>? get eventsDefault => this._eventsDefault;
 
-  set eventsDefault(List<t_variety.Event> eventsDefault) {
+  set eventsDefault(List<t_variety.Event>? eventsDefault) {
     this._eventsDefault = eventsDefault;
   }
 
@@ -291,9 +291,9 @@ class EventWrapper implements thrift.TBase {
     this.eventsDefault = null;
   }
 
-  Map<int, t_variety.Event> get eventMapDefault => this._eventMapDefault;
+  Map<int, t_variety.Event>? get eventMapDefault => this._eventMapDefault;
 
-  set eventMapDefault(Map<int, t_variety.Event> eventMapDefault) {
+  set eventMapDefault(Map<int, t_variety.Event>? eventMapDefault) {
     this._eventMapDefault = eventMapDefault;
   }
 
@@ -303,9 +303,9 @@ class EventWrapper implements thrift.TBase {
     this.eventMapDefault = null;
   }
 
-  Set<t_variety.Event> get eventSetDefault => this._eventSetDefault;
+  Set<t_variety.Event>? get eventSetDefault => this._eventSetDefault;
 
-  set eventSetDefault(Set<t_variety.Event> eventSetDefault) {
+  set eventSetDefault(Set<t_variety.Event>? eventSetDefault) {
     this._eventSetDefault = eventSetDefault;
   }
 
@@ -315,9 +315,9 @@ class EventWrapper implements thrift.TBase {
     this.eventSetDefault = null;
   }
 
-  List<t_variety.Event> get eventsRequired => this._eventsRequired;
+  List<t_variety.Event>? get eventsRequired => this._eventsRequired;
 
-  set eventsRequired(List<t_variety.Event> eventsRequired) {
+  set eventsRequired(List<t_variety.Event>? eventsRequired) {
     this._eventsRequired = eventsRequired;
   }
 
@@ -327,9 +327,9 @@ class EventWrapper implements thrift.TBase {
     this.eventsRequired = null;
   }
 
-  Map<int, t_variety.Event> get eventMapRequired => this._eventMapRequired;
+  Map<int, t_variety.Event>? get eventMapRequired => this._eventMapRequired;
 
-  set eventMapRequired(Map<int, t_variety.Event> eventMapRequired) {
+  set eventMapRequired(Map<int, t_variety.Event>? eventMapRequired) {
     this._eventMapRequired = eventMapRequired;
   }
 
@@ -339,9 +339,9 @@ class EventWrapper implements thrift.TBase {
     this.eventMapRequired = null;
   }
 
-  Set<t_variety.Event> get eventSetRequired => this._eventSetRequired;
+  Set<t_variety.Event>? get eventSetRequired => this._eventSetRequired;
 
-  set eventSetRequired(Set<t_variety.Event> eventSetRequired) {
+  set eventSetRequired(Set<t_variety.Event>? eventSetRequired) {
     this._eventSetRequired = eventSetRequired;
   }
 
@@ -401,54 +401,54 @@ class EventWrapper implements thrift.TBase {
   }
 
   @override
-  setFieldValue(int fieldID, Object value) {
+  setFieldValue(int fieldID, Object? value) {
     switch (fieldID) {
       case ID:
         if (value == null) {
           unsetID();
         } else {
-          this.iD = value as int;
+          this.iD = value as int?;
         }
         break;
 
       case EV:
-        this.ev = value as t_variety.Event;
+        this.ev = value as t_variety.Event?;
         break;
 
       case EVENTS:
-        this.events = value as List<t_variety.Event>;
+        this.events = value as List<t_variety.Event>?;
         break;
 
       case EVENTS2:
-        this.events2 = value as Set<t_variety.Event>;
+        this.events2 = value as Set<t_variety.Event>?;
         break;
 
       case EVENTMAP:
-        this.eventMap = value as Map<int, t_variety.Event>;
+        this.eventMap = value as Map<int, t_variety.Event>?;
         break;
 
       case NUMS:
-        this.nums = value as List<List<int>>;
+        this.nums = value as List<List<int>>?;
         break;
 
       case ENUMS:
-        this.enums = value as List<int>;
+        this.enums = value as List<int>?;
         break;
 
       case ABOOLFIELD:
         if (value == null) {
           unsetABoolField();
         } else {
-          this.aBoolField = value as bool;
+          this.aBoolField = value as bool?;
         }
         break;
 
       case A_UNION:
-        this.a_union = value as t_variety.TestingUnions;
+        this.a_union = value as t_variety.TestingUnions?;
         break;
 
       case TYPEDEFOFTYPEDEF:
-        this.typedefOfTypedef = value as String;
+        this.typedefOfTypedef = value as String?;
         break;
 
       case DEPR:
@@ -456,42 +456,42 @@ class EventWrapper implements thrift.TBase {
           unsetDepr();
         } else {
           // ignore: deprecated_member_use
-          this.depr = value as bool;
+          this.depr = value as bool?;
         }
         break;
 
       case DEPRBINARY:
         // ignore: deprecated_member_use
-        this.deprBinary = value as Uint8List;
+        this.deprBinary = value as Uint8List?;
         break;
 
       case DEPRLIST:
         // ignore: deprecated_member_use
-        this.deprList = value as List<bool>;
+        this.deprList = value as List<bool>?;
         break;
 
       case EVENTSDEFAULT:
-        this.eventsDefault = value as List<t_variety.Event>;
+        this.eventsDefault = value as List<t_variety.Event>?;
         break;
 
       case EVENTMAPDEFAULT:
-        this.eventMapDefault = value as Map<int, t_variety.Event>;
+        this.eventMapDefault = value as Map<int, t_variety.Event>?;
         break;
 
       case EVENTSETDEFAULT:
-        this.eventSetDefault = value as Set<t_variety.Event>;
+        this.eventSetDefault = value as Set<t_variety.Event>?;
         break;
 
       case EVENTSREQUIRED:
-        this.eventsRequired = value as List<t_variety.Event>;
+        this.eventsRequired = value as List<t_variety.Event>?;
         break;
 
       case EVENTMAPREQUIRED:
-        this.eventMapRequired = value as Map<int, t_variety.Event>;
+        this.eventMapRequired = value as Map<int, t_variety.Event>?;
         break;
 
       case EVENTSETREQUIRED:
-        this.eventSetRequired = value as Set<t_variety.Event>;
+        this.eventSetRequired = value as Set<t_variety.Event>?;
         break;
 
       default:
@@ -1181,28 +1181,28 @@ class EventWrapper implements thrift.TBase {
   }
 
   EventWrapper clone({
-    int iD,
-    t_variety.Event ev,
-    List<t_variety.Event> events,
-    Set<t_variety.Event> events2,
-    Map<int, t_variety.Event> eventMap,
-    List<List<int>> nums,
-    List<int> enums,
-    bool aBoolField,
-    t_variety.TestingUnions a_union,
-    String typedefOfTypedef,
+    int? iD,
+    t_variety.Event? ev,
+    List<t_variety.Event>? events,
+    Set<t_variety.Event>? events2,
+    Map<int, t_variety.Event>? eventMap,
+    List<List<int>>? nums,
+    List<int>? enums,
+    bool? aBoolField,
+    t_variety.TestingUnions? a_union,
+    String? typedefOfTypedef,
     // ignore: deprecated_member_use
-    bool depr,
+    bool? depr,
     // ignore: deprecated_member_use
-    Uint8List deprBinary,
+    Uint8List? deprBinary,
     // ignore: deprecated_member_use
-    List<bool> deprList,
-    List<t_variety.Event> eventsDefault,
-    Map<int, t_variety.Event> eventMapDefault,
-    Set<t_variety.Event> eventSetDefault,
-    List<t_variety.Event> eventsRequired,
-    Map<int, t_variety.Event> eventMapRequired,
-    Set<t_variety.Event> eventSetRequired,
+    List<bool>? deprList,
+    List<t_variety.Event>? eventsDefault,
+    Map<int, t_variety.Event>? eventMapDefault,
+    Set<t_variety.Event>? eventSetDefault,
+    List<t_variety.Event>? eventsRequired,
+    Map<int, t_variety.Event>? eventMapRequired,
+    Set<t_variety.Event>? eventSetRequired,
   }) {
     return EventWrapper()
       ..iD = iD ?? this.iD

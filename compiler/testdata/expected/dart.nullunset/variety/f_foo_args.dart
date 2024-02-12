@@ -20,11 +20,11 @@ class FooArgs implements thrift.TBase {
   static final thrift.TField _MESSAGE_ARGS_FIELD_DESC = thrift.TField('messageArgs', thrift.TType.STRING, 2);
   static final thrift.TField _MESSAGE_RESULT_FIELD_DESC = thrift.TField('messageResult', thrift.TType.STRING, 3);
 
-  String newMessage;
+  String? newMessage;
   static const int NEWMESSAGE = 1;
-  String messageArgs;
+  String? messageArgs;
   static const int MESSAGEARGS = 2;
-  String messageResult;
+  String? messageResult;
   static const int MESSAGERESULT = 3;
 
 
@@ -61,18 +61,18 @@ class FooArgs implements thrift.TBase {
   }
 
   @override
-  setFieldValue(int fieldID, Object value) {
+  setFieldValue(int fieldID, Object? value) {
     switch (fieldID) {
       case NEWMESSAGE:
-        this.newMessage = value as String;
+        this.newMessage = value as String?;
         break;
 
       case MESSAGEARGS:
-        this.messageArgs = value as String;
+        this.messageArgs = value as String?;
         break;
 
       case MESSAGERESULT:
-        this.messageResult = value as String;
+        this.messageResult = value as String?;
         break;
 
       default:
@@ -204,9 +204,9 @@ class FooArgs implements thrift.TBase {
   }
 
   FooArgs clone({
-    String newMessage,
-    String messageArgs,
-    String messageResult,
+    String? newMessage,
+    String? messageArgs,
+    String? messageResult,
   }) {
     return FooArgs()
       ..newMessage = newMessage ?? this.newMessage

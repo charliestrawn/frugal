@@ -18,7 +18,7 @@ class TestLowercase implements thrift.TBase {
   static final thrift.TStruct _STRUCT_DESC = thrift.TStruct('TestLowercase');
   static final thrift.TField _LOWERCASE_INT_FIELD_DESC = thrift.TField('lowercaseInt', thrift.TType.I32, 1);
 
-  int lowercaseInt;
+  int? lowercaseInt;
   static const int LOWERCASEINT = 1;
 
 
@@ -39,10 +39,10 @@ class TestLowercase implements thrift.TBase {
   }
 
   @override
-  setFieldValue(int fieldID, Object value) {
+  setFieldValue(int fieldID, Object? value) {
     switch (fieldID) {
       case LOWERCASEINT:
-        this.lowercaseInt = value as int;
+        this.lowercaseInt = value as int?;
         break;
 
       default:
@@ -122,7 +122,7 @@ class TestLowercase implements thrift.TBase {
   }
 
   TestLowercase clone({
-    int lowercaseInt,
+    int? lowercaseInt,
   }) {
     return TestLowercase()
       ..lowercaseInt = lowercaseInt ?? this.lowercaseInt;
