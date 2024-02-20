@@ -6,7 +6,7 @@ require (
 	github.com/apache/thrift v0.19.0
 	github.com/go-stomp/stomp v2.1.4+incompatible
 	github.com/nats-io/nats-server/v2 v2.10.10
-	github.com/nats-io/nats.go v1.32.0
+	github.com/nats-io/nats.go v1.33.1
 	github.com/nats-io/nuid v1.0.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.8.4
