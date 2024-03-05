@@ -3,7 +3,7 @@
 
     <groupId>com.workiva</groupId>
     <artifactId>frugal</artifactId>
-    <version>3.17.8</version>
+    <version>3.17.9</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}:${project.artifactId}</name>
@@ -66,7 +66,7 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.16.0</version>
+            <version>1.16.1</version>
         </dependency>
         <dependency>
             <groupId>javax.jms</groupId>
@@ -82,7 +82,7 @@
         <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
-            <version>4.1.106.Final</version>
+            <version>4.1.107.Final</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
