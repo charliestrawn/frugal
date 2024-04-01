@@ -10,7 +10,6 @@ import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
-import 'package:logging/logging.dart' as logging;
 import 'package:thrift/thrift.dart' as thrift;
 import 'package:frugal/frugal.dart' as frugal;
 import 'package:w_common/disposable.dart' as disposable;
@@ -34,7 +33,6 @@ FStoreClient fStoreClientFactory(frugal.FServiceProvider provider, {List<frugal.
 /// Services are the API for client and server interaction.
 /// Users can buy an album or enter a giveaway for a free album.
 class FStoreClient extends disposable.Disposable implements FStore {
-  static final logging.Logger _frugalLog = logging.Logger('Store');
   Map<String, frugal.FMethod> _methods = {};
 
   FStoreClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
@@ -89,7 +87,6 @@ class FStoreClient extends disposable.Disposable implements FStore {
   @deprecated
   @override
   Future<bool?> enterAlbumGiveaway(frugal.FContext ctx, String email, String name) {
-    _frugalLog.warning("Call to deprecated function 'Store.enterAlbumGiveaway'");
     return this._methods['enterAlbumGiveaway']!([ctx, email, name]).then((value) => value as bool);
   }
 
