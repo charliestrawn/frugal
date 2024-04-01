@@ -10,7 +10,6 @@ import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
-import 'package:logging/logging.dart' as logging;
 import 'package:thrift/thrift.dart' as thrift;
 import 'package:frugal/frugal.dart' as frugal;
 import 'package:w_common/disposable.dart' as disposable;
@@ -24,7 +23,6 @@ FVendoredBaseClient fVendoredBaseClientFactory(frugal.FServiceProvider provider,
     FVendoredBaseClient(provider, middleware);
 
 class FVendoredBaseClient extends disposable.Disposable implements FVendoredBase {
-  static final logging.Logger _frugalLog = logging.Logger('VendoredBase');
   Map<String, frugal.FMethod> _methods = {};
 
   FVendoredBaseClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
