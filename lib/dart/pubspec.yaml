@@ -1,5 +1,4 @@
 dependencies:
-  logging: ^1.0.0
   thrift:
     hosted:
       name: thrift

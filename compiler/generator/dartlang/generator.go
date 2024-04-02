@@ -199,7 +199,6 @@ func (g *Generator) addToPubspec(dir string) error {
 
 	deps := map[interface{}]interface{}{
 		"collection": "^1.15.0",
-		"logging":    "^1.0.0",
 		"thrift": dep{
 			Hosted:  hostedDep{Name: "thrift", URL: "https://pub.workiva.org"},
 			Version: "^0.0.15",
@@ -1670,7 +1669,6 @@ func (g *Generator) GenerateServiceImports(file *os.File, s *parser.Service) err
 	if g.useInt64() {
 		imports += "import 'package:fixnum/fixnum.dart' as fixnum;\n"
 	}
-	imports += "import 'package:logging/logging.dart' as logging;\n"
 	imports += "import 'package:thrift/thrift.dart' as thrift;\n"
 	imports += "import 'package:frugal/frugal.dart' as frugal;\n"
 	imports += "import 'package:w_common/disposable.dart' as disposable;\n\n"
@@ -2007,7 +2005,6 @@ func (g *Generator) generateClient(service *parser.Service) string {
 		contents += fmt.Sprintf("class %s extends disposable.Disposable implements F%s {\n",
 			clientClassname, servTitle)
 	}
-	contents += fmt.Sprintf(tab+"static final logging.Logger _frugalLog = logging.Logger('%s');\n", servTitle)
 
 	contents += tab + "Map<String, frugal.FMethod> _methods = {};\n\n"
 
@@ -2068,10 +2065,6 @@ func (g *Generator) generateClientMethod(service *parser.Service, method *parser
 	contents += tab + "@override\n"
 	contents += fmt.Sprintf(tab+"Future%s %s(frugal.FContext ctx%s) {\n",
 		g.generateReturnArg(method), nameLower, g.generateInputArgs(method.Arguments))
-
-	if method.Annotations.IsDeprecated() {
-		contents += fmt.Sprintf(tabtab+"_frugalLog.warning(\"Call to deprecated function '%s.%s'\");\n", service.Name, nameLower)
-	}
 
 	innerTypeCast := ""
 	if method.ReturnType != nil {

@@ -10,7 +10,6 @@ import 'dart:async';
 import 'dart:typed_data' show Uint8List;
 
 import 'package:collection/collection.dart';
-import 'package:logging/logging.dart' as logging;
 import 'package:thrift/thrift.dart' as thrift;
 import 'package:frugal/frugal.dart' as frugal;
 import 'package:w_common/disposable.dart' as disposable;
@@ -26,7 +25,6 @@ FSuperServiceClient fSuperServiceClientFactory(frugal.FServiceProvider provider,
     FSuperServiceClient(provider, middleware);
 
 class FSuperServiceClient extends disposable.Disposable implements FSuperService {
-  static final logging.Logger _frugalLog = logging.Logger('SuperService');
   Map<String, frugal.FMethod> _methods = {};
 
   FSuperServiceClient(frugal.FServiceProvider provider, [List<frugal.Middleware>? middleware])
