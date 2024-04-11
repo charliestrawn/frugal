@@ -341,6 +341,8 @@ func (g *Generator) exportClasses(dir string) error {
 
 // GenerateFile generates the given FileType.
 func (g *Generator) GenerateFile(name, outputDir string, fileType generator.FileType) (*os.File, error) {
+	g.ResetElem()
+
 	if _, ok := g.Options[libraryPrefixOption]; !ok {
 		outputDir = filepath.Join(outputDir, "lib")
 		outputDir = filepath.Join(outputDir, "src")

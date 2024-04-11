@@ -80,6 +80,10 @@ func (b *BaseGenerator) GetElem() string {
 	return s
 }
 
+func (b *BaseGenerator) ResetElem() {
+	b.elemNum = 0
+}
+
 // ServiceMethodStruct is a service method _args or _result struct.
 type ServiceMethodStruct struct {
 	*parser.Struct
