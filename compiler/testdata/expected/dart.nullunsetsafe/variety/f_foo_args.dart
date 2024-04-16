@@ -130,22 +130,22 @@ class FooArgs implements thrift.TBase {
     validate();
 
     oprot.writeStructBegin(_STRUCT_DESC);
-    final elem145 = newMessage;
-    if (elem145 != null) {
+    final elem0 = newMessage;
+    if (elem0 != null) {
       oprot.writeFieldBegin(_NEW_MESSAGE_FIELD_DESC);
-      oprot.writeString(elem145);
+      oprot.writeString(elem0);
       oprot.writeFieldEnd();
     }
-    final elem146 = messageArgs;
-    if (elem146 != null) {
+    final elem1 = messageArgs;
+    if (elem1 != null) {
       oprot.writeFieldBegin(_MESSAGE_ARGS_FIELD_DESC);
-      oprot.writeString(elem146);
+      oprot.writeString(elem1);
       oprot.writeFieldEnd();
     }
-    final elem147 = messageResult;
-    if (elem147 != null) {
+    final elem2 = messageResult;
+    if (elem2 != null) {
       oprot.writeFieldBegin(_MESSAGE_RESULT_FIELD_DESC);
-      oprot.writeString(elem147);
+      oprot.writeString(elem2);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
