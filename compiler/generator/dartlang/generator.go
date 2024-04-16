@@ -341,6 +341,9 @@ func (g *Generator) exportClasses(dir string) error {
 
 // GenerateFile generates the given FileType.
 func (g *Generator) GenerateFile(name, outputDir string, fileType generator.FileType) (*os.File, error) {
+	// This relies on GenerateFile not calling itself recursively, so we finish writing
+	// each file before moving on to the next file. Otherwise, we could end up with conflicting
+	// variable names.
 	g.ResetElem()
 
 	if _, ok := g.Options[libraryPrefixOption]; !ok {
