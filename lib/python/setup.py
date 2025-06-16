@@ -33,7 +33,7 @@ setup(
             'aiohttp>=3.0.9',
             'aiostomp==1.7.3',
             'nats-py>=2,<3',
-            'async-timeout>=4.0.0a3,<5.0'
+            'async-timeout>=4.0.0a3,<6.0'
         ],
         'gae': ['WebTest==2.0.35',
                 'webapp2==2.5.2'],
